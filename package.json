@@ -1,0 +1,36 @@
+{
+  "name": "thebe-lab",
+  "version": "0.1.0",
+  "description": "A version of Thebe built on JupyterLab",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --progress --colors --watch",
+    "fmt": "prettier --trailing-comma=all --write src/*.js *.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minrk/thebe-lab.git"
+  },
+  "keywords": [
+    "jupyter",
+    "notebook"
+  ],
+  "author": "Min RK",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/minrk/thebe-lab/issues"
+  },
+  "homepage": "https://github.com/minrk/thebe-lab#readme",
+  "devDependencies": {
+    "css-loader": "^0.27.3",
+    "file-loader": "^0.10.1",
+    "jquery": "^3.1.1",
+    "jupyterlab": "^0.17.5",
+    "prettier": "^0.22.0",
+    "style-loader": "^0.13.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1"
+  }
+}
