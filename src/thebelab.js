@@ -2,19 +2,22 @@ import * as $ from "jQuery";
 
 import { Widget } from "@phosphor/widgets";
 
-import { RenderMime } from "jupyterlab/lib/rendermime";
-import { editorServices } from "jupyterlab/lib/codemirror";
+import { Kernel } from "@jupyterlab/services";
+
 import { CodeCellWidget, CodeCellModel } from "jupyterlab/lib/cells";
-// 
-// import "jupyterlab/lib/default-theme/index.css";
-// import "jupyterlab/lib/default-theme/index.css";
+import { editorServices } from "jupyterlab/lib/codemirror";
+import { RenderMime } from "jupyterlab/lib/rendermime";
+
 import "jupyterlab/lib/default-theme/variables.css";
 import "jupyterlab/lib/codemirror/index.css";
 import "jupyterlab/lib/cells/index.css";
+import "jupyterlab/lib/outputarea/index.css";
+import "jupyterlab/lib/renderers/index.css";
 import "./index.css";
 
 const editorFactory = editorServices.factoryService.newInlineEditor;
 const contentFactory = new CodeCellWidget.ContentFactory({ editorFactory });
+const rendermime = new RenderMime({ items: RenderMime.getDefaultItems() });
 
 export function renderCell(element) {
   let new_element = $("<div class='thebelab-cell'/>");
@@ -25,15 +28,11 @@ export function renderCell(element) {
       cell: {
         source,
         metadata: {},
-        outputs: [
-          {
-            output_type: "stream",
-            text: "Hello!",
-          },
-        ],
+        outputs: [],
       },
     }),
     contentFactory,
+    rendermime,
   });
 
   $(element).replaceWith(new_element);
@@ -43,4 +42,19 @@ export function renderCell(element) {
 
 export function renderAllCells() {
   return $("[data-executable]").map((i, cell) => renderCell(cell));
+}
+
+export function requestKernel(kernelOptions) {
+  return Kernel.startNew(kernelOptions);
+}
+
+export function hookupKernel(kernel, cells) {
+  cells.map((i, cell) => {
+    $(cell.node).on("keydown", event => {
+      if (event.which === 13 && event.shiftKey) {
+        cell.execute(kernel);
+        return false;
+      }
+    });
+  });
 }
