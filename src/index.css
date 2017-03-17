@@ -1,9 +1,23 @@
+/* fix some prompt styling in Lab 0.17
+These seem to be fixed in 0.18
+*/
+
+.jp-Cell-Prompt {
+  letter-spacing: 0;
+  font-family: monospace;
+  box-sizing: border-box;
+}
+.jp-OutputAreaWidget-gutter {
+  
+}
+
 div.thebelab-cell {
   /* max-width ~100chars */
   max-width: 100ex;
   /* center */
   margin: auto;
 }
+
 .CodeMirror-scroll {
   /* limit CodeMirror height to height of content */
   height: auto;
