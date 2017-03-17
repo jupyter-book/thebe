@@ -1,0 +1,10 @@
+div.thebelab-cell {
+  /* max-width ~100chars */
+  max-width: 100ex;
+  /* center */
+  margin: auto;
+}
+.CodeMirror-scroll {
+  /* limit CodeMirror height to height of content */
+  height: auto;
+}
