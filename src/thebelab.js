@@ -49,6 +49,8 @@ export function requestKernel(kernelOptions) {
 }
 
 export function hookupKernel(kernel, cells) {
+  // hooks up cells to the kernel
+  // for now, this is just shift-enter to execute
   cells.map((i, cell) => {
     $(cell.node).on("keydown", event => {
       if (event.which === 13 && event.shiftKey) {

@@ -1,10 +1,45 @@
 <html>
 <head>
-  <script type="text/javascript" src="./dist/bundle.js"></script>
+  <title>Thebe Lab</title>
+  <style type="text/css">
+  body {
+    max-width: 800px;
+    margin: auto;
+    font-family: sans-serif;
+  }
+  </style>
 </head>
 <body>
-  <p>A cell:</p>
-  <pre data-executable>1</pre>
-  <p>^ that's a cell!</p>
+  <h1>Thebe Lab</h1>
+
+  <p>
+    Thebe Lab is an experiment attempting to rebuild
+    <a href="https://github.com/oreillymedia/thebe">Thebe</a>
+    with javascript APIs provided by 
+    <a href="https://github.com/jupyterlab/jupyterlab">JupyterLab</a>.
+    
+    This should make Thebe a smaller, more sustainable project.
+  </p>
+  
+  <p>This is a cell:</p>
+
+  <pre data-executable="true" data-language="python">print("Hello!")</pre>
+
+  <p>Press <tt>Shift-Enter</tt> to execute it.</p>
+
+  <p>
+    This is another cell, with plotting.
+    
+    Shift-Enter again!
+  </p>
+
+  <pre data-executable="true" data-language="python">%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))</pre>
+
 </body>
+<script type="text/javascript" src="./dist/bundle.js"></script>
 </html>
