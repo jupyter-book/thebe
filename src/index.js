@@ -4,11 +4,14 @@ window.onload = function() {
   let cells = renderAllCells();
 
   requestKernel({
-    baseUrl: "http://127.0.0.1:8888/",
+    serverSettings: {
+      baseUrl: "http://127.0.0.1:8888/",
+      token: "secret",
+    },
     name: "python3",
-    token: "secret",
   }).then(kernel => {
     window.kernel = kernel;
+    renderAllCells();
     hookupKernel(kernel, cells);
   });
 };
