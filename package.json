@@ -10,6 +10,10 @@
     "fmt": "prettier --trailing-comma=all --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "lib/index.js",
+    "src/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/minrk/thebelab.git"
