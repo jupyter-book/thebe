@@ -7,7 +7,7 @@
     "build": "webpack",
     "build:watch": "webpack --progress --colors --watch",
     "prepublish": "npm run build",
-    "fmt": "prettier --trailing-comma=all --write *.js src/*.js example/*.js",
+    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
