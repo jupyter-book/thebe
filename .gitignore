@@ -6,7 +6,9 @@ node
 src/_tmp
 static
 dist
+lib
 coverage
 .nyc_output
 .tmp
 .DS_Store
+.cache

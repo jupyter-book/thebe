@@ -1,17 +1,17 @@
 {
-  "name": "thebe-lab",
-  "version": "0.1.0",
+  "name": "thebelab",
+  "version": "0.0.0",
   "description": "A version of Thebe built on JupyterLab",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --progress --colors --watch",
-    "fmt": "prettier --trailing-comma=all --write src/*.js *.js",
+    "fmt": "prettier --trailing-comma=all --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/minrk/thebe-lab.git"
+    "url": "git+https://github.com/minrk/thebelab.git"
   },
   "keywords": [
     "jupyter",
@@ -20,9 +20,9 @@
   "author": "Min RK",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/minrk/thebe-lab/issues"
+    "url": "https://github.com/minrk/thebelab/issues"
   },
-  "homepage": "https://github.com/minrk/thebe-lab#readme",
+  "homepage": "https://github.com/minrk/thebelab#readme",
   "devDependencies": {
     "codemirror": "^5.30.0",
     "@jupyterlab/cells": "^0.10.0",

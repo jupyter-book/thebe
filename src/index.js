@@ -1,17 +1,6 @@
-import { renderAllCells, requestKernel, hookupKernel } from "./thebelab";
+import * as thebelab from "./thebelab.js";
+export * from "./thebelab.js";
 
-window.onload = function() {
-  let cells = renderAllCells();
-
-  requestKernel({
-    serverSettings: {
-      baseUrl: "http://127.0.0.1:8888/",
-      token: "secret",
-    },
-    name: "python3",
-  }).then(kernel => {
-    window.kernel = kernel;
-    renderAllCells();
-    hookupKernel(kernel, cells);
-  });
-};
+if (typeof window !== undefined) {
+  window.thebelab = thebelab;
+}
