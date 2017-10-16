@@ -12,6 +12,8 @@ import "@jupyterlab/theme-light-extension/style/variables.css";
 import "./index.css";
 
 export function renderCell(element) {
+  // render a single cell
+  // element should be a `<pre>` tag with some code in it
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
   let source = $element.text();
@@ -53,13 +55,15 @@ export function renderCell(element) {
 }
 
 export function renderAllCells() {
+  // render all cells with `data-executable`
   return $("[data-executable]").map((i, cell) => renderCell(cell));
 }
 
 export function requestKernel(kernelOptions) {
+  // request a new Kernel
   if (kernelOptions.serverSettings) {
     kernelOptions.serverSettings = ServerConnection.makeSettings(
-      kernelOptions.serverSettings,
+      kernelOptions.serverSettings
     );
   }
   return Kernel.startNew(kernelOptions);
@@ -73,9 +77,51 @@ export function hookupKernel(kernel, cells) {
 }
 
 export function requestBinder(
-  repo,
-  ref = "master",
-  binderUrl = "https://beta.mybinder.org",
+  {
+    repo,
+    ref = "master",
+    binderUrl = "https://beta.mybinder.org",
+  } = {}
 ) {
-  // TODO
+  // request a server from Binder
+  // returns a Promise that will resolve with a serverSettings dict
+
+  // trim github.com from repo
+  repo = repo.replace(/^(https?:\/\/)?github.com\//, "");
+  // trim trailing or leading '/' on repo
+  repo = repo.replace(/(^\/)|(\/?$)/g, "");
+  // trailing / on binderUrl
+  binderUrl = binderUrl.replace(/(\/?$)/g, "");
+
+  let url = binderUrl + "/build/gh/" + repo + "/" + ref;
+  console.log("Binder build URL", url);
+  return new Promise((resolve, reject) => {
+    let es = new EventSource(url);
+    es.onerror = err => {
+      console.error("Lost connection to " + url, err);
+      es.close();
+      reject(new Error(err));
+    };
+    es.onmessage = evt => {
+      let msg = JSON.parse(evt.data);
+      switch (msg.phase) {
+        case "failed":
+          console.error("Failed to build", url, msg);
+          es.close();
+          reject(new Error(msg));
+          break;
+        case "ready":
+          es.close();
+          resolve(
+            ServerConnection.makeSettings({
+              baseUrl: msg.url,
+              token: msg.token,
+            })
+          );
+          break;
+        default:
+        // console.log(msg);
+      }
+    };
+  });
 }
