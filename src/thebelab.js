@@ -105,7 +105,7 @@ function getPageConfig(key) {
       _pageConfigData = JSON.parse(el.textContent || '{}');
     }
   }
-  return _pageConfigData[key];
+  return (_pageConfigData || {})[key];
 }
 
 export function getOption(key, options, defaultValue) {
