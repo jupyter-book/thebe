@@ -10,12 +10,12 @@ import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 import "@jupyterlab/theme-light-extension/style/variables.css";
 import "./index.css";
 
-export function renderCell(element) {
+function renderCell(element) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
-  let source = $element.text();
+  let source = $element.text().trim();
 
   let renderMime = new RenderMime({
     initialFactories: defaultRendererFactories,
