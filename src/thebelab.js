@@ -79,6 +79,21 @@ export function hookupKernel(kernel, cells) {
   });
 }
 
+export function requestBinderKernel(
+  {
+    binderOptions,
+    kernelOptions,
+  }
+) {
+  // request a Kernel from Binder
+  // this strings together requestBinder and requestKernel.
+  // returns a Promise for a running Kernel.
+  return requestBinder(binderOptions).then(serverSettings => {
+    kernelOptions.serverSettings = serverSettings;
+    return requestKernel(kernelOptions);
+  });
+}
+
 export function requestBinder(
   {
     repo,
