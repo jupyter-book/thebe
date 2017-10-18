@@ -1,6 +1,6 @@
 # Basic example
 
-You can [browse it online](https://nthiery.github.io/thebelab/example/).
+You can [browse it online](https://minrk.github.io/thebelab/example/).
 To serve it locally instead, run:
 
     python -m http.server
