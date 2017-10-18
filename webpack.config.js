@@ -8,6 +8,13 @@ module.exports = {
   },
   module: {
     loaders: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        query: {
+          presets: ["es2015"],
+        },
+      },
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.json$/, loader: "json-loader" },
       { test: /\.html$/, loader: "file-loader" },

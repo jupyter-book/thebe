@@ -100,9 +100,9 @@ let _pageConfigData = undefined;
 function getPageConfig(key) {
   // from jupyterlab coreutils.PageConfig
   if (!_pageConfigData) {
-    let el = document.getElementById('thebe-config-data');
+    let el = document.getElementById("thebe-config-data");
     if (el) {
-      _pageConfigData = JSON.parse(el.textContent || '{}');
+      _pageConfigData = JSON.parse(el.textContent || "{}");
     }
   }
   return (_pageConfigData || {})[key];
@@ -124,13 +124,13 @@ function getBinderOptions(options) {
     ref: "master",
     binderUrl: "https://beta.mybinder.org",
   };
-  Object.assign(binderOptions, getPageConfig('binderOptions'));
+  Object.assign(binderOptions, getPageConfig("binderOptions"));
   Object.assign(binderOptions, (options || {}).binderOptions);
   return binderOptions;
 }
 function getKernelOptions(options) {
   let kernelOptions = {};
-  Object.assign(kernelOptions, getPageConfig('kernelOptions'));
+  Object.assign(kernelOptions, getPageConfig("kernelOptions"));
   Object.assign(kernelOptions, (options || {}).kernelOptions);
   return kernelOptions;
 }
