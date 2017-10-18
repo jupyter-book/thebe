@@ -1,9 +1,8 @@
-import * as $ from "jQuery";
+import $ from "jQuery";
+import CodeMirror from "codemirror";
 
-import * as CodeMirror from "codemirror";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
-
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 
