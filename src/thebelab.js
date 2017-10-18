@@ -192,8 +192,16 @@ export function requestBinder(
       es.close();
       reject(new Error(err));
     };
+    let phase = null;
     es.onmessage = evt => {
       let msg = JSON.parse(evt.data);
+      if (msg.phase && msg.phase !== phase) {
+        console.log("Binder phase: " + msg.phase);
+        phase = msg.phase;
+      }
+      if (msg.message) {
+        console.log("Binder: " + msg.message);
+      }
       switch (msg.phase) {
         case "failed":
           console.error("Failed to build", url, msg);
