@@ -8,12 +8,19 @@
     font-family: sans-serif;
   }
   </style>
-  <!-- jupyter config for local deployment -->
+  <!-- jupyter config for local kernels -->
   <script id="jupyter-config-data" type="application/json">
     {
       "baseUrl": "http://127.0.0.1",
       "token": "test-secret",
-      "binderRepo": "binder-examples/requirements"
+    }
+  </script>
+  <!-- thebe config for binder -->
+  <script id="thebe-config-data" type="application/json">
+    {
+      "binderOptions": {
+        "repo": "binder-examples/requirements"
+      }
     }
   </script>
 </head>

@@ -4,7 +4,6 @@ import * as CodeMirror from "codemirror";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 
-import { PageConfig } from "@jupyterlab/coreutils";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 
@@ -97,29 +96,42 @@ export function requestBinderKernel(
   });
 }
 
+let _pageConfigData = undefined;
+function getPageConfig(key) {
+  // from jupyterlab coreutils.PageConfig
+  if (!_pageConfigData) {
+    let el = document.getElementById('thebe-config-data');
+    if (el) {
+      _pageConfigData = JSON.parse(el.textContent || '{}');
+    }
+  }
+  return _pageConfigData[key];
+}
+
 export function getOption(key, options, defaultValue) {
   let value = undefined;
   if (options) {
     value = options[key];
     if (value !== undefined) return value;
   }
-  value = PageConfig.getOption(key);
-  if (value !== "") return value;
+  value = getPageConfig(key);
+  if (value !== undefined) return value;
   return defaultValue;
 }
 
 function getBinderOptions(options) {
-  return {
-    repo: getOption("binderRepo", options),
-    ref: getOption("binderRef", options, "master"),
-    binderUrl: getOption("binderUrl", options, "https://beta.mybinder.org"),
+  let binderOptions = {
+    ref: "master",
+    binderUrl: "https://beta.mybinder.org",
   };
+  Object.assign(binderOptions, getPageConfig('binderOptions'));
+  Object.assign(binderOptions, (options || {}).binderOptions);
+  return binderOptions;
 }
 function getKernelOptions(options) {
-  let kernelOptions = (options || {}).kernelOptions || {};
-  if (!kernelOptions.name) {
-    kernelOptions.name = getOption("thebeKernelName", options);
-  }
+  let kernelOptions = {};
+  Object.assign(kernelOptions, getPageConfig('kernelOptions'));
+  Object.assign(kernelOptions, (options || {}).kernelOptions);
   return kernelOptions;
 }
 
@@ -131,10 +143,10 @@ export function bootstrap(options) {
   let cells = renderAllCells(getOption("thebeCellSelector", options));
   let kernelPromise;
 
-  let binderRepo = getOption("binderRepo", options);
-  if (binderRepo) {
+  let binderOptions = getBinderOptions();
+  if (binderOptions.repo) {
     kernelPromise = requestBinderKernel({
-      binderOptions: getBinderOptions(options),
+      binderOptions: binderOptions,
       kernelOptions: getKernelOptions(options),
     });
   } else {
