@@ -54,9 +54,12 @@ export function renderCell(element) {
   return $cell;
 }
 
-export function renderAllCells() {
-  // render all cells with `data-executable`
-  return $("[data-executable]").map((i, cell) => renderCell(cell));
+export function renderAllCells({
+  query="[data-executable]"
+}) {
+  // render all elements matching `query` as cells.
+  // by default, this is all cells with `data-executable`
+  return $(query).map((i, cell) => renderCell(cell));
 }
 
 export function requestKernel(kernelOptions) {
