@@ -20,12 +20,12 @@
 }
 
 .CodeMirror {
-  background-color: #ddd;
+  // background-color: #ddd;
 }
 
 
 .CodeMirror.CodeMirror-focused {
-  background-color: white;
+  // background-color: white;
 }
 
 /* no prompts */
