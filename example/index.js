@@ -1,3 +1,5 @@
+// unused kernel-request functions:
+
 function localKernel() {
   // request a kernel from a local notebook server
   // assumes notebook was started with:
