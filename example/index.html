@@ -8,6 +8,14 @@
     font-family: sans-serif;
   }
   </style>
+  <!-- jupyter config for local deployment -->
+  <script id="jupyter-config-data" type="application/json">
+    {
+      "baseUrl": "http://127.0.0.1",
+      "token": "test-secret",
+      "binderRepo": "binder-examples/requirements"
+    }
+  </script>
 </head>
 <body>
   <h1>Thebe Lab</h1>
@@ -41,7 +49,9 @@ plt.plot(x, np.sin(x))
 plt.plot(x, np.cos(x))</pre>
 
 </body>
-<!-- from a cdn use: src="https://unpkg.com/thebelab@0.0.2" -->
+<!-- from a cdn use: <script type="text/javascript" src="https://unpkg.com/thebelab@0.0.4" ></script> -->
 <script type="text/javascript" src="../lib/index.js"></script>
+
+<!-- load our local bootstrap -->
 <script type="text/javascript" src="./index.js"></script>
 </html>

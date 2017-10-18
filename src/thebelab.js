@@ -4,7 +4,7 @@ import * as CodeMirror from "codemirror";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 
-// import { CodeCell, CodeCellModel } from "@jupyterlab/cells";
+import { PageConfig } from "@jupyterlab/coreutils";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 
@@ -36,7 +36,7 @@ export function renderCell(element) {
 
   let cm = new CodeMirror($cm_element[0], {
     value: source,
-    mode: $element.data("language") || 'python3',
+    mode: $element.data("language") || "python3",
     extraKeys: {
       "Shift-Enter": () => {
         let kernel = $cell.data("kernel");
@@ -54,16 +54,19 @@ export function renderCell(element) {
   return $cell;
 }
 
-export function renderAllCells({
-  query="[data-executable]"
-}) {
-  // render all elements matching `query` as cells.
+export function renderAllCells(
+  {
+    selector = "[data-executable]",
+  } = {}
+) {
+  // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
-  return $(query).map((i, cell) => renderCell(cell));
+  return $(selector).map((i, cell) => renderCell(cell));
 }
 
 export function requestKernel(kernelOptions) {
   // request a new Kernel
+  kernelOptions = kernelOptions || getKernelOptions();
   if (kernelOptions.serverSettings) {
     kernelOptions.serverSettings = ServerConnection.makeSettings(
       kernelOptions.serverSettings
@@ -94,15 +97,72 @@ export function requestBinderKernel(
   });
 }
 
+export function getOption(key, options, defaultValue) {
+  let value = undefined;
+  if (options) {
+    value = options[key];
+    if (value !== undefined) return value;
+  }
+  value = PageConfig.getOption(key);
+  if (value !== "") return value;
+  return defaultValue;
+}
+
+function getBinderOptions(options) {
+  return {
+    repo: getOption("binderRepo", options),
+    ref: getOption("binderRef", options, "master"),
+    binderUrl: getOption("binderUrl", options, "https://beta.mybinder.org"),
+  };
+}
+function getKernelOptions(options) {
+  let kernelOptions = (options || {}).kernelOptions || {};
+  if (!kernelOptions.name) {
+    kernelOptions.name = getOption("thebeKernelName", options);
+  }
+  return kernelOptions;
+}
+
+export function bootstrap(options) {
+  // bootstrap thebe on the page
+
+  options = options || {};
+  // bootstrap thebelab on the page
+  let cells = renderAllCells(getOption("thebeCellSelector", options));
+  let kernelPromise;
+
+  let binderRepo = getOption("binderRepo", options);
+  if (binderRepo) {
+    kernelPromise = requestBinderKernel({
+      binderOptions: getBinderOptions(options),
+      kernelOptions: getKernelOptions(options),
+    });
+  } else {
+    kernelPromise = requestKernel(getKernelOptions(options));
+  }
+  kernelPromise.then(kernel => {
+    // debug
+    window.thebeKernel = kernel;
+    hookupKernel(kernel, cells);
+  });
+}
+
 export function requestBinder(
   {
     repo,
     ref = "master",
-    binderUrl = "https://beta.mybinder.org",
+    binderUrl = null,
   } = {}
 ) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
+
+  // populate fro defaults
+  let defaults = getBinderOptions();
+  repo = repo || defaults.repo;
+  console.log("binder url", binderUrl, defaults);
+  binderUrl = binderUrl || defaults.binderUrl;
+  ref = ref || defaults.ref;
 
   // trim github.com from repo
   repo = repo.replace(/^(https?:\/\/)?github.com\//, "");
