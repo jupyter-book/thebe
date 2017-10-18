@@ -36,7 +36,7 @@ export function renderCell(element) {
 
   let cm = new CodeMirror($cm_element[0], {
     value: source,
-    mode: $element.data("language"),
+    mode: $element.data("language") || 'python3',
     extraKeys: {
       "Shift-Enter": () => {
         let kernel = $cell.data("kernel");
