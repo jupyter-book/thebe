@@ -1,9 +1,9 @@
 
 .thebelab-cell {
-  max-width: 100ex;
-  margin: auto;
   border: 2px solid #aaa;
   border-radius: 4px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 .thebelab-cell:focus-within {
   border-color: green;
