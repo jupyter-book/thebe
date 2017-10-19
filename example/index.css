@@ -1,16 +1,30 @@
-.status_button_status_not_connected:before{
-  content:"Not connected";
+.thebe-status-button {
+  background-color: #ccc;
+  border-radius: 4px;
+  margin: auto;
+  padding: 8px;
 }
 
-.status_button_status_connected:before{
-  content:"Connected";
+.thebe-status-button.thebe-status-building {
+  /* Binder is building the image */
 }
 
-.status_button_status_busy:before{
-  content:"Busy";
+.thebe-status-button.thebe-status-launching {
+  /* Binder launching the server */
 }
 
-.status_button_status_dead:before{
-  content:"Dead";
+.thebe-status-button.thebe-status-ready {
+  /* The kernel is connected and ready */
+  background-color: #8d8;
+}
+
+.thebe-status-button.thebe-status-failed {
+  /* Building the image or launching the kernel failed */
+  background-color: #f66;
+}
+
+
+.thebe-status-button.thebe-status-busy {
+  /* The kernel is busy (this event is not hooked up yet) */
 }
 
