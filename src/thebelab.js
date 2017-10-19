@@ -287,7 +287,6 @@ export function bootstrap(options) {
     selector: getOption("cellSelector", options),
   });
   let kernelPromise;
-
   let binderOptions = getBinderOptions(options);
   let kernelOptions = getKernelOptions(options);
   if (binderOptions.repo) {
