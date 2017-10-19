@@ -1,4 +1,4 @@
-import $ from "jQuery";
+import $ from "jquery";
 import CodeMirror from "codemirror";
 
 import { Kernel } from "@jupyterlab/services";
