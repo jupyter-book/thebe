@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title>Thebe prompt support</title>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+
+  <!-- Thebe configuration !-->
+  <script type="text/x-thebe-config">
+    thebeConfig = {
+      binderOptions: {
+        repo: "binder-examples/requirements"
+      },
+      stripPrompts: {
+        inPrompt: 'sage: ',
+        continuationPrompt: '....: ',
+        selector: '.sage-input',
+      }
+  }
+  </script>
+
+  <!-- Load the Thebe library !-->
+  <script type="text/javascript" src="https://unpkg.com/thebelab@0.0.7" ></script>
+  <!-- or to use a local build: -->
+  <!-- <script type="text/javascript" src="../lib/index.js"></script> !-->
+
+  <!-- Activate Thebe directly upon loading the page !-->
+  <script>window.onload = function() { thebelab.bootstrap(); };</script>
+
+</head>
+<body>
+  <h1>Support for code cells with prompts and output</h1>
+
+  <p>This page illustrates the handling of code cells containing
+  (continuation) prompts and outputs. Upon activation, the prompts and
+  output are stripped. Furthermore, the code cell is split wherever
+  there is an output or blank line.</p>
+
+  <p>Note: the implementation currently assumes that all commands in
+  all code cells are prefixed by prompts.</p>
+
+  <p>This is the original cell:</p>
+  <pre>
+    sage: 1 + 1
+    2
+    sage: x = 3
+    sage: y = 4
+
+    sage: z = 5
+    sage: x + y + \
+    ....: z
+    7
+  </pre>
+
+  <p>This is the resulting live cell:</p>
+  <pre class="sage-input" data-language="python">
+    sage: 1 + 1
+    2
+    sage: x = 3
+    sage: y = 4
+
+    sage: z = 5
+    sage: x + y + \
+    ....: z
+    7
+  </pre>
+
+</body>
+</html>

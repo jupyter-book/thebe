@@ -281,13 +281,14 @@ export function requestBinder(
 export function bootstrap(options) {
   // bootstrap thebe on the page
 
+  // TODO: use a merge function once for all
   options = options || {};
-
   if (options.preRenderHook) {
     options.preRenderHook();
   }
-  if (options.stripPrompts) {
-    stripPrompts(options.stripPrompts);
+  let stripPromptsOption = getOption("stripPrompts", options);
+  if (stripPromptsOption) {
+    stripPrompts(stripPromptsOption);
   }
   // bootstrap thebelab on the page
   let cells = renderAllCells({
@@ -319,44 +320,46 @@ function splitCell(
     continuationPrompt,
   } = {}
 ) {
-  let rawText = element.textContent.trim();
+  let rawText = element.text().trim();
   let cells = [];
   let cell = null;
-  rawText.split("\n").map((i, line) => {
+  rawText.split("\n").map((line) => {
+    line = line.trim()
     if (line.slice(0, inPrompt.length) === inPrompt) {
-      // it's a new in prompt
+      // line with a prompt
+      line = line.slice(inPrompt.length) + "\n";
       if (cell) {
-        cells.push(cell);
+        cell += line;
+      } else {
+        cell = line;
       }
-      cell = line.slice(inPrompt.length) + "\n";
     } else if (
       continuationPrompt &&
       line.slice(0, continuationPrompt.length) === continuationPrompt
     ) {
-      // it's a continue prompt
+      // line with a continuation prompt
       cell += line.slice(continuationPrompt.length) + "\n";
     } else {
-      // output
+      // output line
+      if (cell) {
+        cells.push(cell);
+        cell = null;
+      }
     }
   });
+  if (cell) {
+    cells.push(cell);
+  }
+  // console.log("cells: ", cells);
   // clear the parent element
   element.html("");
   // add the thebe-able cells
-  cells.map((i, cell) => {
+  cells.map((cell) => {
     element.append($("<pre>").text(cell).attr("data-executable", "true"));
   });
 }
 
 export function stripPrompts(options) {
   // strip prompts from a
-  $(options.selector).map((i, el) => splitCell(el, options));
+  $(options.selector).map((i, el) => splitCell($(el), options));
 }
-
-// example:
-thebeConfig = {
-  stripPrompts: {
-    inPrompt: 'sage: ',
-    continuationPrompt: '....: ',
-    selector: '.sage-input',
-  },
-};
