@@ -9,6 +9,19 @@ import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 import "@jupyterlab/theme-light-extension/style/variables.css";
 import "./index.css";
 
+// events
+
+export const events = $({});
+export const on = function() {
+  events.on.apply(events, arguments);
+};
+export const one = function() {
+  events.one.apply(events, arguments);
+};
+export const off = function() {
+  events.off.apply(events, arguments);
+};
+
 // options
 
 let _pageConfigData = undefined;
@@ -75,7 +88,9 @@ function renderCell(element, options) {
   let $cm_element = $("<div class='thebelab-input'>");
   $cell.append($cm_element);
   $cell.append(
-    $("<button class='thebelab-button thebelab-run-button'>").text("run").click(execute)
+    $("<button class='thebelab-button thebelab-run-button'>")
+      .text("run")
+      .click(execute)
   );
   window.oa = outputArea;
   function execute() {
@@ -135,7 +150,19 @@ export function requestKernel(kernelOptions) {
       kernelOptions.serverSettings
     );
   }
-  return Kernel.startNew(kernelOptions);
+  events.trigger("status", {
+    status: "starting",
+    message: "Starting Kernel",
+  });
+  let p = Kernel.startNew(kernelOptions);
+  p.then(kernel => {
+    events.trigger("status", {
+      status: "ready",
+      message: "Kernel is ready",
+    });
+    return kernel;
+  });
+  return p;
 }
 
 export function requestBinderKernel(
@@ -179,19 +206,37 @@ export function requestBinder(
 
   let url = binderUrl + "/build/gh/" + repo + "/" + ref;
   console.log("Binder build URL", url);
+  events.trigger("status", {
+    status: "building",
+    message: "Requesting build from binder",
+  });
   return new Promise((resolve, reject) => {
     let es = new EventSource(url);
     es.onerror = err => {
       console.error("Lost connection to " + url, err);
       es.close();
+      events.trigger("status", {
+        status: "failed",
+        message: "Lost connection to Binder",
+        error: err,
+      });
       reject(new Error(err));
     };
     let phase = null;
     es.onmessage = evt => {
       let msg = JSON.parse(evt.data);
       if (msg.phase && msg.phase !== phase) {
-        console.log("Binder phase: " + msg.phase);
-        phase = msg.phase;
+        phase = msg.phase.toLowerCase();
+        console.log("Binder phase: " + phase);
+        let status = phase;
+        if (status === "ready") {
+          status = "server-ready";
+        }
+        events.trigger("status", {
+          status: status,
+          message: "Binder is " + phase,
+          binderMessage: msg.message,
+        });
       }
       if (msg.message) {
         console.log("Binder: " + msg.message);

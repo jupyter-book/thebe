@@ -22,5 +22,8 @@ function binderKernel() {
 }
 
 window.onload = function() {
+  thebelab.on("status", function(evt, data) {
+    console.log("Status changed:", data.status, data.message);
+  });
   thebelab.bootstrap();
 };
