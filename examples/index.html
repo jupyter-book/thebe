@@ -1,38 +1,30 @@
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
-  <title>Thebe Lab example</title>
-  <style type="text/css">
-  body {
-    max-width: 800px;
-    margin: auto;
-    font-family: sans-serif;
-  }
-  .thebelab-cell {
-    max-width: 80ex;
-    margin: auto;
-  }
-  </style>
-  <link rel="stylesheet" type="text/css" href="index.css" />
-  <!-- jupyter config, only used for local kernels -->
-  <script id="jupyter-config-data" type="application/json">
-    {
-      "baseUrl": "http://127.0.0.1",
-      "token": "test-secret"
-    }
-  </script>
-  <!-- thebe config for binder -->
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <title>Thebe Lab examples</title>
+
+  <!-- Configure and load Thebe !-->
   <script type="text/x-thebe-config">
     thebeConfig = {
       binderOptions: {
-        repo: "binder-examples/requirements"
+        repo: "binder-examples/requirements",
       }
+      kernelOptions: {
+        name: "python3",
+      },
     }
   </script>
+  <script type="text/javascript" src="https://unpkg.com/thebelab@0.0.8" ></script>
+  <!-- or to use a local build: -->
+  <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+
+  <!-- Activate Thebe directly upon loading the page !-->
+  <script>window.onload = function() { thebelab.bootstrap(); };</script>
+
 </head>
 <body>
   <h1>Thebe Lab</h1>
-  Status: <span class="thebe-status-button"></span>
+
   <p>
     <a href="https://github.com/minrk/thebelab">Thebe Lab</a>
     is an experiment attempting to rebuild
@@ -43,7 +35,11 @@
     This should make Thebe a smaller, more sustainable project.
   </p>
 
-  <h2>Basic example</h2>
+  <h2>A minimal example</h2>
+
+  This page illustrates a minimal setup to get Thebe Lab running, using
+  <a href="http://mybinder.org">mybinder</a> as <em>kernel</em> (i.e.
+  computation backend) provider. See the source file for details.
 
   <p>This is a cell:</p>
 
@@ -69,15 +65,10 @@ plt.plot(x, np.cos(x))</pre>
   <h2>More examples</h2>
 
   <ul>
-  <li><a href="prompts.html">Handling of code cells containing prompts and outputs</a>
+  <li><a href="status_button.html">Status button and styling</a>;
+  <li><a href="prompts.html">Handling code cells containing prompts and outputs</a>;
+  <li><a href="local.html">Using a local Jupyter server as kernel provider</a>.
   </ul>
 
 </body>
-<script type="text/javascript" src="https://unpkg.com/thebelab@0.0.8" ></script>
- <!-- or to use a local build: -->
-<!-- <script type="text/javascript" src="../lib/index.js"></script> -->
-
-
-<!-- load our local bootstrap -->
-<script type="text/javascript" src="./index.js"></script>
 </html>
