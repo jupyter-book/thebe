@@ -273,7 +273,7 @@ export function bootstrap(options) {
   let cells = renderAllCells(getOption("thebeCellSelector", options));
   let kernelPromise;
 
-  let binderOptions = getBinderOptions();
+  let binderOptions = getBinderOptions(options);
   if (binderOptions.repo) {
     kernelPromise = requestBinderKernel({
       binderOptions: binderOptions,
