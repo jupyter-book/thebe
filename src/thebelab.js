@@ -9,6 +9,50 @@ import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 import "@jupyterlab/theme-light-extension/style/variables.css";
 import "./index.css";
 
+// options
+
+let _pageConfigData = undefined;
+function getPageConfig(key) {
+  // from jupyterlab coreutils.PageConfig
+  if (!_pageConfigData) {
+    let el = document.getElementById("thebe-config-data");
+    if (el) {
+      _pageConfigData = JSON.parse(el.textContent || "{}");
+    }
+  }
+  return (_pageConfigData || {})[key];
+}
+
+export function getOption(key, options, defaultValue) {
+  let value = undefined;
+  if (options) {
+    value = options[key];
+    if (value !== undefined) return value;
+  }
+  value = getPageConfig(key);
+  if (value !== undefined) return value;
+  return defaultValue;
+}
+
+function getBinderOptions(options) {
+  let binderOptions = {
+    ref: "master",
+    binderUrl: "https://beta.mybinder.org",
+  };
+  Object.assign(binderOptions, getPageConfig("binderOptions"));
+  Object.assign(binderOptions, (options || {}).binderOptions);
+  return binderOptions;
+}
+
+function getKernelOptions(options) {
+  let kernelOptions = {};
+  Object.assign(kernelOptions, getPageConfig("kernelOptions"));
+  Object.assign(kernelOptions, (options || {}).kernelOptions);
+  return kernelOptions;
+}
+
+// rendering cells
+
 function renderCell(element) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
@@ -62,6 +106,14 @@ export function renderAllCells(
   return $(selector).map((i, cell) => renderCell(cell));
 }
 
+export function hookupKernel(kernel, cells) {
+  // hooks up cells to the kernel
+  cells.map((i, cell) => {
+    $(cell).data("kernel", kernel);
+  });
+}
+
+// requesting Kernels
 export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = kernelOptions || getKernelOptions();
@@ -71,13 +123,6 @@ export function requestKernel(kernelOptions) {
     );
   }
   return Kernel.startNew(kernelOptions);
-}
-
-export function hookupKernel(kernel, cells) {
-  // hooks up cells to the kernel
-  cells.map((i, cell) => {
-    $(cell).data("kernel", kernel);
-  });
 }
 
 export function requestBinderKernel(
@@ -92,69 +137,6 @@ export function requestBinderKernel(
   return requestBinder(binderOptions).then(serverSettings => {
     kernelOptions.serverSettings = serverSettings;
     return requestKernel(kernelOptions);
-  });
-}
-
-let _pageConfigData = undefined;
-function getPageConfig(key) {
-  // from jupyterlab coreutils.PageConfig
-  if (!_pageConfigData) {
-    let el = document.getElementById("thebe-config-data");
-    if (el) {
-      _pageConfigData = JSON.parse(el.textContent || "{}");
-    }
-  }
-  return (_pageConfigData || {})[key];
-}
-
-export function getOption(key, options, defaultValue) {
-  let value = undefined;
-  if (options) {
-    value = options[key];
-    if (value !== undefined) return value;
-  }
-  value = getPageConfig(key);
-  if (value !== undefined) return value;
-  return defaultValue;
-}
-
-function getBinderOptions(options) {
-  let binderOptions = {
-    ref: "master",
-    binderUrl: "https://beta.mybinder.org",
-  };
-  Object.assign(binderOptions, getPageConfig("binderOptions"));
-  Object.assign(binderOptions, (options || {}).binderOptions);
-  return binderOptions;
-}
-function getKernelOptions(options) {
-  let kernelOptions = {};
-  Object.assign(kernelOptions, getPageConfig("kernelOptions"));
-  Object.assign(kernelOptions, (options || {}).kernelOptions);
-  return kernelOptions;
-}
-
-export function bootstrap(options) {
-  // bootstrap thebe on the page
-
-  options = options || {};
-  // bootstrap thebelab on the page
-  let cells = renderAllCells(getOption("thebeCellSelector", options));
-  let kernelPromise;
-
-  let binderOptions = getBinderOptions();
-  if (binderOptions.repo) {
-    kernelPromise = requestBinderKernel({
-      binderOptions: binderOptions,
-      kernelOptions: getKernelOptions(options),
-    });
-  } else {
-    kernelPromise = requestKernel(getKernelOptions(options));
-  }
-  kernelPromise.then(kernel => {
-    // debug
-    window.thebeKernel = kernel;
-    hookupKernel(kernel, cells);
   });
 }
 
@@ -220,5 +202,31 @@ export function requestBinder(
         // console.log(msg);
       }
     };
+  });
+}
+
+// do it all in one go
+
+export function bootstrap(options) {
+  // bootstrap thebe on the page
+
+  options = options || {};
+  // bootstrap thebelab on the page
+  let cells = renderAllCells(getOption("thebeCellSelector", options));
+  let kernelPromise;
+
+  let binderOptions = getBinderOptions();
+  if (binderOptions.repo) {
+    kernelPromise = requestBinderKernel({
+      binderOptions: binderOptions,
+      kernelOptions: getKernelOptions(options),
+    });
+  } else {
+    kernelPromise = requestKernel(getKernelOptions(options));
+  }
+  kernelPromise.then(kernel => {
+    // debug
+    window.thebeKernel = kernel;
+    hookupKernel(kernel, cells);
   });
 }
