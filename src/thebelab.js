@@ -40,7 +40,7 @@ function getPageConfig(key) {
       eval(el.textContent);
       if (thebeConfig) {
         console.log("loading thebe config", thebeConfig);
-        $.merge(true, _pageConfigData, thebeConfig);
+        $.extend(true, _pageConfigData, thebeConfig);
       } else {
         console.log("No thebeConfig found in ", el);
       }
