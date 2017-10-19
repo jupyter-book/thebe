@@ -282,6 +282,13 @@ export function bootstrap(options) {
   // bootstrap thebe on the page
 
   options = options || {};
+
+  if (options.preRenderHook) {
+    options.preRenderHook();
+  }
+  if (options.stripPrompts) {
+    stripPrompts(options.stripPrompts);
+  }
   // bootstrap thebelab on the page
   let cells = renderAllCells({
     selector: getOption("cellSelector", options),
@@ -304,3 +311,52 @@ export function bootstrap(options) {
     hookupKernel(kernel, cells);
   });
 }
+
+function splitCell(
+  element,
+  {
+    inPrompt,
+    continuationPrompt,
+  } = {}
+) {
+  let rawText = element.textContent.trim();
+  let cells = [];
+  let cell = null;
+  rawText.split("\n").map((i, line) => {
+    if (line.slice(0, inPrompt.length) === inPrompt) {
+      // it's a new in prompt
+      if (cell) {
+        cells.push(cell);
+      }
+      cell = line.slice(inPrompt.length) + "\n";
+    } else if (
+      continuationPrompt &&
+      line.slice(0, continuationPrompt.length) === continuationPrompt
+    ) {
+      // it's a continue prompt
+      cell += line.slice(continuationPrompt.length) + "\n";
+    } else {
+      // output
+    }
+  });
+  // clear the parent element
+  element.html("");
+  // add the thebe-able cells
+  cells.map((i, cell) => {
+    element.append($("<pre>").text(cell).attr("data-executable", "true"));
+  });
+}
+
+export function stripPrompts(options) {
+  // strip prompts from a
+  $(options.selector).map((i, el) => splitCell(el, options));
+}
+
+// example:
+thebeConfig = {
+  stripPrompts: {
+    inPrompt: 'sage: ',
+    continuationPrompt: '....: ',
+    selector: '.sage-input',
+  },
+};
