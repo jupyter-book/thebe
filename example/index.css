@@ -1,0 +1,16 @@
+.status_button_status_not_connected:before{
+  content:"Not connected";
+}
+
+.status_button_status_connected:before{
+  content:"Connected";
+}
+
+.status_button_status_busy:before{
+  content:"Busy";
+}
+
+.status_button_status_dead:before{
+  content:"Dead";
+}
+
