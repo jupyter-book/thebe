@@ -26,14 +26,27 @@ export const off = function() {
 
 let _pageConfigData = undefined;
 function getPageConfig(key) {
-  // from jupyterlab coreutils.PageConfig
   if (!_pageConfigData) {
-    let el = document.getElementById("thebe-config-data");
-    if (el) {
-      _pageConfigData = JSON.parse(el.textContent || "{}");
-    }
+    _pageConfigData = {};
+    $("script[type='text/x-thebe-config']").map((i, el) => {
+      if (el.getAttribute("data-thebe-loaded")) {
+        // already loaded
+        return;
+      }
+      el.setAttribute("data-thebe-loaded", "true");
+
+      $(el).attr("data-thebe-executed", "true");
+      let thebeConfig = undefined;
+      eval(el.textContent);
+      if (thebeConfig) {
+        console.log("loading thebe config", thebeConfig);
+        $.merge(true, _pageConfigData, thebeConfig);
+      } else {
+        console.log("No thebeConfig found in ", el);
+      }
+    });
   }
-  return (_pageConfigData || {})[key];
+  return _pageConfigData[key];
 }
 
 export function getOption(key, options, defaultValue) {
@@ -270,7 +283,9 @@ export function bootstrap(options) {
 
   options = options || {};
   // bootstrap thebelab on the page
-  let cells = renderAllCells(getOption("thebeCellSelector", options));
+  let cells = renderAllCells({
+    selector: getOption("cellSelector", options),
+  });
   let kernelPromise;
 
   let binderOptions = getBinderOptions(options);
