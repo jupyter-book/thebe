@@ -53,7 +53,7 @@ function getKernelOptions(options) {
 
 // rendering cells
 
-function renderCell(element) {
+function renderCell(element, options) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
   let $cell = $("<div class='thebelab-cell'/>");
@@ -74,21 +74,33 @@ function renderCell(element) {
 
   let $cm_element = $("<div class='thebelab-input'>");
   $cell.append($cm_element);
+  $cell.append(
+    $("<button class='thebelab-button thebelab-run-button'>").text("run").click(execute)
+  );
+  window.oa = outputArea;
+  function execute() {
+    let kernel = $cell.data("kernel");
+    if (!kernel) {
+      console.error("No kernel connected");
+      outputArea.model.clear();
+      outputArea.model.add({
+        output_type: "stream",
+        name: "stderr",
+        text: "Kernel isn't ready yet!",
+      });
+    } else {
+      outputArea.future = kernel.requestExecute({ code: cm.getValue() });
+    }
+    return false;
+  }
+
   $cell.append(outputArea.node);
 
   let cm = new CodeMirror($cm_element[0], {
     value: source,
     mode: $element.data("language") || "python3",
     extraKeys: {
-      "Shift-Enter": () => {
-        let kernel = $cell.data("kernel");
-        if (!kernel) {
-          console.error("No kernel connected");
-        } else {
-          outputArea.future = kernel.requestExecute({ code: cm.getValue() });
-        }
-        return false;
-      },
+      "Shift-Enter": execute,
     },
   });
   $cell.data("codemirror", cm);
@@ -114,6 +126,7 @@ export function hookupKernel(kernel, cells) {
 }
 
 // requesting Kernels
+
 export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = kernelOptions || getKernelOptions();
