@@ -289,13 +289,14 @@ export function bootstrap(options) {
   let kernelPromise;
 
   let binderOptions = getBinderOptions(options);
+  let kernelOptions = getKernelOptions(options);
   if (binderOptions.repo) {
     kernelPromise = requestBinderKernel({
       binderOptions: binderOptions,
-      kernelOptions: getKernelOptions(options),
+      kernelOptions: kernelOptions,
     });
   } else {
-    kernelPromise = requestKernel(getKernelOptions(options));
+    kernelPromise = requestKernel(kernelOptions);
   }
   kernelPromise.then(kernel => {
     // debug
