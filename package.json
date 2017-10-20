@@ -6,7 +6,6 @@
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --progress --colors --watch",
-    "prepublish": "npm run build",
     "prepare": "npm run build",
     "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +26,10 @@
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/minrk/thebelab/issues"
+  },
+  "engines": {
+    "nodejs": ">=4",
+    "npm": ">=4"
   },
   "homepage": "https://github.com/minrk/thebelab#readme",
   "devDependencies": {
