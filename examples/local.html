@@ -1,0 +1,41 @@
+<html>
+<head>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <title>Thebe Lab examples</title>
+
+  <!-- Configure and load Thebe !-->
+  <script type="text/x-thebe-config">
+    thebeConfig = {
+      kernelOptions: {
+        name: "python3",
+        serverSettings: {
+          "baseUrl": "http://127.0.0.1:8888",
+          "token": "test-secret"
+        }
+      },
+    }
+  </script>
+  <script type="text/javascript" src="https://unpkg.com/thebelab@0.0.8" ></script>
+  <!-- or to use a local build: -->
+  <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+
+  <!-- Activate Thebe directly upon loading the page !-->
+  <script>window.onload = function() { thebelab.bootstrap(); };</script>
+
+</head>
+<body>
+  <h1>Thebe Lab: using a local server</h1>
+
+  <p>This page illustrates how to setup Thebe Lab, using a local
+  Jupyter server as kernel provider. This assumes that you have
+  started the local server as:
+  <pre>
+    jupyter notebook --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'
+  </pre>
+  and that it's running on port 8888</p>
+
+  <pre data-executable="true" data-language="python">print("Hello!")</pre>
+  <pre data-executable="true" data-language="python">1+1</pre>
+
+</body>
+</html>
