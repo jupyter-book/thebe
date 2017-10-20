@@ -1,6 +1,7 @@
 import $ from "jquery";
 import CodeMirror from "codemirror";
 
+import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
@@ -77,6 +78,25 @@ function getKernelOptions(options) {
   return kernelOptions;
 }
 
+let _renderers = undefined;
+function getRenderers() {
+  if (!_renderers) {
+    _renderers = defaultRendererFactories.filter(f => {
+      // filter out latex renderer if mathjax is unavailable
+      if (f.mimeTypes.indexOf("text/latex") >= 0) {
+        if (typeof window !== 'undefined' && window.MathJax) {
+          return true;
+        } else {
+          console.log("MathJax unavailable");
+          return false;
+        }
+      } else {
+        return true;
+      }
+    });
+  }
+  return _renderers;
+}
 // rendering cells
 
 function renderCell(element, options) {
@@ -87,7 +107,7 @@ function renderCell(element, options) {
   let source = $element.text().trim();
 
   let renderMime = new RenderMime({
-    initialFactories: defaultRendererFactories,
+    initialFactories: getRenderers(),
   });
   let model = new OutputAreaModel();
 
@@ -105,7 +125,7 @@ function renderCell(element, options) {
       .text("run")
       .click(execute)
   );
-  window.oa = outputArea;
+
   function execute() {
     let kernel = $cell.data("kernel");
     if (!kernel) {
@@ -122,7 +142,9 @@ function renderCell(element, options) {
     return false;
   }
 
-  $cell.append(outputArea.node);
+  let theDiv = document.createElement("div");
+  $cell.append(theDiv);
+  Widget.attach(outputArea, theDiv);
 
   let cm = new CodeMirror($cm_element[0], {
     value: source,
@@ -307,7 +329,7 @@ export function bootstrap(options) {
   }
   kernelPromise.then(kernel => {
     // debug
-    window.thebeKernel = kernel;
+    if (typeof window !== 'undefined') window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
 }

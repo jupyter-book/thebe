@@ -3,6 +3,9 @@
   <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
   <title>Thebe Lab examples</title>
   <link rel="stylesheet" type="text/css" href="index.css" />
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
 
   <!-- Configure and load Thebe !-->
   <script type="text/x-thebe-config">
@@ -35,7 +38,10 @@
   </pre>
   and that it's running on port 8888</p>
 
-  <pre data-executable="true" data-language="python">print("Hello!")</pre>
+  <pre data-executable="true" data-language="python">
+from IPython.display import Math
+Math('x')
+  </pre>
   <pre data-executable="true" data-language="python">1+1</pre>
 
 </body>
