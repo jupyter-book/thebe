@@ -322,8 +322,8 @@ function splitCell(
   let rawText = element.text().trim();
   let cells = [];
   let cell = null;
-  rawText.split("\n").map((line) => {
-    line = line.trim()
+  rawText.split("\n").map(line => {
+    line = line.trim();
     if (line.slice(0, inPrompt.length) === inPrompt) {
       // line with a prompt
       line = line.slice(inPrompt.length) + "\n";
@@ -353,7 +353,7 @@ function splitCell(
   // clear the parent element
   element.html("");
   // add the thebe-able cells
-  cells.map((cell) => {
+  cells.map(cell => {
     element.append($("<pre>").text(cell).attr("data-executable", "true"));
   });
 }
