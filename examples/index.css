@@ -1,0 +1,9 @@
+body {
+  max-width: 850px;
+  margin: auto;
+  font-family: sans-serif;
+}
+.thebelab-cell {
+  max-width: 80ex;
+  margin: auto;
+}
