@@ -125,20 +125,34 @@ function renderCell(element, options) {
       .text("run")
       .click(execute)
   );
+  let kernelResolve, kernelReject;
+  let kernelPromise = new Promise((resolve, reject) => {
+    kernelResolve = resolve;
+    kernelReject = reject;
+  });
+  kernelPromise.then(kernel => {
+    console.log("kernel ready!");
+    $cell.data("kernel", kernel);
+    return kernel;
+  });
+  $cell.data("kernel-promise-resolve", kernelResolve);
+  $cell.data("kernel-promise-reject", kernelReject);
 
   function execute() {
     let kernel = $cell.data("kernel");
+    let code = cm.getValue();
     if (!kernel) {
       console.error("No kernel connected");
       outputArea.model.clear();
       outputArea.model.add({
         output_type: "stream",
-        name: "stderr",
-        text: "Kernel isn't ready yet!",
+        name: "stdout",
+        text: "Waiting for kernel...",
       });
-    } else {
-      outputArea.future = kernel.requestExecute({ code: cm.getValue() });
     }
+    kernelPromise.then(kernel => {
+      outputArea.future = kernel.requestExecute({ code: code });
+    });
     return false;
   }
 
@@ -171,7 +185,7 @@ export function renderAllCells(
 export function hookupKernel(kernel, cells) {
   // hooks up cells to the kernel
   cells.map((i, cell) => {
-    $(cell).data("kernel", kernel);
+    $(cell).data("kernel-promise-resolve")(kernel);
   });
 }
 
