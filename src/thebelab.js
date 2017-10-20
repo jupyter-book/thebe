@@ -84,7 +84,7 @@ function getRenderers() {
     _renderers = defaultRendererFactories.filter(f => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf("text/latex") >= 0) {
-        if (typeof window !== 'undefined' && window.MathJax) {
+        if (typeof window !== "undefined" && window.MathJax) {
           return true;
         } else {
           console.log("MathJax unavailable");
@@ -329,7 +329,7 @@ export function bootstrap(options) {
   }
   kernelPromise.then(kernel => {
     // debug
-    if (typeof window !== 'undefined') window.thebeKernel = kernel;
+    if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
 }
@@ -342,8 +342,8 @@ function splitCell(
   } = {}
 ) {
   let rawText = element.text().trim();
-  if(rawText.indexOf(inPrompt)==-1){
-      return element;
+  if (rawText.indexOf(inPrompt) == -1) {
+    return element;
   }
   let cells = [];
   let cell = null;

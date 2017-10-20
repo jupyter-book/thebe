@@ -12,7 +12,19 @@ module.exports = {
         test: /\.js$/,
         loader: "babel-loader",
         query: {
-          presets: ["es2015"],
+          presets: [
+            [
+              "env",
+              {
+                targets: {
+                  chrome: 60,
+                  firefox: 45,
+                  ie: 10,
+                  safari: 9,
+                },
+              },
+            ],
+          ],
         },
       },
       { test: /\.css$/, loader: "style-loader!css-loader" },
