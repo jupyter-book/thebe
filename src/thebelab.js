@@ -320,6 +320,9 @@ function splitCell(
   } = {}
 ) {
   let rawText = element.text().trim();
+  if(rawText.indexOf(inPrompt)==-1){
+      return element;
+  }
   let cells = [];
   let cell = null;
   rawText.split("\n").map(line => {
