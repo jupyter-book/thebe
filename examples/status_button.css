@@ -13,6 +13,10 @@
   /* Binder launching the server */
 }
 
+.thebe-status-button.thebe-status-starting {
+  /* Binder starting the server */
+}
+
 .thebe-status-button.thebe-status-ready {
   /* The kernel is connected and ready */
   background-color: #8d8;
