@@ -1,5 +1,7 @@
 # ThebeLab
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/minrk/thebelab.svg)](https://greenkeeper.io/)
+
 Experiment rebuilding [Thebe](https://github.com/oreillymedia/thebe) on JupyterLab.
 
 See the [examples directory](examples/) for examples, and browse the
