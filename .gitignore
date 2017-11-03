@@ -12,3 +12,6 @@ coverage
 .tmp
 .DS_Store
 .cache
+
+package-lock.json
+webpack.stats.html

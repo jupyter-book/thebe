@@ -1,4 +1,5 @@
 var path = require("path");
+var Visualizer = require("webpack-visualizer-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -6,6 +7,11 @@ module.exports = {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
   },
+  plugins: [
+    new Visualizer({
+      filename: "../webpack.stats.html",
+    }),
+  ],
   module: {
     loaders: [
       {
