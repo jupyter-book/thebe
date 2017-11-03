@@ -1,11 +1,17 @@
 import $ from "jquery";
 import CodeMirror from "codemirror";
 
+// make CodeMirror public for loading additional themes
+if (typeof window !== "undefined") {
+  window.CodeMirror = CodeMirror;
+}
+
 import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
+import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/style/variables.css";
 import "./index.css";
@@ -160,23 +166,25 @@ function renderCell(element, options) {
   $cell.append(theDiv);
   Widget.attach(outputArea, theDiv);
 
+  const mode = $element.data("language") || "python3";
   let cm = new CodeMirror($cm_element[0], {
     value: source,
-    mode: $element.data("language") || "python3",
+    mode: mode,
     extraKeys: {
       "Shift-Enter": execute,
     },
   });
+  window.cm = cm;
   $cell.data("codemirror", cm);
-
+  window.Mode = Mode;
+  Mode.ensure(mode).then(modeSpec => {
+    console.log("ensured", mode, modeSpec);
+    cm.setOption("mode", mode);
+  });
   return $cell;
 }
 
-export function renderAllCells(
-  {
-    selector = "[data-executable]",
-  } = {}
-) {
+export function renderAllCells({ selector = "[data-executable]" } = {}) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
   return $(selector).map((i, cell) => renderCell(cell));
@@ -214,12 +222,7 @@ export function requestKernel(kernelOptions) {
   return p;
 }
 
-export function requestBinderKernel(
-  {
-    binderOptions,
-    kernelOptions,
-  }
-) {
+export function requestBinderKernel({ binderOptions, kernelOptions }) {
   // request a Kernel from Binder
   // this strings together requestBinder and requestKernel.
   // returns a Promise for a running Kernel.
@@ -229,13 +232,7 @@ export function requestBinderKernel(
   });
 }
 
-export function requestBinder(
-  {
-    repo,
-    ref = "master",
-    binderUrl = null,
-  } = {}
-) {
+export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
 
@@ -348,13 +345,7 @@ export function bootstrap(options) {
   });
 }
 
-function splitCell(
-  element,
-  {
-    inPrompt,
-    continuationPrompt,
-  } = {}
-) {
+function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   let rawText = element.text().trim();
   if (rawText.indexOf(inPrompt) == -1) {
     return element;
@@ -393,7 +384,11 @@ function splitCell(
   element.html("");
   // add the thebe-able cells
   cells.map(cell => {
-    element.append($("<pre>").text(cell).attr("data-executable", "true"));
+    element.append(
+      $("<pre>")
+        .text(cell)
+        .attr("data-executable", "true")
+    );
   });
 }
 
