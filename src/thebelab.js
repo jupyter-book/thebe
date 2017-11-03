@@ -64,7 +64,7 @@ export function getOption(key, options, defaultValue) {
 function getBinderOptions(options) {
   let binderOptions = {
     ref: "master",
-    binderUrl: "https://beta.mybinder.org",
+    binderUrl: "https://mybinder.org",
   };
   Object.assign(binderOptions, getPageConfig("binderOptions"));
   Object.assign(binderOptions, (options || {}).binderOptions);
