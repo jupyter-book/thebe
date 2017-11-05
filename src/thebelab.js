@@ -312,7 +312,6 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
 
 export function bootstrap(options) {
   // bootstrap thebe on the page
-
   // merge defaults, pageConfig, etc.
   options = mergeOptions(options);
 
@@ -322,6 +321,10 @@ export function bootstrap(options) {
   if (options.stripPrompts) {
     stripPrompts(options.stripPrompts);
   }
+  if (options.stripOutputPrompts) {
+    stripOutputPrompts(options.stripOutputPrompts);
+  }
+  
   // bootstrap thebelab on the page
   let cells = renderAllCells({
     selector: options.selector,
@@ -405,7 +408,53 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   });
 }
 
+function splitCellOutputPrompt(
+  element,
+  {
+    outPrompt
+  } = {}
+) {
+  let rawText = element.text().trim();
+  if (rawText.indexOf(outPrompt) == -1) {
+    return element;
+  }
+  let cells = [];
+  let cell = null;
+  rawText.split("\n").map(line => {
+    line = line.trim();
+    if (line.slice(0, outPrompt.length) === outPrompt) {
+      // output line
+      if (cell) {
+        cells.push(cell);
+        cell = null;
+      }
+    } else {
+      // input line
+      if (cell) {
+        cell += line + "\n";
+      } else {
+        cell = line + "\n";
+      }
+    }
+  });
+  if (cell) {
+    cells.push(cell);
+  }
+  // console.log("cells: ", cells);
+  // clear the parent element
+  element.html("");
+  // add the thebe-able cells
+  cells.map(cell => {
+    element.append($("<pre>").text(cell).attr("data-executable", "true"));
+  });
+}
+
 export function stripPrompts(options) {
   // strip prompts from a
   $(options.selector).map((i, el) => splitCell($(el), options));
+}
+
+export function stripOutputPrompts(options) {
+  // strip prompts from a
+  $(options.selector).map((i, el) => splitCellOutputPrompt($(el), options));
 }
