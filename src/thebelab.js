@@ -41,8 +41,6 @@ function getPageConfig(key) {
         return;
       }
       el.setAttribute("data-thebe-loaded", "true");
-
-      $(el).attr("data-thebe-executed", "true");
       let thebeConfig = undefined;
       eval(el.textContent);
       if (thebeConfig) {
@@ -137,7 +135,6 @@ function renderCell(element, options) {
     kernelReject = reject;
   });
   kernelPromise.then(kernel => {
-    console.log("kernel ready!");
     $cell.data("kernel", kernel);
     return kernel;
   });
@@ -155,6 +152,7 @@ function renderCell(element, options) {
         name: "stdout",
         text: "Waiting for kernel...",
       });
+      events.trigger("request-kernel");
     }
     kernelPromise.then(kernel => {
       outputArea.future = kernel.requestExecute({ code: code });
@@ -174,11 +172,7 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   });
-  window.cm = cm;
-  $cell.data("codemirror", cm);
-  window.Mode = Mode;
   Mode.ensure(mode).then(modeSpec => {
-    console.log("ensured", mode, modeSpec);
     cm.setOption("mode", mode);
   });
   return $cell;
@@ -330,14 +324,27 @@ export function bootstrap(options) {
   let kernelPromise;
   let binderOptions = getBinderOptions(options);
   let kernelOptions = getKernelOptions(options);
-  if (binderOptions.repo) {
-    kernelPromise = requestBinderKernel({
-      binderOptions: binderOptions,
-      kernelOptions: kernelOptions,
-    });
-  } else {
-    kernelPromise = requestKernel(kernelOptions);
+
+  function getKernel() {
+    if (binderOptions.repo) {
+      return requestBinderKernel({
+        binderOptions: binderOptions,
+        kernelOptions: kernelOptions,
+      });
+    } else {
+      return requestKernel(kernelOptions);
+    }
   }
+  if (getOption("requestKernel", options)) {
+    kernelPromise = getKernel();
+  } else {
+    kernelPromise = new Promise((resolve, reject) => {
+      events.one("request-kernel", () => {
+        getKernel().then(resolve).catch(reject);
+      });
+    });
+  }
+
   kernelPromise.then(kernel => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
