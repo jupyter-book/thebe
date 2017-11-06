@@ -1,13 +1,52 @@
-var path = require("path");
-var Visualizer = require("webpack-visualizer-plugin");
+const path = require("path");
+const webpack = require("webpack");
+const Visualizer = require("webpack-visualizer-plugin");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+
+const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
+function shim(regExp) {
+  return new webpack.NormalModuleReplacementPlugin(regExp, shimJS);
+}
+const pkg = require("./package.json");
 
 module.exports = {
+  devtool: "source-map",
   entry: "./src/index.js",
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
+    publicPath: "https://unpkg.com/thebelab@" + pkg.version + "/lib/",
   },
   plugins: [
+    // Not using moment
+    shim(/moment/),
+    // Don't need vim keymap
+    shim(/codemirror\/keymap\/vim/),
+    shim(/codemirror\/addon\/search/),
+    // shim out random to avoid webpack pulling in crypto
+    shim(/@phosphor\/coreutils\/lib\/random/),
+    // shim out some unused phosphor
+    shim(
+      /@phosphor\/widgets\/lib\/(commandpalette|box|dock|grid|menu|scroll|split|stacked|tab).*/
+    ),
+    shim(/@phosphor\/(dragdrop|commands).*/),
+
+    // unused @jupyterlab
+    shim(/@jupyterlab\/apputils/),
+    // shim(/@jupyterlab\/apputils\/lib\/(clientsession|dialog|mainmenu|instancetracker|sanitizer|toolbar)/),
+    // shim(/@jupyterlab\/apputils\/style\/.*/),
+
+    // JupyterLab's codemirror package is also big,
+    // but not so trival to shim
+    // shim(/@jupyterlab\/codemirror\/lib\/editor/),
+    shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
+    shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
+    shim(/@jupyterlab\/services\/lib\/(session|contents|terminal)\/.*/),
+    new UglifyJSPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: true,
+    }),
     new Visualizer({
       filename: "../webpack.stats.html",
     }),
