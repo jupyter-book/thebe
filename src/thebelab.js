@@ -115,7 +115,7 @@ function renderCell(element, options) {
   let renderMime = new RenderMime({
     initialFactories: getRenderers(),
   });
-  let model = new OutputAreaModel();
+  let model = new OutputAreaModel({ trusted: true });
 
   let outputArea = new OutputArea({
     model: model,
