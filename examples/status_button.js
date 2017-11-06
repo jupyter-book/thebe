@@ -5,5 +5,4 @@ window.onload = function() {
       .attr("class", "thebe-status-button thebe-status-" + data.status)
       .text(data.status);
   });
-  thebelab.bootstrap();
 };
