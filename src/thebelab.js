@@ -31,8 +31,22 @@ export const off = function() {
 
 // options
 
+const _defaultOptions = {
+  bootstrap: false,
+  preRenderHook: false,
+  stripPrompts: false,
+  requestKernel: false,
+  selector: "[data-executable]",
+  binderOptions: {
+    ref: "master",
+    binderUrl: "https://mybinder.org",
+  },
+  kernelOptions: {},
+};
+
 let _pageConfigData = undefined;
 function getPageConfig(key) {
+  if (typeof window === "undefined") return;
   if (!_pageConfigData) {
     _pageConfigData = {};
     $("script[type='text/x-thebe-config']").map((i, el) => {
@@ -42,44 +56,35 @@ function getPageConfig(key) {
       }
       el.setAttribute("data-thebe-loaded", "true");
       let thebeConfig = undefined;
-      eval(el.textContent);
-      if (thebeConfig) {
-        console.log("loading thebe config", thebeConfig);
-        $.extend(true, _pageConfigData, thebeConfig);
-      } else {
-        console.log("No thebeConfig found in ", el);
+      try {
+        thebeConfig = eval(`(${el.textContent})`);
+        if (thebeConfig) {
+          console.log("loading thebe config", thebeConfig);
+          $.extend(true, _pageConfigData, thebeConfig);
+        } else {
+          console.log("No thebeConfig found in ", el);
+        }
+      } catch (e) {
+        console.error("Error loading thebe config", e, el.textContent);
       }
     });
   }
   return _pageConfigData[key];
 }
 
-export function getOption(key, options, defaultValue) {
-  let value = undefined;
-  if (options) {
-    value = options[key];
-    if (value !== undefined) return value;
-  }
-  value = getPageConfig(key);
-  if (value !== undefined) return value;
-  return defaultValue;
+export function mergeOptions(options) {
+  // merge options from various sources
+  // call > page > defaults
+  let merged = {};
+  getPageConfig();
+  $.extend(true, merged, _defaultOptions);
+  $.extend(true, merged, _pageConfigData);
+  if (options) $.extend(true, merged, options);
+  return merged;
 }
 
-function getBinderOptions(options) {
-  let binderOptions = {
-    ref: "master",
-    binderUrl: "https://mybinder.org",
-  };
-  Object.assign(binderOptions, getPageConfig("binderOptions"));
-  Object.assign(binderOptions, (options || {}).binderOptions);
-  return binderOptions;
-}
-
-function getKernelOptions(options) {
-  let kernelOptions = {};
-  Object.assign(kernelOptions, getPageConfig("kernelOptions"));
-  Object.assign(kernelOptions, (options || {}).kernelOptions);
-  return kernelOptions;
+export function getOption(key) {
+  return mergeOptions()[key];
 }
 
 let _renderers = undefined;
@@ -178,7 +183,7 @@ function renderCell(element, options) {
   return $cell;
 }
 
-export function renderAllCells({ selector = "[data-executable]" } = {}) {
+export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
   return $(selector).map((i, cell) => renderCell(cell));
@@ -195,7 +200,7 @@ export function hookupKernel(kernel, cells) {
 
 export function requestKernel(kernelOptions) {
   // request a new Kernel
-  kernelOptions = kernelOptions || getKernelOptions();
+  kernelOptions = mergeOptions({ kernelOptions }).kernelOptions;
   if (kernelOptions.serverSettings) {
     kernelOptions.serverSettings = ServerConnection.makeSettings(
       kernelOptions.serverSettings
@@ -230,8 +235,8 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
 
-  // populate fro defaults
-  let defaults = getBinderOptions();
+  // populate from defaults
+  let defaults = mergeOptions().binderOptions;
   repo = repo || defaults.repo;
   console.log("binder url", binderUrl, defaults);
   binderUrl = binderUrl || defaults.binderUrl;
@@ -308,39 +313,40 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
 export function bootstrap(options) {
   // bootstrap thebe on the page
 
-  // TODO: use a merge function once for all
-  options = options || {};
+  // merge defaults, pageConfig, etc.
+  options = mergeOptions(options);
+
   if (options.preRenderHook) {
     options.preRenderHook();
   }
-  let stripPromptsOption = getOption("stripPrompts", options);
-  if (stripPromptsOption) {
-    stripPrompts(stripPromptsOption);
+  if (options.stripPrompts) {
+    stripPrompts(options.stripPrompts);
   }
   // bootstrap thebelab on the page
   let cells = renderAllCells({
-    selector: getOption("cellSelector", options),
+    selector: options.selector,
   });
-  let kernelPromise;
-  let binderOptions = getBinderOptions(options);
-  let kernelOptions = getKernelOptions(options);
 
   function getKernel() {
-    if (binderOptions.repo) {
+    if (options.binderOptions.repo) {
       return requestBinderKernel({
-        binderOptions: binderOptions,
-        kernelOptions: kernelOptions,
+        binderOptions: options.binderOptions,
+        kernelOptions: options.kernelOptions,
       });
     } else {
-      return requestKernel(kernelOptions);
+      return requestKernel(options.kernelOptions);
     }
   }
-  if (getOption("requestKernel", options)) {
+
+  let kernelPromise;
+  if (options.requestKernel) {
     kernelPromise = getKernel();
   } else {
     kernelPromise = new Promise((resolve, reject) => {
       events.one("request-kernel", () => {
-        getKernel().then(resolve).catch(reject);
+        getKernel()
+          .then(resolve)
+          .catch(reject);
       });
     });
   }
