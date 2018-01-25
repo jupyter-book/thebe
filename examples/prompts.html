@@ -9,13 +9,16 @@
     {
       bootstrap: true,
       binderOptions: {
-        repo: "binder-examples/requirements"
+        repo: "sagemath/sage-binder-env",
       },
       stripPrompts: {
         inPrompt: 'sage: ',
         continuationPrompt: '....: ',
         selector: '.sage-input',
-      }
+      },
+      kernelOptions: {
+        name: "sagemath",
+      },
   }
   </script>
 
@@ -26,15 +29,18 @@
 
 </head>
 <body>
-  <h1>Support for code cells with prompts and output</h1>
+  <h1>Support for alternative computational environments and code cells with prompts and outputs</h1>
 
-  <p>This page illustrates the handling of code cells containing
-  (continuation) prompts and outputs. Upon activation, the prompts and
-  output are stripped. Furthermore, the code cell is split wherever
-  there is an output or blank line.</p>
+  <p>This page illustrates the customization of the computing
+  environment (here <a href="http://sagemath.org">SageMath</a>) and
+  the handling of code cells containing (continuation) prompts and
+  outputs. Upon activation, the prompts and output are stripped.
+  Furthermore, code cells are split wherever there is an output or
+  blank line. Code cells not containing a prompt are left
+  untouched</p>
 
-  <p>Note: the implementation currently assumes that all commands in
-  all code cells are prefixed by prompts.</p>
+  See also the
+  <a href="https://github.com/minrk/thebelab/blob/master/examples/prompts.html">source file</a>.
 
   <p>This is the original cell:</p>
   <pre>
@@ -47,6 +53,8 @@
     sage: x + y + \
     ....: z
     7
+
+    sage: plot(sin(x))
   </pre>
 
   <p>This is the resulting live cell:</p>
@@ -60,6 +68,20 @@
     sage: x + y + \
     ....: z
     7
+
+    sage: plot(sin(x))
+  </pre>
+
+
+  <p>A cell without prompts:</p>
+  <pre data-executable="true" data-language="python">
+    x = 3
+    y = 4
+
+    z = 5
+
+    x + y + \
+    z
   </pre>
 
 </body>
