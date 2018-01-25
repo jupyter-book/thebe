@@ -2,12 +2,14 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/minrk/thebelab.svg)](https://greenkeeper.io/)
 
-You have a static HTML page with code snippets, and you would like your readers to be able to edit and run those snippets right there in the page. All it takes is:
+Have a static HTML page with code snippets? Your readers can edit and run them right there in the page. All it takes is:
 - A brief header in the HTML page
-- The ThebeLab javascripts library (can be fetched from the web)
+- The ThebeLab javascripts library (which can be fetched from the web)
 - A computing backend (typically [binder](http://mybinder.org))
 
-ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. ThebeLab is a reimplementation of Thebe as a thin layer on top of [JupyterLab](https://github.com/jupyterlab/jupyterlab), hopefuly making it more sustainable.
+TODO: add screenshots.
+
+ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. ThebeLab is a reimplementation of Thebe as a thin layer on top of [JupyterLab](https://github.com/jupyterlab/jupyterlab), hopefuly making it sustainable.
 
 See the [examples directory](examples/) for examples, and browse the
 [live output](https://minrk.github.io/thebelab/).
