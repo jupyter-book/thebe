@@ -7,7 +7,6 @@ function thebe_place_activate_button(){
                   value="Activate"\
                   title="ThebeLab (requires internet):\nClick to activate code cells in this page.\nYou can then edit and run them.\nComputations courtesy of mybinder.org."\
                    class="thebe-status-field"/>');
-  console.log($('.thebe_status_field'));
 }
 
 function thebe_remove_activate_button(){
