@@ -16,7 +16,7 @@ function thebe_remove_activate_button(){
 function thebe_place_status_field(){
   $('.thebe_status_field')
     .html('<span class="thebe-status-field"\
-                title="ThebeLab status.\nClick `Run` to execute code cells.\nComputations courtesy of mybinder.org.">\
+                title="ThebeLab status.\nClick `run` to execute code cells.\nComputations courtesy of mybinder.org.">\
           </span>');
 }
 
