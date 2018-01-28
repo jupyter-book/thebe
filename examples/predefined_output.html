@@ -1,0 +1,42 @@
+<html>
+<head>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <title>Thebe Lab examples</title>
+  <link rel="stylesheet" type="text/css" href="index.css" />
+
+  <!-- Configure and load Thebe !-->
+  <script type="text/x-thebe-config">
+    {
+      bootstrap: true,
+      binderOptions: {
+        repo: "binder-examples/requirements",
+      },
+      kernelOptions: {
+        name: "python3",
+      },
+      defaultOutput: true
+    }
+  </script>
+<!--   <script type="text/javascript" src="https://unpkg.com/thebelab@^0.1.0"></script> -->
+  <!-- or to use a local build: -->
+  <script type="text/javascript" src="../lib/index.js"></script>
+
+</head>
+<body>
+  <h1>Default output</h1>
+
+  <p>This is a cell with predefined output:</p>
+
+  <pre data-executable="true" data-language="python" data-output="Hello!">print("Hello!")</pre>
+
+
+  <p>
+    This is another cell, without predefined output.
+  </p>
+
+<pre data-executable="true" data-language="python">print("Hello!")</pre>
+</pre>
+
+
+</body>
+</html>

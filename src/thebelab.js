@@ -42,6 +42,7 @@ const _defaultOptions = {
     binderUrl: "https://mybinder.org",
   },
   kernelOptions: {},
+  defaultOutput: false,
 };
 
 let _pageConfigData = undefined;
@@ -114,6 +115,7 @@ function renderCell(element, options) {
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
   let source = $element.text().trim();
+  let output = $element.data("output");
 
   let renderMime = new RenderMime({
     initialFactories: getRenderers(),
@@ -126,6 +128,15 @@ function renderCell(element, options) {
   });
 
   $element.replaceWith($cell);
+  outputArea.model.clear();
+  console.log(output);
+  if( options.defaultOutput == true && output != null && /\S/.test(output) ){
+      outputArea.model.add({
+          output_type: "stream",
+          name: "stdout",
+          text: output,
+      });
+  }
 
   let $cm_element = $("<div class='thebelab-input'>");
   $cell.append($cm_element);
@@ -183,10 +194,10 @@ function renderCell(element, options) {
   return $cell;
 }
 
-export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
+export function renderAllCells({ selector = _defaultOptions.selector, defaultOutput = _defaultOptions.defaultOutput } = {}) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
-  return $(selector).map((i, cell) => renderCell(cell));
+  return $(selector).map((i, cell) => renderCell(cell,{defaultOutput : defaultOutput }));
 }
 
 export function hookupKernel(kernel, cells) {
@@ -325,6 +336,7 @@ export function bootstrap(options) {
   // bootstrap thebelab on the page
   let cells = renderAllCells({
     selector: options.selector,
+    defaultOutput: options.defaultOutput
   });
 
   function getKernel() {
@@ -365,9 +377,17 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   }
   let cells = [];
   let cell = null;
+  let cell_output = null;
+  let reached_cell_output = false;
   rawText.split("\n").map(line => {
     line = line.trim();
     if (line.slice(0, inPrompt.length) === inPrompt) {
+      if (cell && reached_cell_output) {
+        cells.push([cell,cell_output]);
+        cell = null;
+        cell_output = null;
+        reached_cell_output = false;
+      }
       // line with a prompt
       line = line.slice(inPrompt.length) + "\n";
       if (cell) {
@@ -382,15 +402,17 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
       // line with a continuation prompt
       cell += line.slice(continuationPrompt.length) + "\n";
     } else {
-      // output line
-      if (cell) {
-        cells.push(cell);
-        cell = null;
+      if (cell_output){
+          cell_output += "\n";
+          cell_output += line;
+      } else {
+          cell_output = line;
       }
+      reached_cell_output = true;
     }
   });
   if (cell) {
-    cells.push(cell);
+    cells.push([cell,cell_output]);
   }
   // console.log("cells: ", cells);
   // clear the parent element
@@ -399,8 +421,9 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   cells.map(cell => {
     element.append(
       $("<pre>")
-        .text(cell)
+        .text(cell[0])
         .attr("data-executable", "true")
+        .attr("data-output", cell[1] )
     );
   });
 }
