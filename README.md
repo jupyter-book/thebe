@@ -5,7 +5,7 @@
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
 - A brief header in the HTML page
 - The ThebeLab javascript library (which can be fetched from the web)
-- A computing backend (typically [binder](http://mybinder.org))
+- A computing backend (typically [binder](https://mybinder.org))
 
 TODO: add screenshots.
 
