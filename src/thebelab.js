@@ -10,7 +10,7 @@ import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
-import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
+import { RenderMimeRegistry, standardRendererFactories } from "@jupyterlab/rendermime";
 import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/static/index.css";
@@ -90,7 +90,7 @@ export function getOption(key) {
 let _renderers = undefined;
 function getRenderers() {
   if (!_renderers) {
-    _renderers = defaultRendererFactories.filter(f => {
+    _renderers = standardRendererFactories.filter(f => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf("text/latex") >= 0) {
         if (typeof window !== "undefined" && window.MathJax) {
@@ -115,7 +115,7 @@ function renderCell(element, options) {
   let $element = $(element);
   let source = $element.text().trim();
 
-  let renderMime = new RenderMime({
+  let renderMime = new RenderMimeRegistry({
     initialFactories: getRenderers(),
   });
   let model = new OutputAreaModel({ trusted: true });
