@@ -13,7 +13,7 @@ import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
 import { Mode } from "@jupyterlab/codemirror";
 
-import "@jupyterlab/theme-light-extension/style/variables.css";
+import "@jupyterlab/theme-light-extension/static/index.css";
 import "./index.css";
 
 // events
