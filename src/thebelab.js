@@ -305,6 +305,7 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
           resolve(
             ServerConnection.makeSettings({
               baseUrl: msg.url,
+              wsUrl: 'ws' + msg.url.slice(4),
               token: msg.token,
             })
           );
