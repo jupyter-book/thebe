@@ -9,11 +9,12 @@ if (typeof window !== "undefined") {
 import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
+import { MathJaxTypesetter } from "@jupyterlab/mathjax2-extension";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
-import { RenderMime, defaultRendererFactories } from "@jupyterlab/rendermime";
+import { RenderMimeRegistry, standardRendererFactories } from "@jupyterlab/rendermime";
 import { Mode } from "@jupyterlab/codemirror";
 
-import "@jupyterlab/theme-light-extension/style/variables.css";
+import "@jupyterlab/theme-light-extension/static/index.css";
 import "./index.css";
 
 // events
@@ -90,7 +91,7 @@ export function getOption(key) {
 let _renderers = undefined;
 function getRenderers() {
   if (!_renderers) {
-    _renderers = defaultRendererFactories.filter(f => {
+    _renderers = standardRendererFactories.filter(f => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf("text/latex") >= 0) {
         if (typeof window !== "undefined" && window.MathJax) {
@@ -115,8 +116,9 @@ function renderCell(element, options) {
   let $element = $(element);
   let source = $element.text().trim();
 
-  let renderMime = new RenderMime({
+  let renderMime = new RenderMimeRegistry({
     initialFactories: getRenderers(),
+    latexTypesetter: new MathJaxTypesetter(),
   });
   let model = new OutputAreaModel({ trusted: true });
 
@@ -202,6 +204,12 @@ export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = mergeOptions({ kernelOptions }).kernelOptions;
   if (kernelOptions.serverSettings) {
+    let ss = kernelOptions.serverSettings;
+    // workaround bug in jupyterlab where wsUrl and baseUrl must both be set
+    // https://github.com/jupyterlab/jupyterlab/pull/4427
+    if (ss.baseUrl && !ss.wsUrl) {
+      ss.wsUrl = 'ws' + ss.baseUrl.slice(4);
+    }
     kernelOptions.serverSettings = ServerConnection.makeSettings(
       kernelOptions.serverSettings
     );
