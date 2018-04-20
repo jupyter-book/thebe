@@ -202,6 +202,12 @@ export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = mergeOptions({ kernelOptions }).kernelOptions;
   if (kernelOptions.serverSettings) {
+    let ss = kernelOptions.serverSettings;
+    // workaround bug in jupyterlab where wsUrl and baseUrl must both be set
+    // https://github.com/jupyterlab/jupyterlab/pull/4427
+    if (ss.baseUrl && !ss.wsUrl) {
+      ss.wsUrl = 'ws' + ss.baseUrl.slice(4);
+    }
     kernelOptions.serverSettings = ServerConnection.makeSettings(
       kernelOptions.serverSettings
     );
