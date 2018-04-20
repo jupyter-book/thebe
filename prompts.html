@@ -6,63 +6,89 @@
 
   <!-- Thebe configuration !-->
   <script type="text/x-thebe-config">
-    thebeConfig = {
+    {
+      bootstrap: true,
       binderOptions: {
-        repo: "binder-examples/requirements"
+        repo: "sagemath/sage-binder-env",
       },
       stripPrompts: {
         inPrompt: 'sage: ',
         continuationPrompt: '....: ',
         selector: '.sage-input',
-      }
+      },
+      kernelOptions: {
+        name: "sagemath",
+      },
   }
   </script>
 
   <!-- Load the Thebe library !-->
-  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.1.0" ></script>
+  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.2.0" ></script>
   <!-- or to use a local build: -->
   <!-- <script type="text/javascript" src="../lib/index.js"></script> !-->
 
-  <!-- Activate Thebe directly upon loading the page !-->
-  <script>window.onload = function() { thebelab.bootstrap(); };</script>
-
 </head>
 <body>
-  <h1>Support for code cells with prompts and output</h1>
+  <h1>Support for alternative computational environments and code cells with prompts and outputs</h1>
 
-  <p>This page illustrates the handling of code cells containing
-  (continuation) prompts and outputs. Upon activation, the prompts and
-  output are stripped. Furthermore, the code cell is split wherever
-  there is an output or blank line.</p>
+  <p>This page illustrates the customization of the computing
+  environment (here <a href="http://sagemath.org">SageMath</a>) and
+  the handling of code cells containing (continuation) prompts and
+  outputs. Upon activation, the prompts and output are stripped.
+  Furthermore, code cells are split wherever there is an output or
+  blank line. Code cells not containing a prompt are left
+  untouched</p>
 
-  <p>Note: the implementation currently assumes that all commands in
-  all code cells are prefixed by prompts.</p>
+  See also the
+  <a href="https://github.com/minrk/thebelab/blob/master/examples/prompts.html">source file</a>.
 
   <p>This is the original cell:</p>
   <pre>
     sage: 1 + 1
     2
-    sage: x = 3
-    sage: y = 4
+    sage: a = 3
+    sage: b = 4
 
-    sage: z = 5
-    sage: x + y + \
-    ....: z
+    sage: c = 5
+    sage: a + b + \
+    ....: c
     7
+
+    sage: plot(sin(x))
   </pre>
 
   <p>This is the resulting live cell:</p>
   <pre class="sage-input" data-language="python">
     sage: 1 + 1
     2
-    sage: x = 3
-    sage: y = 4
+    sage: a = 3
+    sage: b = 4
 
-    sage: z = 5
-    sage: x + y + \
-    ....: z
+    sage: c = 5
+    sage: a + b + \
+    ....: c
     7
+
+    sage: plot(sin(x))
   </pre>
 
+  <p>A cell without prompts:</p>
+  <pre data-executable="true" data-language="python">
+a = 3
+b = 4
+
+c = 5
+
+a + b + \
+c
+  </pre>
+
+  <p>A cell with some maths, rendered in ascii art. Nice rendering can
+    be achieved by setting up <a href="https://www.mathjax.org/">MathJax</a>:</p>
+
+  <pre class="sage-input" data-language="python">
+    sage: %display ascii_art
+    sage: sqrt(1+x^2)
+  </pre>
 </body>
 </html>

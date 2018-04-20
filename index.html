@@ -6,7 +6,8 @@
 
   <!-- Configure and load Thebe !-->
   <script type="text/x-thebe-config">
-    thebeConfig = {
+    {
+      bootstrap: true,
       binderOptions: {
         repo: "binder-examples/requirements",
       },
@@ -15,12 +16,9 @@
       },
     }
   </script>
-  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.1.0"></script>
+  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.2.0"></script>
   <!-- or to use a local build: -->
   <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
-
-  <!-- Activate Thebe directly upon loading the page !-->
-  <script>window.onload = function() { thebelab.bootstrap(); };</script>
 
 </head>
 <body>
@@ -40,7 +38,9 @@
 
   This page illustrates a minimal setup to get Thebe Lab running, using
   <a href="http://mybinder.org">mybinder</a> as <em>kernel</em> (i.e.
-  computation backend) provider. See the source file for details.
+  computation backend) provider. See the
+  <a href="https://github.com/minrk/thebelab/blob/master/examples/index.html">
+  source file</a> for details.
 
   <p>This is a cell:</p>
 
@@ -66,8 +66,9 @@ plt.plot(x, np.cos(x))</pre>
   <h2>More examples</h2>
 
   <ul>
-  <li><a href="status_button.html">Status button and styling</a>;
-  <li><a href="prompts.html">Handling code cells containing prompts and outputs</a>;
+  <li><a href="status_field.html">Status field and styling</a>;
+  <li><a href="activate_button.html">Activate/Status button</a>;
+  <li><a href="prompts.html">Alternative computational environments; code cells with prompts and outputs</a>;
   <li><a href="local.html">Using a local Jupyter server as kernel provider</a>.
   </ul>
 

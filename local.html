@@ -3,10 +3,14 @@
   <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
   <title>Thebe Lab examples</title>
   <link rel="stylesheet" type="text/css" href="index.css" />
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
 
   <!-- Configure and load Thebe !-->
   <script type="text/x-thebe-config">
-    thebeConfig = {
+    {
+      bootstrap: true,
       kernelOptions: {
         name: "python3",
         serverSettings: {
@@ -16,12 +20,9 @@
       },
     }
   </script>
-  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.1.0" ></script>
-  <!-- or to use a local build: -->
+  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.2.0" ></script>
   <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
-
-  <!-- Activate Thebe directly upon loading the page !-->
-  <script>window.onload = function() { thebelab.bootstrap(); };</script>
+  <!-- load a local thebe: -->
 
 </head>
 <body>
@@ -31,12 +32,22 @@
   Jupyter server as kernel provider. This assumes that you have
   started the local server as:
   <pre>
-    jupyter notebook --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'
+    jupyter notebook --NotebookApp.token=test-secret --NotebookApp.allow_origin='<span id="origin">*</span>'
   </pre>
   and that it's running on port 8888</p>
 
+  See also the
+  <a href="https://github.com/minrk/thebelab/blob/master/examples/local.html">source file</a>.
+
   <pre data-executable="true" data-language="python">print("Hello!")</pre>
   <pre data-executable="true" data-language="python">1+1</pre>
+  <pre data-executable="true" data-language="python">
+from IPython.display import Math
+Math('\sqrt{1-x^2}')
+  </pre>
 
+<script type="text/javascript">
+document.getElementById('origin').innerHTML = location.origin;
+</script>
 </body>
 </html>
