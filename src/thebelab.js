@@ -9,6 +9,7 @@ if (typeof window !== "undefined") {
 import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
+import { MathJaxTypesetter } from "@jupyterlab/mathjax2-extension";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import { RenderMimeRegistry, standardRendererFactories } from "@jupyterlab/rendermime";
 import { Mode } from "@jupyterlab/codemirror";
@@ -117,6 +118,7 @@ function renderCell(element, options) {
 
   let renderMime = new RenderMimeRegistry({
     initialFactories: getRenderers(),
+    latexTypesetter: new MathJaxTypesetter(),
   });
   let model = new OutputAreaModel({ trusted: true });
 
