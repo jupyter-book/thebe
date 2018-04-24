@@ -333,7 +333,7 @@ export function bootstrap(options) {
   if (options.stripOutputPrompts) {
     stripOutputPrompts(options.stripOutputPrompts);
   }
-  
+
   // bootstrap thebelab on the page
   let cells = renderAllCells({
     selector: options.selector,
@@ -368,6 +368,7 @@ export function bootstrap(options) {
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
+  return kernelPromise;
 }
 
 function splitCell(element, { inPrompt, continuationPrompt } = {}) {
