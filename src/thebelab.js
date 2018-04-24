@@ -11,7 +11,10 @@ import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2-extension";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
-import { RenderMimeRegistry, standardRendererFactories } from "@jupyterlab/rendermime";
+import {
+  RenderMimeRegistry,
+  standardRendererFactories,
+} from "@jupyterlab/rendermime";
 import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/static/index.css";
@@ -208,7 +211,7 @@ export function requestKernel(kernelOptions) {
     // workaround bug in jupyterlab where wsUrl and baseUrl must both be set
     // https://github.com/jupyterlab/jupyterlab/pull/4427
     if (ss.baseUrl && !ss.wsUrl) {
-      ss.wsUrl = 'ws' + ss.baseUrl.slice(4);
+      ss.wsUrl = "ws" + ss.baseUrl.slice(4);
     }
     kernelOptions.serverSettings = ServerConnection.makeSettings(
       kernelOptions.serverSettings
@@ -305,7 +308,7 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
           resolve(
             ServerConnection.makeSettings({
               baseUrl: msg.url,
-              wsUrl: 'ws' + msg.url.slice(4),
+              wsUrl: "ws" + msg.url.slice(4),
               token: msg.token,
             })
           );
@@ -418,12 +421,7 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   });
 }
 
-function splitCellOutputPrompt(
-  element,
-  {
-    outPrompt
-  } = {}
-) {
+function splitCellOutputPrompt(element, { outPrompt } = {}) {
   let rawText = element.text().trim();
   if (rawText.indexOf(outPrompt) == -1) {
     return element;
@@ -455,7 +453,11 @@ function splitCellOutputPrompt(
   element.html("");
   // add the thebe-able cells
   cells.map(cell => {
-    element.append($("<pre>").text(cell).attr("data-executable", "true"));
+    element.append(
+      $("<pre>")
+        .text(cell)
+        .attr("data-executable", "true")
+    );
   });
 }
 
