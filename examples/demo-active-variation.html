@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Thebe Lab demo</title>
+
+    <script type="text/x-thebe-config">
+      {
+        bootstrap: true,
+        selector: "pre[data-executable=true]",
+        binderOptions: {
+          repo: "binder-examples/requirements",
+        },
+        kernelOptions: {
+          name: "python3",
+        },
+      }
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/thebelab@^0.1.0"></script>
+
+  </head>
+  <body>
+    <h1>My web page with code samples</h1>
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit:
+    <pre data-executable="true" data-language="python">
+      1+1
+    </pre>
+
+    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua:
+    <pre data-executable="true" data-language="python">
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+    </pre>
+
+    <pre>
+      A plain pre tag
+    </pre>
+  </body>
+</html>
