@@ -47,7 +47,7 @@ A full config script with defaults:
   requestKernel: false,
   // selector for identifying which elements on the page should
   // be made interactive
-  cellSelector: "[data-executable]",
+  selector: "[data-executable]",
   // options for requesting a notebook server from mybinder.org
   binderOptions: {
     repo: "minrk/ligo-binder",
