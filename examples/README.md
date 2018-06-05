@@ -1,6 +1,6 @@
 # Examples of use of ThebeLab
 
-You can [browse them online](https://minrk.github.io/thebelab/example/).
+You can [browse them online](https://minrk.github.io/thebelab/).
 To serve them locally instead, run:
 
     python -m http.server
