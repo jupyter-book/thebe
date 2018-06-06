@@ -13,6 +13,8 @@ ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports 
 
 See the [examples directory](examples/), and browse the
 [live output](https://minrk.github.io/thebelab/).
+See also this
+[blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
 ## How ThebeLab works
 
