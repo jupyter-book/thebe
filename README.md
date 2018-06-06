@@ -17,15 +17,15 @@ See the [examples directory](examples/), and browse the
 ## How ThebeLab works
 
 Starting ThebeLab involves the following steps:
-- Loading the thebelab javascript, typically from a CDN
-- Fetching the ThebeLab configuration from the page header
+- Loading the thebelab javascript, typically from a CDN;
+- Fetching the ThebeLab configuration from the page header;
 - Bootstraping ThebeLab:
   - Re rendering the code cells to make them live cells.
     Optionally, the rendering can handle cells that contain
-    a mixture of inputs and ouputs distinguished by prompts.
-    (see the stripPrompts option).
-  - (optional) Requesting a notebook server from Binder
-  - (optional) Requesting a Jupyter kernel from the Jupyter server
+    a mixture of inputs and ouputs distinguished by prompts
+    (see the stripPrompts option);
+  - (optional) Requesting a notebook server from Binder;
+  - (optional) Requesting a Jupyter kernel from the Jupyter server.
 
 ## Configuring ThebeLab
 
