@@ -14,6 +14,19 @@ ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports 
 See the [examples directory](examples/), and browse the
 [live output](https://minrk.github.io/thebelab/).
 
+## How ThebeLab works
+
+Starting ThebeLab involves the following steps:
+- Loading the thebelab javascript, typically from a CDN
+- Fetching the ThebeLab configuration from the page header
+- Bootstraping ThebeLab:
+  - Re rendering the code cells to make them live cells.
+    Optionally, the rendering can handle cells that contain
+    a mixture of inputs and ouputs distinguished by prompts.
+    (see the stripPrompts option).
+  - (optional) Requesting a notebook server from Binder
+  - (optional) Requesting a Jupyter kernel from the Jupyter server
+
 ## Configuring ThebeLab
 
 You can configure thebelab with a script tag.
@@ -33,30 +46,49 @@ with a javascript object containing configuration options.
 
 A full config script with defaults:
 
-```javscript
+```javascript
 {
-  // bootstrap thebe on page load
+  // Whether thebelab should automatically trigger the bootstrap upon page load
+  // if set to false, the page should contain some additional javascript
+  // responsible for triggering the javascript when desired.
   bootstrap: false,
+
   // arbitrary pre-render function called as part of bootstrap
   preRenderHook: false,
-  // if present, should be an object
-  // with inPrompt and continuationPrompt strings to be replaces
-  stripPrompts: false,
-  // whether to request the kernel immediately on page load
+  
+  // Whether to request the kernel immediately on page load
   // instead of on first execute
   requestKernel: false,
-  // selector for identifying which elements on the page should
-  // be made interactive
-  selector: "[data-executable]",
-  // options for requesting a notebook server from mybinder.org
+  
+  // Options for requesting a notebook server from mybinder.org
   binderOptions: {
     repo: "minrk/ligo-binder",
     ref: "master",
     binderUrl: "https://mybinder.org",
   },
-  // options when requesting a kernel from a notebook server
+  
+  // Options for requesting a kernel from the notebook server
   kernelOptions: {
     name: "python3",
+    // notebook server configuration; not needed with binder
+    // serverSettings: {
+    //       "baseUrl": "http://127.0.0.1:8888",
+    //      "token": "test-secret"
+    //    }
   },
+
+  // Selector for identifying which elements on the page should
+  // be made interactive
+  selector: "[data-executable]",
+  
+  // Optional prompt handling during the rendering phase
+  // Either false or a dictionary as in the example below
+  stripPrompts: false,
+  // stripPrompts: {
+  //      inPrompt: 'sage: ',
+  //      continuationPrompt: '....: ',
+  //      // only apply the prompt stripping to cells matching this selector (optional)
+  //      selector: '.sage-input',
+  //    },
 }
 ```
