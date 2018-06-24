@@ -50,7 +50,7 @@
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "url-loader": "^1.0.0",
-    "webpack": "^3.8.1",
+    "webpack": "^4.12.1",
     "webpack-visualizer-plugin": "^0.1.11"
   }
 }
