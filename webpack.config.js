@@ -24,7 +24,7 @@ module.exports = {
     shim(/codemirror\/keymap\/vim/),
     shim(/codemirror\/addon\/search/),
     // shim out random to avoid webpack pulling in crypto
-    shim(/@phosphor\/coreutils\/lib\/random/),
+    // shim(/@phosphor\/coreutils\/lib\/random/),
     // shim out some unused phosphor
     shim(
       /@phosphor\/widgets\/lib\/(commandpalette|box|dock|grid|menu|scroll|split|stacked|tab).*/
