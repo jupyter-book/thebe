@@ -15,9 +15,17 @@ import {
   RenderMimeRegistry,
   standardRendererFactories,
 } from "@jupyterlab/rendermime";
+import {
+  WIDGET_MIMETYPE,
+  WidgetRenderer
+} from '@jupyter-widgets/html-manager/lib/output_renderers';
+import {
+  ThebeManager
+} from './manager';
 import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/static/index.css";
+import "@jupyter-widgets/controls/css/widgets.built.css";
 import "./index.css";
 
 // events
@@ -123,6 +131,15 @@ function renderCell(element, options) {
     initialFactories: getRenderers(),
     latexTypesetter: new MathJaxTypesetter(),
   });
+
+  let manager = options.manager;
+
+  renderMime.addFactory({
+    safe: false,
+    mimeTypes: [WIDGET_MIMETYPE],
+    createRenderer: options => new WidgetRenderer(options, manager)
+  }, 1);
+
   let model = new OutputAreaModel({ trusted: true });
 
   let outputArea = new OutputArea({
@@ -146,6 +163,7 @@ function renderCell(element, options) {
   });
   kernelPromise.then(kernel => {
     $cell.data("kernel", kernel);
+    manager.registerWithKernel(kernel);
     return kernel;
   });
   $cell.data("kernel-promise-resolve", kernelResolve);
@@ -191,7 +209,12 @@ function renderCell(element, options) {
 export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
-  return $(selector).map((i, cell) => renderCell(cell));
+
+  let manager = new ThebeManager();
+
+  return $(selector).map((i, cell) => renderCell(cell, {
+      manager: manager
+  }));
 }
 
 export function hookupKernel(kernel, cells) {
