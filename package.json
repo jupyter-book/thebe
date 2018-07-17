@@ -41,7 +41,7 @@
     "@jupyterlab/theme-light-extension": "^0.16.2",
     "@jupyter-widgets/base": "^1.1.10",
     "@jupyter-widgets/controls": "^1.2.1",
-    "@jupyter-widgets/html-manager": "^0.13.0",
+    "@jupyter-widgets/html-manager": "^0.14.0",
     "@jupyter-widgets/output": "^1.0.17",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
