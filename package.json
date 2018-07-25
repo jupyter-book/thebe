@@ -38,7 +38,7 @@
     "@jupyterlab/mathjax2-extension": "^0.4.2",
     "@jupyterlab/outputarea": "^0.16.2",
     "@jupyterlab/services": "^2.0.2",
-    "@jupyterlab/theme-light-extension": "^0.16.2",
+    "@jupyterlab/theme-light-extension": "^0.17.1",
     "@jupyter-widgets/base": "^1.1.10",
     "@jupyter-widgets/controls": "^1.2.1",
     "@jupyter-widgets/html-manager": "^0.13.0",
