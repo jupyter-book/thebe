@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/minrk/thebelab#readme",
   "devDependencies": {
-    "@jupyterlab/codemirror": "^0.16.2",
+    "@jupyterlab/codemirror": "^0.17.1",
     "@jupyterlab/mathjax2-extension": "^0.4.2",
     "@jupyterlab/outputarea": "^0.16.2",
     "@jupyterlab/services": "^2.0.2",
