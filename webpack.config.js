@@ -11,7 +11,7 @@ const pkg = require("./package.json");
 
 module.exports = {
   devtool: "source-map",
-  entry: "./src/index.js",
+  entry: ["babel-polyfill", "./src/index.js"],
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
