@@ -35,7 +35,7 @@ import "./index.css";
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 
-if (typeof window !== "undefined" && window.define !== "undefined") {
+if (typeof window !== "undefined" && typeof window.define !== "undefined") {
     window.define("@jupyter-widgets/base", base);
     window.define("@jupyter-widgets/controls", controls);
 }
