@@ -22,11 +22,23 @@ import {
 import {
   ThebeManager
 } from './manager';
+import {
+  requireLoader
+} from './loader';
+
 import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/static/index.css";
 import "@jupyter-widgets/controls/css/widgets.built.css";
 import "./index.css";
+
+import * as base from '@jupyter-widgets/base';
+import * as controls from '@jupyter-widgets/controls';
+
+if (typeof window !== "undefined" && window.define !== "undefined") {
+    window.define("@jupyter-widgets/base", base);
+    window.define("@jupyter-widgets/controls", controls);
+}
 
 // events
 
@@ -210,7 +222,9 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
 
-  let manager = new ThebeManager();
+  let manager = new ThebeManager({
+      loader: requireLoader
+  });
 
   return $(selector).map((i, cell) => renderCell(cell, {
       manager: manager
