@@ -11,7 +11,7 @@ const pkg = require("./package.json");
 
 module.exports = {
   devtool: "source-map",
-  entry: ["babel-polyfill", "./src/index.js"],
+  entry: ["./src/index.js"],
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
@@ -42,38 +42,43 @@ module.exports = {
     shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
     shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
     shim(/@jupyterlab\/services\/lib\/(session|contents|terminal)\/.*/),
-    new UglifyJSPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: true,
-    }),
     new Visualizer({
       filename: "../webpack.stats.html",
     }),
   ],
+  optimization: {
+    minimizer: [
+      new UglifyJSPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+      }),
+    ],
+  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
-        query: {
-          presets: [
-            [
-              "env",
-              {
-                targets: {
-                  chrome: 60,
-                  firefox: 45,
-                  ie: 10,
-                  safari: 9,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "usage",
+                  shippedProposals: true,
+                  targets: {
+                    browsers: ["chrome 60", "firefox 45", "ie 10", "safari 9"],
+                  },
                 },
-              },
+              ],
             ],
-          ],
+          },
         },
       },
       { test: /\.css$/, loader: "style-loader!css-loader" },
-      { test: /\.json$/, loader: "json-loader" },
       { test: /\.html$/, loader: "file-loader" },
       // jquery-ui loads some images
       { test: /\.(jpg|png|gif)$/, loader: "file-loader" },

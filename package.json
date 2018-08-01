@@ -4,10 +4,11 @@
   "description": "A version of Thebe built on JupyterLab",
   "main": "lib/index.js",
   "scripts": {
-    "build": "webpack --display-chunks",
+    "build": "webpack --mode development --display-chunks",
+    "build:prod": "webpack --mode production --display-chunks",
     "build:json": "webpack --profile --json > webpack.stats.json",
-    "build:watch": "webpack --progress --colors --watch",
-    "prepare": "npm dedupe && npm run build",
+    "build:watch": "webpack --mode dev --progress --colors --watch",
+    "prepare": "npm dedupe && npm run build:prod",
     "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -34,6 +35,9 @@
   },
   "homepage": "https://github.com/minrk/thebelab#readme",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.55",
+    "@babel/polyfill": "^7.0.0-beta.55",
+    "@babel/preset-env": "^7.0.0-beta.55",
     "@jupyter-widgets/base": "^1.1.10",
     "@jupyter-widgets/controls": "^1.2.1",
     "@jupyter-widgets/html-manager": "^0.14.1",
@@ -43,19 +47,17 @@
     "@jupyterlab/outputarea": "^0.17.2",
     "@jupyterlab/services": "^3.0.3",
     "@jupyterlab/theme-light-extension": "^0.17.3",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "css-loader": "^0.28.7",
+    "babel-loader": "^8.0.0-beta.4",
     "codemirror": "~5.39.0",
+    "css-loader": "^1.0.0",
     "file-loader": "^1.1.5",
     "jquery": "^3.1.1",
     "prettier": "^1.7.4",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "url-loader": "^1.0.0",
-    "webpack": "^3.8.1",
+    "webpack": "^4.16.3",
+    "webpack-cli": "^3.1.0",
     "webpack-visualizer-plugin": "^0.1.11"
   }
 }
