@@ -49,7 +49,11 @@ module.exports = {
       filename: "../webpack.stats.html",
     }),
   ],
-  optimization: {
+  optimization: {},
+  resolve: {
+    alias: {
+      jquery: "jquery/dist/jquery.slim.js",
+    },
   },
   module: {
     rules: [
