@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const Visualizer = require("webpack-visualizer-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
 function shim(regExp) {
