@@ -7,7 +7,7 @@
     "build": "webpack --mode development --display-chunks",
     "build:prod": "webpack --mode production --display-chunks",
     "build:json": "webpack --profile --json > webpack.stats.json",
-    "build:watch": "webpack --mode dev --progress --colors --watch",
+    "build:watch": "webpack --mode development --progress --colors --watch",
     "prepare": "npm dedupe && npm run build:prod",
     "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js example/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -23,7 +23,10 @@ module.exports = {
     // Don't need vim keymap
     shim(/codemirror\/keymap\/vim/),
     shim(/codemirror\/addon\/search/),
-    // shim out random to avoid webpack pulling in crypto
+    // shim out some unused packages
+    shim(/elliptic/),
+    shim(/bn\.js/),
+    shim(/readable\-stream/),
     // shim(/@phosphor\/coreutils\/lib\/random/),
     // shim out some unused phosphor
     shim(
@@ -47,13 +50,6 @@ module.exports = {
     }),
   ],
   optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-      }),
-    ],
   },
   module: {
     rules: [
