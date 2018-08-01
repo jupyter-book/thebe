@@ -17,14 +17,10 @@ import {
 } from "@jupyterlab/rendermime";
 import {
   WIDGET_MIMETYPE,
-  WidgetRenderer
-} from '@jupyter-widgets/html-manager/lib/output_renderers';
-import {
-  ThebeManager
-} from './manager';
-import {
-  requireLoader
-} from './loader';
+  WidgetRenderer,
+} from "@jupyter-widgets/html-manager/lib/output_renderers";
+import { ThebeManager } from "./manager";
+import { requireLoader } from "./loader";
 
 import { Mode } from "@jupyterlab/codemirror";
 
@@ -32,12 +28,12 @@ import "@jupyterlab/theme-light-extension/static/index.css";
 import "@jupyter-widgets/controls/css/widgets.built.css";
 import "./index.css";
 
-import * as base from '@jupyter-widgets/base';
-import * as controls from '@jupyter-widgets/controls';
+import * as base from "@jupyter-widgets/base";
+import * as controls from "@jupyter-widgets/controls";
 
 if (typeof window !== "undefined" && typeof window.define !== "undefined") {
-    window.define("@jupyter-widgets/base", base);
-    window.define("@jupyter-widgets/controls", controls);
+  window.define("@jupyter-widgets/base", base);
+  window.define("@jupyter-widgets/controls", controls);
 }
 
 // events
@@ -146,11 +142,14 @@ function renderCell(element, options) {
 
   let manager = options.manager;
 
-  renderMime.addFactory({
-    safe: false,
-    mimeTypes: [WIDGET_MIMETYPE],
-    createRenderer: options => new WidgetRenderer(options, manager)
-  }, 1);
+  renderMime.addFactory(
+    {
+      safe: false,
+      mimeTypes: [WIDGET_MIMETYPE],
+      createRenderer: options => new WidgetRenderer(options, manager),
+    },
+    1
+  );
 
   let model = new OutputAreaModel({ trusted: true });
 
@@ -223,12 +222,14 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
   // by default, this is all cells with `data-executable`
 
   let manager = new ThebeManager({
-      loader: requireLoader
+    loader: requireLoader,
   });
 
-  return $(selector).map((i, cell) => renderCell(cell, {
-      manager: manager
-  }));
+  return $(selector).map((i, cell) =>
+    renderCell(cell, {
+      manager: manager,
+    })
+  );
 }
 
 export function hookupKernel(kernel, cells) {

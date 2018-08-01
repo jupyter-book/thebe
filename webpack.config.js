@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const Visualizer = require("webpack-visualizer-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
 function shim(regExp) {
@@ -11,7 +10,7 @@ const pkg = require("./package.json");
 
 module.exports = {
   devtool: "source-map",
-  entry: ["babel-polyfill", "./src/index.js"],
+  entry: ["./src/index.js"],
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
@@ -23,7 +22,10 @@ module.exports = {
     // Don't need vim keymap
     shim(/codemirror\/keymap\/vim/),
     shim(/codemirror\/addon\/search/),
-    // shim out random to avoid webpack pulling in crypto
+    // shim out some unused packages
+    shim(/elliptic/),
+    shim(/bn\.js/),
+    shim(/readable\-stream/),
     // shim(/@phosphor\/coreutils\/lib\/random/),
     // shim out some unused phosphor
     shim(
@@ -42,38 +44,40 @@ module.exports = {
     shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
     shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
     shim(/@jupyterlab\/services\/lib\/(session|contents|terminal)\/.*/),
-    new UglifyJSPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: true,
-    }),
     new Visualizer({
       filename: "../webpack.stats.html",
     }),
   ],
+  optimization: {},
+  resolve: {
+    alias: {
+      jquery: "jquery/dist/jquery.slim.js",
+    },
+  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
-        query: {
-          presets: [
-            [
-              "env",
-              {
-                targets: {
-                  chrome: 60,
-                  firefox: 45,
-                  ie: 10,
-                  safari: 9,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "usage",
+                  shippedProposals: true,
+                  targets: {
+                    browsers: ["chrome 60", "firefox 45", "ie 10", "safari 9"],
+                  },
                 },
-              },
+              ],
             ],
-          ],
+          },
         },
       },
       { test: /\.css$/, loader: "style-loader!css-loader" },
-      { test: /\.json$/, loader: "json-loader" },
       { test: /\.html$/, loader: "file-loader" },
       // jquery-ui loads some images
       { test: /\.(jpg|png|gif)$/, loader: "file-loader" },
