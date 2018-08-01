@@ -94,3 +94,7 @@ A full config script with defaults:
   //    },
 }
 ```
+
+## Acknowledgements
+
+`thebelab` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
