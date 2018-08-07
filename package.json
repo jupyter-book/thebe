@@ -53,7 +53,7 @@
     "file-loader": "^1.1.5",
     "jquery": "^3.1.1",
     "prettier": "^1.7.4",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.22.0",
     "url-loader": "^1.0.0",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
