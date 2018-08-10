@@ -165,11 +165,13 @@ function renderCell(element, options) {
   $cell.append(
     $("<button class='thebelab-button thebelab-run-button'>")
       .text("run")
+      .attr("title", "run this cell")
       .click(execute)
   );
   $cell.append(
     $("<button class='thebelab-button thebelab-restart-button'>")
       .text("restart")
+      .attr("title", "restart the kernel")
       .click(restart)
   );
   let kernelResolve, kernelReject;
