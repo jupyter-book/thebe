@@ -165,7 +165,14 @@ function renderCell(element, options) {
   $cell.append(
     $("<button class='thebelab-button thebelab-run-button'>")
       .text("run")
+      .attr("title", "run this cell")
       .click(execute)
+  );
+  $cell.append(
+    $("<button class='thebelab-button thebelab-restart-button'>")
+      .text("restart")
+      .attr("title", "restart the kernel")
+      .click(restart)
   );
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
@@ -197,6 +204,15 @@ function renderCell(element, options) {
       outputArea.future = kernel.requestExecute({ code: code });
     });
     return false;
+  }
+
+  function restart() {
+    let kernel = $cell.data("kernel");
+    if (kernel) {
+        kernelPromise.then(kernel => {
+            kernel.restart();
+        });
+    }
   }
 
   let theDiv = document.createElement("div");
