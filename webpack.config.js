@@ -49,11 +49,6 @@ module.exports = {
     }),
   ],
   optimization: {},
-  resolve: {
-    alias: {
-      jquery: "jquery/dist/jquery.slim.js",
-    },
-  },
   module: {
     rules: [
       {
