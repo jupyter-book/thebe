@@ -42,7 +42,7 @@
     "@jupyter-widgets/controls": "^1.2.1",
     "@jupyter-widgets/html-manager": "^0.14.1",
     "@jupyter-widgets/output": "^1.0.17",
-    "@jupyterlab/codemirror": "^0.17.2",
+    "@jupyterlab/codemirror": "^0.18.2",
     "@jupyterlab/mathjax2-extension": "^0.5.2",
     "@jupyterlab/outputarea": "^0.17.2",
     "@jupyterlab/services": "^3.0.3",
