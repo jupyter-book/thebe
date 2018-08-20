@@ -67,6 +67,8 @@ A full config script with defaults:
     repo: "minrk/ligo-binder",
     ref: "master",
     binderUrl: "https://mybinder.org",
+    // select repository source (optional). Supports Github(default), Gitlab, and Git
+    repoProvider: "github",
   },
   
   // Options for requesting a kernel from the notebook server
