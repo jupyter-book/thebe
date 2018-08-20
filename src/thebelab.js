@@ -296,7 +296,7 @@ export function requestBinderKernel({ binderOptions, kernelOptions }) {
   });
 }
 
-export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
+export function requestBinder({ repo, ref = "master", binderUrl = null, type = "" } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
 
@@ -306,15 +306,44 @@ export function requestBinder({ repo, ref = "master", binderUrl = null } = {}) {
   console.log("binder url", binderUrl, defaults);
   binderUrl = binderUrl || defaults.binderUrl;
   ref = ref || defaults.ref;
+  let url;
 
-  // trim github.com from repo
-  repo = repo.replace(/^(https?:\/\/)?github.com\//, "");
-  // trim trailing or leading '/' on repo
-  repo = repo.replace(/(^\/)|(\/?$)/g, "");
-  // trailing / on binderUrl
-  binderUrl = binderUrl.replace(/(\/?$)/g, "");
+  if (type.toLowerCase() === "git") {
+    // trim trailing or leading '/' on repo
+    repo = repo.replace(/(^\/)|(\/?$)/g, "");
+    // trailing / on binderUrl
+    binderUrl = binderUrl.replace(/(\/?$)/g, "");
+    //add /.git if not present
+    if (!repo.endsWith("/.git")) {
+      repo += "/.git";
+      console.log("Added /.git to repo name");
+    }
+    //convert to URL acceptable string. Required for git
+    repo = encodeURIComponent(repo);
 
-  let url = binderUrl + "/build/gh/" + repo + "/" + ref;
+    url = binderUrl + "/build/git/" + repo + "/" + ref;
+  }
+  else if (type.toLowerCase() === "gitlab") {
+    // trim github.com from repo
+    // trim trailing or leading '/' on repo
+    repo = repo.replace(/(^\/)|(\/?$)/g, "");
+    // trailing / on binderUrl
+    binderUrl = binderUrl.replace(/(\/?$)/g, "");
+    //convert to URL acceptable string. Required for gitlab
+    repo = encodeURIComponent(repo);
+
+    url = binderUrl + "/build/gl/" + repo + "/" + ref;
+  }
+  else {
+    // trim github.com from repo
+    repo = repo.replace(/^(https?:\/\/)?github.com\//, "");
+    // trim trailing or leading '/' on repo
+    repo = repo.replace(/(^\/)|(\/?$)/g, "");
+    // trailing / on binderUrl
+    binderUrl = binderUrl.replace(/(\/?$)/g, "");
+
+    url = binderUrl + "/build/gh/" + repo + "/" + ref;
+  }
   console.log("Binder build URL", url);
   events.trigger("status", {
     status: "building",
