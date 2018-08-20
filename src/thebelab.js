@@ -296,19 +296,22 @@ export function requestBinderKernel({ binderOptions, kernelOptions }) {
   });
 }
 
-export function requestBinder({ repo, ref = "master", binderUrl = null, type = "" } = {}) {
+export function requestBinder({ repo, ref = "master", binderUrl = null, repoProvider = "" } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
 
   // populate from defaults
   let defaults = mergeOptions().binderOptions;
-  repo = repo || defaults.repo;
+  if (!repo) {
+    repo = defaults.repo;
+    repoProvider = "";
+  }
   console.log("binder url", binderUrl, defaults);
   binderUrl = binderUrl || defaults.binderUrl;
   ref = ref || defaults.ref;
   let url;
 
-  if (type.toLowerCase() === "git") {
+  if (repoProvider.toLowerCase() === "git") {
     // trim trailing or leading '/' on repo
     repo = repo.replace(/(^\/)|(\/?$)/g, "");
     // trailing / on binderUrl
@@ -323,8 +326,9 @@ export function requestBinder({ repo, ref = "master", binderUrl = null, type = "
 
     url = binderUrl + "/build/git/" + repo + "/" + ref;
   }
-  else if (type.toLowerCase() === "gitlab") {
-    // trim github.com from repo
+  else if (repoProvider.toLowerCase() === "gitlab") {
+    // trim gitlab.com from repo
+    repo = repo.replace(/^(https?:\/\/)?gitlab.com\//, "");
     // trim trailing or leading '/' on repo
     repo = repo.replace(/(^\/)|(\/?$)/g, "");
     // trailing / on binderUrl
