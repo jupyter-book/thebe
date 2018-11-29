@@ -20,13 +20,16 @@ import {
   WidgetRenderer,
 } from "@jupyter-widgets/html-manager/lib/output_renderers";
 import { ThebeManager } from "./manager";
-import { requireLoader } from "./loader";
+import { requireLoader } from "@jupyter-widgets/html-manager";
 
 import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/static/index.css";
 import "@jupyter-widgets/controls/css/widgets.built.css";
 import "./index.css";
+
+// Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
+// modules for custom widget bundles that depend on it.
 
 import * as base from "@jupyter-widgets/base";
 import * as controls from "@jupyter-widgets/controls";
