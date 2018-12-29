@@ -19,15 +19,19 @@ See also this
 ## How ThebeLab works
 
 Starting ThebeLab involves the following steps:
-- Loading the thebelab javascript, typically from a CDN;
+- Loading the thebelab javascript, typically [from a CDN](https://unpkg.com/thebelab);
 - Fetching the ThebeLab configuration from the page header;
-- Bootstraping ThebeLab:
+- Bootstrapping ThebeLab:
   - Re rendering the code cells to make them live cells.
     Optionally, the rendering can handle cells that contain
     a mixture of inputs and ouputs distinguished by prompts
     (see the stripPrompts option);
   - (optional) Requesting a notebook server from Binder;
   - (optional) Requesting a Jupyter kernel from the Jupyter server.
+
+Bootstrap Thebelab by calling `thebelab.bootstrap()`. If `bootstrap: true` is
+in the Thebelab configuration (see below), this will be triggered automatically
+upon page load.
 
 ## Configuring ThebeLab
 
@@ -52,14 +56,14 @@ A full config script with defaults:
 {
   // Whether thebelab should automatically trigger the bootstrap upon page load
   // if set to false, the page should contain some additional javascript
-  // responsible for triggering the javascript when desired.
+  // responsible for triggering the javascript when desired (e.g. connected to a button click).
   bootstrap: false,
 
   // arbitrary pre-render function called as part of bootstrap
   preRenderHook: false,
   
-  // Whether to request the kernel immediately on page load
-  // instead of on first execute
+  // Whether to request the kernel immediately when thebelab is bootstrapped
+  // instead of on executing code for the first time
   requestKernel: false,
   
   // Options for requesting a notebook server from mybinder.org
