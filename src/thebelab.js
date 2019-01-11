@@ -223,13 +223,15 @@ function renderCell(element, options) {
   Widget.attach(outputArea, theDiv);
 
   const mode = $element.data("language") || "python3";
-  let cm = new CodeMirror($cm_element[0], {
+  const required = {
     value: source,
     mode: mode,
     extraKeys: {
       "Shift-Enter": execute,
     },
-  });
+  };
+  let codeMirrorConfig = Object.assign(options.codeMirrorconfig,required);
+  let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
   Mode.ensure(mode).then(modeSpec => {
     cm.setOption("mode", mode);
   });
