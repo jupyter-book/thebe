@@ -92,6 +92,9 @@ A full config script with defaults:
   //      // only apply the prompt stripping to cells matching this selector (optional)
   //      selector: '.sage-input',
   //    },
+  
+  // Additional options to pass to CodeMirror instances
+  codeMirrorConfig: {},
 }
 ```
 
