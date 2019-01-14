@@ -14,3 +14,4 @@ coverage
 .cache
 
 webpack.stats.*
+docs/_build
