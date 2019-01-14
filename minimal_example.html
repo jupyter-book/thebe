@@ -1,0 +1,230 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>A minimal example &#8212; ThebeLab  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Configuration Reference" href="config_reference.html" />
+
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+<!-- Add JupyterHub styling -->
+<link rel="stylesheet" href="_static/jupyter.css" type="text/css" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="a-minimal-example">
+<span id="minimal-example"></span><h1>A minimal example<a class="headerlink" href="#a-minimal-example" title="Permalink to this headline">¶</a></h1>
+<p>This page illustrates a minimal setup to get Thebe Lab running, using
+<a class="reference external" href="http://mybinder.org/">mybinder</a> as a
+kernel (i.e. computation backend) provider. This guide will go step-by-step
+in loading ThebeLab and activating it so that your code cells become active.</p>
+<div class="section" id="loading-and-configuring-thebelab">
+<h2>Loading and configuring ThebeLab<a class="headerlink" href="#loading-and-configuring-thebelab" title="Permalink to this headline">¶</a></h2>
+<p>In order to use ThebeLab, we must first set its configuration. This must be
+done <strong>before</strong> ThebeLab is loaded from a CDN or a local script.</p>
+<p>Here’s a sample configuration for ThebeLab</p>
+<!-- Configure and load Thebe !-->
+<script type="text/x-thebe-config">
+  {
+    requestKernel: true,
+    binderOptions: {
+      repo: "binder-examples/requirements",
+    },
+  }
+</script><div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- Configure and load Thebe !--&gt;
+&lt;script type=&quot;text/x-thebe-config&quot;&gt;
+  {
+    requestKernel: true,
+    binderOptions: {
+      repo: &quot;binder-examples/requirements&quot;,
+    },
+  }
+&lt;/script&gt;
+</pre></div>
+</div>
+<p>In this case, <code class="docutils literal notranslate"><span class="pre">requestKernel:</span> <span class="pre">true</span></code> asks Thebelab to request a kernel
+immediately upon being loaded, and <code class="docutils literal notranslate"><span class="pre">binderOptions</span></code> provides the repository
+that Binder will use to give us a Kernel.</p>
+<p>Next, we’ll load Thebelab from a CDN:</p>
+<script src="https://unpkg.com/thebelab@0.3.3/lib/index.js"></script><div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://unpkg.com/thebelab@0.3.3/lib/index.js&quot;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-a-button-to-activate-thebelab">
+<h2>Adding a button to activate ThebeLab<a class="headerlink" href="#adding-a-button-to-activate-thebelab" title="Permalink to this headline">¶</a></h2>
+<p>There are many ways you can activate Thebelab. In this case, we’ll add a
+button to our page, and configure it to <strong>bootstrap</strong> Thebelab once it is
+clicked. We’ll do this with a little bit of Javascript.</p>
+<button id="activateButton" style="width: 150px; height: 75px; font-size: 1.5em;">Activate</button>
+<script>
+var bootstrapThebe = function() {
+    thebelab.bootstrap();
+}
+
+document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
+</script><p>Placing the button and adding the JavaScript to enable Thebelab was done with the
+code below:</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;activateButton&quot;</span>  <span class="n">style</span><span class="o">=</span><span class="s2">&quot;width: 150px; height: 75px; font-size: 1.5em;&quot;</span><span class="o">&gt;</span><span class="n">Activate</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="n">var</span> <span class="n">bootstrapThebe</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">thebelab</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">document</span><span class="o">.</span><span class="n">querySelector</span><span class="p">(</span><span class="s2">&quot;#activateButton&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="n">bootstrapThebe</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-code-cells">
+<h2>Adding code cells<a class="headerlink" href="#adding-code-cells" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we’ll add code cells that ThebeLab can activate. By default, ThebeLab
+will look for any HTML elements with <code class="docutils literal notranslate"><span class="pre">data-executable=&quot;true&quot;</span></code>. We’ll also add
+a <code class="docutils literal notranslate"><span class="pre">data-language=&quot;python&quot;</span></code> attribute to enable syntax highlighting with CodeMirror.</p>
+<pre data-executable="true" data-language="python">print("Hello!")</pre><p>Here’s the code that created the cell above:</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">pre</span> <span class="n">data</span><span class="o">-</span><span class="n">executable</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">language</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="o">&gt;</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Press the ThebeLab button above to activate this cell, then press the “Run” button,
+or “Shift-Enter” to execute this cell.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When ThebeLab is activated in this example, it must first ask Binder for a kernel.
+This may take several seconds.</p>
+</div>
+<p>Now let’s try another cell that generates a Matplotlib plot. Because we’ve
+configured ThebeLab to use Binder with an environment that has Numpy and
+Matplotlib, this works as expected. Try modifying the cell contents and
+re-running!</p>
+<p>This is another cell, with plotting. Shift-Enter again!</p>
+<pre data-executable="true" data-language="python">
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+</pre><p>Here’s the HTML for the cell above:</p>
+<div class="code html highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">pre</span> <span class="n">data</span><span class="o">-</span><span class="n">executable</span><span class="o">=</span><span class="s2">&quot;true&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">language</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="o">&gt;</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For more examples, check out <a class="reference internal" href="index.html#more-examples"><span class="std std-ref">More examples</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ThebeLab</a></h1>
+
+
+
+<p class="blurb">Turn static HTML pages into live documents</p>
+
+
+
+
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config_reference.html">Configuration Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">A minimal example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#loading-and-configuring-thebelab">Loading and configuring ThebeLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-a-button-to-activate-thebelab">Adding a button to activate ThebeLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-code-cells">Adding code cells</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab">GitHub Repo</a></li>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab/issues">Issue Tracker</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="config_reference.html" title="previous chapter">Configuration Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/minimal_example.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Min RK.
+      
+      |
+      <a href="_sources/minimal_example.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

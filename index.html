@@ -1,89 +1,189 @@
-<html>
-<head>
-  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-  <title>Thebe Lab examples</title>
-  <link rel="stylesheet" type="text/css" href="index.css" />
 
-  <!-- Configure and load Thebe !-->
-  <script type="text/x-thebe-config">
-    {
-      bootstrap: true,
-      binderOptions: {
-        repo: "binder-examples/requirements",
-      },
-      kernelOptions: {
-        name: "python3",
-      },
-    }
-  </script>
-  <script type="text/javascript" src="https://unpkg.com/thebelab@^0.3.0"></script>
-  <!-- or to use a local build: -->
-  <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-</head>
-<body>
-  <h1>Thebe Lab</h1>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ThebeLab &#8212; ThebeLab  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration Reference" href="config_reference.html" />
 
-  <p>
-    <a href="https://github.com/minrk/thebelab">Thebe Lab</a>
-    is an experiment attempting to rebuild
-    <a href="https://github.com/oreillymedia/thebe">Thebe</a>
-    with javascript APIs provided by
-    <a href="https://github.com/jupyterlab/jupyterlab">JupyterLab</a>.
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-    This should make Thebe a smaller, more sustainable project.
-  </p>
+<!-- Add JupyterHub styling -->
+<link rel="stylesheet" href="_static/jupyter.css" type="text/css" />
 
-  <h2><a href="demo.html">Step by step demo</a></h2>
+  </head><body>
+  
 
-  <h2>A minimal example</h2>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="thebelab">
+<h1>ThebeLab<a class="headerlink" href="#thebelab" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/minrk/thebelab">Thebe Lab</a> is an experiment attempting
+to rebuild <a class="reference external" href="https://github.com/oreillymedia/thebe">Thebe</a> with javascript
+APIs provided by <a class="reference external" href="https://github.com/jupyterlab/jupyterlab">JupyterLab</a>.
+This should make Thebe a smaller,
+more sustainable project.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config_reference.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimal_example.html">A minimal example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="minimal_example.html#loading-and-configuring-thebelab">Loading and configuring ThebeLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minimal_example.html#adding-a-button-to-activate-thebelab">Adding a button to activate ThebeLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="minimal_example.html#adding-code-cells">Adding code cells</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="how-thebelab-works">
+<h2>How ThebeLab works<a class="headerlink" href="#how-thebelab-works" title="Permalink to this headline">¶</a></h2>
+<p>Starting ThebeLab involves the following steps:</p>
+<ol class="arabic">
+<li><p class="first">Loading the thebelab javascript, typically <a class="reference external" href="https://unpkg.com/thebelab">from a CDN</a></p>
+</li>
+<li><p class="first">Fetching the ThebeLab configuration from the page header</p>
+</li>
+<li><p class="first">Bootstrapping ThebeLab:
+* Re rendering the code cells to make them live cells. Optionally, the rendering can handle cells that contain a mixture of inputs and ouputs distinguished by prompts (see the stripPrompts option);
+* (optional) Requesting a notebook server from Binder;
+* (optional) Requesting a Jupyter kernel from the Jupyter server.</p>
+</li>
+<li><p class="first">Bootstrap Thebelab by calling <code class="docutils literal notranslate"><span class="pre">thebelab.bootstrap()</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">bootstrap:</span> <span class="pre">true</span></code> is in the Thebelab configuration (see below), this will be triggered automatically upon page load.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To get started, we check out <a class="reference internal" href="minimal_example.html#minimal-example"><span class="std std-ref">A minimal example</span></a>.</p>
+</div>
+<div class="section" id="more-examples">
+<span id="id1"></span><h2>More examples<a class="headerlink" href="#more-examples" title="Permalink to this headline">¶</a></h2>
+<p>For more examples showing how to configure, use, and activate Thebelab, see
+the list below. We recommend browsing the raw HTML of each one in order to
+see how Thebelab is used.</p>
+<ul class="simple">
+<li><a class="reference external" href="examples/widgets.html">Making use of Jupyter interactive widgets</a></li>
+<li><a class="reference external" href="examples/status_field.html">Status field and styling</a></li>
+<li><a class="reference external" href="examples/activate_button.html">Activate/Status button</a></li>
+<li><a class="reference external" href="examples/prompts.html">Alternative computational environments; code cells with prompts and outputs</a></li>
+<li><a class="reference external" href="examples/local.html">Using a local Jupyter server as kernel provider</a></li>
+<li><a class="reference external" href="http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html">ThebeLab in use for SageMath documentation</a>
+(<a class="reference external" href="http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html">about</a>)
+Showcases a fancy activate button, and fetching thebe and running computations locally when possible. Relevant files:<ul>
+<li><a class="reference external" href="https://github.com/sagemath/sage-package/blob/master/sage_package/themes/sage/thebe.html">thebe.html</a></li>
+<li><a class="reference external" href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
+<li><a class="reference external" href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="https://sebasguts.github.io/thebelab_test_gap/chap42">ThebeLab in use for GAP documentation</a></li>
+</ul>
+</div>
+<div class="section" id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">thebelab</span></code> was originally developed as a part of <a class="reference external" href="http://opendreamkit.org/">OpenDreamKit</a> -
+Horizon 2020 European Research Infrastructure project (676541).</p>
+</div>
+</div>
 
-  This page illustrates a minimal setup to get Thebe Lab running, using
-  <a href="http://mybinder.org">mybinder</a> as <em>kernel</em> (i.e.
-  computation backend) provider. See the
-  <a href="https://github.com/minrk/thebelab/blob/master/examples/index.html">
-  source file</a> for details.
 
-  <p>This is a cell:</p>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">ThebeLab</a></h1>
 
-  <pre data-executable="true" data-language="python">print("Hello!")</pre>
 
-  <p>Press <tt>Shift-Enter</tt> to execute this cell. Launching the
-  computation backend may take a few seconds, and you may need to
-  re-execute it.</p>
 
-  <p>
-    This is another cell, with plotting.
+<p class="blurb">Turn static HTML pages into live documents</p>
 
-    Shift-Enter again!
-  </p>
 
-  <pre data-executable="true" data-language="python">%matplotlib inline
-import numpy as np
-import matplotlib.pyplot as plt
-x = np.linspace(0,10)
-plt.plot(x, np.sin(x))
-plt.plot(x, np.cos(x))</pre>
 
-  <h2>More examples</h2>
 
-  <ul>
-  <li><a href="widgets.html">Making use of Jupyter interactive widgets</a>;
-  <li><a href="status_field.html">Status field and styling</a>;
-  <li><a href="activate_button.html">Activate/Status button</a>;
-  <li><a href="prompts.html">Alternative computational environments; code cells with prompts and outputs</a>;
-  <li><a href="local.html">Using a local Jupyter server as kernel provider</a>;
-  <li><a href="http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html">ThebeLab in use for SageMath documentation</a>
-        <a href="http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html">(about)</a>;
-        Showcases a fancy activate button, and fetching thebe and running computations locally when possible.
-        Relevant files:
-        <ul><li><a href="https://github.com/sagemath/sage-package/blob/master/sage_package/themes/sage/thebe.html">thebe.html</a></li>
-            <li><a href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
-            <li><a href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
-        </ul>
-  </li>
-  <li><a href="https://sebasguts.github.io/thebelab_test_gap/chap42">ThebeLab in use for GAP documentation</a>.</li>
-  </ul>
 
-</body>
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config_reference.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimal_example.html">A minimal example</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab">GitHub Repo</a></li>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab/issues">Issue Tracker</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="config_reference.html" title="next chapter">Configuration Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Min RK.
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
 </html>

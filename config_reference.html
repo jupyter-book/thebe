@@ -1,0 +1,180 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration Reference &#8212; ThebeLab  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="A minimal example" href="minimal_example.html" />
+    <link rel="prev" title="ThebeLab" href="index.html" />
+
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+<!-- Add JupyterHub styling -->
+<link rel="stylesheet" href="_static/jupyter.css" type="text/css" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-reference">
+<h1>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Permalink to this headline">¶</a></h1>
+<p>Here is an example of all possible configuration
+options for ThebeLab. This is what you place in between the
+<code class="docutils literal notranslate"><span class="pre">&lt;script</span> <span class="pre">type=&quot;text/x-thebe-config&quot;&gt;</span></code> HTML tags on your page.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="p">{</span>
+  <span class="o">//</span> <span class="n">Whether</span> <span class="n">thebelab</span> <span class="n">should</span> <span class="n">automatically</span> <span class="n">trigger</span> <span class="n">the</span> <span class="n">bootstrap</span> <span class="n">upon</span> <span class="n">page</span> <span class="n">load</span>
+  <span class="o">//</span> <span class="k">if</span> <span class="nb">set</span> <span class="n">to</span> <span class="n">false</span><span class="p">,</span> <span class="n">the</span> <span class="n">page</span> <span class="n">should</span> <span class="n">contain</span> <span class="n">some</span> <span class="n">additional</span> <span class="n">javascript</span>
+  <span class="o">//</span> <span class="n">responsible</span> <span class="k">for</span> <span class="n">triggering</span> <span class="n">the</span> <span class="n">javascript</span> <span class="n">when</span> <span class="n">desired</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">connected</span> <span class="n">to</span> <span class="n">a</span> <span class="n">button</span> <span class="n">click</span><span class="p">)</span><span class="o">.</span>
+  <span class="n">bootstrap</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+  <span class="o">//</span> <span class="n">arbitrary</span> <span class="n">pre</span><span class="o">-</span><span class="n">render</span> <span class="n">function</span> <span class="n">called</span> <span class="k">as</span> <span class="n">part</span> <span class="n">of</span> <span class="n">bootstrap</span>
+  <span class="n">preRenderHook</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  
+  <span class="o">//</span> <span class="n">Whether</span> <span class="n">to</span> <span class="n">request</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">immediately</span> <span class="n">when</span> <span class="n">thebelab</span> <span class="ow">is</span> <span class="n">bootstrapped</span>
+  <span class="o">//</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">on</span> <span class="n">executing</span> <span class="n">code</span> <span class="k">for</span> <span class="n">the</span> <span class="n">first</span> <span class="n">time</span>
+  <span class="n">requestKernel</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  
+  <span class="o">//</span> <span class="n">Options</span> <span class="k">for</span> <span class="n">requesting</span> <span class="n">a</span> <span class="n">notebook</span> <span class="n">server</span> <span class="kn">from</span> <span class="nn">mybinder.org</span>
+  <span class="n">binderOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="s2">&quot;minrk/ligo-binder&quot;</span><span class="p">,</span>
+    <span class="n">ref</span><span class="p">:</span> <span class="s2">&quot;master&quot;</span><span class="p">,</span>
+    <span class="n">binderUrl</span><span class="p">:</span> <span class="s2">&quot;https://mybinder.org&quot;</span><span class="p">,</span>
+    <span class="o">//</span> <span class="n">select</span> <span class="n">repository</span> <span class="n">source</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span><span class="o">.</span> <span class="n">Supports</span> <span class="n">Github</span><span class="p">(</span><span class="n">default</span><span class="p">),</span> <span class="n">Gitlab</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Git</span>
+    <span class="n">repoProvider</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
+  <span class="p">},</span>
+  
+  <span class="o">//</span> <span class="n">Options</span> <span class="k">for</span> <span class="n">requesting</span> <span class="n">a</span> <span class="n">kernel</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">notebook</span> <span class="n">server</span>
+  <span class="n">kernelOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;python3&quot;</span><span class="p">,</span>
+    <span class="o">//</span> <span class="n">notebook</span> <span class="n">server</span> <span class="n">configuration</span><span class="p">;</span> <span class="ow">not</span> <span class="n">needed</span> <span class="k">with</span> <span class="n">binder</span>
+    <span class="o">//</span> <span class="n">serverSettings</span><span class="p">:</span> <span class="p">{</span>
+    <span class="o">//</span>       <span class="s2">&quot;baseUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://127.0.0.1:8888&quot;</span><span class="p">,</span>
+    <span class="o">//</span>      <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;test-secret&quot;</span>
+    <span class="o">//</span>    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="o">//</span> <span class="n">Selector</span> <span class="k">for</span> <span class="n">identifying</span> <span class="n">which</span> <span class="n">elements</span> <span class="n">on</span> <span class="n">the</span> <span class="n">page</span> <span class="n">should</span>
+  <span class="o">//</span> <span class="n">be</span> <span class="n">made</span> <span class="n">interactive</span>
+  <span class="n">selector</span><span class="p">:</span> <span class="s2">&quot;[data-executable]&quot;</span><span class="p">,</span>
+  
+  <span class="o">//</span> <span class="n">Optional</span> <span class="n">prompt</span> <span class="n">handling</span> <span class="n">during</span> <span class="n">the</span> <span class="n">rendering</span> <span class="n">phase</span>
+  <span class="o">//</span> <span class="n">Either</span> <span class="n">false</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">dictionary</span> <span class="k">as</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">example</span> <span class="n">below</span>
+  <span class="n">stripPrompts</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="o">//</span> <span class="n">stripPrompts</span><span class="p">:</span> <span class="p">{</span>
+  <span class="o">//</span>      <span class="n">inPrompt</span><span class="p">:</span> <span class="s1">&#39;sage: &#39;</span><span class="p">,</span>
+  <span class="o">//</span>      <span class="n">continuationPrompt</span><span class="p">:</span> <span class="s1">&#39;....: &#39;</span><span class="p">,</span>
+  <span class="o">//</span>      <span class="o">//</span> <span class="n">only</span> <span class="n">apply</span> <span class="n">the</span> <span class="n">prompt</span> <span class="n">stripping</span> <span class="n">to</span> <span class="n">cells</span> <span class="n">matching</span> <span class="n">this</span> <span class="n">selector</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+  <span class="o">//</span>      <span class="n">selector</span><span class="p">:</span> <span class="s1">&#39;.sage-input&#39;</span><span class="p">,</span>
+  <span class="o">//</span>    <span class="p">},</span>
+  
+  <span class="o">//</span> <span class="n">Additional</span> <span class="n">options</span> <span class="n">to</span> <span class="k">pass</span> <span class="n">to</span> <span class="n">CodeMirror</span> <span class="n">instances</span>
+  <span class="n">codeMirrorConfig</span><span class="p">:</span> <span class="p">{},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ThebeLab</a></h1>
+
+
+
+<p class="blurb">Turn static HTML pages into live documents</p>
+
+
+
+
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimal_example.html">A minimal example</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab">GitHub Repo</a></li>
+    
+    <li class="toctree-l1"><a href="http://github.com/minrk/thebelab/issues">Issue Tracker</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">ThebeLab</a></li>
+      <li>Next: <a href="minimal_example.html" title="next chapter">A minimal example</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/config_reference.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Min RK.
+      
+      |
+      <a href="_sources/config_reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
