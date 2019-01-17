@@ -4,7 +4,6 @@
 from datetime import date
 import recommonmark
 from recommonmark.transform import AutoStructify
-import yaml
 
 # -- General configuration ------------------------------------------------
 
