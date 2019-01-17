@@ -136,6 +136,8 @@ function renderCell(element, options) {
   // element should be a `<pre>` tag with some code in it
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
+  let $output = $(element).next();
+  let hasOutput = $output.data('output')
   let source = $element.text().trim();
 
   let renderMime = new RenderMimeRegistry({
@@ -190,6 +192,16 @@ function renderCell(element, options) {
   $cell.data("kernel-promise-resolve", kernelResolve);
   $cell.data("kernel-promise-reject", kernelReject);
 
+  if (hasOutput) {
+    outputArea.model.add({
+      output_type: "display_data",
+      data: {
+        "text/html": $output.html()
+      }
+    });
+    $output.remove()
+  }
+
   function execute() {
     let kernel = $cell.data("kernel");
     let code = cm.getValue();
@@ -230,7 +242,7 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
-  let codeMirrorConfig = Object.assign(options.codeMirrorconfig,required);
+  let codeMirrorConfig = Object.assign(options.codeMirrorconfig || {},required);
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
   Mode.ensure(mode).then(modeSpec => {
     cm.setOption("mode", mode);

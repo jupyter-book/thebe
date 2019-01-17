@@ -1,0 +1,52 @@
+<html>
+<head>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <title>Preview examples</title>
+  <link rel="stylesheet" type="text/css" href="index.css" />
+
+  <!-- Configure and load Thebe !-->
+  <script type="text/x-thebe-config">
+    {
+      bootstrap: true,
+      binderOptions: {
+        repo: "binder-examples/requirements",
+      },
+      kernelOptions: {
+        name: "python3",
+      },
+    }
+  </script>
+  <script type="text/javascript" src="../lib/index.js"></script>
+
+</head>
+<body>
+
+  <h2>Predefined text</h2>
+
+  <p>A cell with data-preview-text set to 'Hello!'</p>
+
+  <pre data-executable="true" data-language="python" data-preview-text="Hello!">
+    print("Hello!")
+  </pre>
+  <div data-output="true">
+    <p>Hello!</p>
+  </div>
+
+  <h2>Predefined image</h2>
+
+  <p>A cell with data-preview-img set to an image url</p>
+
+  <pre data-executable="true" data-language="python" data-preview-img="https://solidstate.quantumtinkerer.tudelft.nl/figures/matthiessen.svg">%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))</pre>
+
+  <div data-output="true">
+    <img src="https://solidstate.quantumtinkerer.tudelft.nl/figures/matthiessen.svg" />
+  </div>
+
+
+</body>
+</html>
