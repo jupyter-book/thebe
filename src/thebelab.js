@@ -61,6 +61,7 @@ const _defaultOptions = {
   requestKernel: false,
   predefinedOutput: false,
   selector: "[data-executable]",
+  outputSelector: "[data-output]",
   binderOptions: {
     ref: "master",
     binderUrl: "https://mybinder.org",
@@ -135,9 +136,10 @@ function getRenderers() {
 function renderCell(element, options) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
+  let mergedOptions = mergeOptions({ options })
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
-  let $output = $element.next('[data-output]');
+  let $output = $element.next(mergedOptions.outputSelector);
   let source = $element.text().trim();
 
   let renderMime = new RenderMimeRegistry({
@@ -192,7 +194,7 @@ function renderCell(element, options) {
   $cell.data("kernel-promise-resolve", kernelResolve);
   $cell.data("kernel-promise-reject", kernelReject);
 
-  if ($output.length && mergeOptions({ options }).predefinedOutput) {
+  if ($output.length && mergedOptions.predefinedOutput) {
     outputArea.model.add({
       output_type: "display_data",
       data: {
