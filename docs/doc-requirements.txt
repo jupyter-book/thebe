@@ -1,4 +1,4 @@
 sphinx_copybutton
-jupyter_alabaster
+alabaster_jupyterhub
 sphinx
 recommonmark

@@ -7,12 +7,14 @@ Have a static HTML page with code snippets? Your readers can edit and execute th
 - The ThebeLab javascript library (which can be fetched from the web)
 - A computing backend (typically [binder](https://mybinder.org))
 
-TODO: add screenshots.
+![Demo](docs/_static/demo.png)
 
 ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. ThebeLab is a reimplementation of Thebe as a thin layer on top of [JupyterLab](https://github.com/jupyterlab/jupyterlab), making it more sustainable.
 
+See [the ThebeLab Documentation](https://thebelab.readthedocs.io/en/latest/) for more information.
+
 See the [examples directory](examples/), and browse the
-[live output](https://minrk.github.io/thebelab/).
+[live output](https://minrk.github.io/thebelab/) for inspiration.
 See also this
 [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
@@ -34,6 +36,9 @@ in the Thebelab configuration (see below), this will be triggered automatically
 upon page load.
 
 ## Configuring ThebeLab
+
+For complete information about configuring ThebeLab, see
+[the ThebeLab documentation](https://thebelab.readthedocs.io/en/latest/).
 
 You can configure thebelab with a script tag.
 The script should have `type=text/x-thebe-config`
@@ -61,11 +66,11 @@ A full config script with defaults:
 
   // arbitrary pre-render function called as part of bootstrap
   preRenderHook: false,
-  
+
   // Whether to request the kernel immediately when thebelab is bootstrapped
   // instead of on executing code for the first time
   requestKernel: false,
-  
+
   // Whether thebelab should look for predefined output of cells before execution
   // If this option is enabled and the next div after the cell has the attribute
   // data-output=true (default), then the content of this div is rendered as output
@@ -82,7 +87,7 @@ A full config script with defaults:
     // select repository source (optional). Supports Github(default), Gitlab, and Git
     repoProvider: "github",
   },
-  
+
   // Options for requesting a kernel from the notebook server
   kernelOptions: {
     name: "python3",
@@ -96,7 +101,7 @@ A full config script with defaults:
   // Selector for identifying which elements on the page should
   // be made interactive
   selector: "[data-executable]",
-  
+
   // Optional prompt handling during the rendering phase
   // Either false or a dictionary as in the example below
   stripPrompts: false,
@@ -106,7 +111,7 @@ A full config script with defaults:
   //      // only apply the prompt stripping to cells matching this selector (optional)
   //      selector: '.sage-input',
   //    },
-  
+
   // Additional options to pass to CodeMirror instances
   codeMirrorConfig: {},
 }
