@@ -59,7 +59,7 @@ const _defaultOptions = {
   preRenderHook: false,
   stripPrompts: false,
   requestKernel: false,
-  predefinedOutput: false,
+  predefinedOutput: true,
   selector: "[data-executable]",
   outputSelector: "[data-output]",
   binderOptions: {
