@@ -71,6 +71,14 @@ A full config script with defaults:
   // instead of on executing code for the first time
   requestKernel: false,
 
+  // Whether thebelab should look for predefined output of cells before execution
+  // If this option is enabled and the next div after the cell has the attribute
+  // data-output=true (default), then the content of this div is rendered as output
+  predefinedOutput: false,
+
+  // The selector for identifying whether an element should be treated as output
+  outputSelector: '[data-output]'
+
   // Options for requesting a notebook server from mybinder.org
   binderOptions: {
     repo: "minrk/ligo-binder",

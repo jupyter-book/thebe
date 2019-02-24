@@ -95,6 +95,7 @@ see how Thebelab is used.
 * `Activate/Status button <examples/activate_button.html>`_
 * `Alternative computational environments; code cells with prompts and outputs <examples/prompts.html>`_
 * `Using a local Jupyter server as kernel provider <examples/local.html>`_
+* `Setting predefined output for cells <examples/demo-preview.html>`_
 * `ThebeLab in use for SageMath documentation <http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html>`_
   (`about <http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html>`_)
   Showcases a fancy activate button, and fetching thebe and running computations locally when possible. Relevant files:
