@@ -104,7 +104,7 @@ html_sidebars = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ["_static", "../examples"]
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -185,11 +185,3 @@ epub_exclude_files = ['search.html']
 
 # -- Linkcheck options ------------------
 linkcheck_anchors_ignore = ["/#!"]
-
-# -- Move the examples folder into the _build directory
-import os
-import shutil as sh
-os.makedirs('_build', exist_ok=True)
-if os.path.exists("_build/examples"):
-    sh.rmtree("_build/examples")
-sh.copytree("../examples", "_build/examples")
