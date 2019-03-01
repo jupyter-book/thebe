@@ -43,7 +43,7 @@
     "@jupyter-widgets/html-manager": "^0.15.2",
     "@jupyter-widgets/output": "^1.1.2",
     "@jupyterlab/codemirror": "^0.19.1",
-    "@jupyterlab/mathjax2-extension": "^0.7.1",
+    "@jupyterlab/mathjax2": "^0.7.1",
     "@jupyterlab/outputarea": "^0.19.1",
     "@jupyterlab/services": "^3.0.3",
     "@jupyterlab/theme-light-extension": "^0.19.1",

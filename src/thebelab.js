@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
 import { Widget } from "@phosphor/widgets";
 import { Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
-import { MathJaxTypesetter } from "@jupyterlab/mathjax2-extension";
+import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
 import {
   RenderMimeRegistry,
@@ -60,6 +60,8 @@ const _defaultOptions = {
   stripPrompts: false,
   requestKernel: false,
   predefinedOutput: true,
+  mathjaxUrl: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
+  mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
   selector: "[data-executable]",
   outputSelector: "[data-output]",
   binderOptions: {
@@ -113,12 +115,12 @@ export function getOption(key) {
 }
 
 let _renderers = undefined;
-function getRenderers() {
+function getRenderers(options) {
   if (!_renderers) {
     _renderers = standardRendererFactories.filter(f => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf("text/latex") >= 0) {
-        if (typeof window !== "undefined" && window.MathJax) {
+        if (options.mathjaxUrl) {
           return true;
         } else {
           console.log("MathJax unavailable");
@@ -141,11 +143,16 @@ function renderCell(element, options) {
   let $element = $(element);
   let $output = $element.next(mergedOptions.outputSelector);
   let source = $element.text().trim();
-
-  let renderMime = new RenderMimeRegistry({
-    initialFactories: getRenderers(),
-    latexTypesetter: new MathJaxTypesetter(),
-  });
+  let renderers = {
+    initialFactories: getRenderers(mergedOptions),
+  };
+  if (mergedOptions.mathjaxUrl) {
+    renderers.latexTypesetter = new MathJaxTypesetter({
+      url: mergedOptions.mathjaxUrl,
+      config: mergedOptions.mathjaxConfig,
+    });
+  }
+  let renderMime = new RenderMimeRegistry(renderers);
 
   let manager = options.manager;
 
