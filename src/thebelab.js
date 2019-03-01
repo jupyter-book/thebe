@@ -136,7 +136,7 @@ function getRenderers() {
 function renderCell(element, options) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
-  let mergedOptions = mergeOptions({ options })
+  let mergedOptions = mergeOptions({ options });
   let $cell = $("<div class='thebelab-cell'/>");
   let $element = $(element);
   let $output = $element.next(mergedOptions.outputSelector);
@@ -198,10 +198,10 @@ function renderCell(element, options) {
     outputArea.model.add({
       output_type: "display_data",
       data: {
-        "text/html": $output.html()
-      }
+        "text/html": $output.html(),
+      },
     });
-    $output.remove()
+    $output.remove();
   }
 
   function execute() {
@@ -226,9 +226,9 @@ function renderCell(element, options) {
   function restart() {
     let kernel = $cell.data("kernel");
     if (kernel) {
-        kernelPromise.then(kernel => {
-            kernel.restart();
-        });
+      kernelPromise.then(kernel => {
+        kernel.restart();
+      });
     }
   }
 
@@ -244,7 +244,10 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
-  let codeMirrorConfig = Object.assign(options.codeMirrorconfig || {},required);
+  let codeMirrorConfig = Object.assign(
+    options.codeMirrorconfig || {},
+    required
+  );
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
   Mode.ensure(mode).then(modeSpec => {
     cm.setOption("mode", mode);
@@ -315,7 +318,12 @@ export function requestBinderKernel({ binderOptions, kernelOptions }) {
   });
 }
 
-export function requestBinder({ repo, ref = "master", binderUrl = null, repoProvider = "" } = {}) {
+export function requestBinder({
+  repo,
+  ref = "master",
+  binderUrl = null,
+  repoProvider = "",
+} = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
 
@@ -344,8 +352,7 @@ export function requestBinder({ repo, ref = "master", binderUrl = null, repoProv
     repo = encodeURIComponent(repo);
 
     url = binderUrl + "/build/git/" + repo + "/" + ref;
-  }
-  else if (repoProvider.toLowerCase() === "gitlab") {
+  } else if (repoProvider.toLowerCase() === "gitlab") {
     // trim gitlab.com from repo
     repo = repo.replace(/^(https?:\/\/)?gitlab.com\//, "");
     // trim trailing or leading '/' on repo
@@ -356,8 +363,7 @@ export function requestBinder({ repo, ref = "master", binderUrl = null, repoProv
     repo = encodeURIComponent(repo);
 
     url = binderUrl + "/build/gl/" + repo + "/" + ref;
-  }
-  else {
+  } else {
     // trim github.com from repo
     repo = repo.replace(/^(https?:\/\/)?github.com\//, "");
     // trim trailing or leading '/' on repo
