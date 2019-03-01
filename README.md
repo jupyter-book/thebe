@@ -112,6 +112,13 @@ A full config script with defaults:
   //      selector: '.sage-input',
   //    },
 
+  // URL from which to load mathjax
+  // set to `false` to disable mathjax
+  mathjaxUrl: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
+
+  // mathjax configuration string
+  mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
+
   // Additional options to pass to CodeMirror instances
   codeMirrorConfig: {},
 }
