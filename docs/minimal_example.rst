@@ -49,11 +49,11 @@ Next, we'll load Thebelab from a CDN:
 
 .. raw:: html
    
-   <script src="https://unpkg.com/thebelab@0.3.3/lib/index.js"></script>
+   <script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
 
 .. code:: html
    
-   <script src="https://unpkg.com/thebelab@0.3.3/lib/index.js"></script>
+   <script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
    
 Adding a button to activate ThebeLab
 ====================================
