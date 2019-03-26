@@ -426,7 +426,7 @@ export function requestBinder({
           es.close();
           resolve(
             ServerConnection.makeSettings({
-              baseUrl: msg.url,
+              baseUrl: msg.url  + "/tree/" + defaults.workingDir,
               wsUrl: "ws" + msg.url.slice(4),
               token: msg.token,
             })

@@ -86,6 +86,7 @@ A full config script with defaults:
     binderUrl: "https://mybinder.org",
     // select repository source (optional). Supports Github(default), Gitlab, and Git
     repoProvider: "github",
+    workingDir: ""
   },
 
   // Options for requesting a kernel from the notebook server
