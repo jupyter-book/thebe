@@ -67,6 +67,7 @@ const _defaultOptions = {
   binderOptions: {
     ref: "master",
     binderUrl: "https://mybinder.org",
+    workingDir: "",
   },
   kernelOptions: {},
 };
