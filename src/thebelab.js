@@ -304,13 +304,14 @@ export function requestKernel(kernelOptions) {
     status: "starting",
     message: "Starting Kernel",
   });
-  let p = Kernel.startNew(kernelOptions);
-  p.then(kernel => {
+  let p = Session.startNew(kernelOptions);
+  p.then(session => {
     events.trigger("status", {
       status: "ready",
       message: "Kernel is ready",
     });
-    return kernel;
+    let k = session.kernel;
+    return k;
   });
   return p;
 }
@@ -485,7 +486,8 @@ export function bootstrap(options) {
     });
   }
 
-  kernelPromise.then(kernel => {
+  kernelPromise.then(session => {
+    let kernel = session.kernel;
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);

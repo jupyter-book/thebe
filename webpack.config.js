@@ -43,7 +43,7 @@ module.exports = {
     // shim(/@jupyterlab\/codemirror\/lib\/editor/),
     shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
     shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
-    shim(/@jupyterlab\/services\/lib\/(session|contents|terminal)\/.*/),
+    shim(/@jupyterlab\/services\/lib\/(contents|terminal)\/.*/),
     new Visualizer({
       filename: "../webpack.stats.html",
     }),
