@@ -350,11 +350,6 @@ export function requestBinder({
     repo = repo.replace(/(^\/)|(\/?$)/g, "");
     // trailing / on binderUrl
     binderUrl = binderUrl.replace(/(\/?$)/g, "");
-    //add /.git if not present
-    if (!repo.endsWith(".git")) {
-      repo += ".git";
-      console.log("Added .git to repo name");
-    }
     //convert to URL acceptable string. Required for git
     repo = encodeURIComponent(repo);
 
