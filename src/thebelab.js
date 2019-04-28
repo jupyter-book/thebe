@@ -7,7 +7,7 @@ if (typeof window !== "undefined") {
 }
 
 import { Widget } from "@phosphor/widgets";
-import { Session } from "@jupyterlab/services"
+import { Session } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
