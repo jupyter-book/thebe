@@ -30,7 +30,7 @@
     "url": "https://github.com/minrk/thebelab/issues"
   },
   "engines": {
-    "node": ">=4",
+    "node": ">=6",
     "npm": ">=4"
   },
   "homepage": "https://github.com/minrk/thebelab#readme",
