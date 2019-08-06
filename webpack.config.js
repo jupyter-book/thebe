@@ -60,6 +60,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
+            cacheDirectory: true,
             presets: [
               [
                 "@babel/preset-env",
@@ -68,7 +69,12 @@ module.exports = {
                   corejs: 3,
                   shippedProposals: true,
                   targets: {
-                    browsers: ["chrome 60", "firefox 45", "ie 10", "safari 9"],
+                    browsers: [
+                      "chrome 60",
+                      "edge 15",
+                      "firefox 45",
+                      "safari 10",
+                    ],
                   },
                 },
               ],
