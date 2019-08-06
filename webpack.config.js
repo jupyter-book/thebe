@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const Visualizer = require("webpack-visualizer-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
 function shim(regExp) {
@@ -44,8 +45,10 @@ module.exports = {
     shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
     shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
     shim(/@jupyterlab\/services\/lib\/(contents|terminal)\/.*/),
-    new Visualizer({
-      filename: "../webpack.stats.html",
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      openAnalyzer: false,
+      reportFilename: "../webpack.stats.html",
     }),
   ],
   optimization: {},
