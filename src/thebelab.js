@@ -1,5 +1,6 @@
 import $ from "jquery";
-import CodeMirror from "codemirror";
+import CodeMirror from "codemirror/lib/codemirror";
+import "codemirror/lib/codemirror.css";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -24,7 +25,7 @@ import { requireLoader } from "@jupyter-widgets/html-manager";
 
 import { Mode } from "@jupyterlab/codemirror";
 
-import "@jupyterlab/theme-light-extension/static/index.css";
+import "@jupyterlab/theme-light-extension/style/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
 import "./index.css";
 
@@ -68,7 +69,9 @@ const _defaultOptions = {
     ref: "master",
     binderUrl: "https://mybinder.org",
   },
-  kernelOptions: {},
+  kernelOptions: {
+    path: "/",
+  },
 };
 
 let _pageConfigData = undefined;
@@ -215,7 +218,7 @@ function renderCell(element, options) {
     let kernel = $cell.data("kernel");
     let code = cm.getValue();
     if (!kernel) {
-      console.error("No kernel connected");
+      console.debug("No kernel connected");
       outputArea.model.clear();
       outputArea.model.add({
         output_type: "stream",
