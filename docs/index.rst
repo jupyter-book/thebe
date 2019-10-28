@@ -58,6 +58,7 @@ result (be patient, it will take a few moments for Binder to start the kernel).
 
    config_reference
    minimal_example
+   howto/initialize_cells
 
 
 How ThebeLab works
