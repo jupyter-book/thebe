@@ -34,7 +34,7 @@ function thebe_activate_cells(){
 // Activate button function hook
 function thebe_activate_button_function(){
   // Load the Thebe library
-  $.getScript("https://unpkg.com/thebelab@^0.4.0")
+  $.getScript("https://unpkg.com/thebelab@latest")
     .done(function(script, textStatus) {
       thebe_remove_activate_button();
       thebe_place_status_field();
