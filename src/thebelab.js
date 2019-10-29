@@ -255,7 +255,7 @@ function renderCell(element, options) {
     },
   };
   let codeMirrorConfig = Object.assign(
-    options.codeMirrorconfig || {},
+    mergedOptions.codeMirrorconfig || {},
     required
   );
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
