@@ -65,5 +65,5 @@ The below code cell demonstrates this theme:
    document.querySelector("#activateButton").addEventListener('click', thebelab.bootstrap)
    </script>
 
-   The above code should be styled according to the
-   `CodeMirror abcdef theme <https://codemirror.net/demo/theme.html#abcdef>`_.
+The above code should be styled according to the
+`CodeMirror abcdef theme <https://codemirror.net/demo/theme.html#abcdef>`_.
