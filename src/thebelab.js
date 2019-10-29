@@ -246,7 +246,7 @@ function renderCell(element, options) {
   $cell.append(theDiv);
   Widget.attach(outputArea, theDiv);
 
-  const mode = $element.data("language") || "python3";
+  const mode = $element.data("language") || "python";
   const required = {
     value: source,
     mode: mode,
@@ -255,7 +255,7 @@ function renderCell(element, options) {
     },
   };
   let codeMirrorConfig = Object.assign(
-    options.codeMirrorconfig || {},
+    mergedOptions.codeMirrorconfig || {},
     required
   );
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
