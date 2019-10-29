@@ -246,7 +246,7 @@ function renderCell(element, options) {
   $cell.append(theDiv);
   Widget.attach(outputArea, theDiv);
 
-  const mode = $element.data("language") || "python3";
+  const mode = $element.data("language") || "python";
   const required = {
     value: source,
     mode: mode,
