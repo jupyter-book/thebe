@@ -30,7 +30,7 @@ Here's a sample configuration for ThebeLab
    </script>
 
 .. code:: html
-   
+
    <!-- Configure and load Thebe !-->
    <script type="text/x-thebe-config">
      {
@@ -48,13 +48,13 @@ that Binder will use to give us a Kernel.
 Next, we'll load Thebelab from a CDN:
 
 .. raw:: html
-   
-   <script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
+
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
 .. code:: html
-   
-   <script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
-   
+
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+
 Adding a button to activate ThebeLab
 ====================================
 
@@ -86,7 +86,7 @@ code below:
 
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
-   
+
 
 Adding code cells
 =================
