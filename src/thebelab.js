@@ -28,6 +28,7 @@ import { Mode } from "@jupyterlab/codemirror";
 import "@jupyterlab/theme-light-extension/style/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
 import "./index.css";
+import "./ansi-colors.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
