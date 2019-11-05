@@ -9,6 +9,10 @@
   border-color: green;
 }
 
+.thebe-button-group {
+  float: right;
+}
+
 .jp-OutputArea > :first-child {
   padding-top: 0.5em;
   border-top: 1px solid #aaa;
