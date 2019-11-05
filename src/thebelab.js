@@ -27,6 +27,7 @@ import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/style/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
+import "@jupyterlab/rendermime/style/index.css"
 import "./index.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
