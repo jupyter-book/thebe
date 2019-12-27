@@ -4,13 +4,16 @@
   border-radius: 4px;
   margin-top: 8px;
   margin-bottom: 8px;
+  position: relative;
 }
 .thebelab-cell:focus-within {
   border-color: green;
 }
 
-.thebe-button-group {
-  float: right;
+.thebelab-button-group {
+  position: absolute;
+  right: 0px;
+  z-index: 3;
 }
 
 .jp-OutputArea > :first-child {

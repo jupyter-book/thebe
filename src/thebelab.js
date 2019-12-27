@@ -177,7 +177,7 @@ function renderCell(element, options) {
   });
 
   $element.replaceWith($cell);
-  let $buttonGroup = $("<div class='thebe-button-group'>");
+  let $buttonGroup = $("<div class='thebelab-button-group'>");
   $cell.append($buttonGroup);
   $buttonGroup.append(
     $("<button class='thebelab-button thebelab-run-button'>")
