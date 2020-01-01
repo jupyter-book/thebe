@@ -1,34 +1,10 @@
 
 .thebelab-cell {
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-.thebelab-cell:focus-within {
-  border-color: green;
-}
-
-.jp-OutputArea > :first-child {
-  padding-top: 0.5em;
-  border-top: 1px solid #aaa;
-}
-
-.CodeMirror {
-  height: auto;
+  border: 1px solid #aaa;
 }
 
 .CodeMirror-scroll {
   height: auto;
-}
-
-.CodeMirror {
-  background-color: transparent;
-}
-
-
-.CodeMirror.CodeMirror-focused {
-  /* background-color: white; */
 }
 
 /* no prompts */
