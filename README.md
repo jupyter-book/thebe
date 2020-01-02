@@ -91,9 +91,10 @@ A full config script with defaults:
   // Options for requesting a kernel from the notebook server
   kernelOptions: {
     name: "python3",
+    kernelName: "python3",
     // notebook server configuration; not needed with binder
     // serverSettings: {
-    //       "baseUrl": "http://127.0.0.1:8888",
+    //      "baseUrl": "http://127.0.0.1:8888",
     //      "token": "test-secret"
     //    }
   },
