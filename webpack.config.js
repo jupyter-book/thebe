@@ -18,11 +18,6 @@ module.exports = {
     publicPath: "https://unpkg.com/thebelab@" + pkg.version + "/lib/",
   },
   plugins: [
-    // get slim jQuery
-    new webpack.NormalModuleReplacementPlugin(
-      /jquery$/,
-      "jquery/dist/jquery.slim.js"
-    ),
     // Not using moment
     shim(/moment/),
     // Don't need vim keymap
