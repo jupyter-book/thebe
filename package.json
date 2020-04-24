@@ -39,7 +39,7 @@
     "@babel/preset-env": "^7.5.5",
     "@jupyter-widgets/base": "^2.0.1",
     "@jupyter-widgets/controls": "^1.5.1",
-    "@jupyter-widgets/html-manager": "^0.18.2",
+    "@jupyter-widgets/html-manager": "^0.19.0",
     "@jupyter-widgets/output": "^2.0.0",
     "@jupyterlab/codemirror": "^1.0.1",
     "@jupyterlab/mathjax2": "^1.0.0",
