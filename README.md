@@ -125,6 +125,30 @@ A full config script with defaults:
 }
 ```
 
+## Contributing
+
+### Getting Started in the Development Environment
+
+In order to get Thebelab running locally, you'll need to have Node installed on your system: https://nodejs.org/en/download/
+Once installed, this also includes `npm` (Node Package Manager) which is what you will run in order to run Thebelab locally.
+
+After cloning the repository, run:
+
+`npm install`
+
+This will install all dependencies in package.json.
+In order to serve the Thebelab source code, run:
+
+`npm run build:watch`
+
+Now open `development.html` in your root directory to see Thebelab running. `development.html`
+is a simple HTML page that demonstrates Thebelab functionality. You can edit it to test
+out new features or configurations.
+
+Running `npm run` will start Webpack which will bundle and serve the source code
+along with `development.html`. As you change the code in Thebelab, the javascript
+will automatically be re-built, but you'll be required to refresh the page.
+
 ## Acknowledgements
 
 `thebelab` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
