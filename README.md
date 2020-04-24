@@ -145,7 +145,9 @@ Now open `development.html` in your root directory to see Thebelab running. `dev
 is a simple HTML page that demonstrates Thebelab functionality. You can edit it to test
 out new features or configurations.
 
-This will start Webpack which will bundle and serve the source code. This also will automatically reload re-build changes to the source code, however, you'll be required to refresh the page.
+Running `npm run` will start Webpack which will bundle and serve the source code
+along with `development.html`. As you change the code in Thebelab, the javascript
+will automatically be re-built, but you'll be required to refresh the page.
 
 ## Acknowledgements
 
