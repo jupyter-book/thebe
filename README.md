@@ -141,7 +141,9 @@ In order to serve the Thebelab source code, run:
 
 `npm run build:watch`
 
-Now open `development.html` in your root directory to see Thebelab running.
+Now open `development.html` in your root directory to see Thebelab running. `development.html`
+is a simple HTML page that demonstrates Thebelab functionality. You can edit it to test
+out new features or configurations.
 
 This will start Webpack which will bundle and serve the source code. This also will automatically reload re-build changes to the source code, however, you'll be required to refresh the page.
 
