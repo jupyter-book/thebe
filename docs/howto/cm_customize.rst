@@ -17,7 +17,7 @@ You can edit all of these attributes in a cell with the following thebelab confi
    </script>
 
 You can use any of `the available CodeMirror configurations <https://codemirror.net/doc/manual.html#config>`_.
-For example, the following configuration changes the CodeMirror theme:
+For example, the following configuration changes the `CodeMirror theme <https://codemirror.net/theme/>`_:
 
 .. code:: html
 
