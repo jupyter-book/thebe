@@ -255,8 +255,22 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
+
+  // Gets CodeMirror config if it exists
+  let codeMirrorOptions = {};
+  if ('binderOptions' in mergedOptions) {
+    if ('codeMirrorConfig' in mergedOptions.binderOptions) {
+      codeMirrorOptions = mergedOptions.binderOptions.codeMirrorConfig
+    }
+  }
+
+  // Dynamically loads CSS for a given theme
+  if ('theme' in codeMirrorOptions) {
+    require(`codemirror/theme/${codeMirrorOptions.theme}.css`);
+  }
+
   let codeMirrorConfig = Object.assign(
-    mergedOptions.codeMirrorconfig || {},
+    codeMirrorOptions || {},
     required
   );
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
