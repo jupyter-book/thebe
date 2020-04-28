@@ -3,6 +3,8 @@
 
 import * as outputBase from "@jupyter-widgets/output";
 
+import { DOMWidgetView, JupyterPhosphorWidget } from "@jupyter-widgets/base";
+
 import { Panel } from "@phosphor/widgets";
 
 import { OutputAreaModel, OutputArea } from "@jupyterlab/outputarea";
@@ -69,8 +71,44 @@ export class OutputModel extends outputBase.OutputModel {
   }
 }
 
+class JupyterPhosphorPanelWidget extends Panel {
+  constructor(options) {
+    const { view } = options;
+    delete options.view;
+    super(options);
+    this._view = view;
+  }
+
+  /**
+   * Process the phosphor message.
+   *
+   * Any custom phosphor widget used inside a Jupyter widget should override
+   * the processMessage function like this.
+   */
+  processMessage(msg) {
+    super.processMessage(msg);
+    this._view.processPhosphorMessage(msg);
+  }
+
+  /**
+   * Dispose the widget.
+   *
+   * This causes the view to be destroyed as well with 'remove'
+   */
+  dispose() {
+    if (this.isDisposed) {
+      return;
+    }
+    super.dispose();
+    if (this._view) {
+      this._view.remove();
+    }
+    this._view = null;
+  }
+}
+
 export class OutputView extends outputBase.OutputView {
-  _createElement() {
+  _createElement(tagName) {
     this.pWidget = new Panel();
     return this.pWidget.node;
   }
