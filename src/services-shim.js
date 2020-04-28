@@ -12,6 +12,8 @@
 // Modified this slightly to also intercept error messages from the
 // kernel so they can be displayed in the error area.
 
+import { Kernel } from "@jupyterlab/services";
+
 export class ShimmedComm {
   constructor(jsServicesComm) {
     this.jsServicesComm = jsServicesComm;
