@@ -149,6 +149,21 @@ Running `npm run` will start Webpack which will bundle and serve the source code
 along with `development.html`. As you change the code in Thebelab, the javascript
 will automatically be re-built, but you'll be required to refresh the page.
 
+### Staging Environment
+
+To check changes made in a staging environment, there are several npm scripts to assist in generating a local staging environment.
+To check changes that you've made locally in the documentation, run:
+
+`npm run builddocs:staging`
+
+open /docs/html and open the `index.html` file in your browser.
+
+Alternatively, to compare these to the current changes in production, run:
+
+`npm run builddocs:production`
+
+to check your staging changes against the production build.
+
 ## Acknowledgements
 
 `thebelab` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
