@@ -45,7 +45,7 @@
     "@jupyterlab/mathjax2": "^1.2.0",
     "@jupyterlab/outputarea": "^1.0.1",
     "@jupyterlab/services": "^4.2.2",
-    "@jupyterlab/theme-light-extension": "^1.2.8",
+    "@jupyterlab/theme-light-extension": "^2.0.0",
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
     "css-loader": "^3.5.3",
