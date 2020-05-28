@@ -27,7 +27,7 @@ import { Mode } from "@jupyterlab/codemirror";
 
 import "@jupyterlab/theme-light-extension/style/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
-import "@jupyterlab/rendermime/style/index.css"
+import "@jupyterlab/rendermime/style/index.css";
 import "./index.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
@@ -44,13 +44,13 @@ if (typeof window !== "undefined" && typeof window.define !== "undefined") {
 // events
 
 export const events = $({});
-export const on = function() {
+export const on = function () {
   events.on.apply(events, arguments);
 };
-export const one = function() {
+export const one = function () {
   events.one.apply(events, arguments);
 };
-export const off = function() {
+export const off = function () {
   events.off.apply(events, arguments);
 };
 
@@ -121,7 +121,7 @@ export function getOption(key) {
 let _renderers = undefined;
 function getRenderers(options) {
   if (!_renderers) {
-    _renderers = standardRendererFactories.filter(f => {
+    _renderers = standardRendererFactories.filter((f) => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf("text/latex") >= 0) {
         if (options.mathjaxUrl) {
@@ -164,7 +164,7 @@ function renderCell(element, options) {
     {
       safe: false,
       mimeTypes: [WIDGET_MIMETYPE],
-      createRenderer: options => new WidgetRenderer(options, manager),
+      createRenderer: (options) => new WidgetRenderer(options, manager),
     },
     1
   );
@@ -197,7 +197,7 @@ function renderCell(element, options) {
     kernelResolve = resolve;
     kernelReject = reject;
   });
-  kernelPromise.then(kernel => {
+  kernelPromise.then((kernel) => {
     $cell.data("kernel", kernel);
     manager.registerWithKernel(kernel);
     return kernel;
@@ -228,7 +228,7 @@ function renderCell(element, options) {
       });
       events.trigger("request-kernel");
     }
-    kernelPromise.then(kernel => {
+    kernelPromise.then((kernel) => {
       outputArea.future = kernel.requestExecute({ code: code });
     });
     return false;
@@ -237,7 +237,7 @@ function renderCell(element, options) {
   function restart() {
     let kernel = $cell.data("kernel");
     if (kernel) {
-      kernelPromise.then(kernel => {
+      kernelPromise.then((kernel) => {
         kernel.restart();
       });
     }
@@ -258,23 +258,20 @@ function renderCell(element, options) {
 
   // Gets CodeMirror config if it exists
   let codeMirrorOptions = {};
-  if ('binderOptions' in mergedOptions) {
-    if ('codeMirrorConfig' in mergedOptions.binderOptions) {
-      codeMirrorOptions = mergedOptions.binderOptions.codeMirrorConfig
+  if ("binderOptions" in mergedOptions) {
+    if ("codeMirrorConfig" in mergedOptions.binderOptions) {
+      codeMirrorOptions = mergedOptions.binderOptions.codeMirrorConfig;
     }
   }
 
   // Dynamically loads CSS for a given theme
-  if ('theme' in codeMirrorOptions) {
+  if ("theme" in codeMirrorOptions) {
     require(`codemirror/theme/${codeMirrorOptions.theme}.css`);
   }
 
-  let codeMirrorConfig = Object.assign(
-    codeMirrorOptions || {},
-    required
-  );
+  let codeMirrorConfig = Object.assign(codeMirrorOptions || {}, required);
   let cm = new CodeMirror($cm_element[0], codeMirrorConfig);
-  Mode.ensure(mode).then(modeSpec => {
+  Mode.ensure(mode).then((modeSpec) => {
     cm.setOption("mode", mode);
   });
   return $cell;
@@ -323,10 +320,11 @@ export function requestKernel(kernelOptions) {
     message: "Starting Kernel",
   });
   let p = Session.startNew(kernelOptions);
-  p.then(session => {
+  p.then((session) => {
     events.trigger("status", {
       status: "ready",
       message: "Kernel is ready",
+      kernel: session.kernel,
     });
     let k = session.kernel;
     return k;
@@ -338,7 +336,7 @@ export function requestBinderKernel({ binderOptions, kernelOptions }) {
   // request a Kernel from Binder
   // this strings together requestBinder and requestKernel.
   // returns a Promise for a running Kernel.
-  return requestBinder(binderOptions).then(serverSettings => {
+  return requestBinder(binderOptions).then((serverSettings) => {
     kernelOptions.serverSettings = serverSettings;
     return requestKernel(kernelOptions);
   });
@@ -401,7 +399,7 @@ export function requestBinder({
   });
   return new Promise((resolve, reject) => {
     let es = new EventSource(url);
-    es.onerror = err => {
+    es.onerror = (err) => {
       console.error("Lost connection to " + url, err);
       es.close();
       events.trigger("status", {
@@ -412,7 +410,7 @@ export function requestBinder({
       reject(new Error(err));
     };
     let phase = null;
-    es.onmessage = evt => {
+    es.onmessage = (evt) => {
       let msg = JSON.parse(evt.data);
       if (msg.phase && msg.phase !== phase) {
         phase = msg.phase.toLowerCase();
@@ -492,14 +490,12 @@ export function bootstrap(options) {
   } else {
     kernelPromise = new Promise((resolve, reject) => {
       events.one("request-kernel", () => {
-        getKernel()
-          .then(resolve)
-          .catch(reject);
+        getKernel().then(resolve).catch(reject);
       });
     });
   }
 
-  kernelPromise.then(session => {
+  kernelPromise.then((session) => {
     let kernel = session.kernel;
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
@@ -515,7 +511,7 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   }
   let cells = [];
   let cell = null;
-  rawText.split("\n").map(line => {
+  rawText.split("\n").map((line) => {
     line = line.trim();
     if (line.slice(0, inPrompt.length) === inPrompt) {
       // line with a prompt
@@ -546,12 +542,8 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   // clear the parent element
   element.html("");
   // add the thebe-able cells
-  cells.map(cell => {
-    element.append(
-      $("<pre>")
-        .text(cell)
-        .attr("data-executable", "true")
-    );
+  cells.map((cell) => {
+    element.append($("<pre>").text(cell).attr("data-executable", "true"));
   });
 }
 
@@ -562,7 +554,7 @@ function splitCellOutputPrompt(element, { outPrompt } = {}) {
   }
   let cells = [];
   let cell = null;
-  rawText.split("\n").map(line => {
+  rawText.split("\n").map((line) => {
     line = line.trim();
     if (line.slice(0, outPrompt.length) === outPrompt) {
       // output line
@@ -586,12 +578,8 @@ function splitCellOutputPrompt(element, { outPrompt } = {}) {
   // clear the parent element
   element.html("");
   // add the thebe-able cells
-  cells.map(cell => {
-    element.append(
-      $("<pre>")
-        .text(cell)
-        .attr("data-executable", "true")
-    );
+  cells.map((cell) => {
+    element.append($("<pre>").text(cell).attr("data-executable", "true"));
   });
 }
 

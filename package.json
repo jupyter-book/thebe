@@ -9,7 +9,7 @@
     "build:json": "webpack --profile --json > webpack.stats.json",
     "build:watch": "webpack --mode development --progress --colors --watch",
     "prepare": "npm dedupe && npm run build:prod",
-    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js example/*.js",
+    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js examples/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
