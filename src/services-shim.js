@@ -67,20 +67,20 @@ export class ShimmedComm {
    */
   _hookupCallbacks(future, callbacks) {
     if (callbacks) {
-      future.onReply = function(msg) {
+      future.onReply = function (msg) {
         if (callbacks.shell && callbacks.shell.reply) {
           callbacks.shell.reply(msg);
         }
         // TODO: Handle payloads.  See https://github.com/jupyter/notebook/blob/master/notebook/static/services/kernels/kernel.js#L923-L947
       };
 
-      future.onStdin = function(msg) {
+      future.onStdin = function (msg) {
         if (callbacks.input) {
           callbacks.input(msg);
         }
       };
 
-      future.onIOPub = function(msg) {
+      future.onIOPub = function (msg) {
         if (callbacks.iopub) {
           if (callbacks.iopub.status && msg.header.msg_type === "status") {
             callbacks.iopub.status(msg);

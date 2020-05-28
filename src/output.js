@@ -36,7 +36,7 @@ export class OutputModel extends outputBase.OutputModel {
     const kernel = this.widget_manager.kernel;
     const msgId = this.get("msg_id");
     if (kernel && msgId) {
-      this._msgHook = kernel.registerMessageHook(msgId, msg => {
+      this._msgHook = kernel.registerMessageHook(msgId, (msg) => {
         this.add(msg);
         return false;
       });

@@ -23,9 +23,9 @@ export class ThebeManager extends HTMLManager {
 
   display_view(msg, view, options) {
     const el = options.el;
-    return Promise.resolve(view).then(view => {
+    return Promise.resolve(view).then((view) => {
       pWidget.Widget.attach(view.pWidget, el);
-      view.on("remove", function() {
+      view.on("remove", function () {
         console.log("view removed", view);
       });
       return view;
@@ -34,7 +34,7 @@ export class ThebeManager extends HTMLManager {
 
   loadClass(className, moduleName, moduleVersion) {
     if (moduleName === "@jupyter-widgets/output") {
-      return Promise.resolve(outputWidgets).then(module => {
+      return Promise.resolve(outputWidgets).then((module) => {
         if (module[className]) {
           return module[className];
         } else {
@@ -51,7 +51,7 @@ export class ThebeManager extends HTMLManager {
   callbacks(view) {
     const baseCallbacks = super.callbacks(view);
     return Object.assign({}, baseCallbacks, {
-      iopub: { output: msg => this._onError.emit(msg) },
+      iopub: { output: (msg) => this._onError.emit(msg) },
     });
   }
 
@@ -66,6 +66,6 @@ export class ThebeManager extends HTMLManager {
   _get_comm_info() {
     return this.kernel
       .requestCommInfo({ target: this.comm_target_name })
-      .then(reply => reply.content.comms);
+      .then((reply) => reply.content.comms);
   }
 }
