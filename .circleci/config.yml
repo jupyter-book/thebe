@@ -8,7 +8,38 @@ jobs:
     steps:
       - checkout
       - node/install-packages
+
+  docs:
+    docker:
+      - image: circleci/python:3.6-stretch
+    steps:
+      # Get our data and merge with upstream
+      - run: sudo apt-get update
+      - checkout
+
+      - restore_cache:
+          keys:
+            - cache-pip
+
+      - run: |
+          pip install --user -r docs/doc-requirements.txt
+      - save_cache:
+          key: cache-pip
+          paths:
+            - ~/.cache/pip
+
+      # Build the docs
+      - run:
+          name: Build docs to store
+          command: |
+            sphinx-build -b html docs/ docs/_build/html
+
+      - store_artifacts:
+          path: docs/_build/html/
+          destination: html
+
 workflows:
     build-and-test:
       jobs:
         - build-and-test
+        - docs
