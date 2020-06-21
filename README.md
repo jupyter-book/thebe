@@ -92,6 +92,7 @@ A full config script with defaults:
   kernelOptions: {
     name: "python3",
     kernelName: "python3",
+    path: "."
     // notebook server configuration; not needed with binder
     // serverSettings: {
     //      "baseUrl": "http://127.0.0.1:8888",

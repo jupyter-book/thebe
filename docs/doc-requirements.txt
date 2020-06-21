@@ -1,4 +1,4 @@
 sphinx_copybutton
-alabaster_jupyterhub
+sphinx_book_theme
 sphinx
 recommonmark

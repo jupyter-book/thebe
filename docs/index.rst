@@ -53,41 +53,17 @@ Try clicking the button. The cell will be come active!
 You can press "run" in order to run the contents of the cell and display the
 result (be patient, it will take a few moments for Binder to start the kernel).
 
-.. toctree::
-   :caption: Table of Contents
-
-   config_reference
-   minimal_example
-   howto/initialize_cells
-   howto/cm_customize
-
-
-How ThebeLab works
-==================
-
-Starting ThebeLab involves the following steps:
-
-1. Loading the thebelab javascript, typically `from a CDN <https://unpkg.com/thebelab>`_
-2. Fetching the ThebeLab configuration from the page header
-3. Bootstrapping ThebeLab:
-   * Re rendering the code cells to make them live cells. Optionally, the rendering can handle cells that contain a mixture of inputs and ouputs distinguished by prompts (see the stripPrompts option);
-   * (optional) Requesting a notebook server from Binder;
-   * (optional) Requesting a Jupyter kernel from the Jupyter server.
-4. Bootstrap Thebelab by calling ``thebelab.bootstrap()``.
-
-   If ``bootstrap: true`` is in the Thebelab configuration (see below), this will be triggered automatically upon page load.
-
 
 Getting Started
 ===============
 
-To get started, we check out :ref:`minimal_example`.
+To get started, check out :doc:`start`.
 
 
 .. _more_examples:
 
-More examples
-=============
+Examples
+========
 
 For more examples showing how to configure, use, and activate Thebelab, see
 the list below. We recommend browsing the raw HTML of each one in order to
@@ -114,3 +90,12 @@ Acknowledgements
 
 ``thebelab`` was originally developed as a part of `OpenDreamKit <http://opendreamkit.org/>`_ -
 Horizon 2020 European Research Infrastructure project (676541).
+
+
+.. toctree::
+
+   start
+   configure
+   config_reference
+   howto/initialize_cells
+   minimal_example
