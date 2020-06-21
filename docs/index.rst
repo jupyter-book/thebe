@@ -93,6 +93,7 @@ Horizon 2020 European Research Infrastructure project (676541).
 
 
 .. toctree::
+   :hidden:
 
    start
    configure
