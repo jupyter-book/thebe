@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
-import recommonmark
-from recommonmark.transform import AutoStructify
 
 # -- General configuration ------------------------------------------------
 
@@ -19,18 +17,6 @@ extensions = ['sphinx.ext.mathjax',
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-
-source_parsers = {
-    '.md': 'recommonmark.parser.CommonMarkParser',
-}
-
-
-def setup(app):
-    app.add_config_value('recommonmark_config', {
-            'enable_eval_rst': True,
-            'enable_auto_doc_ref': True,
-            }, True)
-    app.add_transform(AutoStructify)
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -68,37 +54,16 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-import alabaster_jupyterhub
-
-html_theme = 'alabaster_jupyterhub'
-html_theme_path = [alabaster_jupyterhub.get_html_theme_path()]
+html_theme = 'sphinx_book_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    'show_related': True,
-    'description': 'Turn static HTML pages into live documents',
-    'github_user': 'minrk',
-    'github_repo': 'thebelab',
-    'github_banner': False,
-    'github_button': False,
-    'show_powered_by': False,
-    'extra_nav_links': {
-        'GitHub Repo': 'http://github.com/minrk/thebelab',
-        'Issue Tracker': 'http://github.com/minrk/thebelab/issues',
-    },
-}
-
-html_sidebars = {
-    '**': [
-        'about.html',
-        'searchbox.html',
-        'navigation.html',
-        'relations.html',
-        'sourcelink.html',
-    ],
+    "repository_url": "https://github.com/minrk/thebelab",
+    "use_issues_button": True,
+    "use_repository_button": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
