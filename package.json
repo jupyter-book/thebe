@@ -48,7 +48,7 @@
     "@jupyterlab/theme-light-extension": "^1.2.8",
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
-    "css-loader": "^3.5.3",
+    "css-loader": "^4.0.0",
     "file-loader": "^6.0.0",
     "jquery": "^3.5.1",
     "prettier": "^2.0.0",
