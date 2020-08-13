@@ -123,7 +123,7 @@ A full config script with defaults:
 
 ## Contribute to `thebe`
 
-To contribute to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute).
+To contribute to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute.html).
 
 ## Acknowledgements
 
