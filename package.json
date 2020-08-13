@@ -18,22 +18,22 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/minrk/thebelab.git"
+    "url": "git+https://github.com/executablebooks/thebe.git"
   },
   "keywords": [
     "jupyter",
     "notebook"
   ],
-  "author": "Min RK",
+  "author": "Executable Books Project",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/minrk/thebelab/issues"
+    "url": "https://github.com/executablebooks/thebe/issues"
   },
   "engines": {
     "node": ">=6",
     "npm": ">=4"
   },
-  "homepage": "https://github.com/minrk/thebelab#readme",
+  "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
     "@babel/core": "^7.10.1",
     "@babel/preset-env": "^7.10.1",
