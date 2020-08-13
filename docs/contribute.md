@@ -59,3 +59,12 @@ As you change the code in `src/`,
 the javascript will automatically be re-built,
 but you'll be required to refresh the page.
 
+# Releasing Thebe
+
+To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/latest/contributing.html#releases-and-change-logs) to make sure the repo is ready for release.
+
+Once prepared, bump the version with:
+
+1. update version and create tag with `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
+2. publish version to github: `git push --follow-tags`
+3. publish to npm (`npm publish`) (FIXME: automate with [npm-publish-action](https://github.com/pascalgn/npm-publish-action))
