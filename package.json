@@ -1,7 +1,7 @@
 {
   "name": "thebe",
   "version": "0.5.1",
-  "description": "Thebe: add interactive execution to any page with Jupyter",
+  "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "scripts": {
     "build": "webpack --mode development --display-chunks",
