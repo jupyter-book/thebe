@@ -22,7 +22,7 @@ jobs:
 
       # Action Repo: https://github.com/actions/setup-node
       - name: "Setup Node"
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
           node-version: "14"
 
@@ -53,7 +53,7 @@ jobs:
     strategy:
       fail-fast: false  # Do not cancel all jobs if one fails
       matrix:
-        node_version: ["6", "8", "10", "12", "14"]
+        node_version: ["10", "12", "14"]
 
     steps:
       - name: "Checkout repo"
@@ -61,9 +61,9 @@ jobs:
 
       # Action Repo: https://github.com/actions/setup-node
       - name: "Setup Node"
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: ${{ matrix.node_version }}
 
       # Action Repo: https://github.com/actions/cache
       - name: "Cache node_modules"
@@ -76,7 +76,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          npm install
+          npm ci
 
       - name: "Run tests"
         run: |
