@@ -54,4 +54,8 @@ You can now demo the latest `thebe/` changes by opening the file at `development
 
 The content of `development.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
 
-Running the `npm run` command will start Webpack which will bundle and serve the source code along with `development.html`. As you change the code in Thebelab, the javascript will automatically be re-built, but you'll be required to refresh the page.
+Running the `npm run develop` command will start building the source code with webpack and serve it along with `development.html`.
+As you change the code in `src/`,
+the javascript will automatically be re-built,
+but you'll be required to refresh the page.
+
