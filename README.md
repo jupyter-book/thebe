@@ -1,29 +1,24 @@
-# ThebeLab: turning static HTML pages into live documents
+# Thebe: turn static HTML pages into live documents
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/minrk/thebelab.svg)](https://greenkeeper.io/)
 
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
 - A brief header in the HTML page
-- The ThebeLab javascript library (which can be fetched from the web)
+- The Thebe javascript library (which can be fetched from the web)
 - A computing backend (typically [binder](https://mybinder.org))
 
 ![Demo](docs/_static/demo.png)
 
-ThebeLab is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. ThebeLab is a reimplementation of Thebe as a thin layer on top of [JupyterLab](https://github.com/jupyterlab/jupyterlab), making it more sustainable.
+Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. 
 
-See [the ThebeLab Documentation](https://thebelab.readthedocs.io/en/latest/) for more information.
+See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more information. See also this [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
-See the [examples directory](examples/), and browse the
-[live output](https://minrk.github.io/thebelab/) for inspiration.
-See also this
-[blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
+## How Thebe works
 
-## How ThebeLab works
-
-Starting ThebeLab involves the following steps:
-- Loading the thebelab javascript, typically [from a CDN](https://unpkg.com/thebelab);
-- Fetching the ThebeLab configuration from the page header;
-- Bootstrapping ThebeLab:
+Starting Thebe involves the following steps:
+- Loading the thebe javascript, typically [from a CDN](https://unpkg.com/thebelab);
+- Fetching the Thebe configuration from the page header;
+- Bootstrapping Thebe:
   - Re rendering the code cells to make them live cells.
     Optionally, the rendering can handle cells that contain
     a mixture of inputs and ouputs distinguished by prompts
@@ -31,16 +26,16 @@ Starting ThebeLab involves the following steps:
   - (optional) Requesting a notebook server from Binder;
   - (optional) Requesting a Jupyter kernel from the Jupyter server.
 
-Bootstrap Thebelab by calling `thebelab.bootstrap()`. If `bootstrap: true` is
-in the Thebelab configuration (see below), this will be triggered automatically
+Bootstrap Thebe by calling `thebelab.bootstrap()`. If `bootstrap: true` is
+in the Thebe configuration (see below), this will be triggered automatically
 upon page load.
 
-## Configuring ThebeLab
+## Configuring Thebe
 
-For complete information about configuring ThebeLab, see
-[the ThebeLab documentation](https://thebelab.readthedocs.io/en/latest/).
+For complete information about configuring Thebe, see
+[the Thebe documentation](https://thebe.readthedocs.io/en/latest/).
 
-You can configure thebelab with a script tag.
+You can configure thebe with a script tag.
 The script should have `type=text/x-thebe-config`
 with a javascript object containing configuration options.
 
@@ -59,7 +54,7 @@ A full config script with defaults:
 
 ```javascript
 {
-  // Whether thebelab should automatically trigger the bootstrap upon page load
+  // Whether thebe should automatically trigger the bootstrap upon page load
   // if set to false, the page should contain some additional javascript
   // responsible for triggering the javascript when desired (e.g. connected to a button click).
   bootstrap: false,
@@ -67,11 +62,11 @@ A full config script with defaults:
   // arbitrary pre-render function called as part of bootstrap
   preRenderHook: false,
 
-  // Whether to request the kernel immediately when thebelab is bootstrapped
+  // Whether to request the kernel immediately when thebe is bootstrapped
   // instead of on executing code for the first time
   requestKernel: false,
 
-  // Whether thebelab should look for predefined output of cells before execution
+  // Whether thebe should look for predefined output of cells before execution
   // If this option is enabled and the next div after the cell has the attribute
   // data-output=true (default), then the content of this div is rendered as output
   predefinedOutput: false,
@@ -126,30 +121,10 @@ A full config script with defaults:
 }
 ```
 
-## Contributing
+## Contribute to `thebe`
 
-### Getting Started in the Development Environment
-
-In order to get Thebelab running locally, you'll need to have Node installed on your system: https://nodejs.org/en/download/
-Once installed, this also includes `npm` (Node Package Manager) which is what you will run in order to run Thebelab locally.
-
-After cloning the repository, run:
-
-`npm install`
-
-This will install all dependencies in package.json.
-In order to serve the Thebelab source code, run:
-
-`npm run build:watch`
-
-Now open `development.html` in your root directory to see Thebelab running. `development.html`
-is a simple HTML page that demonstrates Thebelab functionality. You can edit it to test
-out new features or configurations.
-
-Running `npm run` will start Webpack which will bundle and serve the source code
-along with `development.html`. As you change the code in Thebelab, the javascript
-will automatically be re-built, but you'll be required to refresh the page.
+To contribute to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute).
 
 ## Acknowledgements
 
-`thebelab` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
+`thebe` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).

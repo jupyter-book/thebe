@@ -1,4 +1,4 @@
 sphinx_copybutton
 sphinx_book_theme
-sphinx
-recommonmark
+sphinx>2
+myst_parser

@@ -1,12 +1,11 @@
-========
-ThebeLab
-========
+=====
+Thebe
+=====
 
-`Thebe Lab <https://github.com/minrk/thebelab>`_ turns your static HTML pages
-into interactive ones, powered by a kernel. It is an experiment attempting
-to rebuild `Thebe <https://github.com/oreillymedia/thebe>`_ with javascript
+`Thebe <https://github.com/executablebooks/thebe>`_ turns your static HTML pages
+into interactive ones, powered by a kernel. It is the evolution of the
+`original Thebe project <https://github.com/oreillymedia/thebe>`_ with javascript
 APIs provided by `JupyterLab <https://github.com/jupyterlab/jupyterlab>`_.
-This should make Thebe a smaller, more sustainable project.
 
 For example, see the following code cell:
 
@@ -33,7 +32,7 @@ For example, see the following code cell:
    ax.set(title="Wow, an interactive plot!")
    </pre>
 
-It is static for now. You can activate Thebelab by pressing the button below.
+It is static for now. You can activate Thebe by pressing the button below.
 This will ask `mybinder.org <https://mybinder.org>`_ for a Python kernel, and
 turn the code cell into an interactive one with outputs!
 
@@ -65,9 +64,9 @@ To get started, check out :doc:`start`.
 Examples
 ========
 
-For more examples showing how to configure, use, and activate Thebelab, see
+For more examples showing how to configure, use, and activate Thebe, see
 the list below. We recommend browsing the raw HTML of each one in order to
-see how Thebelab is used.
+see how Thebe is used.
 
 * `Making use of Jupyter interactive widgets <_static/widgets.html>`_
 * `Status field and styling <_static/status_field.html>`_
@@ -75,20 +74,20 @@ see how Thebelab is used.
 * `Alternative computational environments; code cells with prompts and outputs <_static/prompts.html>`_
 * `Using a local Jupyter server as kernel provider <_static/local.html>`_
 * `Setting predefined output for cells <_static/demo-preview.html>`_
-* `ThebeLab in use for SageMath documentation <http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html>`_
+* `Thebe in use for SageMath documentation <http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html>`_
   (`about <http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html>`_)
   Showcases a fancy activate button, and fetching thebe and running computations locally when possible. Relevant files:
 
   * `thebe.html <https://github.com/sagemath/sage-package/blob/master/sage_package/themes/sage/thebe.html>`_
   * `thebe_status_field.js <https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js>`_
   * `thebe_status_field.js <https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js>`_
-* `ThebeLab in use for GAP documentation <https://sebasguts.github.io/thebelab_test_gap/chap42>`_
+* `Thebe in use for GAP documentation <https://sebasguts.github.io/thebelab_test_gap/chap42>`_
 
 
 Acknowledgements
 ================
 
-``thebelab`` was originally developed as a part of `OpenDreamKit <http://opendreamkit.org/>`_ -
+``thebe`` was originally developed as a part of `OpenDreamKit <http://opendreamkit.org/>`_ -
 Horizon 2020 European Research Infrastructure project (676541).
 
 
@@ -101,3 +100,4 @@ Horizon 2020 European Research Infrastructure project (676541).
    config_reference
    howto/initialize_cells
    minimal_example
+   contribute
