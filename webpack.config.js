@@ -97,6 +97,15 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.js$/,
+        use: {
+          loader: "istanbul-instrumenter-loader",
+          options: { esModules: true },
+        },
+        enforce: "post",
+        exclude: /node_modules|\.spec\.js$/,
+      },
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.html$/, loader: "file-loader" },
       // jquery-ui loads some images
