@@ -1,7 +1,7 @@
 {
-  "name": "thebelab",
+  "name": "thebe",
   "version": "0.5.1",
-  "description": "A version of Thebe built on JupyterLab",
+  "description": "Thebe: add interactive execution to any page with Jupyter",
   "main": "lib/index.js",
   "scripts": {
     "build": "webpack --mode development --display-chunks",
