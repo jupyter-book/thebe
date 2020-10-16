@@ -4,9 +4,11 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = LearningwithJupyterHub
+SPHINXPROJ    = Thebe
 SOURCEDIR     = .
 BUILDDIR      = _build
+JSDOC         = node_modules/.bin/jsdoc
+PATH 		 := node_modules/.bin:$(PATH)
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -14,9 +16,24 @@ help:
 
 .PHONY: help Makefile
 
+package.json:
+	npm ls
+
+package-lock.json: package.json
+	# package.json updated, refresh lock with npm install
+	npm install
+	touch $@
+
+$(JSDOC): package-lock.json
+	# install from package-lock
+	npm ci
+	# refresh mtime
+	test -f $@ && touch $@
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
+
+%: Makefile $(JSDOC)
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 show:

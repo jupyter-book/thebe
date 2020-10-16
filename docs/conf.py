@@ -14,7 +14,12 @@ from datetime import date
 # ones.
 extensions = ['sphinx.ext.mathjax',
               'sphinx_copybutton',
+              'sphinx_js',
               'myst_parser']
+
+# sphinx-js config
+primary_domain = 'js'
+js_source_path = '../src'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -45,7 +50,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build"]
+exclude_patterns = ["_build", "node_modules"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
