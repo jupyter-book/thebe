@@ -1,7 +1,5 @@
 # Thebe: turn static HTML pages into live documents
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/minrk/thebelab.svg)](https://greenkeeper.io/)
-
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
 - A brief header in the HTML page
 - The Thebe javascript library (which can be fetched from the web)
@@ -16,7 +14,7 @@ See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more 
 ## How Thebe works
 
 Starting Thebe involves the following steps:
-- Loading the thebe javascript, typically [from a CDN](https://unpkg.com/thebelab);
+- Loading the thebe javascript, typically [from a CDN](https://unpkg.com/thebe);
 - Fetching the Thebe configuration from the page header;
 - Bootstrapping Thebe:
   - Re rendering the code cells to make them live cells.

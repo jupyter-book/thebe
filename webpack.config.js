@@ -15,7 +15,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "lib"),
-    publicPath: "https://unpkg.com/thebelab@" + pkg.version + "/lib/",
+    publicPath: "https://unpkg.com/thebe@" + pkg.version + "/lib/",
   },
   plugins: [
     // Not using moment
@@ -96,6 +96,15 @@ module.exports = {
             ],
           },
         },
+      },
+      {
+        test: /\.js$/,
+        use: {
+          loader: "istanbul-instrumenter-loader",
+          options: { esModules: true },
+        },
+        enforce: "post",
+        exclude: /node_modules|\.spec\.js$/,
       },
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.html$/, loader: "file-loader" },

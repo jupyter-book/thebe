@@ -54,4 +54,17 @@ You can now demo the latest `thebe/` changes by opening the file at `development
 
 The content of `development.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
 
-Running the `npm run` command will start Webpack which will bundle and serve the source code along with `development.html`. As you change the code in Thebelab, the javascript will automatically be re-built, but you'll be required to refresh the page.
+Running the `npm run develop` command will start building the source code with webpack and serve it along with `development.html`.
+As you change the code in `src/`,
+the javascript will automatically be re-built,
+but you'll be required to refresh the page.
+
+# Releasing Thebe
+
+To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/latest/contributing.html#releases-and-change-logs) to make sure the repo is ready for release.
+
+Once prepared, bump the version with:
+
+1. update version and create tag with `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
+2. publish version to github: `git push --follow-tags`
+3. publish to npm (`npm publish`) (FIXME: automate with [npm-publish-action](https://github.com/pascalgn/npm-publish-action))
