@@ -318,7 +318,7 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
 
 export function hookupKernel(kernel, cells) {
   // hooks up cells to the kernel
-  cells.map((i, {cell}) => {
+  cells.map((i, { cell }) => {
     $(cell).data("kernel-promise-resolve")(kernel);
   });
 }
