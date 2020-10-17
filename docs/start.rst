@@ -27,7 +27,7 @@ The configuration block has the following structure:
 .. code-block:: html
 
    <script type="text/x-thebe-config">
-      { 
+      {
           a: collection
           of: key
           val: pairs
