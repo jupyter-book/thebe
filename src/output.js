@@ -5,7 +5,7 @@ import * as outputBase from "@jupyter-widgets/output";
 
 import { DOMWidgetView, JupyterPhosphorWidget } from "@jupyter-widgets/base";
 
-import { Panel } from "@phosphor/widgets";
+import { Panel } from "@lumino/widgets";
 
 import { OutputAreaModel, OutputArea } from "@jupyterlab/outputarea";
 

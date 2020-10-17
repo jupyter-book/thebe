@@ -7,8 +7,8 @@ if (typeof window !== "undefined") {
   window.CodeMirror = CodeMirror;
 }
 
-import { Widget } from "@phosphor/widgets";
-import { Session, Kernel } from "@jupyterlab/services";
+import { Widget } from "@lumino/widgets";
+import { KernelManager, KernelAPI } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
@@ -72,6 +72,9 @@ const _defaultOptions = {
   },
   kernelOptions: {
     path: "/",
+    serverSettings: {
+      appendToken: true,
+    },
   },
 };
 
@@ -337,32 +340,26 @@ export function hookupKernel(kernel, cells) {
 export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = mergeOptions({ kernelOptions }).kernelOptions;
-  if (kernelOptions.serverSettings) {
-    let ss = kernelOptions.serverSettings;
-    // workaround bug in jupyterlab where wsUrl and baseUrl must both be set
-    // https://github.com/jupyterlab/jupyterlab/pull/4427
-    if (ss.baseUrl && !ss.wsUrl) {
-      ss.wsUrl = "ws" + ss.baseUrl.slice(4);
-    }
-    kernelOptions.serverSettings = ServerConnection.makeSettings(
-      kernelOptions.serverSettings
-    );
-  }
+  let serverSettings = ServerConnection.makeSettings(
+    kernelOptions.serverSettings
+  );
   events.trigger("status", {
     status: "starting",
     message: "Starting Kernel",
   });
-  let p = Session.startNew(kernelOptions);
-  p.then((session) => {
-    events.trigger("status", {
-      status: "ready",
-      message: "Kernel is ready",
-      kernel: session.kernel,
+  let km = new KernelManager({ serverSettings });
+  return km.ready
+    .then(() => {
+      return km.startNew(kernelOptions);
+    })
+    .then((kernel) => {
+      events.trigger("status", {
+        status: "ready",
+        message: "Kernel is ready",
+        kernel: kernel,
+      });
+      return kernel;
     });
-    let k = session.kernel;
-    return k;
-  });
-  return p;
 }
 
 export function requestBinderKernel({ binderOptions, kernelOptions }) {
@@ -441,9 +438,10 @@ export function requestBinder({
         baseUrl: existing_server.url,
         wsUrl: "ws" + existing_server.url.slice(4),
         token: existing_server.token,
+        appendToken: true,
       });
       try {
-        await Kernel.listRunning(settings);
+        await KernelAPI.listRunning(settings);
         console.log("Saved binder pod is valid, reusing connection");
         resolve(settings);
         return;
@@ -522,6 +520,7 @@ export function requestBinder({
               baseUrl: msg.url,
               wsUrl: "ws" + msg.url.slice(4),
               token: msg.token,
+              appendToken: true,
             })
           );
           break;
@@ -589,8 +588,7 @@ export function bootstrap(options) {
     });
   }
 
-  kernelPromise.then((session) => {
-    let kernel = session.kernel;
+  kernelPromise.then((kernel) => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
