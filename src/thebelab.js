@@ -192,6 +192,12 @@ function renderCell(element, options) {
       .attr("title", "restart the kernel")
       .click(restart)
   );
+  $cell.append(
+    $("<button class='thebelab-button thebelab-restartall-button'>")
+      .text("restart & run all")
+      .attr("title", "restart the kernel and run all cells")
+      .click(restartAndRunAll)
+  );
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
     kernelResolve = resolve;
@@ -215,17 +221,21 @@ function renderCell(element, options) {
     $output.remove();
   }
 
+  function setOutputText(text = "Waiting for kernel...") {
+    outputArea.model.clear();
+    outputArea.model.add({
+      output_type: "stream",
+      name: "stdout",
+      text,
+    });
+  }
+
   function execute() {
     let kernel = $cell.data("kernel");
     let code = cm.getValue();
     if (!kernel) {
       console.debug("No kernel connected");
-      outputArea.model.clear();
-      outputArea.model.add({
-        output_type: "stream",
-        name: "stdout",
-        text: "Waiting for kernel...",
-      });
+      setOutputText();
       events.trigger("request-kernel");
     }
     kernelPromise.then((kernel) => {
@@ -237,10 +247,24 @@ function renderCell(element, options) {
   function restart() {
     let kernel = $cell.data("kernel");
     if (kernel) {
-      kernelPromise.then((kernel) => {
-        kernel.restart();
+      return kernelPromise.then(async (kernel) => {
+        await kernel.restart();
+        return kernel;
       });
     }
+    return Promise.resolve(kernel);
+  }
+
+  function restartAndRunAll() {
+    if (window.thebelab) {
+      window.thebelab.cells.map((idx, { setOutputText }) => setOutputText());
+    }
+    restart().then((kernel) => {
+      if (!kernel || !window.thebelab) return kernel;
+      // Note, the jquery map is overridden, and is in the opposite order of native JS
+      window.thebelab.cells.map((idx, { execute }) => execute());
+      return kernel;
+    });
   }
 
   let theDiv = document.createElement("div");
@@ -274,7 +298,7 @@ function renderCell(element, options) {
   Mode.ensure(mode).then((modeSpec) => {
     cm.setOption("mode", mode);
   });
-  return $cell;
+  return { cell: $cell, execute, setOutputText };
 }
 
 export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
@@ -294,7 +318,7 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
 
 export function hookupKernel(kernel, cells) {
   // hooks up cells to the kernel
-  cells.map((i, cell) => {
+  cells.map((i, { cell }) => {
     $(cell).data("kernel-promise-resolve")(kernel);
   });
 }
@@ -514,6 +538,7 @@ export function bootstrap(options) {
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
+  if (window.thebelab) window.thebelab.cells = cells;
   return kernelPromise;
 }
 
