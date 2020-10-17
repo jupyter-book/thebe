@@ -27,7 +27,7 @@ The configuration block has the following structure:
 .. code-block:: html
 
    <script type="text/x-thebe-config">
-      { 
+      {
           a: collection
           of: key
           val: pairs
@@ -58,3 +58,7 @@ Calling the bootstrap function is generally accomplished by connecting it to the
 
    If ``bootstrap: true`` is in the Thebelab configuration, this will be triggered
    automatically upon page load.
+
+
+.. include::
+   security.rst
