@@ -10,9 +10,9 @@ describe("bootstrap", () => {
     // }
     // </script>
     // `
-  })
+  });
   it("should define events", async () => {
     const thebe = await import("../src");
     expect(thebe).to.have.property("events");
   });
-})
+});
