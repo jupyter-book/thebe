@@ -396,22 +396,16 @@ export function requestBinder({
 
   return new Promise(async (resolve, reject) => {
     // if binder already spawned our pod and we remember the creds, reuse it
-    let spawned_pod_url = window.localStorage.getItem(
-      "thebe_binder_pod_url_" + url
-    );
-    let spawned_pod_token = window.localStorage.getItem(
-      "thebe_binder_pod_token_" + url
-    );
+    let existing_server = JSON.parse(window.localStorage.getItem("thebe-binder-" + url));
     if (
-      ignoreSavedPod === false &&
-      spawned_pod_url !== null &&
-      spawned_pod_token !== null
+      existing_server !== null &&
+      new Date().getTime() - new Date(existing_server.started).getTime() < 86400
     ) {
       console.log("Saved binder pod info detected");
       let settings = ServerConnection.makeSettings({
-        baseUrl: spawned_pod_url,
-        wsUrl: "ws" + spawned_pod_url.slice(4),
-        token: spawned_pod_token,
+        baseUrl: existing_server.url,
+        wsUrl: "ws" + existing_server.url.slice(4),
+        token: existing_server.token,
       });
       try {
         await Kernel.listRunning(settings);
@@ -471,10 +465,13 @@ export function requestBinder({
           es.close();
           try {
             // save the current connection url+token to reuse later
-            window.localStorage.setItem("thebe_binder_pod_url_" + url, msg.url);
             window.localStorage.setItem(
-              "thebe_binder_pod_token_" + url,
-              msg.token
+              "thebe-binder-" + url,
+              JSON.stringify({
+                url: msg.url,
+                token: msg.token,
+                started: new Date(),
+              })
             );
           } catch (e) {
             // storage quota full, gently ignore nonfatal error
