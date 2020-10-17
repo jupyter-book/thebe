@@ -7,6 +7,14 @@ pythreejs documentation and are licensed BSD 3 Clause.
 
 .. _pythreejs: https://github.com/jupyter-widgets/pythreejs
 
+Be sure to load require.js before any of your thebe activation code::
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+.. raw:: html
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
 Press the "Activate" button below to connect to a Jupyter server:
 
 .. raw:: html
@@ -42,7 +50,6 @@ Primitive shapes can be displayed:
 
    <pre data-executable="true" data-language="python">
    from pythreejs import BoxGeometry
-   from IPython.display import display
    BoxGeometry(
        width=5,
        height=10,
@@ -85,5 +92,6 @@ More complex shapes can be constructed and viewed:
                                                     intensity=0.6)])
    scene = Scene(children=[surf, surf2, c, AmbientLight(intensity=0.5)])
    renderer = Renderer(camera=c, scene=scene, controls=[OrbitControls(controlling=c)], width=400, height=400)
-   display(renderer)
+   #display(renderer)
+   surf
    </pre>
