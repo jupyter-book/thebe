@@ -90,7 +90,7 @@ TODO: get testing infrastructure to a point where we can reasonably request test
  - [karma](https://karma-runner.github.io/latest/index.html) is used for automated testing and configured in [karma.conf.js](.karma.conf.js)
  - `karma` uses the same `webpack` configuration as the build from [webpack.config.js](./webpack.config.js)
  - Test files are in the `test` directory and currently setup in a single entry-point fashion, with all tests being required by the `test_entrypoint.js` file. This has pros and cons:
-    - pro - webpack builds a single bundle which is faster
+    - pro - `webpack` builds a single bundle which is faster
     - pro - we have a single top level describe block that we know will execute first, so can use before/after to start and shutdown a Jupyter server
     - con - we cannot run single tests, only the full bundle
 
