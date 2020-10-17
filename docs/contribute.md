@@ -17,6 +17,7 @@ See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/la
 - `src/` contains the code and assets that make up `thebe`. This is what you'll edit to make changes to the project.
 - `examples/` provides a few HTML examples of how `thebe` can be used. It is mostly for documentation
 
+(dev-install)=
 ## Set up a development environment
 
 In order to get Thebe running locally, you'll need to have Node installed on your system. You can install it in several ways, the most common being:
@@ -98,6 +99,29 @@ TODO: create some exemplar tests that:
  - [ ] test starting thebe with different options and controlling on page state at bootstrap
  - [ ] test the initial thebe render
  - [ ] test interacting with the server and rendering results
+
+## Building docs locally
+
+Thebe uses [Sphinx](https://www.sphinx-doc.org/) and [JupyterBook](https://jupyterbook.org/) for building documentation. Thebe documentation is located in the `/docs` directory.
+You will need the development environment setup, see the above {ref}`dev-install` to learn more.
+You will also need Python installed, and can install the requirements for the documentation using:
+
+```bash
+cd docs/
+pip install -r doc-requirements.txt
+```
+
+Once you are in the documentation folder:
+
+```bash
+make html
+```
+
+Finally, run the following to view the built documentation locally:
+
+```bash
+make show
+```
 
 # Releasing Thebe
 
