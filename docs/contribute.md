@@ -59,6 +59,29 @@ As you change the code in `src/`,
 the javascript will automatically be re-built,
 but you'll be required to refresh the page.
 
+## Build documentation locally
+
+thebe documentation are located under the `/docs` directory. They are build using [Sphinx](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html). To install the required Python packages, run:
+
+```bash
+cd docs/
+pip install -r doc-requirements.txt
+```
+
+> You will also need to install [Node.js](https://nodejs.org/) and [NPM](https://www.npmjs.com/) on your system if you havn't already.
+
+After you have the Python packages and NPM installed, run the following to build the documents:
+
+```bash
+make html
+```
+
+Last, run the following to view the build documentation locally:
+
+```bash
+make show
+```
+
 # Committing changes
 
 Thebe uses code autoformatting so you don't need to worry about style lint,
