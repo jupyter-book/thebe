@@ -256,8 +256,9 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
-  if(isReadOnly)
+  if (isReadOnly) {
     required.readOnly = true;
+  }
 
   // Gets CodeMirror config if it exists
   let codeMirrorOptions = {};
