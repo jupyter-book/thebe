@@ -396,7 +396,9 @@ export function requestBinder({
 
   return new Promise(async (resolve, reject) => {
     // if binder already spawned our pod and we remember the creds, reuse it
-    let existing_server = JSON.parse(window.localStorage.getItem("thebe-binder-" + url));
+    let existing_server = JSON.parse(
+      window.localStorage.getItem("thebe-binder-" + url)
+    );
     if (
       existing_server !== null &&
       new Date().getTime() - new Date(existing_server.started).getTime() < 86400
