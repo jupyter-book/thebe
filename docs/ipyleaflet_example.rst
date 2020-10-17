@@ -88,7 +88,6 @@ Press the "Activate" button below to connect to a Jupyter server:
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
 
-
 Here we will display a basic leaflet map:
 
 .. raw:: html
