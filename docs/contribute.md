@@ -99,6 +99,22 @@ TODO: create some exemplar tests that:
  - [ ] test the initial thebe render
  - [ ] test interacting with the server and rendering results
 
+# Thebe Docs
+
+Thebe uses [Sphinx](https://www.sphinx-doc.org/) and [JupyterBook](https://jupyterbook.org/) for building documentation.
+You will need Python installed, and can install the requirements for the documentation using:
+
+```bash
+cd docs
+pip install -r doc-requirements.txt
+```
+
+Once you are in the documentation folder:
+
+```bash
+make html
+```
+
 # Releasing Thebe
 
 To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/latest/contributing.html#releases-and-change-logs) to make sure the repo is ready for release.
