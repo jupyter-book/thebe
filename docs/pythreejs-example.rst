@@ -1,5 +1,5 @@
 =================
-PyThreeJs Example
+pythreejs Example
 =================
 
 Thebe can display output from pythreejs_. The examples are taken from the
@@ -10,7 +10,8 @@ pythreejs documentation and are licensed BSD 3 Clause.
 Setup
 =====
 
-Be sure to load require.js before any of your thebe activation code:
+Be sure to load require.js before any of your thebe activation code so that the
+Jupyter widgets can function:
 
 .. code-block:: html
 
