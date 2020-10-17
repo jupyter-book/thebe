@@ -145,7 +145,8 @@ Here's the HTML for the cell above:
    plt.plot(x, np.cos(x))
    </pre>
    
-And here's an example where the contents cannot be modified once instantiated
+And here's an example where the contents cannot be modified once instantiated:
+
 .. raw:: html
 
    <pre data-executable="true" data-language="python" data-readonly="true">print("My contents cannot be changed!")</pre>
