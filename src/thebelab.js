@@ -8,7 +8,7 @@ if (typeof window !== "undefined") {
 }
 
 import { Widget } from "@phosphor/widgets";
-import { Session } from "@jupyterlab/services";
+import { Session, Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
@@ -393,11 +393,44 @@ export function requestBinder({
     url = binderUrl + "/build/gh/" + repo + "/" + ref;
   }
   console.log("Binder build URL", url);
-  events.trigger("status", {
-    status: "building",
-    message: "Requesting build from binder",
-  });
-  return new Promise((resolve, reject) => {
+
+  return new Promise(async (resolve, reject) => {
+    // if binder already spawned our pod and we remember the creds, reuse it
+    let spawned_pod_url = window.localStorage.getItem(
+      "thebe_binder_pod_url_" + url
+    );
+    let spawned_pod_token = window.localStorage.getItem(
+      "thebe_binder_pod_token_" + url
+    );
+    if (
+      ignoreSavedPod === false &&
+      spawned_pod_url !== null &&
+      spawned_pod_token !== null
+    ) {
+      console.log("Saved binder pod info detected");
+      let settings = ServerConnection.makeSettings({
+        baseUrl: spawned_pod_url,
+        wsUrl: "ws" + spawned_pod_url.slice(4),
+        token: spawned_pod_token,
+      });
+      try {
+        await Kernel.listRunning(settings);
+        console.log("Saved binder pod is valid, reusing connection");
+        resolve(settings);
+        return;
+      } catch (err) {
+        console.log(
+          "Saved binder pod info seems to be invalid, respawning pod",
+          err
+        );
+      }
+    }
+
+    events.trigger("status", {
+      status: "building",
+      message: "Requesting build from binder",
+    });
+
     let es = new EventSource(url);
     es.onerror = (err) => {
       console.error("Lost connection to " + url, err);
@@ -436,6 +469,21 @@ export function requestBinder({
           break;
         case "ready":
           es.close();
+          try {
+            // save the current connection url+token to reuse later
+            window.localStorage.setItem("thebe_binder_pod_url_" + url, msg.url);
+            window.localStorage.setItem(
+              "thebe_binder_pod_token_" + url,
+              msg.token
+            );
+          } catch (e) {
+            // storage quota full, gently ignore nonfatal error
+            console.warn(
+              "Couldn't save thebe binder connection info to local storage",
+              e
+            );
+          }
+
           resolve(
             ServerConnection.makeSettings({
               baseUrl: msg.url,
