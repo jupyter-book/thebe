@@ -184,13 +184,13 @@ function renderCell(element, options) {
     $("<button class='thebelab-button thebelab-run-button'>")
       .text("run")
       .attr("title", "run this cell")
-      .click(execute)
+      .on('click', execute)
   );
   $cell.append(
     $("<button class='thebelab-button thebelab-restart-button'>")
       .text("restart")
       .attr("title", "restart the kernel")
-      .click(restart)
+      .on('click', restart)
   );
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
@@ -229,7 +229,18 @@ function renderCell(element, options) {
       events.trigger("request-kernel");
     }
     kernelPromise.then((kernel) => {
-      outputArea.future = kernel.requestExecute({ code: code });
+      try {
+        outputArea.future = kernel.requestExecute({ code: code });
+      }
+      catch(error) {
+        outputArea.model.clear();
+        outputArea.model.add({
+          output_type: "stream",
+          name: "stderr",
+          text: `Failed to execute. ${error}`,
+        });
+        events.trigger("request-kernel");
+      }
     });
     return false;
   }
@@ -238,7 +249,12 @@ function renderCell(element, options) {
     let kernel = $cell.data("kernel");
     if (kernel) {
       kernelPromise.then((kernel) => {
-        kernel.restart();
+        try {
+            kernel.restart();
+        }
+        catch(error) {
+            events.trigger("request-kernel");
+        }
       });
     }
   }
@@ -508,11 +524,13 @@ export function bootstrap(options) {
     });
   }
 
+  events.on("new-kernel", (events, kernel) => {console.log(kernel); hookupKernel(kernel, cells)})
+
   kernelPromise.then((session) => {
     let kernel = session.kernel;
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
-    hookupKernel(kernel, cells);
+    events.trigger("new-kernel", kernel);
   });
   return kernelPromise;
 }
