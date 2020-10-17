@@ -23,7 +23,7 @@ In order to get Thebe running locally, you'll need to have Node installed on you
 
 - Install Node by [following the nodejs instructions](https://nodejs.org/en/download/)
 - Install Node through `conda`
-  
+
   ```bash
   conda install -c conda-forge nodejs
   ```
@@ -77,13 +77,27 @@ to run auto-formatting prior to each commit.
 
 # Testing Thebe
 
-You can run the tests locally with `npm test`.
+You can run the tests locally with `npm test` or `npm run test:watch`.
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
 
-Test code is in the `test` directory, and you can write new tests in there.
-You can also test interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
+Test code is in the `test` directory, and you can write new tests in there see **Adding Tests** below.
+
+You can also test manually interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
 
 TODO: get testing infrastructure to a point where we can reasonably request tests for new features.
+## Adding Tests
+
+ - [karma](https://karma-runner.github.io/latest/index.html) is used for automated testing and configured in [karma.conf.js](.karma.conf.js)
+ - `karma` uses the same `webpack` configuration as the build from [webpack.config.js](./webpack.config.js)
+ - Test files are in the `test` directory and currently setup in a single entry-point fashion, with all tests being required by the `test_entrypoint.js` file. This has pros and cons:
+    - pro - webpack builds a single bundle which is faster
+    - pro - we have a single top level describe block that we know will execute first, so can use before/after to start and shutdown a Jupyter server
+    - con - we cannot run single tests, only the full bundle
+
+TODO: create some exemplar tests that:
+ - [ ] test starting thebe with different options and controlling on page state at bootstrap
+ - [ ] test the initial thebe render
+ - [ ] test interacting wiht the server and rendering results
 
 # Releasing Thebe
 

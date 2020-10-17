@@ -1,14 +1,13 @@
 module.exports = function (config) {
   config.set({
-    files: ["test/**/*.js"],
+    files: ["test/test_entrypoint.js"],
     frameworks: ["mocha"],
-
     preprocessors: {
       // only specify one entry point
       // and require all tests in there
-      "test/test.js": ["webpack"],
+      "test/test_entrypoint.js": ["webpack"],
     },
-    reporters: ["progress", "spec", "coverage-istanbul"],
+    reporters: ["mocha", "coverage-istanbul"],
     port: 9876, // karma web server port
     colors: true,
     logLevel: config.LOG_DEBUG,

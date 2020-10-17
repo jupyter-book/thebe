@@ -1,9 +1,7 @@
 import * as thebe from "../src";
 
-import { expect } from "chai";
-
-describe("thebe", () => {
+describe("bootstrap", () => {
   it("should define events", () => {
     expect(thebe).to.have.property("events");
   });
-});
+})
