@@ -1,4 +1,4 @@
-# Contribute to `thebe`
+# Contributing Guide
 
 Thanks for your interest in contributing to `thebe`, your contributions are welcome and appreciated 🎉. This page contains some information to help you get started.
 
