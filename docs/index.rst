@@ -96,6 +96,7 @@ Horizon 2020 European Research Infrastructure project (676541).
 
    start
    configure
+   security
    events
    config_reference
    howto/initialize_cells

@@ -58,7 +58,3 @@ Calling the bootstrap function is generally accomplished by connecting it to the
 
    If ``bootstrap: true`` is in the Thebelab configuration, this will be triggered
    automatically upon page load.
-
-
-.. include::
-   security.rst
