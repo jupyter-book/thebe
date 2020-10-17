@@ -1,21 +1,21 @@
-==================
-Configure Thebelab
-==================
+===============
+Configure Thebe
+===============
 
-You control Thebelab's behavior with a configuration block that is placed somewhere
+You control Thebe's behavior with a configuration block that is placed somewhere
 in a page's HTML. The block has the following structure:
 
 .. code-block:: html
 
    <script type="text/x-thebe-config">
-      { 
+      {
           a: collection
           of: key
           val: pairs
       }
    </script>
 
-For example, the following configuration tells Thebelab to use a BinderHub for its
+For example, the following configuration tells Thebe to use a BinderHub for its
 sessions, as well as the repository to use with Binder:
 
 .. code-block:: html
@@ -30,17 +30,17 @@ sessions, as well as the repository to use with Binder:
     }
     </script>
 
-When Thebelab is launched on a page, this configuration is used to control
+When Thebe is launched on a page, this configuration is used to control
 its behavior.
 
-See the sections below for things that you can control with Thebelab configuration.
+See the sections below for things that you can control with Thebe configuration.
 
 
 Configure the kernel that will be launched
 ==========================================
 
-To configure the kernel that Thebelab requests when it launches, use the
-following section in the Thebelab configuration:
+To configure the kernel that Thebe requests when it launches, use the
+following section in the Thebe configuration:
 
 .. code-block:: javascript
 
@@ -48,13 +48,13 @@ following section in the Thebelab configuration:
      kernelName: "python3",
    },
 
-When Thebelab is launched, it will request a kernel of this name for the page.
+When Thebe is launched, it will request a kernel of this name for the page.
 Note that currently there can be only one kernel per page.
 
 .. note::
 
    You must ensure that the value of ``kernelName`` exists in the environment that
-   Thebelab tries to launch. Some short-hands for certain languages (like ``python``)
+   Thebe tries to launch. Some short-hands for certain languages (like ``python``)
    may also work.
 
 
@@ -80,7 +80,7 @@ Customize CodeMirror
 
 CodeMirror is the tool used to convert your code cells into editable cells.
 It has a number of configuration options, such as theming and syntax highlighting.
-You can edit all of these attributes in a cell with the following thebelab configuration:
+You can edit all of these attributes in a cell with the following thebe configuration:
 
 .. code:: html
 

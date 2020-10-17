@@ -4,18 +4,18 @@
 A minimal example
 =================
 
-This page illustrates a minimal setup to get Thebe Lab running, using
+This page illustrates a minimal setup to get Thebe running, using
 `mybinder <http://mybinder.org/>`_ as a
 kernel (i.e. computation backend) provider. This guide will go step-by-step
-in loading ThebeLab and activating it so that your code cells become active.
+in loading Thebe and activating it so that your code cells become active.
 
-Loading and configuring ThebeLab
-================================
+Loading and configuring Thebe
+=============================
 
-In order to use ThebeLab, we must first set its configuration. This must be
-done **before** ThebeLab is loaded from a CDN or a local script.
+In order to use Thebe, we must first set its configuration. This must be
+done **before** Thebe is loaded from a CDN or a local script.
 
-Here's a sample configuration for ThebeLab
+Here's a sample configuration for Thebe
 
 .. raw:: html
 
@@ -41,11 +41,11 @@ Here's a sample configuration for ThebeLab
      }
    </script>
 
-In this case, ``requestKernel: true`` asks Thebelab to request a kernel
+In this case, ``requestKernel: true`` asks Thebe to request a kernel
 immediately upon being loaded, and ``binderOptions`` provides the repository
 that Binder will use to give us a Kernel.
 
-Next, we'll load Thebelab from a CDN:
+Next, we'll load Thebe from a CDN:
 
 .. raw:: html
 
@@ -55,11 +55,11 @@ Next, we'll load Thebelab from a CDN:
 
    <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
-Adding a button to activate ThebeLab
-====================================
+Adding a button to activate Thebe
+=================================
 
-There are many ways you can activate Thebelab. In this case, we'll add a
-button to our page, and configure it to **bootstrap** Thebelab once it is
+There are many ways you can activate Thebe. In this case, we'll add a
+button to our page, and configure it to **bootstrap** Thebe once it is
 clicked. We'll do this with a little bit of Javascript.
 
 .. raw:: html
@@ -73,7 +73,7 @@ clicked. We'll do this with a little bit of Javascript.
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
 
-Placing the button and adding the JavaScript to enable Thebelab was done with the
+Placing the button and adding the JavaScript to enable Thebe was done with the
 code below:
 
 .. code:: html
@@ -91,7 +91,7 @@ code below:
 Adding code cells
 =================
 
-Finally, we'll add code cells that ThebeLab can activate. By default, ThebeLab
+Finally, we'll add code cells that Thebe can activate. By default, Thebe
 will look for any HTML elements with ``data-executable="true"``. We'll also add
 a ``data-language="python"`` attribute to enable syntax highlighting with CodeMirror.
 
@@ -106,16 +106,16 @@ Here's the code that created the cell above:
 
    <pre data-executable="true" data-language="python">print("Hello!")</pre>
 
-Press the ThebeLab button above to activate this cell, then press the "Run" button,
+Press the Thebe button above to activate this cell, then press the "Run" button,
 or "Shift-Enter" to execute this cell.
 
 .. note::
 
-   When ThebeLab is activated in this example, it must first ask Binder for a kernel.
+   When Thebe is activated in this example, it must first ask Binder for a kernel.
    This may take several seconds.
 
 Now let's try another cell that generates a Matplotlib plot. Because we've
-configured ThebeLab to use Binder with an environment that has Numpy and
+configured Thebe to use Binder with an environment that has Numpy and
 Matplotlib, this works as expected. Try modifying the cell contents and
 re-running!
 
