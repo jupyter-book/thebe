@@ -97,7 +97,7 @@ TODO: get testing infrastructure to a point where we can reasonably request test
 TODO: create some exemplar tests that:
  - [ ] test starting thebe with different options and controlling on page state at bootstrap
  - [ ] test the initial thebe render
- - [ ] test interacting wiht the server and rendering results
+ - [ ] test interacting with the server and rendering results
 
 # Releasing Thebe
 
