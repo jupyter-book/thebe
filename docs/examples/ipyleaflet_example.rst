@@ -3,7 +3,7 @@ Ipyleaflet Example
 =================
 
 Thebe can display output from ipyleaflet_ Jupyter widgets. This example_ is repurposed from the
-ipyleaflet documentation and is licensed under the BSD 3 Clause.
+ipyleaflet documentation and is licensed under the MIT License (MIT).
 
 .. _ipyleaflet: https://github.com/jupyter-widgets/ipyleaflet
 
@@ -12,7 +12,7 @@ ipyleaflet documentation and is licensed under the BSD 3 Clause.
 Setup
 =====
 
-Be sure to load require.min.js before any of your thebe activation code, it is required for widgets to work:
+Be sure to load require.min.js before any of your thebe activation code, it is required for Jupyter widgets to work:
 
 .. code-block:: html
 
@@ -28,7 +28,7 @@ Configure thebe and load it:
        binderOptions: {
          repo: "jupyter-widgets/ipyleaflet",
          ref: "0.13.3",
-         binderUrl: "https://binder.libretexts.org",
+         binderUrl: "https://mybinder.org",
          repoProvider: "github",
        },
      }
@@ -67,7 +67,7 @@ Example
        binderOptions: {
          repo: "jupyter-widgets/ipyleaflet",
          ref: "0.13.3",
-         binderUrl: "https://binder.libretexts.org",
+         binderUrl: "https://mybinder.org",
          repoProvider: "github",
        },
      }
