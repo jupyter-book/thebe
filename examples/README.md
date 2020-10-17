@@ -1,6 +1,6 @@
 # Examples of use of Thebe
 
-You can [browse them online](https://minrk.github.io/thebelab/).
+You can [browse them online](https://executablebooks.github.io/thebe/).
 To serve them locally instead, run:
 
     python -m http.server
