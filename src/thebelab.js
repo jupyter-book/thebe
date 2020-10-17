@@ -419,6 +419,7 @@ export function requestBinder({
           "Saved binder pod info seems to be invalid, respawning pod",
           err
         );
+        window.localStorage.removeItem("thebe-binder-" + url);
       }
     }
 
