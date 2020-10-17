@@ -100,6 +100,6 @@ Horizon 2020 European Research Infrastructure project (676541).
    config_reference
    howto/initialize_cells
    minimal_example
-   plotly-example
+   examples/plotly-example
    contribute
    api
