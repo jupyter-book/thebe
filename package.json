@@ -12,7 +12,8 @@
     "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js examples/*.js test/*.js",
     "serve": "http-server -a 127.0.0.1 -o development.html",
     "develop": "concurrently \"npm run build:watch\" \"npm run serve\"",
-    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js"
+    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "test:watch": "karma start --auto-watch --browsers ChromeHeadless karma.conf.js"
   },
   "files": [
     "lib/**",
@@ -47,6 +48,7 @@
     "@jupyterlab/mathjax2": "^1.2.0",
     "@jupyterlab/outputarea": "^1.0.1",
     "@jupyterlab/services": "^4.2.2",
+    "@jupyterlab/testutils": "^2.2.6",
     "@jupyterlab/theme-light-extension": "^1.2.8",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
@@ -63,6 +65,7 @@
     "karma-coverage": "^2.0.3",
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^4.0.2",
     "mocha": "^8.2.0",
