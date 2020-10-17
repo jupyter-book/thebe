@@ -4,7 +4,7 @@
 A minimal example
 =================
 
-This page illustrates a minimal setup to get Thebe Lab running, using
+This page illustrates a minimal setup to get Thebe running, using
 `mybinder <http://mybinder.org/>`_ as a
 kernel (i.e. computation backend) provider. This guide will go step-by-step
 in loading Thebe and activating it so that your code cells become active.
