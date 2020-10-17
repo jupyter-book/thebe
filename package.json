@@ -49,7 +49,7 @@
     "@jupyterlab/outputarea": "^1.0.1",
     "@jupyterlab/services": "^4.2.2",
     "@jupyterlab/testutils": "^2.2.6",
-    "@jupyterlab/theme-light-extension": "^1.2.8",
+    "@jupyterlab/theme-light-extension": "^2.2.5",
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
     "codecov": "^3.8.0",
