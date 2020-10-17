@@ -7,13 +7,70 @@ pythreejs documentation and are licensed BSD 3 Clause.
 
 .. _pythreejs: https://github.com/jupyter-widgets/pythreejs
 
-Be sure to load require.js before any of your thebe activation code::
+Setup
+=====
+
+Be sure to load require.js before any of your thebe activation code:
+
+.. code-block:: html
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+Configure thebe and load it:
+
+.. code-block:: html
+
+   <script type="text/x-thebe-config">
+     {
+       requestKernel: true,
+       binderOptions: {
+         repo: "jupyter-widgets/pythreejs",
+         ref: "2.2.1",
+         binderUrl: "https://binder.libretexts.org",
+         repoProvider: "github",
+       },
+     }
+   </script>
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+
+Create a button to activate thebe:
+
+.. code-block:: html
+
+   <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
+     Activate
+   </button>
+   <script>
+   var bootstrapThebe = function() {
+       thebelab.bootstrap();
+   }
+   document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
+   </script>
+
+Now add code cells between these HTML tags:
+
+.. code-block:: html
+
+   <pre data-executable="true" data-language="python"></pre>
+
+Examples
+========
 
 .. raw:: html
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+   <script type="text/x-thebe-config">
+     {
+       requestKernel: true,
+       binderOptions: {
+         repo: "jupyter-widgets/pythreejs",
+         ref: "2.2.1",
+         binderUrl: "https://binder.libretexts.org",
+         repoProvider: "github",
+       },
+     }
+   </script>
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
 Press the "Activate" button below to connect to a Jupyter server:
 
@@ -28,21 +85,6 @@ Press the "Activate" button below to connect to a Jupyter server:
    }
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
-
-.. raw:: html
-
-   <script type="text/x-thebe-config">
-     {
-       requestKernel: true,
-       binderOptions: {
-         repo: "jupyter-widgets/pythreejs",
-         ref: "2.2.1",
-         binderUrl: "https://binder.libretexts.org",
-         repoProvider: "github",
-       },
-     }
-   </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
 Primitive shapes can be displayed:
 
@@ -92,6 +134,5 @@ More complex shapes can be constructed and viewed:
                                                     intensity=0.6)])
    scene = Scene(children=[surf, surf2, c, AmbientLight(intensity=0.5)])
    renderer = Renderer(camera=c, scene=scene, controls=[OrbitControls(controlling=c)], width=400, height=400)
-   #display(renderer)
-   surf
+   display(renderer)
    </pre>
