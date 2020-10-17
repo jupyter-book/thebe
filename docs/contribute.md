@@ -60,7 +60,7 @@ As you change the code in `src/`,
 the javascript will automatically be re-built,
 but you'll be required to refresh the page.
 
-# Committing changes
+## Committing changes
 
 Thebe uses code autoformatting so you don't need to worry about style lint,
 so whenever you are ready to commit changes
@@ -76,7 +76,7 @@ fi
 
 to run auto-formatting prior to each commit.
 
-# Testing Thebe
+## Testing Thebe
 
 You can run the tests locally with `npm test` or `npm run test:watch`.
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
@@ -86,7 +86,7 @@ Test code is in the `test` directory, and you can write new tests in there see *
 You can also test manually interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
 
 TODO: get testing infrastructure to a point where we can reasonably request tests for new features.
-## Adding Tests
+### Adding Tests
 
  - [karma](https://karma-runner.github.io/latest/index.html) is used for automated testing and configured in [karma.conf.js](.karma.conf.js)
  - `karma` uses the same `webpack` configuration as the build from [webpack.config.js](./webpack.config.js)
@@ -123,7 +123,7 @@ Finally, run the following to view the built documentation locally:
 make show
 ```
 
-# Releasing Thebe
+## Releasing Thebe
 
 To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/latest/contributing.html#releases-and-change-logs) to make sure the repo is ready for release.
 
@@ -132,7 +132,7 @@ Once prepared, bump the version with:
 1. update version and create tag with `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
 2. publish version to github: `git push --follow-tags`
 
-# Thebe architecture
+## Thebe architecture
 
 Thebe consumes three principal APIs:
 
@@ -140,7 +140,7 @@ Thebe consumes three principal APIs:
 2. [JupyterLab][] for talking to a running Jupyter server to execute code and display outputs
 3. [BinderHub][] for requesting kernels from a BinderHub instance, such as mybinder.org.
 
-## Manipulating the page
+### Manipulating the page
 
 The first thing Thebe does is find elements on the page
 that should be made executable.
@@ -150,7 +150,7 @@ with a query such as the `$("[data-executable])` (this is the default, but can b
 Once it has found these elements,
 Cell objects are created (more on Cells in the JupyterLab API), which then *replace* the elements that were found.
 
-## JupyterLab APIs
+### JupyterLab APIs
 
 The main thing Thebe does is execute code and display output.
 This is done with JupyterLab APIs.
@@ -163,7 +163,7 @@ Main APIs used:
 - Kernel for sending/receiving messages to/from a connected kernel
 - WidgetManager for working with interactive widgets
 
-## Configuration
+### Configuration
 
 Configuration is handled by adding a `script` tag with type="text/x-thebe-config". This should specify a javascript object.
 
