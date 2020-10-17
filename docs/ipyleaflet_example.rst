@@ -9,13 +9,70 @@ ipyleaflet documentation and is licensed under the BSD 3 Clause.
 
 .. _example: https://github.com/jupyter-widgets/ipyleaflet/blob/master/examples/Heatmap.ipynb
 
-Be sure to load require.min.js before any of your thebe activation code, it is required for widgets to work::
+Setup
+=====
+
+Be sure to load require.min.js before any of your thebe activation code, it is required for widgets to work:
+
+.. code-block:: html
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+Configure thebe and load it:
+
+.. code-block:: html
+
+   <script type="text/x-thebe-config">
+     {
+       requestKernel: true,
+       binderOptions: {
+         repo: "jupyter-widgets/ipyleaflet",
+         ref: "0.13.3",
+         binderUrl: "https://binder.libretexts.org",
+         repoProvider: "github",
+       },
+     }
+   </script>
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+
+Create a button to activate thebe:
+
+.. code-block:: html
+
+   <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
+     Activate
+   </button>
+   <script>
+   var bootstrapThebe = function() {
+       thebelab.bootstrap();
+   }
+   document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
+   </script>
+
+Now add code cells between these HTML tags:
+
+.. code-block:: html
+
+   <pre data-executable="true" data-language="python"></pre>
+
+Example
+=======
 
 .. raw:: html
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+   <script type="text/x-thebe-config">
+     {
+       requestKernel: true,
+       binderOptions: {
+         repo: "jupyter-widgets/ipyleaflet",
+         ref: "0.13.3",
+         binderUrl: "https://binder.libretexts.org",
+         repoProvider: "github",
+       },
+     }
+   </script>
+   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
 Press the "Activate" button below to connect to a Jupyter server:
 
@@ -31,20 +88,6 @@ Press the "Activate" button below to connect to a Jupyter server:
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
 
-.. raw:: html
-
-   <script type="text/x-thebe-config">
-     {
-       requestKernel: true,
-       binderOptions: {
-         repo: "jupyter-widgets/ipyleaflet",
-         ref: "0.13.3",
-         binderUrl: "https://binder.libretexts.org",
-         repoProvider: "github",
-       },
-     }
-   </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
 
 Here we will display a basic leaflet map:
 
