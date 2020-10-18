@@ -8,7 +8,7 @@ if (typeof window !== "undefined") {
 }
 
 import { Widget } from "@phosphor/widgets";
-import { Session } from "@jupyterlab/services";
+import { Session, Kernel } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
@@ -192,6 +192,12 @@ function renderCell(element, options) {
       .attr("title", "restart the kernel")
       .click(restart)
   );
+  $cell.append(
+    $("<button class='thebelab-button thebelab-restartall-button'>")
+      .text("restart & run all")
+      .attr("title", "restart the kernel and run all cells")
+      .click(restartAndRunAll)
+  );
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
     kernelResolve = resolve;
@@ -215,17 +221,21 @@ function renderCell(element, options) {
     $output.remove();
   }
 
+  function setOutputText(text = "Waiting for kernel...") {
+    outputArea.model.clear();
+    outputArea.model.add({
+      output_type: "stream",
+      name: "stdout",
+      text,
+    });
+  }
+
   function execute() {
     let kernel = $cell.data("kernel");
     let code = cm.getValue();
     if (!kernel) {
       console.debug("No kernel connected");
-      outputArea.model.clear();
-      outputArea.model.add({
-        output_type: "stream",
-        name: "stdout",
-        text: "Waiting for kernel...",
-      });
+      setOutputText();
       events.trigger("request-kernel");
     }
     kernelPromise.then((kernel) => {
@@ -237,10 +247,24 @@ function renderCell(element, options) {
   function restart() {
     let kernel = $cell.data("kernel");
     if (kernel) {
-      kernelPromise.then((kernel) => {
-        kernel.restart();
+      return kernelPromise.then(async (kernel) => {
+        await kernel.restart();
+        return kernel;
       });
     }
+    return Promise.resolve(kernel);
+  }
+
+  function restartAndRunAll() {
+    if (window.thebelab) {
+      window.thebelab.cells.map((idx, { setOutputText }) => setOutputText());
+    }
+    restart().then((kernel) => {
+      if (!kernel || !window.thebelab) return kernel;
+      // Note, the jquery map is overridden, and is in the opposite order of native JS
+      window.thebelab.cells.map((idx, { execute }) => execute());
+      return kernel;
+    });
   }
 
   let theDiv = document.createElement("div");
@@ -274,7 +298,7 @@ function renderCell(element, options) {
   Mode.ensure(mode).then((modeSpec) => {
     cm.setOption("mode", mode);
   });
-  return $cell;
+  return { cell: $cell, execute, setOutputText };
 }
 
 export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
@@ -294,7 +318,7 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
 
 export function hookupKernel(kernel, cells) {
   // hooks up cells to the kernel
-  cells.map((i, cell) => {
+  cells.map((i, { cell }) => {
     $(cell).data("kernel-promise-resolve")(kernel);
   });
 }
@@ -393,11 +417,41 @@ export function requestBinder({
     url = binderUrl + "/build/gh/" + repo + "/" + ref;
   }
   console.log("Binder build URL", url);
-  events.trigger("status", {
-    status: "building",
-    message: "Requesting build from binder",
-  });
-  return new Promise((resolve, reject) => {
+
+  return new Promise(async (resolve, reject) => {
+    // if binder already spawned our pod and we remember the creds, reuse it
+    let existing_server = JSON.parse(
+      window.localStorage.getItem("thebe-binder-" + url)
+    );
+    if (
+      existing_server !== null &&
+      new Date().getTime() - new Date(existing_server.started).getTime() < 86400
+    ) {
+      console.log("Saved binder pod info detected");
+      let settings = ServerConnection.makeSettings({
+        baseUrl: existing_server.url,
+        wsUrl: "ws" + existing_server.url.slice(4),
+        token: existing_server.token,
+      });
+      try {
+        await Kernel.listRunning(settings);
+        console.log("Saved binder pod is valid, reusing connection");
+        resolve(settings);
+        return;
+      } catch (err) {
+        console.log(
+          "Saved binder pod info seems to be invalid, respawning pod",
+          err
+        );
+        window.localStorage.removeItem("thebe-binder-" + url);
+      }
+    }
+
+    events.trigger("status", {
+      status: "building",
+      message: "Requesting build from binder",
+    });
+
     let es = new EventSource(url);
     es.onerror = (err) => {
       console.error("Lost connection to " + url, err);
@@ -436,6 +490,24 @@ export function requestBinder({
           break;
         case "ready":
           es.close();
+          try {
+            // save the current connection url+token to reuse later
+            window.localStorage.setItem(
+              "thebe-binder-" + url,
+              JSON.stringify({
+                url: msg.url,
+                token: msg.token,
+                started: new Date(),
+              })
+            );
+          } catch (e) {
+            // storage quota full, gently ignore nonfatal error
+            console.warn(
+              "Couldn't save thebe binder connection info to local storage",
+              e
+            );
+          }
+
           resolve(
             ServerConnection.makeSettings({
               baseUrl: msg.url,
@@ -514,6 +586,7 @@ export function bootstrap(options) {
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
+  if (window.thebelab) window.thebelab.cells = cells;
   return kernelPromise;
 }
 
