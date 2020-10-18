@@ -85,7 +85,8 @@ Press the "Activate" button below to connect to a Jupyter server:
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
 
-Here is a distribution plot example from https://plotly.com/python/distplot/:
+Here is a distribution plot example from https://plotly.com/python/distplot/
+(MIT License):
 
 .. raw:: html
 
