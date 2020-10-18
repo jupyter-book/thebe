@@ -1,6 +1,6 @@
-=================
+==================
 Ipyleaflet Example
-=================
+==================
 
 Thebe can display output from ipyleaflet_ Jupyter widgets. This example_ is repurposed from the
 ipyleaflet documentation and is licensed under the MIT License (MIT).
