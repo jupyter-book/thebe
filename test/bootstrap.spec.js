@@ -1,5 +1,4 @@
-import * as thebe from '../src';
-import {appendConfig} from './helpers';
+import * as thebelab from '../src/thebelab';
 
 /**
  * Test the bootstrapping process
@@ -8,21 +7,20 @@ describe("bootstrap", () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
-  // TODO: consider using karma-fixture
-  it("thebelab.events exists", async () => {
-    expect(thebe).to.have.property("events");
+  it("calls pre-render hook", () => {
+    const spy = chai.spy()
+    thebelab.bootstrap({ preRenderHook: spy }); // don't wait for kernel
+    expect(spy).to.have.been.called.once;
   })
-  it("should render a pre[data-executable] tags", async function() {
-    this.timeout(20000);
-    const pre = document.createElement('pre')
-    pre.innerHTML = 'print("Hello Thebe!");'
-    pre.setAttribute('data-executable', 'true');
-    document.body.appendChild(pre);
+  it.skip('calls strip prompts, when specified in options', () => {
+    chai.spy.on(thebelab, 'stripPrompts');
 
-    await thebe.bootstrap();
+    thebelab.bootstrap()
+    expect(thebelab.stripPrompts).to.not.have.been.called;
 
-    const cells = document.body.getElementsByClassName("thebe-input")
-    expect(cells.length).to.equal(1)
-  });
+    thebelab.bootstrap({stripPrompts: true})
+    expect(thebelab.stripPrompts).to.have.been.called.once;
 
+    chai.spy.restore(thebelab)
+  })
 })

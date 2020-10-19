@@ -8,4 +8,5 @@ describe("thebe", () => {
   require("./sanity.spec");
   require("./thebe.properties.spec");
   require("./bootstrap.spec");
+  require("./render.spec");
 });
