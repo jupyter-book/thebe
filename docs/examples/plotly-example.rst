@@ -26,7 +26,7 @@ Configure thebe and load it:
        binderOptions: {
          repo: "plotly/plotly.py",
          ref: "doc-prod",
-         binderUrl: "https://binder.libretexts.org",
+         binderUrl: "https://mybinder.org",
          repoProvider: "github",
        },
      }
