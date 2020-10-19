@@ -1,4 +1,4 @@
-import * as pWidget from "@phosphor/widgets";
+import * as pWidget from "@lumino/widgets";
 
 import { HTMLManager } from "@jupyter-widgets/html-manager";
 
