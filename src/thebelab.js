@@ -248,7 +248,7 @@ function renderCell(element, options) {
   Widget.attach(outputArea, theDiv);
 
   const mode = $element.data("language") || "python";
-  const isReadOnly = $element.data("readonly") || false;
+  const isReadOnly = $element.data("readonly");
   const required = {
     value: source,
     mode: mode,
@@ -256,8 +256,8 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
-  if (isReadOnly) {
-    required.readOnly = true;
+  if (isReadOnly !== undefined) {
+    required.readOnly = isReadOnly !== false; //overrides codeMirrorConfig.readOnly for cell
   }
 
   // Gets CodeMirror config if it exists
