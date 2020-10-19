@@ -149,6 +149,6 @@ And here's an example where the contents cannot be modified once instantiated:
 
 .. raw:: html
 
-   <pre data-executable="true" data-language="python" data-readonly="true">print("My contents cannot be changed!")</pre>
+   <pre data-executable="true" data-language="python" data-readonly>print("My contents cannot be changed!")</pre>
 
 For more examples, check out :ref:`more_examples`.
