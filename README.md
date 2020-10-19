@@ -75,10 +75,19 @@ A full config script with defaults:
   // Options for requesting a notebook server from mybinder.org
   binderOptions: {
     repo: "minrk/ligo-binder",
+
+    // only repo is required, the rest below are defaults:
     ref: "master",
     binderUrl: "https://mybinder.org",
     // select repository source (optional). Supports Github(default), Gitlab, and Git
     repoProvider: "github",
+    savedSession {
+      // if enabled, thebe will store and try to re-use
+      // connections (with credentials!) to running servers
+      enabled: true,
+      maxAge: 86400, // the max age in seconds to consider re-using a session
+      storagePrefix: "thebe-binder-",
+    }
   },
 
   // Options for requesting a kernel from the notebook server
