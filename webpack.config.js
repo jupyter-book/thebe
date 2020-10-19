@@ -48,7 +48,7 @@ module.exports = {
     shim(
       /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainareawidget|mainmenu|thememanager|toolbar|widgettracker)/
     ),
-    shim(/@jupyterlab\/ui-components/),
+    // shim(/@jupyterlab\/ui-components/),
     // shim(/@jupyterlab\/apputils\/style\/.*/),
 
     // JupyterLab's codemirror package is also big,
