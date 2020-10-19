@@ -239,7 +239,16 @@ function renderCell(element, options) {
       events.trigger("request-kernel");
     }
     kernelPromise.then((kernel) => {
-      outputArea.future = kernel.requestExecute({ code: code });
+      try {
+        outputArea.future = kernel.requestExecute({ code: code });
+      } catch (error) {
+        outputArea.model.clear();
+        outputArea.model.add({
+          output_type: "stream",
+          name: "stderr",
+          text: `Failed to execute. ${error} Please refresh the page.`,
+        });
+      }
     });
     return false;
   }
