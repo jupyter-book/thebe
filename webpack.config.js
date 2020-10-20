@@ -32,21 +32,23 @@ module.exports = {
     // skip postcss
     shim(/postcss/),
     shim(/font\-awesome/),
+    shim(/@blueprintjs/),
     // shim(/ajv/),
     // shim(/lodash/),
-    // shim(/@phosphor\/coreutils\/lib\/random/),
-    // shim out some unused phosphor
+    // shim(/@lumino\/coreutils\/lib\/random/),
+    // shim out some unused lumino
     shim(
-      /@phosphor\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/
+      /@lumino\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/
     ),
-    shim(/@phosphor\/collections\/lib\/(bplustree).*/),
-    shim(/@phosphor\/(dragdrop|commands).*/),
+    shim(/@lumino\/collections\/lib\/(bplustree).*/),
+    shim(/@lumino\/(dragdrop|commands).*/),
 
     // unused @jupyterlab
     // shim(/@jupyterlab\/apputils/),
     shim(
       /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainareawidget|mainmenu|thememanager|toolbar|widgettracker)/
     ),
+    // shim(/@jupyterlab\/ui-components/),
     // shim(/@jupyterlab\/apputils\/style\/.*/),
 
     // JupyterLab's codemirror package is also big,

@@ -2,12 +2,12 @@
 Get started
 ===========
 
-In order to use Thebelab, you must take the following steps on a page:
+In order to use Thebe, you must take the following steps on a page:
 
-Load the thebelab javascript bundle
-===================================
+Load the thebe javascript bundle
+================================
 
-The Thebelab Javascript is most-easily obtained from a CDN.
+The Thebe Javascript is most-easily obtained from a CDN.
 You can load the javascript library from a CDN by including this on a page:
 
 .. code:: html
@@ -16,11 +16,11 @@ You can load the javascript library from a CDN by including this on a page:
 
 Alternatively, you can download the bundle and include it along with your site.
 
-Configure Thebelab in your page's HTML
-======================================
+Configure Thebe in your page's HTML
+===================================
 
-Thebelab looks for a specific HTML block for its configuration. This happens
-when Thebelab is "bootstrapped" (i.e., launched).
+Thebe looks for a specific HTML block for its configuration. This happens
+when Thebe is "bootstrapped" (i.e., launched).
 
 The configuration block has the following structure:
 
@@ -34,14 +34,14 @@ The configuration block has the following structure:
       }
    </script>
 
-See :doc:`configure` for information about how and what to configure with Thebelab.
+See :doc:`configure` for information about how and what to configure with Thebe.
 
 
-Bootstrap Thebelab on the page
-==============================
+Bootstrap Thebe on the page
+===========================
 
-If the Thebelab Javascript bundle is loaded, and the configuration file is present,
-you may bootstrap (i.e., launch) Thebelab by calling the following Javascript function:
+If the Thebe Javascript bundle is loaded, and the configuration file is present,
+you may bootstrap (i.e., launch) Thebe by calling the following Javascript function:
 
 ``thebelab.bootstrap()``
 
@@ -56,5 +56,5 @@ Calling the bootstrap function is generally accomplished by connecting it to the
 
 .. tip::
 
-   If ``bootstrap: true`` is in the Thebelab configuration, this will be triggered
+   If ``bootstrap: true`` is in the Thebe configuration, this will be triggered
    automatically upon page load.
