@@ -63,6 +63,9 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.3",
     "karma-coverage-istanbul-reporter": "^3.0.3",
+    "karma-fixture": "^0.2.6",
+    "karma-html2js-preprocessor": "^1.1.0",
+    "karma-json-fixtures-preprocessor": "0.0.6",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-spec-reporter": "0.0.32",
@@ -74,6 +77,6 @@
     "url-loader": "^4.1.1",
     "webpack": "^4.0",
     "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-cli": "^4.0.0"
+    "webpack-cli": "^4.1.0"
   }
 }
