@@ -6,64 +6,38 @@
 	switch which one has type="text/x-thebe-config"
 	to activate it
   -->
+	<title>readonly1</title>
+	<script
+			src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+			integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+			crossorigin="anonymous"></script>
 	<script type="text/x-thebe-config">
           {
-<!--            requestKernel: true,-->
+            bootstrap: true,
             binderOptions: {
               repo: "binder-examples/requirements",
               codeMirrorConfig: {
                 "theme": "abcdef",
-                "readOnly":true
+                "readOnly":"false"
               },
             },
           }
-        </script>
-	<!-- use this one (and set the token!) for local testing (much faster)
-	e.g.
-	jupyter notebook \
-	  --NotebookApp.token=thebe-test-secret \
-	  --NotebookApp.allow_origin='http://127.0.0.1:8080'
-	-->
-	<script type="text/x-thebe-config-disabled">
-          {
-            requestKernel: true,
-            kernelOptions: {
-              name: "python3",
-              path: ".",
-              // notebook server configuration; not needed with binder
-              serverSettings: {
-                "baseUrl": "http://127.0.0.1:8888",
-                "token": "thebe-test-secret",
-              },
-            },
-            codeMirrorConfig: {
-              "theme": "abcdef"
-            },
-          }
-        </script>
-	<script src="./lib/index.js"></script>
+        
+	</script>
+	<script src="../../../lib/index.js"></script>
 </head>
 <body>
 <div class="container">
-	<button id="activateButton">Activate</button>
-	<script>
-		var bootstrapThebe = function() {
-			thebelab.bootstrap();
-		}
-		
-		document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
-	</script>
-	
-	<pre data-executable="true" data-language="python" class="pre-element">print("Hello!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" data-readonly >print("standalone!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" data-readonly="">print("empty!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" data-readonly="true">print("true!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" data-readonly="false">print("false!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element">
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-base-1">print("Hello!")</pre>
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-standalone" data-readonly>print("standalone!")</pre>
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-empty" data-readonly="">print("empty!")</pre>
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-true" data-readonly="true">print("true!")</pre>
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-false" data-readonly="false">print("false!")</pre>
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-base-2">
 from IPython.display import Math
 Math("$x = 5$")
             </pre>
-	<pre data-executable="true" data-language="python" class="pre-element">from ipywidgets import IntSlider
+	<pre data-executable="true" data-language="python" class="pre-element" id="case-base-3">from ipywidgets import IntSlider
 w = IntSlider(0, 10)
 w
             </pre>
@@ -73,6 +47,7 @@ w
 	body {
 		margin: 0;
 	}
+
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -80,6 +55,7 @@ w
 		align-items: center;
 		height: 100vh;
 	}
+
 	#activateButton {
 		width: 130px;
 		height: 50px;
@@ -89,6 +65,7 @@ w
 		background-color: lightblue;
 		text-transform: uppercase;
 	}
+
 	.pre-element {
 		width: 50vw;
 		height: 20vh;
@@ -97,6 +74,7 @@ w
 		margin-top: 8px;
 		margin-bottom: 8px;
 	}
+
 	.thebelab-cell {
 		width: 50vw;
 	}
