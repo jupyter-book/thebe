@@ -179,8 +179,8 @@ function renderCell(element, options) {
     rendermime: renderMime,
   });
 
-  $cell.attr('id', $element.attr('id'));
-  
+  $cell.attr("id", $element.attr("id"));
+
   $element.replaceWith($cell);
 
   let $cm_element = $("<div class='thebelab-input'>");
@@ -317,9 +317,9 @@ function renderCell(element, options) {
     cm.setOption("mode", mode);
   });
   if (cm.isReadOnly()) {
-    cm.display.lineDiv.setAttribute('data-readonly','true');
-    $cm_element[0].setAttribute('data-readonly','true');
-    $cell.attr('data-readonly','true');
+    cm.display.lineDiv.setAttribute("data-readonly", "true");
+    $cm_element[0].setAttribute("data-readonly", "true");
+    $cell.attr("data-readonly", "true");
   }
   return { cell: $cell, execute, setOutputText };
 }
