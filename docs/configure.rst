@@ -134,3 +134,17 @@ The below code cell demonstrates this theme:
 
 The above code should be styled according to the
 `CodeMirror abcdef theme <https://codemirror.net/demo/theme.html#abcdef>`_.
+
+
+Mark a code cell as read-only
+=============================
+
+If you'd like a code cell to be runnable by Thebe, but not *editable* by the user, you
+may mark it as "read-only" with the following syntax:
+
+.. code-block:: html
+
+   <pre data-executable data-readonly>print("I cannot be modified")</pre>
+
+Users will not be able to modify the code when Thebe is activated, though they can still
+press the "run" button to see the outputs.
