@@ -179,6 +179,8 @@ function renderCell(element, options) {
     rendermime: renderMime,
   });
 
+  $cell.attr("id", $element.attr("id"));
+
   $element.replaceWith($cell);
 
   let $cm_element = $("<div class='thebelab-input'>");
@@ -284,6 +286,7 @@ function renderCell(element, options) {
   Widget.attach(outputArea, theDiv);
 
   const mode = $element.data("language") || "python";
+  const isReadOnly = $element.data("readonly");
   const required = {
     value: source,
     mode: mode,
@@ -291,6 +294,9 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
+  if (isReadOnly !== undefined) {
+    required.readOnly = isReadOnly !== false; //overrides codeMirrorConfig.readOnly for cell
+  }
 
   // Gets CodeMirror config if it exists
   let codeMirrorOptions = {};
@@ -310,6 +316,11 @@ function renderCell(element, options) {
   Mode.ensure(mode).then((modeSpec) => {
     cm.setOption("mode", mode);
   });
+  if (cm.isReadOnly()) {
+    cm.display.lineDiv.setAttribute("data-readonly", "true");
+    $cm_element[0].setAttribute("data-readonly", "true");
+    $cell.attr("data-readonly", "true");
+  }
   return { cell: $cell, execute, setOutputText };
 }
 

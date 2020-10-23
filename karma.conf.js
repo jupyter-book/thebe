@@ -1,11 +1,13 @@
 module.exports = function (config) {
   config.set({
-    files: ["test/test_entrypoint.js"],
-    frameworks: ["mocha"],
+    files: ["test/test_entrypoint.js", { pattern: "test/fixtures/**/*" }],
+    frameworks: ["mocha", "fixture"],
     preprocessors: {
       // only specify one entry point
       // and require all tests in there
       "test/test_entrypoint.js": ["webpack"],
+      "**/*.html": ["html2js"],
+      "**/*.json": ["json_fixtures"],
     },
     reporters: ["mocha", "coverage-istanbul"],
     port: 9876, // karma web server port
@@ -18,5 +20,8 @@ module.exports = function (config) {
     },
 
     browsers: ["ChromeHeadless"],
+    jsonFixturesPreprocessor: {
+      variableName: "__json__",
+    },
   });
 };
