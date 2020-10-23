@@ -12,6 +12,7 @@
     "serve": "http-server -c-1 -a 127.0.0.1 -o development.html",
     "develop": "concurrently \"npm run build:watch\" \"npm run serve\"",
     "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "test:jest": "jest test.js",
     "test:watch": "karma start --auto-watch --browsers ChromeHeadless karma.conf.js"
   },
   "files": [
@@ -56,13 +57,19 @@
     "core-js": "^3.6.5",
     "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
+    "html-loader-jest": "^0.2.1",
     "http-server": "^0.12.3",
     "istanbul-instrumenter-loader": "^3.0.1",
+    "jest": "^26.6.0",
+    "jest-puppeteer": "^4.4.0",
     "jquery": "^3.5.1",
     "karma": "^5.2.3",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.3",
     "karma-coverage-istanbul-reporter": "^3.0.3",
+    "karma-fixture": "^0.2.6",
+    "karma-html2js-preprocessor": "^1.1.0",
+    "karma-json-fixtures-preprocessor": "0.0.6",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-spec-reporter": "0.0.32",
@@ -70,10 +77,11 @@
     "mocha": "^8.2.0",
     "mocha-loader": "^5.1.5",
     "prettier": "^2.1.2",
+    "puppeteer": "^5.3.1",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^4.0",
     "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-cli": "^4.0.0"
+    "webpack-cli": "^4.1.0"
   }
 }
