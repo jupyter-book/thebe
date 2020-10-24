@@ -82,7 +82,7 @@ CodeMirror is the tool used to convert your code cells into editable cells.
 It has a number of configuration options, such as theming and syntax highlighting.
 You can edit all of these attributes in a cell with the following thebe configuration:
 
-.. code:: html
+.. code:: javascript
 
 
    // Additional options to pass to CodeMirror instances
@@ -91,7 +91,7 @@ You can edit all of these attributes in a cell with the following thebe configur
 You can use any of `the available CodeMirror configurations <https://codemirror.net/doc/manual.html#config>`_.
 For example, the following configuration changes the `CodeMirror theme <https://codemirror.net/theme/>`_:
 
-.. code:: html
+.. code:: javascript
 
    codeMirrorConfig: {
        theme: "abcdef"
@@ -139,12 +139,27 @@ The above code should be styled according to the
 Mark a code cell as read-only
 =============================
 
-If you'd like a code cell to be runnable by Thebe, but not *editable* by the user, you
+If you would like a code cell to be runnable by Thebe, but not *editable* by the user, you
 may mark it as "read-only" with the following syntax:
 
 .. code-block:: html
 
    <pre data-executable data-readonly>print("I cannot be modified")</pre>
 
-Users will not be able to modify the code when Thebe is activated, though they can still
+Users will not be able to modify the code once Thebe is activated, though they can still
 press the "run" button to see the outputs.
+
+Alternatively, you can use the codeMirrorConfig in order to set the default as read-only for all cells:
+
+.. code:: javascript
+
+   codeMirrorConfig: {
+       readOnly: true
+   }
+
+And when read-only as the default, you can still override this setting for individual cells using `data-readonly`:
+
+.. code-block:: html
+
+   <pre data-executable data-readonly="false">print("I still can be modified")</pre>
+   <pre data-executable>print("Due to codeMirrorConfig, I cannot be modified")</pre>
