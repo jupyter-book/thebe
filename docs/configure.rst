@@ -149,7 +149,7 @@ may mark it as "read-only" with the following syntax:
 Users will not be able to modify the code once Thebe is activated, though they can still
 press the "run" button to see the outputs.
 
-Alternatively, you can use the codeMirrorConfig in order to set the default as read-only for all cells:
+**To set all cells as read-only by default**, use the following `thebe` configuration:
 
 .. code:: javascript
 
@@ -157,7 +157,8 @@ Alternatively, you can use the codeMirrorConfig in order to set the default as r
        readOnly: true
    }
 
-And when read-only as the default, you can still override this setting for individual cells using `data-readonly`:
+This uses codeMirror to mark all cells as read-only. If you are using this setting and would like to
+manually mark cells as editable, you can override the codeMirror configuration for individual cells using `data-readonly="false"`. For example:
 
 .. code-block:: html
 
