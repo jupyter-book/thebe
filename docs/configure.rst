@@ -158,7 +158,7 @@ press the "run" button to see the outputs.
    }
 
 This uses codeMirror to mark all cells as read-only. If you are using this setting and would like to
-manually mark cells as editable, you can override the codeMirror configuration for individual cells using `data-readonly="false"`. For example:
+manually mark individual cells as editable, you can override the codeMirror configuration for a cell using `data-readonly="false"`. For example:
 
 .. code-block:: html
 
