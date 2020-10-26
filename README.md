@@ -81,7 +81,7 @@ A full config script with defaults:
     binderUrl: "https://mybinder.org",
     // select repository source (optional). Supports Github(default), Gitlab, and Git
     repoProvider: "github",
-    savedSession {
+    savedSession: {
       // if enabled, thebe will store and try to re-use
       // connections (with credentials!) to running servers
       enabled: true,

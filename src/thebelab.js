@@ -446,10 +446,11 @@ export function requestBinder({
     }
     console.debug("Saved binder session detected");
     let existingServer = JSON.parse(storedInfoJSON);
-    let timestamp = new Date(existingServer.timestamp);
-    if (new Date().getTime() - timestamp.getTime() < savedSession.maxAge) {
+    let lastUsed = new Date(existingServer.lastUsed);
+    let ageSeconds = (new Date() - lastUsed) / 1000;
+    if (ageSeconds > savedSession.maxAge) {
       console.debug(
-        `Not using expired binder session for ${existingServer.url} from ${timestamp}`
+        `Not using expired binder session for ${existingServer.url} from ${lastUsed}`
       );
       window.localStorage.removeItem(storageKey);
       return;
