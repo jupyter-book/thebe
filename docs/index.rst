@@ -87,6 +87,7 @@ see how Thebe is used.
 
    examples/minimal_example
    examples/ipyleaflet_example
+   examples/ipympl_example
    examples/plotly-example
 
 * `Making use of Jupyter interactive widgets <_static/widgets.html>`_
