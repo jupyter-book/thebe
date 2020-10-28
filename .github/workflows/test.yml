@@ -82,6 +82,7 @@ jobs:
       - name: "Run tests"
         run: |
           npm test
+          npm run test:jest
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
