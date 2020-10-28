@@ -86,6 +86,7 @@ see how Thebe is used.
    :maxdepth: 1
 
    examples/minimal_example
+   examples/bqplot_example
    examples/ipyleaflet_example
    examples/plotly-example
 
