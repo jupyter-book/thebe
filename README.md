@@ -1,4 +1,5 @@
 # Thebe: turn static HTML pages into live documents
+![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
 
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
 - A brief header in the HTML page
