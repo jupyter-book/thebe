@@ -4,5 +4,6 @@ channels:
   - conda-forge
 dependencies:
   - nodejs
-  - -r doc-requirements.txt
+  - pip:
+    - -r doc-requirements.txt
   
