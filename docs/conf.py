@@ -161,10 +161,17 @@ linkcheck_anchors_ignore = ["/#!"]
 from subprocess import run
 from pathlib import Path
 import shutil as sh
+import os
 
 if not Path("_static/thebe").exists():
-    print("Couldn't find local `thebe` build, building now...")
-    run("npm install".split(), cwd="..")
+    print("Couldn't find local `thebe` build for docs, building now...")
+    if not Path("../node_modules").exists():
+        print("Dependencies for `thebe` not found, installing now...")
+        # On READTHEDOCS we need the latest NPM in order to work
+        if os.environ.get("READTHEDOCS"):
+            run("npm install npm@latest".split(), cwd="..")
+        run("npm install".split(), cwd="..")
+    # Build the lib and move to the local folder for docs
     run("npm run build:prod".split(), cwd="..")
     sh.copytree("../lib", "_static/thebe")
 else:
