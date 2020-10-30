@@ -164,6 +164,7 @@ import shutil as sh
 
 if not Path("_static/thebe").exists():
     print("Couldn't find local `thebe` build, building now...")
+    run("npm install".split(), cwd="..")
     run("npm run build:prod".split(), cwd="..")
     sh.copytree("../lib", "_static/thebe")
 else:
