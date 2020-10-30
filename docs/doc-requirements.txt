@@ -1,5 +1,5 @@
+sphinx>2
+myst_parser
 sphinx_copybutton
 sphinx_book_theme
 sphinx-js
-sphinx>2
-myst_parser
