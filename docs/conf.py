@@ -167,9 +167,6 @@ if not Path("_static/thebe").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
     if not Path("../node_modules").exists():
         print("Dependencies for `thebe` not found, installing now...")
-        # On READTHEDOCS we need the latest NPM in order to work
-        if os.environ.get("READTHEDOCS"):
-            run("npm install -g npm@latest".split(), cwd="..")
         run("npm install".split(), cwd="..")
     # Build the lib and move to the local folder for docs
     run("npm run build:prod".split(), cwd="..")
