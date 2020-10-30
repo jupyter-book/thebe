@@ -16,3 +16,5 @@ coverage
 webpack.stats.*
 docs/_build
 /.idea/
+
+docs/_static/thebe

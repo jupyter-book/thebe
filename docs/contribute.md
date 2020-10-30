@@ -102,7 +102,7 @@ TODO: create some exemplar tests that:
 
 ## Building docs locally
 
-Thebe uses [Sphinx](https://www.sphinx-doc.org/) and [JupyterBook](https://jupyterbook.org/) for building documentation. Thebe documentation is located in the `/docs` directory.
+Thebe uses [Sphinx](https://www.sphinx-doc.org/) for building documentation. Thebe documentation is located in the `/docs` directory.
 You will need the development environment setup, see the above {ref}`dev-install` to learn more.
 You will also need Python installed, and can install the requirements for the documentation using:
 
@@ -115,6 +115,10 @@ Once you are in the documentation folder:
 
 ```bash
 make html
+```
+
+```{note}
+The first time that you run `make html`, `thebe` will be built and placed in the `_static/thebe` folder. This way, you use the latest version of thebe in previewing the documentation. If you'd like to update `thebe`, simply delete the `_static/thebe` folder and re-build the docs.
 ```
 
 Finally, run the following to view the built documentation locally:

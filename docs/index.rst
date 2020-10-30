@@ -33,8 +33,8 @@ For example, see the following code cell:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
-
+   <script src="_static/thebe/index.js"></script>
+   
    <pre data-executable="true" data-language="python">
    %matplotlib inline
    import numpy as np

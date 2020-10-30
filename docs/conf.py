@@ -156,3 +156,15 @@ epub_exclude_files = ['search.html']
 
 # -- Linkcheck options ------------------
 linkcheck_anchors_ignore = ["/#!"]
+
+# -- Build the latest JS for local preview -----------------------------
+from subprocess import run
+from pathlib import Path
+import shutil as sh
+
+if not Path("_static/thebe").exists():
+    print("Couldn't find local `thebe` build, building now...")
+    run("npm run build:prod".split(), cwd="..")
+    sh.copytree("../lib", "_static/thebe")
+else:
+    print("Found local `thebe` build, to update it, delete `_static/thebe` and build docs")
