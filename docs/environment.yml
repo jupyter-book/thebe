@@ -5,5 +5,8 @@ channels:
 dependencies:
   - nodejs
   - pip:
-    - -r doc-requirements.txt
-  
+    - sphinx>2
+    - myst_parser
+    - sphinx_copybutton
+    - sphinx_book_theme
+    - sphinx-js
