@@ -69,6 +69,11 @@ const _defaultOptions = {
   binderOptions: {
     ref: "master",
     binderUrl: "https://mybinder.org",
+    savedSession: {
+      enabled: true,
+      maxAge: 86400,
+      storagePrefix: "thebe-binder-",
+    },
   },
   kernelOptions: {
     path: "/",
@@ -388,6 +393,7 @@ export function requestBinder({
   ref = "master",
   binderUrl = null,
   repoProvider = "",
+  savedSession = _defaultOptions.binderOptions.savedSession,
 } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
@@ -401,6 +407,9 @@ export function requestBinder({
   console.log("binder url", binderUrl, defaults);
   binderUrl = binderUrl || defaults.binderUrl;
   ref = ref || defaults.ref;
+  savedSession = savedSession || defaults.savedSession;
+  savedSession = $.extend(true, defaults.savedSession, savedSession);
+
   let url;
 
   if (repoProvider.toLowerCase() === "git") {
@@ -435,34 +444,70 @@ export function requestBinder({
   }
   console.log("Binder build URL", url);
 
-  return new Promise(async (resolve, reject) => {
-    // if binder already spawned our pod and we remember the creds, reuse it
-    let existing_server = JSON.parse(
-      window.localStorage.getItem("thebe-binder-" + url)
+  const storageKey = savedSession.storagePrefix + url;
+
+  async function getExistingServer() {
+    if (!savedSession.enabled) {
+      return;
+    }
+    let storedInfoJSON = window.localStorage.getItem(storageKey);
+    if (storedInfoJSON == null) {
+      console.debug("No session saved in ", storageKey);
+      return;
+    }
+    console.debug("Saved binder session detected");
+    let existingServer = JSON.parse(storedInfoJSON);
+    let lastUsed = new Date(existingServer.lastUsed);
+    let ageSeconds = (new Date() - lastUsed) / 1000;
+    if (ageSeconds > savedSession.maxAge) {
+      console.debug(
+        `Not using expired binder session for ${existingServer.url} from ${lastUsed}`
+      );
+      window.localStorage.removeItem(storageKey);
+      return;
+    }
+    let settings = ServerConnection.makeSettings({
+      baseUrl: existingServer.url,
+      wsUrl: "ws" + existingServer.url.slice(4),
+      token: existingServer.token,
+      appendToken: true,
+    });
+    try {
+      await KernelAPI.listRunning(settings);
+    } catch (err) {
+      console.log(
+        "Saved binder connection appears to be invalid, requesting new session",
+        err
+      );
+      window.localStorage.removeItem(storageKey);
+      return;
+    }
+    // refresh lastUsed timestamp in stored info
+    existingServer.lastUsed = new Date();
+    window.localStorage.setItem(storageKey, JSON.stringify(existingServer));
+    console.log(
+      `Saved binder session is valid, reusing connection to ${existingServer.url}`
     );
-    if (
-      existing_server !== null &&
-      new Date().getTime() - new Date(existing_server.started).getTime() < 86400
-    ) {
-      console.log("Saved binder pod info detected");
-      let settings = ServerConnection.makeSettings({
-        baseUrl: existing_server.url,
-        wsUrl: "ws" + existing_server.url.slice(4),
-        token: existing_server.token,
-        appendToken: true,
-      });
-      try {
-        await KernelAPI.listRunning(settings);
-        console.log("Saved binder pod is valid, reusing connection");
-        resolve(settings);
-        return;
-      } catch (err) {
-        console.log(
-          "Saved binder pod info seems to be invalid, respawning pod",
-          err
-        );
-        window.localStorage.removeItem("thebe-binder-" + url);
-      }
+    return settings;
+  }
+
+  return new Promise(async (resolve, reject) => {
+    // if binder already spawned our server and we remember the creds
+    // try to reuse it
+    let existingServer;
+    try {
+      existingServer = await getExistingServer();
+    } catch (err) {
+      // catch unhandled errors such as JSON parse errors,
+      // invalid formats, permission error on localStorage, etc.
+      console.error("Failed to load existing server connection", err);
+    }
+
+    if (existingServer) {
+      // found an existing server
+      // return it instead of requesting a new one
+      resolve(existingServer);
+      return;
     }
 
     events.trigger("status", {
@@ -511,11 +556,11 @@ export function requestBinder({
           try {
             // save the current connection url+token to reuse later
             window.localStorage.setItem(
-              "thebe-binder-" + url,
+              storageKey,
               JSON.stringify({
                 url: msg.url,
                 token: msg.token,
-                started: new Date(),
+                lastUsed: new Date(),
               })
             );
           } catch (e) {
