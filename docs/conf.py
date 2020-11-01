@@ -163,13 +163,14 @@ from pathlib import Path
 import shutil as sh
 import os
 
+path_root = Path(__file__).parent.parent
 if not Path("_static/thebe").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
     if not Path("../node_modules").exists():
         print("Dependencies for `thebe` not found, installing now...")
-        run("npm install".split(), cwd="..")
+        run("npm install".split(), cwd=path_root)
     # Build the lib and move to the local folder for docs
-    run("npm run build:prod".split(), cwd="..")
+    run("npm run build:prod".split(), cwd=path_root)
     sh.copytree("../lib", "_static/thebe")
 else:
     print("Found local `thebe` build, to update it, delete `_static/thebe` and build docs")
