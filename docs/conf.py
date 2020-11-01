@@ -172,5 +172,6 @@ if not Path("_static/thebe").exists():
     # Build the lib and move to the local folder for docs
     run("npm run build:prod".split(), cwd=path_root)
     sh.copytree("../lib", "_static/thebe")
+    print("Finished building local `thebe` bundle.")
 else:
     print("Found local `thebe` build, to update it, delete `_static/thebe` and build docs")
