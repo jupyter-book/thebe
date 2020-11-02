@@ -3,6 +3,7 @@ name: docs
 channels:
   - conda-forge
 dependencies:
+  - pip
   - nodejs
   - sphinx
   - pip:
