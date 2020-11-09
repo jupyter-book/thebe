@@ -82,6 +82,7 @@ jobs:
       - name: "Run tests"
         run: |
           npm test
+          npm test:e2e
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
