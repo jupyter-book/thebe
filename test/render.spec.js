@@ -10,19 +10,19 @@ describe("rendering cells via bootstrap", () => {
     appendElementToBody("pre", "data-executable", null);
 
     const p = thebe.bootstrap(); // don't wait for kernel
-    expect(p.then).to.not.be.undefined;
+    expect(p.then).toBeDefined();
 
     const cells = document.body.getElementsByClassName("thebelab-input");
-    expect(cells.length).to.equal(1);
+    expect(cells.length).toEqual(1);
   });
   it("cell rendering (selector)", () => {
     appendElementToBody("div", null, "mycode");
 
     const p = thebe.bootstrap({ selector: ".mycode" }); // don't wait for kernel
-    expect(p.then).to.not.be.undefined;
+    expect(p.then).toBeDefined();
 
     const cells = document.body.getElementsByClassName("thebelab-input");
-    expect(cells.length).to.equal(1);
+    expect(cells.length).toEqual(1);
   });
   it("output preview rendering (default)", () => {
     // output must be preceeded by a executable cell
@@ -30,19 +30,19 @@ describe("rendering cells via bootstrap", () => {
     appendElementToBody("div", "data-output", null);
 
     const p = thebe.bootstrap(); // don't wait for kernel
-    expect(p.then).to.not.be.undefined;
+    expect(p.then).toBeDefined();
 
     const cells = document.body.getElementsByClassName("jp-OutputArea");
-    expect(cells.length).to.equal(1);
+    expect(cells.length).toEqual(1);
   });
   it("output preview rendering (selector)", () => {
     appendElementToBody("pre", "data-executable", null);
     appendElementToBody("div", null, "mypreview");
 
     const p = thebe.bootstrap({ outputSelector: "div.mypreview" }); // don't wait for kernel
-    expect(p.then).to.not.be.undefined;
+    expect(p.then).toBeDefined();
 
     const cells = document.body.getElementsByClassName("jp-OutputArea");
-    expect(cells.length).to.equal(1);
+    expect(cells.length).toEqual(1);
   });
 });

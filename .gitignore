@@ -16,3 +16,4 @@ coverage
 webpack.stats.*
 docs/_build
 /.idea/
+junit.xml

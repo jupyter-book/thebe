@@ -8,19 +8,19 @@ describe("bootstrap", () => {
     document.body.innerHTML = "";
   });
   it("calls pre-render hook", () => {
-    const spy = chai.spy();
+    const spy = jest.fn();
     thebelab.bootstrap({ preRenderHook: spy }); // don't wait for kernel
-    expect(spy).to.have.been.called.once;
+    expect(spy).toHaveBeenCalledTimes(1);
   });
   it.skip("calls strip prompts, when specified in options", () => {
-    chai.spy.on(thebelab, "stripPrompts");
+    const spy = jest.spyOn(thebelab, "stripPrompts");
 
     thebelab.bootstrap();
-    expect(thebelab.stripPrompts).to.not.have.been.called;
+    expect(thebelab.stripPrompts).not.toHaveBeenCalled();
 
     thebelab.bootstrap({ stripPrompts: true });
-    expect(thebelab.stripPrompts).to.have.been.called.once;
+    expect(thebelab.stripPrompts).toHaveBeenCalled(1);
 
-    chai.spy.restore(thebelab);
+    spy.mockRestore();
   });
 });
