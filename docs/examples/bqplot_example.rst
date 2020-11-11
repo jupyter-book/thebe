@@ -3,7 +3,8 @@ Bqplot Example
 ==================
 
 Thebe can display output from bqplot_ Jupyter widgets, a 2D plotting library. This example_ is repurposed from the
-bqplot documentation and is licensed under the Apache License 2.0 License.
+bqplot documentation and is licensed under the Apache License 2.0 License. Note that this example does not 
+fix the pan/zoom feature on plots.
 
 .. _bqplot: https://github.com/bqplot/bqplot
 
