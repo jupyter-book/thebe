@@ -46,7 +46,7 @@
     "@jupyter-widgets/output": "^4.0.0-alpha.2",
     "@jupyterlab/codemirror": "^3.0.0-rc.5",
     "@jupyterlab/mathjax2": "^3.0.0-rc.5",
-    "@jupyterlab/outputarea": "^3.0.0-rc.5",
+    "@jupyterlab/outputarea": "^3.0.0-rc.9",
     "@jupyterlab/services": "^6.0.0-rc.5",
     "@jupyterlab/testutils": "^2.2.6",
     "@jupyterlab/theme-light-extension": "^3.0.0-rc.5",
