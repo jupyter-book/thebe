@@ -36,16 +36,8 @@ describe("cells are default editable", () => {
     );
   });
 
-  test("case-base-1", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-1");
-    expect(isReadOnly).toEqual(false);
-  });
-  test("case-base-2", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-2");
-    expect(isReadOnly).toEqual(false);
-  });
-  test("case-base-3", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-3");
+  test("case-noconfig", async () => {
+    const isReadOnly = await page.evaluate(checkReadOnly, "#case-noconfig");
     expect(isReadOnly).toEqual(false);
   });
   test("case-standalone", async () => {
@@ -79,16 +71,8 @@ describe("cells are default readonly", () => {
     );
   });
 
-  test("case-base-1", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-1");
-    expect(isReadOnly).toEqual(true);
-  });
-  test("case-base-2", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-2");
-    expect(isReadOnly).toEqual(true);
-  });
-  test("case-base-3", async () => {
-    const isReadOnly = await page.evaluate(checkReadOnly, "#case-base-3");
+  test("case-noconfig", async () => {
+    const isReadOnly = await page.evaluate(checkReadOnly, "#case-noconfig");
     expect(isReadOnly).toEqual(true);
   });
   test("case-standalone", async () => {
