@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Configure and load Thebe !-->
+        <!-- two config sections: first binder, second local
+        switch which one has type="text/x-thebe-config"
+        to activate it
+      -->
+      <title>Bqplot example</title>
+      <!-- script that allows the line plots to be displayed, otherwise it gives an error -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+      <!-- script for awesome fonts 4.0 needed for navigation buttons -->
+      <script src="https://use.fontawesome.com/3e02a3c909.js"></script>
+
+        <script type="text/x-thebe-config">
+          {
+            requestKernel: true,
+            binderOptions: {
+              repo: "bqplot/bqplot",
+              ref: "0.12.18",
+              codeMirrorConfig: {
+                "theme": "abcdef"
+              },
+            },
+          }
+        </script>
+        <!-- use this one (and set the token!) for local testing (much faster)
+        e.g.
+        jupyter notebook \
+          --NotebookApp.token=thebe-test-secret \
+          --NotebookApp.allow_origin='http://127.0.0.1:8080'
+        -->
+        <script type="text/x-thebe-config-disabled">
+          {
+            requestKernel: true,
+            kernelOptions: {
+              name: "python3",
+              path: ".",
+              // notebook server configuration; not needed with binder
+              serverSettings: {
+                "baseUrl": "http://127.0.0.1:8888",
+                "token": "thebe-test-secret",
+              },
+            },
+            codeMirrorConfig: {
+              "theme": "abcdef"
+            },
+          }
+        </script>
+        <script src="./lib/index.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <button id="activateButton">Activate</button>
+            <script>
+                var bootstrapThebe = function() {
+                    thebelab.bootstrap();
+                }
+
+                document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
+            </script>
+
+            <pre data-executable="true" data-language="python" class="pre-element" id="case-bqplot-pan">
+import numpy as np
+from bqplot import pyplot as plt
+
+size = 100
+np.random.seed(0)
+x_data = np.arange(size)
+y_data = np.cumsum(np.random.randn(size)  * 100.0)
+
+plt.figure(title='My First Plot')
+plt.plot(x_data, y_data)
+plt.show()
+            </pre>
+        </div>
+    </body>
+    <style>
+        body {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #activateButton {
+            width: 130px;
+            height: 50px;
+            font-size: 1.25em;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: lightblue;
+            text-transform: uppercase;
+        }
+        .pre-element {
+            width: 50vw;
+            height: 20vh;
+            border: 2px solid #aaa;
+            border-radius: 4px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        .thebelab-cell {
+            width: 50vw;
+        }
+    </style>
+</html>
