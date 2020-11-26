@@ -15,7 +15,7 @@
 
         <script type="text/x-thebe-config">
           {
-            requestKernel: true,
+            bootstrap: true,
             binderOptions: {
               repo: "bqplot/bqplot",
               ref: "0.12.18",
@@ -25,42 +25,10 @@
             },
           }
         </script>
-        <!-- use this one (and set the token!) for local testing (much faster)
-        e.g.
-        jupyter notebook \
-          --NotebookApp.token=thebe-test-secret \
-          --NotebookApp.allow_origin='http://127.0.0.1:8080'
-        -->
-        <script type="text/x-thebe-config-disabled">
-          {
-            requestKernel: true,
-            kernelOptions: {
-              name: "python3",
-              path: ".",
-              // notebook server configuration; not needed with binder
-              serverSettings: {
-                "baseUrl": "http://127.0.0.1:8888",
-                "token": "thebe-test-secret",
-              },
-            },
-            codeMirrorConfig: {
-              "theme": "abcdef"
-            },
-          }
-        </script>
-        <script src="./lib/index.js"></script>
+        <script src="../../../lib/index.js"></script>
     </head>
     <body>
         <div class="container">
-            <button id="activateButton">Activate</button>
-            <script>
-                var bootstrapThebe = function() {
-                    thebelab.bootstrap();
-                }
-
-                document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
-            </script>
-
             <pre data-executable="true" data-language="python" class="pre-element" id="case-bqplot-pan">
 import numpy as np
 from bqplot import pyplot as plt

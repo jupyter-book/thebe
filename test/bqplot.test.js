@@ -1,24 +1,5 @@
 const path = require("path");
 
-describe("Initialization check", () => {
-  beforeAll(async () => {
-    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-    await page.goto(
-      `file:${path.join(__dirname, "/fixtures/HTML/bqplot.html")}`,
-      { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
-    );
-  });
-
-  test('should have the title "Bqplot example"', async () => {
-    await expect(page.title()).resolves.toMatch("Bqplot example");
-  });
-  test("should have CodeMirror initalized", async () => {
-    const text = await page.evaluate(() => document.body.innerHTML);
-    // console.log(text);
-    expect(text).toContain('class="thebelab-cell"');
-  });
-});
-
 async function loadThebeRunButton () {
   return page.waitForSelector('button.thebelab-run-button');
 }
@@ -35,17 +16,37 @@ async function clickPanButton() {
   return page.click('button.widget-toggle-button');
 }
 
-describe("cells are default editable", () => {
-  test("case-bqplot-pan", async () => {
-    await loadThebeRunButton();
-    await clickRunButton();
-    await loadPanButton();
-    await clickPanButton();
+async function editBQPlot() {
+  await loadThebeRunButton();
+  await clickRunButton();
+  await loadPanButton();
+  await clickPanButton();
 
-    page.on("pageerror", function(err) {  
-      return false;
-    });
+  return true;
+}
 
-    return true;
+describe("Test bqplot", () => {
+  beforeAll(async () => {
+    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    await page.goto(
+      `file:${path.join(__dirname, "/fixtures/HTML/bqplot.html")}`,
+      { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
+    );
+  });
+
+  it('should have the title "Bqplot example"', async () => {
+    await expect(page.title()).resolves.toMatch("Bqplot example");
+  });
+
+  it("should have CodeMirror initalized", async () => {
+    const thebeCell = page.$('.thebe-cell');
+    expect(thebeCell).not.toBeNull();
+  });
+
+  describe("cells are default editable", () => {
+    test("case-bqplot-pan", async () => {
+      await expect(editBQPlot()).resolves.toBeTruthy();
+    }, 10000000);
   });
 });
+
