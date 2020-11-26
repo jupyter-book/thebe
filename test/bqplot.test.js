@@ -1,19 +1,19 @@
 const path = require("path");
 
-async function loadThebeRunButton () {
-  return page.waitForSelector('button.thebelab-run-button');
+async function loadThebeRunButton() {
+  return page.waitForSelector("button.thebelab-run-button");
 }
 
 async function clickRunButton() {
-  return page.click('button.thebelab-run-button');
+  return page.click("button.thebelab-run-button");
 }
 
 async function loadPanButton() {
-  return page.waitForSelector('button.widget-toggle-button');
+  return page.waitForSelector("button.widget-toggle-button");
 }
 
 async function clickPanButton() {
-  return page.click('button.widget-toggle-button');
+  return page.click("button.widget-toggle-button");
 }
 
 async function editBQPlot() {
@@ -27,7 +27,6 @@ async function editBQPlot() {
 
 describe("Test bqplot", () => {
   beforeAll(async () => {
-    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
     await page.goto(
       `file:${path.join(__dirname, "/fixtures/HTML/bqplot.html")}`,
       { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
@@ -39,14 +38,13 @@ describe("Test bqplot", () => {
   });
 
   it("should have CodeMirror initalized", async () => {
-    const thebeCell = page.$('.thebe-cell');
+    const thebeCell = page.$(".thebe-cell");
     expect(thebeCell).not.toBeNull();
   });
 
   describe("cells are default editable", () => {
-    test("case-bqplot-pan", async () => {
+    it("case-bqplot-pan", async () => {
       await expect(editBQPlot()).resolves.toBeTruthy();
     }, 10000000);
   });
 });
-

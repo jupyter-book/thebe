@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Configure and load Thebe !-->
-        <!-- two config sections: first binder, second local
-        switch which one has type="text/x-thebe-config"
-        to activate it
-      -->
       <title>Bqplot example</title>
-      <!-- script that allows the line plots to be displayed, otherwise it gives an error -->
+
+      <!-- Awesome Fonts 4.0 needed for navigation buttons -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+
+      <!-- Script that allows the plots to display -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
 
-      <!-- script for awesome fonts 4.0 needed for navigation buttons -->
-      <script src="https://use.fontawesome.com/3e02a3c909.js"></script>
-
-        <script type="text/x-thebe-config">
-          {
-            bootstrap: true,
-            binderOptions: {
-              repo: "bqplot/bqplot",
-              ref: "0.12.18",
-              codeMirrorConfig: {
-                "theme": "abcdef"
-              },
+      <script type="text/x-thebe-config">
+        {
+          bootstrap: true,
+          binderOptions: {
+            repo: "bqplot/bqplot",
+            ref: "0.12.18",
+            codeMirrorConfig: {
+              "theme": "abcdef"
             },
-          }
-        </script>
-        <script src="../../../lib/index.js"></script>
+          },
+        }
+      </script>
+      <script src="../../../lib/index.js"></script>
     </head>
     <body>
         <div class="container">
@@ -54,15 +50,6 @@ plt.show()
             justify-content: center;
             align-items: center;
             height: 100vh;
-        }
-        #activateButton {
-            width: 130px;
-            height: 50px;
-            font-size: 1.25em;
-            border: 1px solid black;
-            border-radius: 5px;
-            background-color: lightblue;
-            text-transform: uppercase;
         }
         .pre-element {
             width: 50vw;
