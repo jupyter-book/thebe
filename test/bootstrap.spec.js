@@ -1,18 +1,26 @@
-// import * as thebe from "../src";
+import * as thebelab from "../src/thebelab";
 
+/**
+ * Test the bootstrapping process
+ */
 describe("bootstrap", () => {
-  // TODO: consider using karma-fixture
   beforeEach(() => {
-    // stop automatic bootstrap
-    // `<script type="text/x-thebe-config">
-    // {
-    //   bootstrap: false
-    // }
-    // </script>
-    // `
+    document.body.innerHTML = "";
   });
-  it("should define events", async () => {
-    const thebe = await import("../src");
-    expect(thebe).to.have.property("events");
+  it("calls pre-render hook", () => {
+    const spy = jest.fn();
+    thebelab.bootstrap({ preRenderHook: spy }); // don't wait for kernel
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+  it.skip("calls strip prompts, when specified in options", () => {
+    const spy = jest.spyOn(thebelab, "stripPrompts");
+
+    thebelab.bootstrap();
+    expect(thebelab.stripPrompts).not.toHaveBeenCalled();
+
+    thebelab.bootstrap({ stripPrompts: true });
+    expect(thebelab.stripPrompts).toHaveBeenCalled(1);
+
+    spy.mockRestore();
   });
 });

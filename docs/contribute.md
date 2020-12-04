@@ -78,27 +78,51 @@ to run auto-formatting prior to each commit.
 
 ## Testing Thebe
 
-You can run the tests locally with `npm test` or `npm run test:watch`.
+You can test manually, interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
+
+### Running automated tests
+
+There are two types of automated test environment in place in thebe both using the Jest testing library. These are:
+
+ 1. a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `npm run test` or `npm run test:watch` and test code is located in the `test` folder.
+ 2. e2e style tests using jest + puppeteer that can be run `npm run test:e2e` or `npm run test:e2e:watch` and test code is located in the `e2e` folder.
+
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
 
-Test code is in the `test` directory, and you can write new tests in there see **Adding Tests** below.
-
-You can also test manually interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
-
 TODO: get testing infrastructure to a point where we can reasonably request tests for new features.
-### Adding Tests
 
- - [karma](https://karma-runner.github.io/latest/index.html) is used for automated testing and configured in [karma.conf.js](.karma.conf.js)
- - `karma` uses the same `webpack` configuration as the build from [webpack.config.js](./webpack.config.js)
- - Test files are in the `test` directory and currently setup in a single entry-point fashion, with all tests being required by the `test_entrypoint.js` file. This has pros and cons:
-    - pro - `webpack` builds a single bundle which is faster
-    - pro - we have a single top level describe block that we know will execute first, so can use before/after to start and shutdown a Jupyter server
-    - con - we cannot run single tests, only the full bundle
+#### Adding unit tests
 
-TODO: create some exemplar tests that:
- - [ ] test starting thebe with different options and controlling on page state at bootstrap
- - [ ] test the initial thebe render
- - [ ] test interacting with the server and rendering results
+Unit style tests work by loading the thebe library or part of it in javascript; mocking inputs and/or dependencies, executing a function and asserting on outputs of mocks. A good first example to look at is `tests/bootstrap.spec.js`. This test:
+
+ - loads thebe js code `import * as thebelab from "../src/thebelab";`
+ - manipulates the dom to prep the test (via built in JSDOM)
+ - calls the `thebe.bootstrap()` function
+ - checks for expected behaviour
+
+If you are new to Jest check their [getting started](https://jestjs.io/docs/en/getting-started), [mocking](https://jestjs.io/docs/en/mock-functions) and [expect assertion api](https://jestjs.io/docs/en/expect) docs.
+
+#### Adding e2e Tests
+
+e2e style tests are achieved using [Puppeteer](https://github.com/puppeteer/puppeteer) a headless chrome api that can be used to load a page complete with thebe scripts, allowing full execution as though it was in an end user browser and then assertion of end state.
+
+Adding new e2e tests involves:
+(see `e2e/readonly.test.js` for an example)
+
+ - creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
+ - load the fixture page at the start of your test
+ ```
+   beforeAll(async () => {
+    await page.goto(
+      `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
+      { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
+    );
+  });
+ ```
+ - Assert on initial page state
+ - Invoke UI actions to trigger behavior
+ - assert on final state
+
 
 ## Building docs locally
 
