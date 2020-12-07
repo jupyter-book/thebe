@@ -48,7 +48,7 @@
     "@jupyterlab/codemirror": "^3.0.0-rc.5",
     "@jupyterlab/mathjax2": "^3.0.0-rc.5",
     "@jupyterlab/outputarea": "^3.0.0-rc.5",
-    "@jupyterlab/services": "^6.0.0-rc.5",
+    "@jupyterlab/services": "^6.0.0-rc.13",
     "@jupyterlab/testutils": "^2.2.7",
     "@jupyterlab/theme-light-extension": "^3.0.0-rc.5",
     "babel-jest": "^26.6.1",
