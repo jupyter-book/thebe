@@ -45,6 +45,6 @@ describe("Test bqplot", () => {
   describe("cells are default editable", () => {
     it("case-bqplot-pan", async () => {
       await expect(editBQPlot()).resolves.toBeTruthy();
-    }, 10000000);
+    }, 100000000);
   });
 });
