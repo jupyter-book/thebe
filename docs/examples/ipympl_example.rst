@@ -67,6 +67,7 @@ Press the "Activate" button below to connect to a Jupyter server:
 
 .. raw:: html
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
 
    <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
@@ -92,6 +93,15 @@ Press the "Activate" button below to connect to a Jupyter server:
      }
    </script>
    <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+
+
+.. warning:: This cell is only required in the thebe documentation due to the way that ipympl's Binder container is setup. Do not add or execute it when working with ipympl yourself.
+
+.. raw:: html
+
+   <pre data-executable="true" data-language="python">
+   rm -r ipympl
+   </pre>
 
 2D plot
 -------
