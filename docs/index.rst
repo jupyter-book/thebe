@@ -88,6 +88,7 @@ see how Thebe is used.
    examples/minimal_example
    examples/bqplot_example
    examples/ipyleaflet_example
+   examples/ipympl_example
    examples/plotly-example
    examples/ipycytoscape_example
 
