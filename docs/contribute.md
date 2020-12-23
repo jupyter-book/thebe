@@ -157,7 +157,7 @@ Once prepared, bump the version with:
    a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version
    0.5.1`
 2. Push the tag to github: `git push --follow-tags`
-3. Create a release on github at
+3. Create a release for the new tag on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a
    github action that uploads the latest version to unpkg.com/browse/thebe/.
 
