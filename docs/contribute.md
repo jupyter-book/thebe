@@ -153,8 +153,13 @@ To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/lat
 
 Once prepared, bump the version with:
 
-1. update version and create tag with `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
-2. publish version to github: `git push --follow-tags`
+1. Use npm to update the thebe version in the `package.json` file and to create
+   a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version
+   0.5.1`
+2. Push the tag to github: `git push --follow-tags`
+3. Create a release on github at
+   https://github.com/executablebooks/thebe/releases/new; this will trigger a
+   Github action that uploads the latest version to unpkg.com.
 
 ## Thebe architecture
 
