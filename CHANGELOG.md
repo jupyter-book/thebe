@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.6.0 - 2020-12-22
+## 0.6.0 - 2020-12-23
 
 ### Added
 - End to end integration tests using Jest [#282](https://github.com/executablebooks/thebe/pull/282), [#297](https://github.com/executablebooks/thebe/pull/297)
