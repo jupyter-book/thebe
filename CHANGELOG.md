@@ -34,6 +34,7 @@
   - Ipycytoscape [#283](https://github.com/executablebooks/thebe/pull/283)
   - Plotly [#269](https://github.com/executablebooks/thebe/pull/269)
   - Ipyleaflet [#265](https://github.com/executablebooks/thebe/pull/268)
+  - ipympl [#294](https://github.com/executablebooks/thebe/pull/294)
 - Documented read-only code-blocks [#287](https://github.com/executablebooks/thebe/pull/287), [#286](https://github.com/executablebooks/thebe/pull/286)
 - Updated repository links and other references due to migrating the repository to [executablebooks](https://github.com/executablebooks) [#275](https://github.com/executablebooks/thebe/pull/275), [#273](https://github.com/executablebooks/thebe/pull/273), [#232](https://github.com/executablebooks/thebe/pull/232)
 - Contribution information
