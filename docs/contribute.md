@@ -159,7 +159,7 @@ Once prepared, bump the version with:
 2. Push the tag to github: `git push --follow-tags`
 3. Create a release on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a
-   Github action that uploads the latest version to unpkg.com.
+   github action that uploads the latest version to unpkg.com/browse/thebe/.
 
 ## Thebe architecture
 
