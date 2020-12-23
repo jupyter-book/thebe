@@ -32,7 +32,7 @@ Configure thebe and load it:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 Create a button to activate thebe:
 
@@ -57,8 +57,9 @@ Now add code cells between these HTML tags:
 Example
 =======
 
-Using Cytoscape, you can display a graph with several nodes. This example_ is 
-from the ipycytoscape repository and is licensed under the BSD 3-Clause License.
+Using Cytoscape, you can display a graph with several nodes. This example_ is
+from the ipycytoscape repository and is licensed under the BSD 3-Clause
+License.
 
 .._example: https://github.com/QuantStack/ipycytoscape/blob/master/examples/Text%20on%20node.ipynb
 
@@ -90,7 +91,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 
 .. raw:: html

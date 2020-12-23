@@ -49,11 +49,11 @@ Next, we'll load Thebe from a CDN:
 
 .. raw:: html
 
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 .. code:: html
 
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 Adding a button to activate Thebe
 =================================

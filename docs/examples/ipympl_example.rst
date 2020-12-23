@@ -33,7 +33,7 @@ Configure thebe and load it:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 Create a button to activate thebe:
 
@@ -92,7 +92,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 
 .. warning:: This cell is only required in the thebe documentation due to the way that ipympl's Binder container is setup. Do not add or execute it when working with ipympl yourself.
