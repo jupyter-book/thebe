@@ -45,7 +45,7 @@
     "@jupyter-widgets/controls": "^3.0.0-alpha.2",
     "@jupyter-widgets/html-manager": "^0.20.0-alpha.2",
     "@jupyter-widgets/output": "^4.0.0-alpha.2",
-    "@jupyterlab/codemirror": "^3.0.0-rc.5",
+    "@jupyterlab/codemirror": "^3.0.0-rc.15",
     "@jupyterlab/mathjax2": "^3.0.0-rc.5",
     "@jupyterlab/outputarea": "^3.0.0-rc.5",
     "@jupyterlab/services": "^6.0.0-rc.5",
