@@ -5,6 +5,9 @@
 ## 0.6.0 - 2020-12-23
 
 ### Added
+- New versions of thebe (>=0.5.1) should be loaded from
+  https://unpkg.com/thebe@latest/lib/index.js instead of
+  https://unpkg.com/thebelab@latest/lib/index.js
 - End to end integration tests using Jest [#282](https://github.com/executablebooks/thebe/pull/282), [#297](https://github.com/executablebooks/thebe/pull/297)
 - Read-only option for code blocks [#274](https://github.com/executablebooks/thebe/pull/274)
 - Persistence of Binder sessions across pages [#266](https://github.com/executablebooks/thebe/pull/266)
