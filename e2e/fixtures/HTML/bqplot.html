@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Bqplot example</title>
+
+      <!-- Awesome Fonts 4.0 needed for navigation buttons -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+
+      <!-- Script that allows the plots to display -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+      <script type="text/x-thebe-config">
+        {
+          bootstrap: true,
+          binderOptions: {
+            repo: "bqplot/bqplot",
+            ref: "0.12.18",
+            codeMirrorConfig: {
+              "theme": "abcdef"
+            },
+          },
+        }
+      </script>
+      <script src="../../../lib/index.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <pre data-executable="true" data-language="python" class="pre-element" id="case-bqplot-pan">
+import numpy as np
+from bqplot import pyplot as plt
+
+size = 100
+np.random.seed(0)
+x_data = np.arange(size)
+y_data = np.cumsum(np.random.randn(size)  * 100.0)
+
+plt.figure(title='My First Plot')
+plt.plot(x_data, y_data)
+plt.show()
+            </pre>
+        </div>
+    </body>
+    <style>
+        body {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .pre-element {
+            width: 50vw;
+            height: 20vh;
+            border: 2px solid #aaa;
+            border-radius: 4px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        .thebelab-cell {
+            width: 50vw;
+        }
+    </style>
+</html>
