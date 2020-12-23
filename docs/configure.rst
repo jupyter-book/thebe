@@ -113,7 +113,7 @@ The below code cell demonstrates this theme:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
    <pre data-executable="true" data-language="python">
    %matplotlib inline

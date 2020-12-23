@@ -12,7 +12,7 @@ You can load the javascript library from a CDN by including this on a page:
 
 .. code:: html
 
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 Alternatively, you can download the bundle and include it along with your site.
 
