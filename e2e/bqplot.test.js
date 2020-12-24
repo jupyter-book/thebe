@@ -31,6 +31,8 @@ describe("Test bqplot", () => {
       `file:${path.join(__dirname, "/fixtures/HTML/bqplot.html")}`,
       { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
     );
+    await page.setDefaultNavigationTimeout(0);
+    await page.setDefaultTimeout(0);
   });
 
   it('should have the title "Bqplot example"', async () => {
