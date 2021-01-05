@@ -28,7 +28,7 @@ Configure thebe and load it:
        requestKernel: true,
        binderOptions: {
          repo: "matplotlib/ipympl",
-         ref: "0.5.8",
+         ref: "0.6.1",
          repoProvider: "github",
        },
      }
@@ -87,21 +87,13 @@ Press the "Activate" button below to connect to a Jupyter server:
        requestKernel: true,
        binderOptions: {
          repo: "matplotlib/ipympl",
-         ref: "0.5.8",
+         ref: "0.6.1",
          repoProvider: "github",
        },
      }
    </script>
    <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
-
-.. warning:: This cell is only required in the thebe documentation due to the way that ipympl's Binder container is setup. Do not add or execute it when working with ipympl yourself.
-
-.. raw:: html
-
-   <pre data-executable="true" data-language="python">
-   rm -r ipympl
-   </pre>
 
 2D plot
 -------
