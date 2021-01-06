@@ -279,7 +279,7 @@ function renderCell(element, options) {
       window.thebelab.cells.map((idx, { setOutputText }) => setOutputText());
     }
     restart().then((kernel) => {
-      if (!kernel || !window.thebelab) return kernel;
+      if (!window.thebelab) return kernel;
       // Note, the jquery map is overridden, and is in the opposite order of native JS
       window.thebelab.cells.map((idx, { execute }) => execute());
       return kernel;
