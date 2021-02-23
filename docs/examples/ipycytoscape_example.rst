@@ -27,7 +27,7 @@ Configure thebe and load it:
        requestKernel: true,
        binderOptions: {
          repo: "QuantStack/ipycytoscape",
-         ref: "1.0.4",
+         ref: "1.2.0",
          repoProvider: "github",
        },
      }
