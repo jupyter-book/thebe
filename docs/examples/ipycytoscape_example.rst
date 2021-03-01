@@ -86,7 +86,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        requestKernel: true,
        binderOptions: {
          repo: "QuantStack/ipycytoscape",
-         ref: "1.0.4",
+         ref: "1.2.0",
          repoProvider: "github",
        },
      }
