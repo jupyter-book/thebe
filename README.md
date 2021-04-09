@@ -71,7 +71,7 @@ A full config script with defaults:
   predefinedOutput: false,
 
   // The selector for identifying whether an element should be treated as output
-  outputSelector: '[data-output]'
+  outputSelector: '[data-output]',
 
   // Options for requesting a notebook server from mybinder.org
   binderOptions: {

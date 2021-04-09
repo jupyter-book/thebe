@@ -31,7 +31,7 @@ simulates a click on the button.
            const initButton = cell.querySelector('.thebelab-run-button');
            initButton.click();
        });
-   }
+   });
 
 Running custom code with Thebe
 ==============================
@@ -46,7 +46,7 @@ once it is ready.
    thebelab.events.on("request-kernel")((kernel) => {
        // Find any cells with an initialization tag and ask Thebe to run them when ready
        kernel.requestExecute({code: "import numpy"})
-   }
+   });
 
 In both of the cases above, you'll likely need to customize the Javascript calls depending
 on how your code is structured and what behavior you'd like when users land on a page.

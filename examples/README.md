@@ -1,6 +1,6 @@
 # Examples of use of Thebe
 
-You can [browse them online](https://executablebooks.github.io/thebe/).
+You can [browse them online](https://thebe.readthedocs.io/en/latest/examples/minimal_example.html).
 To serve them locally instead, run:
 
     python -m http.server
