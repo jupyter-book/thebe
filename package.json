@@ -68,6 +68,7 @@
     "jquery-ui-bundle": "^1.12.1-migrate",
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
+    "puppeteer": ">=1.5.0",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^4.0",
