@@ -54,7 +54,7 @@ jobs:
     strategy:
       fail-fast: false  # Do not cancel all jobs if one fails
       matrix:
-        node_version: ["10", "12", "14", "15"]
+        node_version: ["10", "12", "14"]
 
     steps:
       - name: "Checkout repo"
