@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Fixed
+
+- #345 Pressing "Restart and Run All" now starts a kernel if none has been
+  started already. [#345](https://github.com/executablebooks/thebe/pull/282)
+- #330 Fixed kernel communication connection in ThebeManager.
+  [#330](https://github.com/executablebooks/thebe/pull/330)
+
 ## 0.6.0 - 2020-12-23
 
 ### Added
