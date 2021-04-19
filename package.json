@@ -49,7 +49,7 @@
     "@jupyterlab/mathjax2": "^3.0.0",
     "@jupyterlab/outputarea": "^3.0.0",
     "@jupyterlab/services": "^6.0.0",
-    "@jupyterlab/testutils": "^2.2.7",
+    "@jupyterlab/testutils": "^3.0.9",
     "@jupyterlab/theme-light-extension": "^3.0.0",
     "babel-jest": "^26.6.1",
     "babel-loader": "^8.1.0",
