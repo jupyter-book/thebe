@@ -215,7 +215,7 @@ function renderCell(element, options) {
   });
   kernelPromise.then((kernel) => {
     $cell.data("kernel", kernel);
-    manager.registerWithKernel(kernel);
+    // manager.registerWithKernel(kernel);
     return kernel;
   });
   $cell.data("kernel-promise-resolve", kernelResolve);
@@ -329,13 +329,11 @@ function renderCell(element, options) {
   return { cell: $cell, execute, setOutputText };
 }
 
-export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
+export function renderAllCells({ selector = _defaultOptions.selector } = {}, kernelPromise) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
 
-  let manager = new ThebeManager({
-    loader: requireLoader,
-  });
+  let manager = new ThebeManager(kernelPromise);
 
   return $(selector).map((i, cell) =>
     renderCell(cell, {
@@ -617,11 +615,6 @@ export function bootstrap(options) {
     stripOutputPrompts(options.stripOutputPrompts);
   }
 
-  // bootstrap thebelab on the page
-  let cells = renderAllCells({
-    selector: options.selector,
-  });
-
   function getKernel() {
     if (options.binderOptions.repo) {
       return requestBinderKernel({
@@ -644,9 +637,17 @@ export function bootstrap(options) {
     });
   }
 
+  // bootstrap thebelab on the page
+  let cells;
+
   kernelPromise.then((kernel) => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
+    
+    cells = renderAllCells({
+      selector: options.selector,
+    }, kernel);
+
     hookupKernel(kernel, cells);
   });
   if (window.thebelab) window.thebelab.cells = cells;
