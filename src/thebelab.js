@@ -329,7 +329,10 @@ function renderCell(element, options) {
   return { cell: $cell, execute, setOutputText };
 }
 
-export function renderAllCells({ selector = _defaultOptions.selector } = {}, kernelPromise) {
+export function renderAllCells(
+  { selector = _defaultOptions.selector } = {},
+  kernelPromise
+) {
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
 
@@ -605,6 +608,8 @@ export function bootstrap(options) {
   // merge defaults, pageConfig, etc.
   options = mergeOptions(options);
 
+  console.log("BOOTSTRAPP");
+
   if (options.preRenderHook) {
     options.preRenderHook();
   }
@@ -643,10 +648,13 @@ export function bootstrap(options) {
   kernelPromise.then((kernel) => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
-    
-    cells = renderAllCells({
-      selector: options.selector,
-    }, kernel);
+
+    cells = renderAllCells(
+      {
+        selector: options.selector,
+      },
+      kernel
+    );
 
     hookupKernel(kernel, cells);
   });

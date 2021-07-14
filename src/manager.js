@@ -12,9 +12,9 @@ import {
   output,
 } from "@jupyter-widgets/jupyterlab-manager";
 
-// import * as outputWidgets from "./output";
+import * as base from "@jupyter-widgets/base";
 
-// import { ShimmedComm } from "./services-shim";
+import * as controls from "@jupyter-widgets/controls";
 
 const WIDGET_MIMETYPE = "application/vnd.jupyter.widget-view+json";
 
@@ -23,6 +23,7 @@ export class ThebeManager extends JupyterLabManager {
     const context = createContext(kernel);
     const rendermime = createRenderMimeRegistry();
     super(context, rendermime);
+    this._registerWidgets();
     this.loader = requireLoader;
   }
 
@@ -83,8 +84,12 @@ function createContext(kernel) {
       kernelChanged: {
         connect: () => {},
       },
-      statusChanged: kernel._statusChanged,
-      connectionStatusChanged: kernel._connectionStatusChanged,
+      statusChanged: {
+        connect: () => {},
+      },
+      connectionStatusChanged: {
+        connect: () => {},
+      },
     },
     saveState: {
       connect: () => {},
