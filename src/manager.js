@@ -25,7 +25,10 @@ export class ThebeManager extends JupyterLabManager {
   constructor(kernel) {
     const context = createContext(kernel);
     const rendermime = createRenderMimeRegistry();
-    super(context, rendermime);
+    const settings = {
+      saveState: false
+    };
+    super(context, rendermime, settings);
     this._registerWidgets();
     this.loader = requireLoader;
   }
