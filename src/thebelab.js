@@ -35,10 +35,12 @@ import "./index.css";
 
 import * as base from "@jupyter-widgets/base";
 import * as controls from "@jupyter-widgets/controls";
+import { output } from "@jupyter-widgets/jupyterlab-manager";
 
 if (typeof window !== "undefined" && typeof window.define !== "undefined") {
   window.define("@jupyter-widgets/base", base);
   window.define("@jupyter-widgets/controls", controls);
+  window.define("@jupyter-widgets/output", output);
 }
 
 // events
@@ -607,8 +609,6 @@ export function bootstrap(options) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
   options = mergeOptions(options);
-
-  console.log("BOOTSTRAPP");
 
   if (options.preRenderHook) {
     options.preRenderHook();

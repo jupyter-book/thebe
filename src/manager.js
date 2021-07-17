@@ -2,6 +2,8 @@
 
 import { requireLoader } from "@jupyter-widgets/html-manager";
 
+import * as pWidget from "@lumino/widgets";
+
 import {
   RenderMimeRegistry,
   standardRendererFactories,
@@ -9,6 +11,7 @@ import {
 
 import {
   WidgetManager as JupyterLabManager,
+  WidgetRenderer,
   output,
 } from "@jupyter-widgets/jupyterlab-manager";
 
@@ -69,6 +72,17 @@ export class ThebeManager extends JupyterLabManager {
         }
       });
     }
+  }
+
+  display_view(msg, view, options) {
+    const el = options.el;
+    return Promise.resolve(view).then((view) => {
+      pWidget.Widget.attach(view.pWidget, el);
+      view.on("remove", function () {
+        console.log("view removed", view);
+      });
+      return view;
+    });
   }
 }
 
