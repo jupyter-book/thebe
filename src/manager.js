@@ -24,11 +24,13 @@ const WIDGET_MIMETYPE = "application/vnd.jupyter.widget-view+json";
 export class ThebeManager extends JupyterLabManager {
   constructor(kernel) {
     const context = createContext(kernel);
-    const rendermime = createRenderMimeRegistry();
+    let rendermime;
     const settings = {
       saveState: false
     };
     super(context, rendermime, settings);
+    rendermime = createRenderMimeRegistry(this);
+    this._rendermime = rendermime;
     this._registerWidgets();
     this.loader = requireLoader;
   }
@@ -77,15 +79,12 @@ export class ThebeManager extends JupyterLabManager {
     }
   }
 
-  display_view(msg, view, options) {
+  async display_view(msg, view, options) {
     const el = options.el;
-    return Promise.resolve(view).then((view) => {
+    if(el) {
       pWidget.Widget.attach(view.pWidget, el);
-      view.on("remove", function () {
-        console.log("view removed", view);
-      });
-      return view;
-    });
+    }
+    return view.pWidget;
   }
 }
 
@@ -114,7 +113,7 @@ function createContext(kernel) {
   };
 }
 
-function createRenderMimeRegistry() {
+function createRenderMimeRegistry(manager) {
   const rendermime = new RenderMimeRegistry({
     initialFactories: standardRendererFactories,
   });
