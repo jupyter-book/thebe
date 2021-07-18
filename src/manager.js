@@ -1,5 +1,3 @@
-// import * as pWidget from "@lumino/widgets";
-
 import { requireLoader } from "@jupyter-widgets/html-manager";
 
 import * as pWidget from "@lumino/widgets";
@@ -109,6 +107,11 @@ function createContext(kernel) {
     },
     saveState: {
       connect: () => {},
+    },
+    model: {
+      metadata: {
+        get: () => {},
+      },
     },
   };
 }
