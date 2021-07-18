@@ -24,7 +24,7 @@ export class ThebeManager extends JupyterLabManager {
     const context = createContext(kernel);
     let rendermime;
     const settings = {
-      saveState: false
+      saveState: false,
     };
     super(context, rendermime, settings);
     rendermime = createRenderMimeRegistry(this);
@@ -79,7 +79,7 @@ export class ThebeManager extends JupyterLabManager {
 
   async display_view(msg, view, options) {
     const el = options.el;
-    if(el) {
+    if (el) {
       pWidget.Widget.attach(view.pWidget, el);
     }
     return view.pWidget;
