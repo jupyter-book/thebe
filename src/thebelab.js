@@ -656,9 +656,10 @@ export function bootstrap(options) {
       kernel
     );
 
+    if (window.thebelab) window.thebelab.cells = cells;
+
     hookupKernel(kernel, cells);
   });
-  if (window.thebelab) window.thebelab.cells = cells;
   return kernelPromise;
 }
 
