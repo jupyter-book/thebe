@@ -18,6 +18,7 @@ See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/la
 - `examples/` provides a few HTML examples of how `thebe` can be used. It is mostly for documentation
 
 (dev-install)=
+
 ## Set up a development environment
 
 In order to get Thebe running locally, you'll need to have Node installed on your system. You can install it in several ways, the most common being:
@@ -51,14 +52,28 @@ npm run build:watch
 
 This will build `thebe/` locally (including any changes you've made to the source code).
 
-You can now demo the latest `thebe/` changes by opening the file at `development.html`. Open this file to see Thebe running.
+You can now demo the latest `thebe/` changes by opening the file at `development/binder.html`. Open this file to see Thebe running.
 
-The content of `development.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
+The content of `development/binder.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
 
-Running the `npm run develop` command will start building the source code with webpack and serve it along with `development.html`.
-As you change the code in `src/`,
-the javascript will automatically be re-built,
-but you'll be required to refresh the page.
+Running the `npm run develop` command will start a watch on the source code, building with webpack and will serve it along with `development/binder.html`.
+As you change the code in `src/`, the javascript will automatically be re-built, but you'll be required to refresh the page.
+
+### Using a local kernel
+
+`development/binder.html` will connect to a public binder instance which can be slow.
+
+For faster development and easy control over the python environment available to Jupyter is run `npm run develop:local` instead.
+
+This will serve the file from `development/local.html` which will attempt to connect to a local Jupyter kernel.
+
+You will need to have Jupyter running with **the expected authentication token** for this to work. i.e.
+
+```bash
+jupyter notebook \
+  --NotebookApp.token=thebe-test-secret \
+  --NotebookApp.allow_origin='http://127.0.0.1:8080'
+```
 
 ## Committing changes
 
@@ -84,8 +99,8 @@ You can test manually, interactively by running `npm run develop` to open and se
 
 There are two types of automated test environment in place in thebe both using the Jest testing library. These are:
 
- 1. a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `npm run test` or `npm run test:watch` and test code is located in the `test` folder.
- 2. e2e style tests using jest + puppeteer that can be run `npm run test:e2e` or `npm run test:e2e:watch` and test code is located in the `e2e` folder.
+1.  a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `npm run test` or `npm run test:watch` and test code is located in the `test` folder.
+2.  e2e style tests using jest + puppeteer that can be run `npm run test:e2e` or `npm run test:e2e:watch` and test code is located in the `e2e` folder.
 
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
 
@@ -95,10 +110,10 @@ TODO: get testing infrastructure to a point where we can reasonably request test
 
 Unit style tests work by loading the thebe library or part of it in javascript; mocking inputs and/or dependencies, executing a function and asserting on outputs of mocks. A good first example to look at is `tests/bootstrap.spec.js`. This test:
 
- - loads thebe js code `import * as thebelab from "../src/thebelab";`
- - manipulates the dom to prep the test (via built in JSDOM)
- - calls the `thebe.bootstrap()` function
- - checks for expected behaviour
+- loads thebe js code `import * as thebelab from "../src/thebelab";`
+- manipulates the dom to prep the test (via built in JSDOM)
+- calls the `thebe.bootstrap()` function
+- checks for expected behaviour
 
 If you are new to Jest check their [getting started](https://jestjs.io/docs/en/getting-started), [mocking](https://jestjs.io/docs/en/mock-functions) and [expect assertion api](https://jestjs.io/docs/en/expect) docs.
 
@@ -109,20 +124,21 @@ e2e style tests are achieved using [Puppeteer](https://github.com/puppeteer/pupp
 Adding new e2e tests involves:
 (see `e2e/readonly.test.js` for an example)
 
- - creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
- - load the fixture page at the start of your test
- ```
-   beforeAll(async () => {
-    await page.goto(
-      `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
-      { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
-    );
-  });
- ```
- - Assert on initial page state
- - Invoke UI actions to trigger behavior
- - assert on final state
+- creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
+- load the fixture page at the start of your test
 
+```
+  beforeAll(async () => {
+   await page.goto(
+     `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
+     { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
+   );
+ });
+```
+
+- Assert on initial page state
+- Invoke UI actions to trigger behavior
+- assert on final state
 
 ## Building docs locally
 
@@ -154,8 +170,7 @@ To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/lat
 Once prepared, bump the version with:
 
 1. Use npm to update the thebe version in the `package.json` file and to create
-   a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version
-   0.5.1`
+   a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
 2. Push the tag to github: `git push --follow-tags`
 3. Create a release for the new tag on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a
@@ -177,7 +192,7 @@ It does this with [jQuery][],
 finding (by default) elements that look like `<div data-executable="true">...`,
 with a query such as the `$("[data-executable])` (this is the default, but can be customized).
 Once it has found these elements,
-Cell objects are created (more on Cells in the JupyterLab API), which then *replace* the elements that were found.
+Cell objects are created (more on Cells in the JupyterLab API), which then _replace_ the elements that were found.
 
 ### JupyterLab APIs
 
@@ -200,16 +215,15 @@ More information in the README (TODO: move it here?)
 
 ```html
 <script type="text/x-thebe-config">
-{
-  binderOptions: {
-    repo: "minrk/ligo-binder",
-    ref: "master",
+  {
+    binderOptions: {
+      repo: "minrk/ligo-binder",
+      ref: "master",
+    }
   }
-}
 </script>
 ```
 
-
-[jQuery]: https://jquery.com
-[JupyterLab]: https://jupyterlab.readthedocs.io
-[BinderHub]: https://binderhub.readthedocs.org
+[jquery]: https://jquery.com
+[jupyterlab]: https://jupyterlab.readthedocs.io
+[binderhub]: https://binderhub.readthedocs.org

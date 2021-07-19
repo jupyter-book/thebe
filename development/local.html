@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="main.css" />
+    <!-- use this one (and set the token!) for local testing (much faster)
+        e.g.
+        jupyter notebook \
+          --NotebookApp.token=thebe-test-secret \
+          --NotebookApp.allow_origin='http://127.0.0.1:8080'
+        -->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        kernelOptions: {
+          name: "python3",
+          path: ".",
+          // notebook server configuration; not needed with binder
+          serverSettings: {
+            "baseUrl": "http://127.0.0.1:8888",
+            "token": "thebe-test-secret",
+          },
+        },
+        codeMirrorConfig: {
+          "theme": "abcdef"
+        },
+      }
+    </script>
+    <script src="../lib/index.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <p>
+          For development against a local kernel, you need to start Jupyter with
+          the expected token:
+        </p>
+        <pre>
+              jupyter notebook \
+              --NotebookApp.token=thebe-test-secret \
+              --NotebookApp.allow_origin='http://127.0.0.1:8080'
+            </pre
+        >
+      </div>
+      <button id="activateButton">Activate</button>
+      <script>
+        var bootstrapThebe = function () {
+          thebelab.bootstrap();
+        };
+
+        document
+          .querySelector("#activateButton")
+          .addEventListener("click", bootstrapThebe);
+      </script>
+      <pre data-executable="true" data-language="python" class="pre-element">
+print("Hello!")</pre
+      >
+      <pre data-executable="true" data-language="python" class="pre-element">
+from IPython.display import Math
+Math("$x = 5$")
+            </pre
+      >
+      <pre data-executable="true" data-language="python" class="pre-element">
+from ipywidgets import IntSlider
+w = IntSlider(0, 10)
+w
+            </pre
+      >
+    </div>
+  </body>
+</html>
