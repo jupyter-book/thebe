@@ -47,7 +47,9 @@ cd thebe
 npm ci
 ```
 
-NOTE: using `npm ci` rather than `npm install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades
+```{note}
+Using `npm ci` rather than `npm install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades.
+```
 
 This will install all dependencies needed to run `thebe` (specified in `package.json`).
 
@@ -122,7 +124,7 @@ Adding new e2e tests involves:
 - creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
 - load the fixture page at the start of your test
 
-```
+```javascript
   beforeAll(async () => {
    await page.goto(
      `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
