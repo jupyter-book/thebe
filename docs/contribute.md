@@ -44,8 +44,10 @@ Next, clone the repository and set up your `npm` environment for this repo:
 ```bash
 git clone https://github.com/executablebooks/thebe
 cd thebe
-npm install
+npm ci
 ```
+
+NOTE: using `npm ci` rather than `npm install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades
 
 This will install all dependencies needed to run `thebe` (specified in `package.json`).
 
