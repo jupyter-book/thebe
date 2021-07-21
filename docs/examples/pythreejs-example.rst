@@ -27,7 +27,7 @@ Configure thebe and load it:
        binderOptions: {
          repo: "jupyter-widgets/pythreejs",
          ref: "2.2.1",
-         binderUrl: "https://binder.libretexts.org",
+         binderUrl: "https://mybinder.org",
          repoProvider: "github",
        },
      }
@@ -66,7 +66,7 @@ Examples
        binderOptions: {
          repo: "jupyter-widgets/pythreejs",
          ref: "2.2.1",
-         binderUrl: "https://binder.libretexts.org",
+         binderUrl: "https://mybinder.org",
          repoProvider: "github",
        },
      }
