@@ -1,21 +1,21 @@
-==================
-Configure Thebelab
-==================
+===============
+Configure Thebe
+===============
 
-You control Thebelab's behavior with a configuration block that is placed somewhere
+You control Thebe's behavior with a configuration block that is placed somewhere
 in a page's HTML. The block has the following structure:
 
 .. code-block:: html
 
    <script type="text/x-thebe-config">
-      { 
+      {
           a: collection
           of: key
           val: pairs
       }
    </script>
 
-For example, the following configuration tells Thebelab to use a BinderHub for its
+For example, the following configuration tells Thebe to use a BinderHub for its
 sessions, as well as the repository to use with Binder:
 
 .. code-block:: html
@@ -30,17 +30,17 @@ sessions, as well as the repository to use with Binder:
     }
     </script>
 
-When Thebelab is launched on a page, this configuration is used to control
+When Thebe is launched on a page, this configuration is used to control
 its behavior.
 
-See the sections below for things that you can control with Thebelab configuration.
+See the sections below for things that you can control with Thebe configuration.
 
 
 Configure the kernel that will be launched
 ==========================================
 
-To configure the kernel that Thebelab requests when it launches, use the
-following section in the Thebelab configuration:
+To configure the kernel that Thebe requests when it launches, use the
+following section in the Thebe configuration:
 
 .. code-block:: javascript
 
@@ -48,13 +48,13 @@ following section in the Thebelab configuration:
      kernelName: "python3",
    },
 
-When Thebelab is launched, it will request a kernel of this name for the page.
+When Thebe is launched, it will request a kernel of this name for the page.
 Note that currently there can be only one kernel per page.
 
 .. note::
 
    You must ensure that the value of ``kernelName`` exists in the environment that
-   Thebelab tries to launch. Some short-hands for certain languages (like ``python``)
+   Thebe tries to launch. Some short-hands for certain languages (like ``python``)
    may also work.
 
 
@@ -80,9 +80,9 @@ Customize CodeMirror
 
 CodeMirror is the tool used to convert your code cells into editable cells.
 It has a number of configuration options, such as theming and syntax highlighting.
-You can edit all of these attributes in a cell with the following thebelab configuration:
+You can edit all of these attributes in a cell with the following thebe configuration:
 
-.. code:: html
+.. code:: javascript
 
 
    // Additional options to pass to CodeMirror instances
@@ -91,7 +91,7 @@ You can edit all of these attributes in a cell with the following thebelab confi
 You can use any of `the available CodeMirror configurations <https://codemirror.net/doc/manual.html#config>`_.
 For example, the following configuration changes the `CodeMirror theme <https://codemirror.net/theme/>`_:
 
-.. code:: html
+.. code:: javascript
 
    codeMirrorConfig: {
        theme: "abcdef"
@@ -113,7 +113,7 @@ The below code cell demonstrates this theme:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
    <pre data-executable="true" data-language="python">
    %matplotlib inline
@@ -134,3 +134,33 @@ The below code cell demonstrates this theme:
 
 The above code should be styled according to the
 `CodeMirror abcdef theme <https://codemirror.net/demo/theme.html#abcdef>`_.
+
+
+Mark a code cell as read-only
+=============================
+
+If you would like a code cell to be runnable by Thebe, but not *editable* by the user, you
+may mark it as "read-only" with the following syntax:
+
+.. code-block:: html
+
+   <pre data-executable data-readonly>print("I cannot be modified")</pre>
+
+Users will not be able to modify the code once Thebe is activated, though they can still
+press the "run" button to see the outputs.
+
+**To set all cells as read-only by default**, use the following `thebe` configuration:
+
+.. code:: javascript
+
+   codeMirrorConfig: {
+       readOnly: true
+   }
+
+This uses codeMirror to mark all cells as read-only. If you are using this setting and would like to
+manually mark individual cells as editable, you can override the codeMirror configuration for a cell using ``data-readonly="false"``. For example:
+
+.. code-block:: html
+
+   <pre data-executable data-readonly="false">print("I still can be modified")</pre>
+   <pre data-executable>print("Due to codeMirrorConfig, I cannot be modified")</pre>

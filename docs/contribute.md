@@ -1,4 +1,4 @@
-# Contribute to `thebe`
+# Contributing Guide
 
 Thanks for your interest in contributing to `thebe`, your contributions are welcome and appreciated 🎉. This page contains some information to help you get started.
 
@@ -17,13 +17,14 @@ See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/la
 - `src/` contains the code and assets that make up `thebe`. This is what you'll edit to make changes to the project.
 - `examples/` provides a few HTML examples of how `thebe` can be used. It is mostly for documentation
 
+(dev-install)=
 ## Set up a development environment
 
 In order to get Thebe running locally, you'll need to have Node installed on your system. You can install it in several ways, the most common being:
 
 - Install Node by [following the nodejs instructions](https://nodejs.org/en/download/)
 - Install Node through `conda`
-  
+
   ```bash
   conda install -c conda-forge nodejs
   ```
@@ -59,7 +60,7 @@ As you change the code in `src/`,
 the javascript will automatically be re-built,
 but you'll be required to refresh the page.
 
-# Committing changes
+## Committing changes
 
 Thebe uses code autoformatting so you don't need to worry about style lint,
 so whenever you are ready to commit changes
@@ -75,26 +76,92 @@ fi
 
 to run auto-formatting prior to each commit.
 
-# Testing Thebe
+## Testing Thebe
 
-You can run the tests locally with `npm test`.
+You can test manually, interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
+
+### Running automated tests
+
+There are two types of automated test environment in place in thebe both using the Jest testing library. These are:
+
+ 1. a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `npm run test` or `npm run test:watch` and test code is located in the `test` folder.
+ 2. e2e style tests using jest + puppeteer that can be run `npm run test:e2e` or `npm run test:e2e:watch` and test code is located in the `e2e` folder.
+
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
-
-Test code is in the `test` directory, and you can write new tests in there.
-You can also test interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
 
 TODO: get testing infrastructure to a point where we can reasonably request tests for new features.
 
-# Releasing Thebe
+#### Adding unit tests
+
+Unit style tests work by loading the thebe library or part of it in javascript; mocking inputs and/or dependencies, executing a function and asserting on outputs of mocks. A good first example to look at is `tests/bootstrap.spec.js`. This test:
+
+ - loads thebe js code `import * as thebelab from "../src/thebelab";`
+ - manipulates the dom to prep the test (via built in JSDOM)
+ - calls the `thebe.bootstrap()` function
+ - checks for expected behaviour
+
+If you are new to Jest check their [getting started](https://jestjs.io/docs/en/getting-started), [mocking](https://jestjs.io/docs/en/mock-functions) and [expect assertion api](https://jestjs.io/docs/en/expect) docs.
+
+#### Adding e2e Tests
+
+e2e style tests are achieved using [Puppeteer](https://github.com/puppeteer/puppeteer) a headless chrome api that can be used to load a page complete with thebe scripts, allowing full execution as though it was in an end user browser and then assertion of end state.
+
+Adding new e2e tests involves:
+(see `e2e/readonly.test.js` for an example)
+
+ - creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
+ - load the fixture page at the start of your test
+ ```
+   beforeAll(async () => {
+    await page.goto(
+      `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
+      { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
+    );
+  });
+ ```
+ - Assert on initial page state
+ - Invoke UI actions to trigger behavior
+ - assert on final state
+
+
+## Building docs locally
+
+Thebe uses [Sphinx](https://www.sphinx-doc.org/) and [JupyterBook](https://jupyterbook.org/) for building documentation. Thebe documentation is located in the `/docs` directory.
+You will need the development environment setup, see the above {ref}`dev-install` to learn more.
+You will also need Python installed, and can install the requirements for the documentation using:
+
+```bash
+cd docs/
+pip install -r doc-requirements.txt
+```
+
+Once you are in the documentation folder:
+
+```bash
+make html
+```
+
+Finally, run the following to view the built documentation locally:
+
+```bash
+make show
+```
+
+## Releasing Thebe
 
 To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/latest/contributing.html#releases-and-change-logs) to make sure the repo is ready for release.
 
 Once prepared, bump the version with:
 
-1. update version and create tag with `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
-2. publish version to github: `git push --follow-tags`
+1. Use npm to update the thebe version in the `package.json` file and to create
+   a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version
+   0.5.1`
+2. Push the tag to github: `git push --follow-tags`
+3. Create a release for the new tag on github at
+   https://github.com/executablebooks/thebe/releases/new; this will trigger a
+   github action that uploads the latest version to unpkg.com/browse/thebe/.
 
-# Thebe architecture
+## Thebe architecture
 
 Thebe consumes three principal APIs:
 
@@ -102,7 +169,7 @@ Thebe consumes three principal APIs:
 2. [JupyterLab][] for talking to a running Jupyter server to execute code and display outputs
 3. [BinderHub][] for requesting kernels from a BinderHub instance, such as mybinder.org.
 
-## Manipulating the page
+### Manipulating the page
 
 The first thing Thebe does is find elements on the page
 that should be made executable.
@@ -112,7 +179,7 @@ with a query such as the `$("[data-executable])` (this is the default, but can b
 Once it has found these elements,
 Cell objects are created (more on Cells in the JupyterLab API), which then *replace* the elements that were found.
 
-## JupyterLab APIs
+### JupyterLab APIs
 
 The main thing Thebe does is execute code and display output.
 This is done with JupyterLab APIs.
@@ -125,7 +192,7 @@ Main APIs used:
 - Kernel for sending/receiving messages to/from a connected kernel
 - WidgetManager for working with interactive widgets
 
-## Configuration
+### Configuration
 
 Configuration is handled by adding a `script` tag with type="text/x-thebe-config". This should specify a javascript object.
 

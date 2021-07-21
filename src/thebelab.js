@@ -7,8 +7,8 @@ if (typeof window !== "undefined") {
   window.CodeMirror = CodeMirror;
 }
 
-import { Widget } from "@phosphor/widgets";
-import { Session } from "@jupyterlab/services";
+import { Widget } from "@lumino/widgets";
+import { KernelManager, KernelAPI } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
 import { OutputArea, OutputAreaModel } from "@jupyterlab/outputarea";
@@ -69,9 +69,17 @@ const _defaultOptions = {
   binderOptions: {
     ref: "master",
     binderUrl: "https://mybinder.org",
+    savedSession: {
+      enabled: true,
+      maxAge: 86400,
+      storagePrefix: "thebe-binder-",
+    },
   },
   kernelOptions: {
     path: "/",
+    serverSettings: {
+      appendToken: true,
+    },
   },
 };
 
@@ -176,6 +184,8 @@ function renderCell(element, options) {
     rendermime: renderMime,
   });
 
+  $cell.attr("id", $element.attr("id"));
+
   $element.replaceWith($cell);
 
   let $cm_element = $("<div class='thebelab-input'>");
@@ -191,6 +201,12 @@ function renderCell(element, options) {
       .text("restart")
       .attr("title", "restart the kernel")
       .click(restart)
+  );
+  $cell.append(
+    $("<button class='thebelab-button thebelab-restartall-button'>")
+      .text("restart & run all")
+      .attr("title", "restart the kernel and run all cells")
+      .click(restartAndRunAll)
   );
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
@@ -215,21 +231,34 @@ function renderCell(element, options) {
     $output.remove();
   }
 
+  function setOutputText(text = "Waiting for kernel...") {
+    outputArea.model.clear();
+    outputArea.model.add({
+      output_type: "stream",
+      name: "stdout",
+      text,
+    });
+  }
+
   function execute() {
     let kernel = $cell.data("kernel");
     let code = cm.getValue();
     if (!kernel) {
       console.debug("No kernel connected");
-      outputArea.model.clear();
-      outputArea.model.add({
-        output_type: "stream",
-        name: "stdout",
-        text: "Waiting for kernel...",
-      });
+      setOutputText();
       events.trigger("request-kernel");
     }
     kernelPromise.then((kernel) => {
-      outputArea.future = kernel.requestExecute({ code: code });
+      try {
+        outputArea.future = kernel.requestExecute({ code: code });
+      } catch (error) {
+        outputArea.model.clear();
+        outputArea.model.add({
+          output_type: "stream",
+          name: "stderr",
+          text: `Failed to execute. ${error} Please refresh the page.`,
+        });
+      }
     });
     return false;
   }
@@ -237,10 +266,24 @@ function renderCell(element, options) {
   function restart() {
     let kernel = $cell.data("kernel");
     if (kernel) {
-      kernelPromise.then((kernel) => {
-        kernel.restart();
+      return kernelPromise.then(async (kernel) => {
+        await kernel.restart();
+        return kernel;
       });
     }
+    return Promise.resolve(kernel);
+  }
+
+  function restartAndRunAll() {
+    if (window.thebelab) {
+      window.thebelab.cells.map((idx, { setOutputText }) => setOutputText());
+    }
+    restart().then((kernel) => {
+      if (!window.thebelab) return kernel;
+      // Note, the jquery map is overridden, and is in the opposite order of native JS
+      window.thebelab.cells.map((idx, { execute }) => execute());
+      return kernel;
+    });
   }
 
   let theDiv = document.createElement("div");
@@ -248,6 +291,7 @@ function renderCell(element, options) {
   Widget.attach(outputArea, theDiv);
 
   const mode = $element.data("language") || "python";
+  const isReadOnly = $element.data("readonly");
   const required = {
     value: source,
     mode: mode,
@@ -255,6 +299,9 @@ function renderCell(element, options) {
       "Shift-Enter": execute,
     },
   };
+  if (isReadOnly !== undefined) {
+    required.readOnly = isReadOnly !== false; //overrides codeMirrorConfig.readOnly for cell
+  }
 
   // Gets CodeMirror config if it exists
   let codeMirrorOptions = {};
@@ -274,7 +321,12 @@ function renderCell(element, options) {
   Mode.ensure(mode).then((modeSpec) => {
     cm.setOption("mode", mode);
   });
-  return $cell;
+  if (cm.isReadOnly()) {
+    cm.display.lineDiv.setAttribute("data-readonly", "true");
+    $cm_element[0].setAttribute("data-readonly", "true");
+    $cell.attr("data-readonly", "true");
+  }
+  return { cell: $cell, execute, setOutputText };
 }
 
 export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
@@ -294,7 +346,7 @@ export function renderAllCells({ selector = _defaultOptions.selector } = {}) {
 
 export function hookupKernel(kernel, cells) {
   // hooks up cells to the kernel
-  cells.map((i, cell) => {
+  cells.map((i, { cell }) => {
     $(cell).data("kernel-promise-resolve")(kernel);
   });
 }
@@ -304,32 +356,26 @@ export function hookupKernel(kernel, cells) {
 export function requestKernel(kernelOptions) {
   // request a new Kernel
   kernelOptions = mergeOptions({ kernelOptions }).kernelOptions;
-  if (kernelOptions.serverSettings) {
-    let ss = kernelOptions.serverSettings;
-    // workaround bug in jupyterlab where wsUrl and baseUrl must both be set
-    // https://github.com/jupyterlab/jupyterlab/pull/4427
-    if (ss.baseUrl && !ss.wsUrl) {
-      ss.wsUrl = "ws" + ss.baseUrl.slice(4);
-    }
-    kernelOptions.serverSettings = ServerConnection.makeSettings(
-      kernelOptions.serverSettings
-    );
-  }
+  let serverSettings = ServerConnection.makeSettings(
+    kernelOptions.serverSettings
+  );
   events.trigger("status", {
     status: "starting",
     message: "Starting Kernel",
   });
-  let p = Session.startNew(kernelOptions);
-  p.then((session) => {
-    events.trigger("status", {
-      status: "ready",
-      message: "Kernel is ready",
-      kernel: session.kernel,
+  let km = new KernelManager({ serverSettings });
+  return km.ready
+    .then(() => {
+      return km.startNew(kernelOptions);
+    })
+    .then((kernel) => {
+      events.trigger("status", {
+        status: "ready",
+        message: "Kernel is ready",
+        kernel: kernel,
+      });
+      return kernel;
     });
-    let k = session.kernel;
-    return k;
-  });
-  return p;
 }
 
 export function requestBinderKernel({ binderOptions, kernelOptions }) {
@@ -347,6 +393,7 @@ export function requestBinder({
   ref = "master",
   binderUrl = null,
   repoProvider = "",
+  savedSession = _defaultOptions.binderOptions.savedSession,
 } = {}) {
   // request a server from Binder
   // returns a Promise that will resolve with a serverSettings dict
@@ -360,6 +407,9 @@ export function requestBinder({
   console.log("binder url", binderUrl, defaults);
   binderUrl = binderUrl || defaults.binderUrl;
   ref = ref || defaults.ref;
+  savedSession = savedSession || defaults.savedSession;
+  savedSession = $.extend(true, defaults.savedSession, savedSession);
+
   let url;
 
   if (repoProvider.toLowerCase() === "git") {
@@ -393,11 +443,78 @@ export function requestBinder({
     url = binderUrl + "/build/gh/" + repo + "/" + ref;
   }
   console.log("Binder build URL", url);
-  events.trigger("status", {
-    status: "building",
-    message: "Requesting build from binder",
-  });
-  return new Promise((resolve, reject) => {
+
+  const storageKey = savedSession.storagePrefix + url;
+
+  async function getExistingServer() {
+    if (!savedSession.enabled) {
+      return;
+    }
+    let storedInfoJSON = window.localStorage.getItem(storageKey);
+    if (storedInfoJSON == null) {
+      console.debug("No session saved in ", storageKey);
+      return;
+    }
+    console.debug("Saved binder session detected");
+    let existingServer = JSON.parse(storedInfoJSON);
+    let lastUsed = new Date(existingServer.lastUsed);
+    let ageSeconds = (new Date() - lastUsed) / 1000;
+    if (ageSeconds > savedSession.maxAge) {
+      console.debug(
+        `Not using expired binder session for ${existingServer.url} from ${lastUsed}`
+      );
+      window.localStorage.removeItem(storageKey);
+      return;
+    }
+    let settings = ServerConnection.makeSettings({
+      baseUrl: existingServer.url,
+      wsUrl: "ws" + existingServer.url.slice(4),
+      token: existingServer.token,
+      appendToken: true,
+    });
+    try {
+      await KernelAPI.listRunning(settings);
+    } catch (err) {
+      console.log(
+        "Saved binder connection appears to be invalid, requesting new session",
+        err
+      );
+      window.localStorage.removeItem(storageKey);
+      return;
+    }
+    // refresh lastUsed timestamp in stored info
+    existingServer.lastUsed = new Date();
+    window.localStorage.setItem(storageKey, JSON.stringify(existingServer));
+    console.log(
+      `Saved binder session is valid, reusing connection to ${existingServer.url}`
+    );
+    return settings;
+  }
+
+  return new Promise(async (resolve, reject) => {
+    // if binder already spawned our server and we remember the creds
+    // try to reuse it
+    let existingServer;
+    try {
+      existingServer = await getExistingServer();
+    } catch (err) {
+      // catch unhandled errors such as JSON parse errors,
+      // invalid formats, permission error on localStorage, etc.
+      console.error("Failed to load existing server connection", err);
+    }
+
+    if (existingServer) {
+      // found an existing server
+      // return it instead of requesting a new one
+      resolve(existingServer);
+      return;
+    }
+
+    events.trigger("status", {
+      status: "building",
+      message: "Requesting build from binder",
+    });
+
     let es = new EventSource(url);
     es.onerror = (err) => {
       console.error("Lost connection to " + url, err);
@@ -436,11 +553,30 @@ export function requestBinder({
           break;
         case "ready":
           es.close();
+          try {
+            // save the current connection url+token to reuse later
+            window.localStorage.setItem(
+              storageKey,
+              JSON.stringify({
+                url: msg.url,
+                token: msg.token,
+                lastUsed: new Date(),
+              })
+            );
+          } catch (e) {
+            // storage quota full, gently ignore nonfatal error
+            console.warn(
+              "Couldn't save thebe binder connection info to local storage",
+              e
+            );
+          }
+
           resolve(
             ServerConnection.makeSettings({
               baseUrl: msg.url,
               wsUrl: "ws" + msg.url.slice(4),
               token: msg.token,
+              appendToken: true,
             })
           );
           break;
@@ -508,12 +644,12 @@ export function bootstrap(options) {
     });
   }
 
-  kernelPromise.then((session) => {
-    let kernel = session.kernel;
+  kernelPromise.then((kernel) => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
     hookupKernel(kernel, cells);
   });
+  if (window.thebelab) window.thebelab.cells = cells;
   return kernelPromise;
 }
 

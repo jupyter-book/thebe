@@ -2,6 +2,19 @@
 Thebe
 =====
 
+.. toctree::
+   :hidden:
+   :caption: General
+
+   start
+   configure
+   security
+   events
+   config_reference
+   howto/initialize_cells
+   contribute
+   api
+
 `Thebe <https://github.com/executablebooks/thebe>`_ turns your static HTML pages
 into interactive ones, powered by a kernel. It is the evolution of the
 `original Thebe project <https://github.com/oreillymedia/thebe>`_ with javascript
@@ -20,7 +33,7 @@ For example, see the following code cell:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
    <pre data-executable="true" data-language="python">
    %matplotlib inline
@@ -68,6 +81,18 @@ For more examples showing how to configure, use, and activate Thebe, see
 the list below. We recommend browsing the raw HTML of each one in order to
 see how Thebe is used.
 
+.. toctree::
+   :caption: Examples
+   :maxdepth: 1
+
+   examples/minimal_example
+   examples/bqplot_example
+   examples/ipyleaflet_example
+   examples/ipympl_example
+   examples/plotly-example
+   examples/ipycytoscape_example
+   examples/pythreejs-example
+
 * `Making use of Jupyter interactive widgets <_static/widgets.html>`_
 * `Status field and styling <_static/status_field.html>`_
 * `Activate/Status button <_static/activate_button.html>`_
@@ -83,23 +108,8 @@ see how Thebe is used.
   * `thebe_status_field.js <https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js>`_
 * `Thebe in use for GAP documentation <https://sebasguts.github.io/thebelab_test_gap/chap42>`_
 
-
 Acknowledgements
 ================
 
 ``thebe`` was originally developed as a part of `OpenDreamKit <http://opendreamkit.org/>`_ -
 Horizon 2020 European Research Infrastructure project (676541).
-
-
-.. toctree::
-   :hidden:
-
-   start
-   configure
-   events
-   config_reference
-   howto/initialize_cells
-   minimal_example
-   pythreejs-example
-   contribute
-   api

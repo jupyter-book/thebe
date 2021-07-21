@@ -2,16 +2,43 @@
 <html>
     <head>
         <!-- Configure and load Thebe !-->
+        <!-- two config sections: first binder, second local
+        switch which one has type="text/x-thebe-config"
+        to activate it
+      -->
         <script type="text/x-thebe-config">
-            {
-                requestKernel: true,
-                binderOptions: {
-                repo: "binder-examples/requirements",
-                codeMirrorConfig: {
-                    "theme": "abcdef"
-                },
+          {
+            requestKernel: true,
+            binderOptions: {
+              repo: "binder-examples/requirements",
+              codeMirrorConfig: {
+                "theme": "abcdef"
+              },
             },
-        }
+          }
+        </script>
+        <!-- use this one (and set the token!) for local testing (much faster)
+        e.g.
+        jupyter notebook \
+          --NotebookApp.token=thebe-test-secret \
+          --NotebookApp.allow_origin='http://127.0.0.1:8080'
+        -->
+        <script type="text/x-thebe-config-disabled">
+          {
+            requestKernel: true,
+            kernelOptions: {
+              name: "python3",
+              path: ".",
+              // notebook server configuration; not needed with binder
+              serverSettings: {
+                "baseUrl": "http://127.0.0.1:8888",
+                "token": "thebe-test-secret",
+              },
+            },
+            codeMirrorConfig: {
+              "theme": "abcdef"
+            },
+          }
         </script>
         <script src="./lib/index.js"></script>
     </head>
@@ -27,6 +54,14 @@
             </script>
 
             <pre data-executable="true" data-language="python" class="pre-element">print("Hello!")</pre>
+            <pre data-executable="true" data-language="python" class="pre-element">
+from IPython.display import Math
+Math("$x = 5$")
+            </pre>
+            <pre data-executable="true" data-language="python" class="pre-element">from ipywidgets import IntSlider
+w = IntSlider(0, 10)
+w
+            </pre>
         </div>
     </body>
     <style>

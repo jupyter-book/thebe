@@ -5,7 +5,7 @@ function thebe_place_activate_button() {
     '<input type="button"\
                   onclick="thebe_activate_button_function()"\
                   value="Activate"\
-                  title="ThebeLab (requires internet):\nClick to activate code cells in this page.\nYou can then edit and run them.\nComputations courtesy of mybinder.org."\
+                  title="Thebe (requires internet):\nClick to activate code cells in this page.\nYou can then edit and run them.\nComputations courtesy of mybinder.org."\
                    class="thebe-status-field"/>'
   );
 }
@@ -17,7 +17,7 @@ function thebe_remove_activate_button() {
 function thebe_place_status_field() {
   $(".thebe_status_field").html(
     '<span class="thebe-status-field"\
-                title="ThebeLab status.\nClick `run` to execute code cells.\nComputations courtesy of mybinder.org.">\
+                title="Thebe status.\nClick `run` to execute code cells.\nComputations courtesy of mybinder.org.">\
           </span>'
   );
 }
@@ -36,13 +36,13 @@ function thebe_activate_cells() {
 // Activate button function hook
 function thebe_activate_button_function() {
   // Load the Thebe library
-  $.getScript("https://unpkg.com/thebelab@latest")
+  $.getScript("https://unpkg.com/thebe@latest")
     .done(function (script, textStatus) {
       thebe_remove_activate_button();
       thebe_place_status_field();
       thebe_activate_cells();
     })
     .fail(function (jqxhr, settings, exception) {
-      $("div.log").text("Could not fetch ThebeLab library.");
+      $("div.log").text("Could not fetch Thebe library.");
     });
 }

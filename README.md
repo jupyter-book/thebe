@@ -1,4 +1,5 @@
 # Thebe: turn static HTML pages into live documents
+![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
 
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
 - A brief header in the HTML page
@@ -70,15 +71,24 @@ A full config script with defaults:
   predefinedOutput: false,
 
   // The selector for identifying whether an element should be treated as output
-  outputSelector: '[data-output]'
+  outputSelector: '[data-output]',
 
   // Options for requesting a notebook server from mybinder.org
   binderOptions: {
     repo: "minrk/ligo-binder",
+
+    // only repo is required, the rest below are defaults:
     ref: "master",
     binderUrl: "https://mybinder.org",
     // select repository source (optional). Supports Github(default), Gitlab, and Git
     repoProvider: "github",
+    savedSession: {
+      // if enabled, thebe will store and try to re-use
+      // connections (with credentials!) to running servers
+      enabled: true,
+      maxAge: 86400, // the max age in seconds to consider re-using a session
+      storagePrefix: "thebe-binder-",
+    }
   },
 
   // Options for requesting a kernel from the notebook server

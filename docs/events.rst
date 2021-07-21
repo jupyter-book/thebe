@@ -1,11 +1,11 @@
-Event hooks in Thebelab
-=======================
+Event hooks in Thebe
+====================
 
-When Thebelab is launched (with ``thebelab.bootstrap``), it will emit a series
+When Thebe is launched (with ``thebelab.bootstrap``), it will emit a series
 of events corresponding to the state of the launch process. You can plug into
 these events to control the behavior on your page.
 
-To do so, use the ``status`` event within Thebelab, like so:
+To do so, use the ``status`` event within Thebe, like so:
 
 .. code-block:: javascript
 
@@ -14,7 +14,7 @@ To do so, use the ``status`` event within Thebelab, like so:
     });
 
 In the above code, the ``data`` object contains a collection of information about
-Thebelab, and ``data.status`` will reflect the current state of Thebelab. This will
+Thebe, and ``data.status`` will reflect the current state of Thebe. This will
 cycle between these states:
 
 * ``building``
@@ -23,5 +23,5 @@ cycle between these states:
 * ``ready``
 
 These events can be used to do things like running code once the Jupyter Kernels is
-ready, or manipulating the page DOM before launching Thebelab to result in certain
+ready, or manipulating the page DOM before launching Thebe to result in certain
 behavior (e.g. a "loading status" button).

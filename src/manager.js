@@ -1,4 +1,4 @@
-import * as pWidget from "@phosphor/widgets";
+import * as pWidget from "@lumino/widgets";
 
 import { HTMLManager } from "@jupyter-widgets/html-manager";
 
@@ -19,6 +19,7 @@ export class ThebeManager extends HTMLManager {
       this.comm_target_name,
       (comm, message) => this.handle_comm_open(new ShimmedComm(comm), message)
     );
+    this.kernel = kernel;
   }
 
   display_view(msg, view, options) {
@@ -56,8 +57,8 @@ export class ThebeManager extends HTMLManager {
   }
 
   _create_comm(target_name, model_id, data, metadata) {
-    const comm = this.kernel.connectToComm(target_name, model_id);
-    if (data || metdata) {
+    const comm = this.kernel.createComm(target_name, model_id);
+    if (data || metadata) {
       comm.open(data, metadata);
     }
     return Promise.resolve(new ShimmedComm(comm));

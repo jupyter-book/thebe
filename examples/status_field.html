@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-  <title>Thebe Lab example: status button, styling, ...</title>
+  <title>Thebe example: status button, styling, ...</title>
   <link rel="stylesheet" type="text/css" href="index.css" />
 
   <!-- Thebe configuration !-->
@@ -16,7 +16,7 @@
       requestKernel: true
     }
   </script>
-  <script type="text/javascript" src="https://unpkg.com/thebelab@latest" ></script>
+  <script type="text/javascript" src="https://unpkg.com/thebe@latest" ></script>
   <!-- or to use a local build: -->
   <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
 
@@ -27,7 +27,8 @@
   <script src="thebe_status_field.js" type="text/javascript"></script>
   <link   href="thebe_status_field.css" rel="stylesheet" type="text/css"/>
 
-  <script><!-- use window.onload to defer the execution until the page is loaded !-->
+  <script>
+    // use window.onload to defer the execution until the page is loaded
     window.onload = function () {
       thebe_place_status_field();
       thebe_activate_cells();
@@ -35,7 +36,7 @@
   </script>
 </head>
 <body>
-  <h1>Thebe Lab example: status button, styling, ...</h1>
+  <h1>Thebe example: status button, styling, ...</h1>
 
   Status: <span class="thebe_status_field"></span>
 

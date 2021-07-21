@@ -24,7 +24,7 @@ jobs:
       - name: "Setup Node"
         uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: "15"
 
       # Action Repo: https://github.com/actions/cache
       - name: "Cache node_modules"
@@ -39,15 +39,16 @@ jobs:
         run: |
           npm install
 
-      - name: "Run autoformat and check for changes"
+      - name: "`npm run fmt` and check for changes"
         run: |
+          # If this fails, run `npm run fmt` and push the result
+          # amend if you feel so inclined.
           npm run fmt
-          git diff
+          git diff --exit-code
 
   test:
-    # Previous job must have successfully completed for this job to execute
-    # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
-    needs: lint
+    # no need to wait for lint
+    # needs: lint
     runs-on: ubuntu-18.04
     # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategy
     strategy:
@@ -80,7 +81,8 @@ jobs:
 
       - name: "Run tests"
         run: |
-          npm test
+          npm run test
+          npm run test:e2e
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
