@@ -210,6 +210,10 @@ function renderCell(element, options) {
       .attr("title", "restart the kernel and run all cells")
       .click(restartAndRunAll)
   );
+  $cell.append(
+    $("<div class='thebelab-busy'><div class='thebelab-busy-spinner'></div>")
+  );
+
   let kernelResolve, kernelReject;
   let kernelPromise = new Promise((resolve, reject) => {
     kernelResolve = resolve;
@@ -252,7 +256,11 @@ function renderCell(element, options) {
     }
     kernelPromise.then((kernel) => {
       try {
+        $cell.find(".thebelab-busy").css("visibility", "visible");
         outputArea.future = kernel.requestExecute({ code: code });
+        outputArea.future.done.then(() => {
+          $cell.find(".thebelab-busy").css("visibility", "hidden");
+        });
       } catch (error) {
         outputArea.model.clear();
         outputArea.model.add({
@@ -260,6 +268,7 @@ function renderCell(element, options) {
           name: "stderr",
           text: `Failed to execute. ${error} Please refresh the page.`,
         });
+        $cell.find("div.thebelab-busy").css("visibility", "hidden");
       }
     });
     return false;
