@@ -168,16 +168,7 @@ function renderCell(element, options) {
   }
   let renderMime = new RenderMimeRegistry(renderers);
 
-  let manager = options.manager;
-
-  renderMime.addFactory(
-    {
-      safe: false,
-      mimeTypes: [WIDGET_MIMETYPE],
-      createRenderer: (options) => new WidgetRenderer(options, manager),
-    },
-    1
-  );
+  $cell.data("renderMime", renderMime);
 
   let model = new OutputAreaModel({ trusted: true });
 
@@ -221,7 +212,6 @@ function renderCell(element, options) {
   });
   kernelPromise.then((kernel) => {
     $cell.data("kernel", kernel);
-    // manager.registerWithKernel(kernel);
     return kernel;
   });
   $cell.data("kernel-promise-resolve", kernelResolve);
@@ -347,19 +337,24 @@ export function renderAllCells(
   // render all elements matching `selector` as cells.
   // by default, this is all cells with `data-executable`
 
-  let manager = new ThebeManager(kernelPromise);
-
-  return $(selector).map((i, cell) =>
-    renderCell(cell, {
-      manager: manager,
-    })
-  );
+  return $(selector).map((i, cell) => renderCell(cell, {}));
 }
 
-export function hookupKernel(kernel, cells) {
+export function hookupKernel(kernel, cells, manager) {
   // hooks up cells to the kernel
   cells.map((i, { cell }) => {
     $(cell).data("kernel-promise-resolve")(kernel);
+
+    const renderMime = $(cell).data("renderMime");
+
+    renderMime.addFactory(
+      {
+        safe: false,
+        mimeTypes: [WIDGET_MIMETYPE],
+        createRenderer: (options) => new WidgetRenderer(options, manager),
+      },
+      1
+    );
   });
 }
 
@@ -652,23 +647,19 @@ export function bootstrap(options) {
   }
 
   // bootstrap thebelab on the page
-  let cells;
+  const cells = renderAllCells({
+    selector: options.selector,
+  });
 
   kernelPromise.then((kernel) => {
     // debug
     if (typeof window !== "undefined") window.thebeKernel = kernel;
 
-    cells = renderAllCells(
-      {
-        selector: options.selector,
-      },
-      kernel
-    );
+    const manager = new ThebeManager(kernel);
 
-    if (window.thebelab) window.thebelab.cells = cells;
-
-    hookupKernel(kernel, cells);
+    hookupKernel(kernel, cells, manager);
   });
+  if (window.thebelab) window.thebelab.cells = cells;
   return kernelPromise;
 }
 
