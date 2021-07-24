@@ -21,7 +21,14 @@ See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/la
 
 ## Set up a development environment
 
-In order to get Thebe running locally, you'll need to have Node installed on your system. You can install it in several ways, the most common being:
+In order to get Thebe running locally, you'll need to have Node installed on your system.
+
+Minimum requirements are:
+
+- nodejs v15.0 or greater
+- npm v7.0 or greater
+
+You can install it in several ways, the most common being:
 
 - Install Node by [following the nodejs instructions](https://nodejs.org/en/download/)
 - Install Node through `conda`
@@ -37,7 +44,11 @@ Next, clone the repository and set up your `npm` environment for this repo:
 ```bash
 git clone https://github.com/executablebooks/thebe
 cd thebe
-npm install
+npm ci
+```
+
+```{note}
+Using `npm ci` rather than `npm install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades.
 ```
 
 This will install all dependencies needed to run `thebe` (specified in `package.json`).
@@ -127,7 +138,7 @@ Adding new e2e tests involves:
 - creating a test html page that load and uses thebe, placing this in the `e2e/fixtures/HTML` folder
 - load the fixture page at the start of your test
 
-```
+```javascript
   beforeAll(async () => {
    await page.goto(
      `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,

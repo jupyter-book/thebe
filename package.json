@@ -36,8 +36,8 @@
     "url": "https://github.com/executablebooks/thebe/issues"
   },
   "engines": {
-    "node": ">=6",
-    "npm": ">=4"
+    "node": ">=15",
+    "npm": ">=7"
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
