@@ -39,7 +39,7 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
-      - name: "`nary run fmt` and check for changes"
+      - name: "`yarn run fmt` and check for changes"
         run: |
           # If this fails, run `yarn run fmt` and push the result
           # amend if you feel so inclined.
