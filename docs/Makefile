@@ -19,6 +19,17 @@ help:
 package.json:
 	yarn ls
 
+yarn-lock.json: package.json
+	# package.json updated, refresh lock with npm install
+	yarn install
+	touch $@
+
+$(JSDOC): yarn-lock.json
+	# install from yarn-lock
+	yarn install --frozen-lockfile
+	# refresh mtime
+	test -f $@ && touch $@
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 
