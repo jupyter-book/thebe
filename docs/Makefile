@@ -17,18 +17,7 @@ help:
 .PHONY: help Makefile
 
 package.json:
-	npm ls
-
-package-lock.json: package.json
-	# package.json updated, refresh lock with npm install
-	npm install
-	touch $@
-
-$(JSDOC): package-lock.json
-	# install from package-lock
-	npm ci
-	# refresh mtime
-	test -f $@ && touch $@
+	yarn ls
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
