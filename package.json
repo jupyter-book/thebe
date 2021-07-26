@@ -36,7 +36,7 @@
   "engines": {
     "npm": ">= 6.0",
     "yarn": ">= 1.22.0",
-    "node": ">=15"
+    "node": ">= 12"
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
@@ -77,13 +77,5 @@
     "webpack": "^4.0",
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-cli": "^4.1.0"
-  },
-  "peerDependencies": {
-    "react": "^16.9.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    }
   }
 }
