@@ -63,7 +63,7 @@ Using `yarn install` will ensure that you install the latest tested dependencies
 
 #### Peer Dependency Errors
 
-Due to recent changes in `npm` as of v7 peer dependency issues are flagged as critical errors. However, may projects have not yet resolves these issues in their code base, this means that a project's co-dependencies can prevent installation of a package. This is a know issue, to resolve this there are two options:
+Due to recent changes in `npm` as of v7 peer dependency issues are flagged as critical errors. However, many projects have not yet resolved these issues in their code base, this means that a project's co-dependencies can prevent installation of a package. This is a know issue, to resolve this there are two options:
 
 1. Downgrade `npm` to v6
 
