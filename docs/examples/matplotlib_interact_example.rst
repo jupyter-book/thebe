@@ -1,6 +1,6 @@
-==============
+========================================
 Matplotlib + Ipywidgets Interact Example
-==============
+========================================
 
 Thebe can display interactive plots using matplotlib and ipywidget's interact.
 
@@ -22,7 +22,9 @@ Configure thebe and load it:
      {
        requestKernel: true,
        binderOptions: {
-         repo: "binder-examples/requirements",
+         repo: "matplotlib/ipympl",
+         ref: "0.6.1",
+         repoProvider: "github",
        },
      }
    </script>
@@ -59,7 +61,9 @@ Example
      {
        requestKernel: true,
        binderOptions: {
-         repo: "binder-examples/requirements",
+         repo: "matplotlib/ipympl",
+         ref: "0.6.1",
+         repoProvider: "github",
        },
      }
    </script>
@@ -84,19 +88,19 @@ Here is a simple interactive sine plot example:
 .. raw:: html
 
    <pre data-executable="true" data-language="python">
-    %matplotlib widget
-    import ipywidgets as widgets
-    import matplotlib.pyplot as plt
-    import numpy as np
+   %matplotlib widget
+   import ipywidgets as widgets
+   import matplotlib.pyplot as plt
+   import numpy as np
 
-    x = np.linspace(0,10)
+   x = np.linspace(0,10)
 
-    def sine_func(x, w, amp):
-        return amp*np.sin(w*x)
+   def sine_func(x, w, amp):
+       return amp*np.sin(w*x)
 
-    @widgets.interact(w=(0, 4, 0.25), amp=(0, 4, .1))
-    def update(w = 1, amp = 1):
-        plt.clf()
-        plt.ylim(-4, 4)
-        plt.plot(x, sine_func(x, w, amp))
+   @widgets.interact(w=(0, 4, 0.25), amp=(0, 4, .1))
+   def update(w = 1, amp = 1):
+       plt.clf()
+       plt.ylim(-4, 4)
+       plt.plot(x, sine_func(x, w, amp))
    </pre>
