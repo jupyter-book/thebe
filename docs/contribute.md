@@ -87,14 +87,28 @@ yarn run build:watch
 
 This will build `thebe/` locally (including any changes you've made to the source code).
 
-You can now demo the latest `thebe/` changes by opening the file at `development.html`. Open this file to see Thebe running.
+You can now demo the latest `thebe/` changes by opening the file at `development/binder.html`. Open this file to see Thebe running.
 
-The content of `development.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
+The content of `development/binder.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
 
-Running the `yarn run develop` command will start building the source code with webpack and serve it along with `development.html`.
-As you change the code in `src/`,
-the javascript will automatically be re-built,
-but you'll be required to refresh the page.
+Running the `yarn run develop` command will start a watch on the source code, building with webpack and will serve it along with `development/binder.html`.
+As you change the code in `src/`, the javascript will automatically be re-built, but you'll be required to refresh the page.
+
+### Using a local kernel
+
+`development/binder.html` will connect to a public binder instance which can be slow.
+
+For faster development and easy control over the python environment available to Jupyter is run `yarn run develop:local` instead.
+
+This will serve the file from `development/local.html` which will attempt to connect to a local Jupyter kernel.
+
+You will need to have Jupyter running with **the expected authentication token** for this to work. i.e.
+
+```bash
+jupyter notebook \
+  --NotebookApp.token=thebe-test-secret \
+  --NotebookApp.allow_origin='http://127.0.0.1:8080'
+```
 
 ## Committing changes
 
