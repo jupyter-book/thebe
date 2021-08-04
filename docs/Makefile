@@ -17,16 +17,16 @@ help:
 .PHONY: help Makefile
 
 package.json:
-	npm ls
+	yarn ls
 
-package-lock.json: package.json
+yarn-lock.json: package.json
 	# package.json updated, refresh lock with npm install
-	npm install
+	yarn install
 	touch $@
 
-$(JSDOC): package-lock.json
-	# install from package-lock
-	npm ci
+$(JSDOC): yarn-lock.json
+	# install from yarn-lock
+	yarn install --frozen-lockfile
 	# refresh mtime
 	test -f $@ && touch $@
 
