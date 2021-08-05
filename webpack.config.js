@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
 function shim(regExp) {

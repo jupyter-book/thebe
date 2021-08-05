@@ -7,10 +7,12 @@
     "build": "webpack --mode development --progress",
     "build:prod": "webpack --mode production",
     "build:watch": "webpack --mode development --progress --color --watch",
-    "prepare": "npm dedupe && npm run build:prod",
+    "prepare": "yarn run build:prod",
     "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js examples/*.js test/*.js",
-    "serve": "http-server -c-1 -a 127.0.0.1 -o development.html",
-    "develop": "concurrently \"npm run build:watch\" \"npm run serve\"",
+    "serve": "http-server -c-1 -a 127.0.0.1 -o development/binder.html",
+    "serve:local": "http-server -c-1 -a 127.0.0.1 -o development/local.html",
+    "develop": "concurrently \"yarn run build:watch\" \"yarn run serve\"",
+    "develop:local": "concurrently \"yarn run build:watch\" \"yarn run serve:local\"",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:e2e": "jest test.js --config=./jest.e2e.config.js",
@@ -34,8 +36,9 @@
     "url": "https://github.com/executablebooks/thebe/issues"
   },
   "engines": {
-    "node": ">=15",
-    "npm": ">=7"
+    "npm": ">= 6.0",
+    "yarn": ">= 1.22.0",
+    "node": ">= 12"
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
@@ -60,6 +63,7 @@
     "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
     "html-loader-jest": "^0.2.1",
+    "htmlparser2": "^6.1.0",
     "http-server": "^0.12.3",
     "identity-obj-proxy": "^3.0.0",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -71,6 +75,7 @@
     "prettier": "^2.1.2",
     "puppeteer": ">=1.5.0",
     "style-loader": "^2.0.0",
+    "ts-jest": "^27.0.4",
     "url-loader": "^4.1.1",
     "webpack": "^4.0",
     "webpack-bundle-analyzer": "^3.9.0",
