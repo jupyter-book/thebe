@@ -21,7 +21,6 @@ import {
   WidgetRenderer,
 } from "@jupyter-widgets/html-manager/lib/output_renderers";
 import { ThebeManager } from "./manager";
-import { requireLoader } from "@jupyter-widgets/html-manager";
 
 import { Mode } from "@jupyterlab/codemirror";
 
