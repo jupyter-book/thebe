@@ -4,6 +4,6 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/" # Location of package[-lock].json
+    directory: "/" # Location of yarn.lock
     schedule:
       interval: "weekly"

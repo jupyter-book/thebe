@@ -8,7 +8,7 @@ Thanks for your interest in contributing to `thebe`, your contributions are welc
 
 ## Contributing guide
 
-See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/latest/contributing.html) for conventions and practices around developing `thebe`. However, note that some practices, such as creating releases, may be different because `thebe` is primarily an `npm` package rather than a Python package.
+See the [ExecutableBooks developer guidelines](https://executablebooks.org/en/latest/contributing.html) for conventions and practices around developing `thebe`. However, note that some practices, such as creating releases, may be different because `thebe` is primarily an Javascript (`npm`) package rather than a Python package.
 
 ## Repository structure
 
@@ -26,63 +26,101 @@ In order to get Thebe running locally, you'll need to have Node installed on you
 Minimum requirements are:
 
 - nodejs v15.0 or greater
-- npm v7.0 or greater
+- npm v6.0 or greater
+- yarn v1.22 or greater
 
 You can install it in several ways, the most common being:
 
 - Install Node by [following the nodejs instructions](https://nodejs.org/en/download/)
+- Using the [node version manager](https://github.com/nvm-sh/nvm#installing-and-updating)
 - Install Node through `conda`
 
-  ```bash
-  conda install -c conda-forge nodejs
-  ```
+```bash
+conda install -c conda-forge nodejs
+```
 
-Once installed, this also includes `npm` (Node Package Manager) which is what you will run in order to run Thebe locally.
+Once installed, also install `yarn` which is what you will run in order to run Thebe locally.
 
-Next, clone the repository and set up your `npm` environment for this repo:
+```bash
+npm install -g yarn
+```
+
+Next, clone the repository and install the required dependencies:
 
 ```bash
 git clone https://github.com/executablebooks/thebe
 cd thebe
-npm ci
+yarn install
 ```
+
+This will install all dependencies needed to run `thebe` (specified in `package.json`). By default, `yarn install` will also have created a production build in `lib`
+
+If you are using `npm` v7 you may encounter **Peer Dependency Errors** see comments below to resolve these.
 
 ```{note}
-Using `npm ci` rather than `npm install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades.
+Using `yarn install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades. `yarn` uses `npm` under the hood, please do not use `npm install` directly to install dependencies.
 ```
 
-This will install all dependencies needed to run `thebe` (specified in `package.json`).
+#### Peer Dependency Errors
+
+Due to recent changes in `npm` as of v7 peer dependency issues are flagged as critical errors. However, many projects have not yet resolved these issues in their code base, this means that a project's co-dependencies can prevent installation of a package. This is a know issue, to resolve this there are two options:
+
+1. Downgrade `npm` to v6
+
+```bash
+  npm install -g npm@6
+```
+
+2. Set the `legacy-peer-deps` option in your local environment
+
+```bash
+  npm config set legacy-peer-deps true
+```
 
 ## Build and demo `thebe` locally
 
 To use your local copy of `thebe` (e.g., if you make any changes to the `src/` folder), you can run a local build and serve a sample web page. To do so, run:
 
 ```bash
-npm run build:watch
+yarn run build:watch
 ```
 
 This will build `thebe/` locally (including any changes you've made to the source code).
 
-You can now demo the latest `thebe/` changes by opening the file at `development.html`. Open this file to see Thebe running.
+You can now demo the latest `thebe/` changes by opening the file at `development/binder.html`. Open this file to see Thebe running.
 
-The content of `development.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
+The content of `development/binder.html` is a simple HTML page that demonstrates Thebe functionality. You can edit it to test out new features or configurations.
 
-Running the `npm run develop` command will start building the source code with webpack and serve it along with `development.html`.
-As you change the code in `src/`,
-the javascript will automatically be re-built,
-but you'll be required to refresh the page.
+Running the `yarn run develop` command will start a watch on the source code, building with webpack and will serve it along with `development/binder.html`.
+As you change the code in `src/`, the javascript will automatically be re-built, but you'll be required to refresh the page.
+
+### Using a local kernel
+
+`development/binder.html` will connect to a public binder instance which can be slow.
+
+For faster development and easy control over the python environment available to Jupyter is run `yarn run develop:local` instead.
+
+This will serve the file from `development/local.html` which will attempt to connect to a local Jupyter kernel.
+
+You will need to have Jupyter running with **the expected authentication token** for this to work. i.e.
+
+```bash
+jupyter notebook \
+  --NotebookApp.token=thebe-test-secret \
+  --NotebookApp.allow_origin='http://127.0.0.1:8080'
+```
 
 ## Committing changes
 
 Thebe uses code autoformatting so you don't need to worry about style lint,
 so whenever you are ready to commit changes
-run `npm run fmt` to autoformat the javascript.
+run `yarn run fmt` to autoformat the javascript.
 You can put this script in `.git/hooks/pre-commit`:
 
 ```bash
 #!/bin/sh
 if [[ -f package.json ]]; then
-    npm run fmt
+    yarn run fmt
 fi
 ```
 
@@ -90,14 +128,14 @@ to run auto-formatting prior to each commit.
 
 ## Testing Thebe
 
-You can test manually, interactively by running `npm run develop` to open and serve `development.html` with the current build of thebe.
+You can test manually, interactively by running `yarn run develop` to open and serve `development.html` with the current build of thebe.
 
 ### Running automated tests
 
 There are two types of automated test environment in place in thebe both using the Jest testing library. These are:
 
-1.  a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `npm run test` or `npm run test:watch` and test code is located in the `test` folder.
-2.  e2e style tests using jest + puppeteer that can be run `npm run test:e2e` or `npm run test:e2e:watch` and test code is located in the `e2e` folder.
+1.  a standard javascript testing setup for unit / component level testing of the thebe library. These can be run using `yarn run test` or `yarn run test:watch` and test code is located in the `test` folder.
+2.  e2e style tests using jest + puppeteer that can be run `yarn run test:e2e` or `yarn run test:e2e:watch` and test code is located in the `e2e` folder.
 
 Alternately, you can push your changes to GitHub and let the tests run automatically via GitHub Actions.
 
@@ -125,12 +163,12 @@ Adding new e2e tests involves:
 - load the fixture page at the start of your test
 
 ```javascript
-  beforeAll(async () => {
-   await page.goto(
-     `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
-     { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
-   );
- });
+beforeAll(async () => {
+  await page.goto(
+    `file:${path.join(__dirname, "/fixtures/HTML/readonly1.html")}`,
+    { waitUntil: ["load", "domcontentloaded", "networkidle0"] }
+  );
+});
 ```
 
 - Assert on initial page state
@@ -166,8 +204,8 @@ To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/lat
 
 Once prepared, bump the version with:
 
-1. Use npm to update the thebe version in the `package.json` file and to create
-   a git tag for the version using `npm version NEW_VERSION`, e.g. `npm version 0.5.1`
+1. Use yarn to update the thebe version in the `package.json` file and to create
+   a git tag for the version using `yarn version NEW_VERSION`, e.g. `yarn version 0.5.1`
 2. Push the tag to github: `git push --follow-tags`
 3. Create a release for the new tag on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a
