@@ -122,7 +122,7 @@ More complex shapes can be constructed and viewed:
        var y = Math.cos(v);
        var z = Math.cos(u+v);
 
-       out.set(x,y,z)
+       out.set(x,y,z);
    }
    """
    surf_g = ParametricGeometry(func=f, slices=16, stacks=16)
