@@ -1,5 +1,5 @@
 =================
-pythreejs Example
+Pythreejs Example
 =================
 
 Thebe can display output from pythreejs_. The examples are taken from the
