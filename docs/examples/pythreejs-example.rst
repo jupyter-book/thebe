@@ -125,7 +125,7 @@ More complex shapes can be constructed and viewed:
        out.set(x,y,z)
    }
    """
-   surf_g = ParametricGeometry(func=f, slices=16, stacks=16);
+   surf_g = ParametricGeometry(func=f, slices=16, stacks=16)
 
    surf = Mesh(geometry=surf_g, material=MeshLambertMaterial(color='green', side='FrontSide'))
    surf2 = Mesh(geometry=surf_g, material=MeshLambertMaterial(color='yellow', side='BackSide'))
