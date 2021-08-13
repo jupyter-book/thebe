@@ -55,7 +55,7 @@
     "@jupyterlab/services": "^6.0.0",
     "@jupyterlab/testutils": "^3.0.11",
     "@jupyterlab/theme-light-extension": "^3.0.0",
-    "babel-jest": "^26.6.1",
+    "babel-jest": "^27.0.6",
     "babel-loader": "^8.1.0",
     "codecov": "^3.8.0",
     "concurrently": "^6.2.1",
