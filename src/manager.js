@@ -1,72 +1,125 @@
+import { requireLoader } from "@jupyter-widgets/html-manager";
+
 import * as pWidget from "@lumino/widgets";
 
-import { HTMLManager } from "@jupyter-widgets/html-manager";
+import {
+  RenderMimeRegistry,
+  standardRendererFactories,
+} from "@jupyterlab/rendermime";
 
-import * as outputWidgets from "./output";
+import {
+  WidgetManager as JupyterLabManager,
+  WidgetRenderer,
+  output,
+} from "@jupyter-widgets/jupyterlab-manager";
 
-import { ShimmedComm } from "./services-shim";
+import * as base from "@jupyter-widgets/base";
 
-export class ThebeManager extends HTMLManager {
-  get onError() {
-    return this._onError;
-  }
+import * as controls from "@jupyter-widgets/controls";
 
-  registerWithKernel(kernel) {
-    if (this._commRegistration) {
-      this._commRegistration.dispose();
-    }
-    this._commRegistration = kernel.registerCommTarget(
-      this.comm_target_name,
-      (comm, message) => this.handle_comm_open(new ShimmedComm(comm), message)
+const WIDGET_MIMETYPE = "application/vnd.jupyter.widget-view+json";
+
+export class ThebeManager extends JupyterLabManager {
+  constructor(kernel) {
+    const context = createContext(kernel);
+    const rendermime = new RenderMimeRegistry({
+      initialFactories: standardRendererFactories,
+    });
+    const settings = {
+      saveState: false,
+    };
+    super(context, rendermime, settings);
+    rendermime.addFactory(
+      {
+        safe: false,
+        mimeTypes: [WIDGET_MIMETYPE],
+        createRenderer: (options) => new WidgetRenderer(options, this),
+      },
+      1
     );
-    this.kernel = kernel;
+    this._registerWidgets();
+    this.loader = requireLoader;
   }
 
-  display_view(msg, view, options) {
-    const el = options.el;
-    return Promise.resolve(view).then((view) => {
-      pWidget.Widget.attach(view.pWidget, el);
-      view.on("remove", function () {
-        console.log("view removed", view);
-      });
-      return view;
+  _registerWidgets() {
+    this.register({
+      name: "@jupyter-widgets/base",
+      version: base.JUPYTER_WIDGETS_VERSION,
+      exports: base,
+    });
+    this.register({
+      name: "@jupyter-widgets/controls",
+      version: controls.JUPYTER_CONTROLS_VERSION,
+      exports: controls,
+    });
+    this.register({
+      name: "@jupyter-widgets/output",
+      version: output.OUTPUT_WIDGET_VERSION,
+      exports: output,
     });
   }
 
-  loadClass(className, moduleName, moduleVersion) {
-    if (moduleName === "@jupyter-widgets/output") {
-      return Promise.resolve(outputWidgets).then((module) => {
+  async loadClass(className, moduleName, moduleVersion) {
+    if (
+      moduleName === "@jupyter-widgets/base" ||
+      moduleName === "@jupyter-widgets/controls" ||
+      moduleName === "@jupyter-widgets/output"
+    ) {
+      return super.loadClass(className, moduleName, moduleVersion);
+    } else {
+      // TODO: code duplicate from HTMLWidgetManager, consider a refactor
+      return this.loader(moduleName, moduleVersion).then((module) => {
         if (module[className]) {
           return module[className];
         } else {
           return Promise.reject(
-            `Class ${className} not found in module ${moduleName}`
+            "Class " +
+              className +
+              " not found in module " +
+              moduleName +
+              "@" +
+              moduleVersion
           );
         }
       });
-    } else {
-      return super.loadClass(className, moduleName, moduleVersion);
     }
   }
 
-  callbacks(view) {
-    const baseCallbacks = super.callbacks(view);
-    return Object.assign({}, baseCallbacks, {
-      iopub: { output: (msg) => this._onError.emit(msg) },
-    });
-  }
-
-  _create_comm(target_name, model_id, data, metadata) {
-    const comm = this.kernel.createComm(target_name, model_id);
-    if (data || metadata) {
-      comm.open(data, metadata);
+  async display_view(msg, view, options) {
+    const el = options.el;
+    if (el) {
+      pWidget.Widget.attach(view.pWidget, el);
     }
-    return Promise.resolve(new ShimmedComm(comm));
+    return view.pWidget;
   }
+}
 
-  _get_comm_info() {
-    return this.kernel
-      .requestCommInfo({ target: this.comm_target_name })
-      .then((reply) => reply.content.comms);
-  }
+function createContext(kernel) {
+  return {
+    sessionContext: {
+      session: {
+        kernel,
+        kernelChanged: {
+          connect: () => {},
+        },
+      },
+      kernelChanged: {
+        connect: () => {},
+      },
+      statusChanged: {
+        connect: () => {},
+      },
+      connectionStatusChanged: {
+        connect: () => {},
+      },
+    },
+    saveState: {
+      connect: () => {},
+    },
+    model: {
+      metadata: {
+        get: () => {},
+      },
+    },
+  };
 }
