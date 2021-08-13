@@ -3,7 +3,7 @@ Pythreejs Example
 =================
 
 Thebe can display output from pythreejs_. The `examples <https://pythreejs.readthedocs.io/en/stable/examples/>`_ are taken from the
-pythreejs documentation and are licensed BSD 3 Clause.
+pythreejs documentation and are licensed under the BSD 3-Clause License.
 
 .. _pythreejs: https://github.com/jupyter-widgets/pythreejs
 
