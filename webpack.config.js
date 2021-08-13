@@ -46,7 +46,7 @@ module.exports = {
     // unused @jupyterlab
     // shim(/@jupyterlab\/apputils/),
     shim(
-      /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainareawidget|mainmenu|thememanager|toolbar|widgettracker)/
+      /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainmenu|thememanager|toolbar)/
     ),
     // shim(/@jupyterlab\/ui-components/),
     // shim(/@jupyterlab\/apputils\/style\/.*/),

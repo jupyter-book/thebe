@@ -91,6 +91,7 @@ see how Thebe is used.
    examples/ipympl_example
    examples/plotly-example
    examples/ipycytoscape_example
+   examples/matplotlib_interact_example
 
 * `Making use of Jupyter interactive widgets <_static/widgets.html>`_
 * `Status field and styling <_static/status_field.html>`_
