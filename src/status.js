@@ -9,6 +9,11 @@ export class KernelStatus {
     this._registerHandlers(thebe);
   }
 
+  static send(data) {
+    const events = $({});
+    events.trigger("status", data);
+  }
+
   _registerHandlers(thebe) {
     const widget = this;
     thebe.on("status", function (evt, data) {
