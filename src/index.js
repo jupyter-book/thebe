@@ -4,7 +4,13 @@ export * from "./utils";
 
 if (typeof window !== "undefined") {
   window.thebelab = thebelab;
-  if (thebelab.getOption("bootstrap")) {
+  const options = thebelab.mergeOptions();
+  if (options["mountStatusWidget"]) {
+    document.addEventListener("DOMContentLoaded", () => {
+      thebelab.mountStatusWidget();
+    });
+  }
+  if (options["bootstrap"]) {
     document.addEventListener("DOMContentLoaded", () => {
       thebelab.bootstrap();
     });

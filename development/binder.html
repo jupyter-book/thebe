@@ -9,6 +9,7 @@
       -->
     <script type="text/x-thebe-config">
       {
+        mountStatusWidget: true,
         requestKernel: true,
         binderOptions: {
           repo: "binder-examples/requirements",
@@ -22,6 +23,7 @@
   </head>
   <body>
     <div class="container">
+      <div class="thebe-status"></div>
       <button id="activateButton">Activate</button>
       <script>
         var bootstrapThebe = function () {

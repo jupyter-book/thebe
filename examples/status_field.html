@@ -1,50 +1,57 @@
 <html>
-<head>
-  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-  <title>Thebe example: status button, styling, ...</title>
-  <link rel="stylesheet" type="text/css" href="index.css" />
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Thebe example: status button, styling, ...</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
 
-  <!-- Thebe configuration !-->
-  <script type="text/x-thebe-config">
-    {
-      binderOptions: {
-        repo: "binder-examples/requirements"
-      },
-      kernelOptions: {
-        name: "python3",
-      },
-      requestKernel: true
-    }
-  </script>
-  <script type="text/javascript" src="https://unpkg.com/thebe@latest" ></script>
-  <!-- or to use a local build: -->
-  <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+    <!-- Thebe configuration !-->
+    <script type="text/x-thebe-config">
+      {
+        binderOptions: {
+          repo: "binder-examples/requirements"
+        },
+        kernelOptions: {
+          name: "python3",
+        },
+        requestKernel: true
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/thebe@latest"
+    ></script>
+    <!-- or to use a local build: -->
+    <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
 
-  <!-- Dependency: jquery !-->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <!-- Dependency: jquery !-->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      type="text/javascript"
+    ></script>
 
-  <!-- Style sheet and javascript for the status field !-->
-  <script src="thebe_status_field.js" type="text/javascript"></script>
-  <link   href="thebe_status_field.css" rel="stylesheet" type="text/css"/>
+    <!-- Style sheet and javascript for the status field !-->
+    <script src="thebe_status_field.js" type="text/javascript"></script>
+    <link href="thebe_status_field.css" rel="stylesheet" type="text/css" />
 
-  <script>
-    // use window.onload to defer the execution until the page is loaded
-    window.onload = function () {
-      thebe_place_status_field();
-      thebe_activate_cells();
-    };
-  </script>
-</head>
-<body>
-  <h1>Thebe example: status button, styling, ...</h1>
+    <script>
+      // use window.onload to defer the execution until the page is loaded
+      window.onload = function () {
+        thebe_place_status_field();
+        thebe_activate_cells();
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Thebe example: status button, styling, ...</h1>
 
-  Status: <span class="thebe_status_field"></span>
+    <p>Status: <span class="thebe_status_field"></span></p>
 
-  <p>This example illustrates the inclusion of a status button and some
-  css styling.</p>
+    <p>
+      This example illustrates the inclusion of a status button and some css
+      styling.
+    </p>
 
-  <pre data-executable="true" data-language="python">print("Hello!")</pre>
-  <pre data-executable="true" data-language="python">1+1</pre>
-
-</body>
+    <pre data-executable="true" data-language="python">print("Hello!")</pre>
+    <pre data-executable="true" data-language="python">1+1</pre>
+  </body>
 </html>

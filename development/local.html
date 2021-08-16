@@ -10,7 +10,8 @@
         -->
     <script type="text/x-thebe-config">
       {
-        requestKernel: true,
+        requestKernel: false,
+        mountStatusWidget: true,
         kernelOptions: {
           name: "python3",
           path: ".",
@@ -41,6 +42,7 @@
             </pre
         >
       </div>
+      <div class="thebe-status"></div>
       <button id="activateButton">Activate</button>
       <script>
         var bootstrapThebe = function () {

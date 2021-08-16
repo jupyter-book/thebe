@@ -7,6 +7,7 @@ import { hookupKernel, requestKernel, requestBinderKernel } from "./kernels";
 import { mergeOptions } from "./options";
 import { renderAllCells } from "./render";
 import * as events from "./events";
+import { KernelStatus } from "./status";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -20,6 +21,7 @@ import "@jupyterlab/apputils/style/base.css";
 import "@jupyterlab/rendermime/style/base.css";
 import "@jupyterlab/codemirror/style/base.css";
 import "./index.css";
+import "./status.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -53,6 +55,11 @@ export * from "./events";
  * @returns {Promise} Promise for connected Kernel object
 
  */
+
+export function mountStatusWidget() {
+  thebelab.kernelStatus = new KernelStatus(thebelab);
+  thebelab.kernelStatus.mount();
+}
 
 export function bootstrap(options) {
   // bootstrap thebe on the page
