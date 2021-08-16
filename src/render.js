@@ -3,6 +3,7 @@ import CodeMirror from "codemirror/lib/codemirror";
 import "codemirror/lib/codemirror.css";
 
 import { mergeOptions } from "./options";
+import * as events from "./events";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -37,8 +38,6 @@ function getRenderers(options) {
   }
   return _renderers;
 }
-
-const events = $({});
 
 // rendering cells
 

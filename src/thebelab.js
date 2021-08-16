@@ -6,6 +6,7 @@ import { ThebeManager } from "./manager";
 import { hookupKernel, requestKernel, requestBinderKernel } from "./kernels";
 import { mergeOptions } from "./options";
 import { renderAllCells } from "./render";
+import * as events from "./events";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -33,19 +34,7 @@ if (typeof window !== "undefined" && typeof window.define !== "undefined") {
 export * from "./render";
 export * from "./kernels";
 export * from "./options";
-
-// events
-
-export const events = $({});
-export const on = function () {
-  events.on.apply(events, arguments);
-};
-export const one = function () {
-  events.one.apply(events, arguments);
-};
-export const off = function () {
-  events.off.apply(events, arguments);
-};
+export * from "./events";
 
 /**
  * Do it all in one go.

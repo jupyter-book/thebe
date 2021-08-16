@@ -3,6 +3,7 @@ import CodeMirror from "codemirror/lib/codemirror";
 import "codemirror/lib/codemirror.css";
 
 import { mergeOptions } from "./options";
+import * as events from "./events";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -16,8 +17,6 @@ import {
   WIDGET_MIMETYPE,
   WidgetRenderer,
 } from "@jupyter-widgets/html-manager/lib/output_renderers";
-
-const events = $({});
 
 export function hookupKernel(kernel, cells, manager) {
   // hooks up cells to the kernel
