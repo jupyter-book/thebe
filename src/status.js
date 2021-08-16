@@ -11,7 +11,6 @@ export class KernelStatus {
   _registerHandlers(thebe) {
     const widget = this;
     thebe.on("status", function (evt, data) {
-      console.log("*** Status changed:", data.status, data.message);
       $(".thebe-status .thebe-status-field")
         .attr("class", "thebe-status-field thebe-status-" + data.status)
         .text(data.status);
@@ -30,7 +29,6 @@ export class KernelStatus {
    */
   mount() {
     const el = $(".thebe-status");
-    console.log("ELEMENT", el);
     el.replaceWith(
       `<div class="thebe-status"
         title="${this.status_stub}">
