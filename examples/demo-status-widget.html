@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Demo Status Widget</title>
+    <link rel="stylesheet" href="main.css" />
+    <!-- Configure and load Thebe !-->
+    <!-- two config sections: first binder, second local
+        switch which one has type="text/x-thebe-config"
+        to activate it
+      -->
+    <script type="text/x-thebe-config">
+      {
+        bootstrap: true,
+        mountStatusWidget: true,
+        requestKernel: true,
+        binderOptions: {
+          repo: "binder-examples/requirements",
+        },
+        codeMirrorConfig: {
+          "theme": "abcdef"
+        },
+      }
+    </script>
+    <script src="../lib/index.js"></script>
+    <style>
+      p {
+        margin: 10px 0;
+      }
+      .container {
+        width: 800px;
+        margin: auto;
+        justify-content: start;
+        align-items: start;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Using the built in Status Widget</h1>
+      <p>
+        It's possible to create your own status widget just by listening to
+        "status" events from thebelab, but the library also includes an easy to
+        use status widget, with minimal styling that you can add to you page.
+      </p>
+      <p>
+        To add the widget. just add an element with the
+        <code>.thebe-status</code> class to your page:
+      </p>
+      <p>
+        And set <code>mountStatusWidget:true</code> to the
+        <code>thebelab</code> options.
+      </p>
+      <div class="thebe-status"></div>
+      <p>This cell will turn into the live cell:</p>
+      <pre data-executable>
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+    </pre
+      >
+    </div>
+  </body>
+</html>
