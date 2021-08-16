@@ -5,13 +5,7 @@ export class KernelStatus {
   constructor(thebe) {
     this.status_stub = "Status:";
     this.status_no_kernel = "No Kernel Attached";
-
     this._registerHandlers(thebe);
-  }
-
-  static send(data) {
-    const events = $({});
-    events.trigger("status", data);
   }
 
   _registerHandlers(thebe) {
