@@ -1558,11 +1558,11 @@
     "@lumino/widgets" "^1.19.0"
 
 "@jupyterlab/mathjax2@^3.0.0":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@jupyterlab/mathjax2/-/mathjax2-3.1.5.tgz#c34c61eb3df1c2d3edb90c1d831a1d20361df637"
-  integrity sha512-DsrqrMuHPqnqEL2JRz52ieM754X85DHFCO21f2VA/6Yi1tPGLB4WFPzpsf0FHS8++rSBRlDBZekyT8Vxi3pKYw==
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/mathjax2/-/mathjax2-3.1.6.tgz#806cf3afcffad1de433ee4bbe83b28d71fa5953e"
+  integrity sha512-IFMs/rMF/MrPEGfy/nwg/OYRrwy46Y77EXi36wOuGZIYr4x4JUgYcMdLs4gtLpujxDxVkwkjaUkHEfchkUnwtA==
   dependencies:
-    "@jupyterlab/rendermime-interfaces" "^3.1.5"
+    "@jupyterlab/rendermime-interfaces" "^3.1.6"
     "@lumino/coreutils" "^1.5.3"
 
 "@jupyterlab/nbformat@^3.0.0", "@jupyterlab/nbformat@^3.0.6", "@jupyterlab/nbformat@^3.1.1", "@jupyterlab/nbformat@^3.1.6":
@@ -1672,16 +1672,7 @@
     "@lumino/widgets" "^1.19.0"
     resize-observer-polyfill "^1.5.1"
 
-"@jupyterlab/rendermime-interfaces@^3.0.0", "@jupyterlab/rendermime-interfaces@^3.0.9", "@jupyterlab/rendermime-interfaces@^3.1.1", "@jupyterlab/rendermime-interfaces@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@jupyterlab/rendermime-interfaces/-/rendermime-interfaces-3.1.5.tgz#798f774b63b17180327df6e5222447161259119d"
-  integrity sha512-9rNCofhxToqiLWvy2v3cq5CobCPZYbycxCgUF2TrTnY5mIPI0/b4FYrBdC5MWINdyes73OBn70LKamO3JK1tpA==
-  dependencies:
-    "@jupyterlab/translation" "^3.1.5"
-    "@lumino/coreutils" "^1.5.3"
-    "@lumino/widgets" "^1.19.0"
-
-"@jupyterlab/rendermime-interfaces@^3.1.6":
+"@jupyterlab/rendermime-interfaces@^3.0.0", "@jupyterlab/rendermime-interfaces@^3.0.9", "@jupyterlab/rendermime-interfaces@^3.1.1", "@jupyterlab/rendermime-interfaces@^3.1.6":
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/@jupyterlab/rendermime-interfaces/-/rendermime-interfaces-3.1.6.tgz#61abddfad7b1e0dfc3c502526ee4843e7220e2dc"
   integrity sha512-5lib7/7cQAEXUrMzJ8WTOMIjKxqaApKw5Xz3tXFOIHnqy5pKKWO+jAC2WQp6c3gEDy168CP0lu0wJ/JMg0CBsg==
@@ -1826,7 +1817,7 @@
     "@jupyterlab/apputils" "^3.0.9"
     "@jupyterlab/translation" "^3.0.9"
 
-"@jupyterlab/translation@^3.0.9", "@jupyterlab/translation@^3.1.1", "@jupyterlab/translation@^3.1.5", "@jupyterlab/translation@^3.1.6":
+"@jupyterlab/translation@^3.0.9", "@jupyterlab/translation@^3.1.1", "@jupyterlab/translation@^3.1.6":
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/@jupyterlab/translation/-/translation-3.1.6.tgz#8b901f159815d572369589c698a15914136348d5"
   integrity sha512-U8cj20leHmgtC++mBMNeeIO8dEVt+hufd2+BPBoaA7k+ZRDa3oTFxsriZqpMxFgB5Bhw0eaNmcUEiX7ZFliasA==
