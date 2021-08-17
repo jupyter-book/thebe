@@ -135,7 +135,6 @@ To contribute to `thebe`, see [the `thebe` contributing documentation](https://t
 
 ## Acknowledgements
 
-`thebe` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) –
-Horizon 2020 European Research Infrastructure project (676541). Additional
-support was provided by the U.S. Department of Education Open Textbooks Pilot
-Program funding for the LibreTexts project (P116T180029).
+`thebe` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
+It is currently stewarded by [the Executable Books Project](https://executablebooks.org/en/latest/#acknowledgements).
+Additional support was provided by the U.S. Department of Education Open Textbooks Pilot Program funding for the LibreTexts project (P116T180029).
