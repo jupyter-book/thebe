@@ -1,6 +1,6 @@
 {
   "name": "thebe",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "scripts": {

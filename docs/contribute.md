@@ -204,8 +204,9 @@ To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/lat
 
 Once prepared, bump the version with:
 
-1. Use yarn to update the thebe version in the `package.json` file and to create
-   a git tag for the version using `yarn version NEW_VERSION`, e.g. `yarn version 0.5.1`
+1. Use yarn to update the thebe version in the `package.json` file and to
+   create a git tag for the version using `yarn version --new-version
+   NEW_VERSION`, e.g. `yarn version --new-version 0.5.1`
 2. Push the tag to github: `git push --follow-tags`
 3. Create a release for the new tag on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a
