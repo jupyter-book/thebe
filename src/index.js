@@ -1,5 +1,6 @@
-import * as thebelab from "./thebelab.js";
-export * from "./thebelab.js";
+import * as thebelab from "./thebelab";
+export * from "./thebelab";
+export * from "./utils";
 
 if (typeof window !== "undefined") {
   window.thebelab = thebelab;
