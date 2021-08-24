@@ -61,7 +61,7 @@ Using Cytoscape, you can display a graph with several nodes. This example_ is
 from the ipycytoscape repository and is licensed under the BSD 3-Clause
 License.
 
-.._example: https://github.com/QuantStack/ipycytoscape/blob/master/examples/Text%20on%20node.ipynb
+.. _example: https://github.com/QuantStack/ipycytoscape/blob/master/examples/Text%20on%20node.ipynb
 
 Press the "Activate" button below to connect to a Jupyter server:
 
