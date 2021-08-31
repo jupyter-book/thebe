@@ -4,14 +4,14 @@ Ipympl Example
 
 Thebe can display output from ipympl_, which enables interactivity with matplotlib_.
 
-.. _ipympl: https://github.com/matplotlib/ipympl 
-.. _matplotlib: https://matplotlib.org/ 
+.. _ipympl: https://github.com/matplotlib/ipympl
+.. _matplotlib: https://matplotlib.org/
 
 Setup
 =====
 
 Be sure to load require.js and Font Awesome 4 before any of your thebe activation code so that the
-matplotlib widgets can function. 
+matplotlib widgets can function.
 
 .. code-block:: html
 
@@ -92,7 +92,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+   <script src="_static/lib/index.js"></script>
 
 
 2D plot
@@ -104,7 +104,7 @@ Press the "Activate" button below to connect to a Jupyter server:
    %matplotlib widget
 
    import matplotlib.pyplot as plt
-   
+
    fig, ax = plt.subplots()
    fig.canvas.layout.width = '7in'
    fig.canvas.layout.height= '5in'
@@ -118,9 +118,9 @@ Press the "Activate" button below to connect to a Jupyter server:
 
   <pre data-executable="true" data-language="python">
   %matplotlib widget
-  
+
   from mpl_toolkits.mplot3d import axes3d
-  
+
   fig = plt.figure()
   ax = fig.add_subplot(111, projection='3d')
   X, Y, Z = axes3d.get_test_data(0.05)

@@ -74,7 +74,7 @@ Example
        },
      }
    </script>
-   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+   <script src="_static/lib/index.js"></script>
 
 Press the "Activate" button below to connect to a Jupyter server:
 
@@ -97,12 +97,12 @@ Here we will display a basic 2D plot:
    <pre data-executable="true" data-language="python">
    import numpy as np
    from bqplot import pyplot as plt
-   
+
    size = 100
    np.random.seed(0)
    x_data = np.arange(size)
    y_data = np.cumsum(np.random.randn(size)  * 100.0)
-   
+
    plt.figure(title='My First Plot')
    plt.plot(x_data, y_data)
    plt.show()
