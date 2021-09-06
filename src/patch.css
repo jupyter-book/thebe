@@ -3,6 +3,7 @@
 | with high level css selectors removed
 |
 | Note: this is highly fragile and may change each release of jupyterlab
+| See this issue for some context: https://github.com/executablebooks/thebe/issues/464
 |----------------------------------------------------------------------------*/
 
 /* Sibling imports */
