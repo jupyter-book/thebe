@@ -5,7 +5,7 @@ on:
 
 jobs:
   thebe-build:
-    name: "Buil the current version of thebe for ue in the docs"
+    name: "Build the current version of thebe for use in the docs"
     runs-on: ubuntu-latest
     steps:
       # Action Repo: https://github.com/actions/checkout
