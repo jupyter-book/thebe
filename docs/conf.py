@@ -169,7 +169,7 @@ if rc == 0:
     print("yarn already installed!")
 else:
     print("yarn missing, installing now...")
-    run(["npm", "install", "yarn"])
+    run(["npm", "install", "-g", "yarn"])
     run(["yarn", "--version"])
     print("yarn install complete!")
 
