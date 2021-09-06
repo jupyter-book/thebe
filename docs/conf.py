@@ -168,10 +168,7 @@ rc = call(["which", "yarn"])
 if rc == 0:
     print("yarn already installed!")
 else:
-    print("yarn missing, installing now...")
-    run(["npm", "install", "-g", "yarn"])
     run(["yarn", "--version"])
-    print("yarn install complete!")
 
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
