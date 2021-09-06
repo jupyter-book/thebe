@@ -158,12 +158,21 @@ epub_exclude_files = ['search.html']
 linkcheck_anchors_ignore = ["/#!"]
 
 # -- Build the latest JS for local preview -----------------------------
-from subprocess import run
+from subprocess import run, call
 from pathlib import Path
 import shutil as sh
 import os
 
-path_root = Path(__file__).parent.parent
+# -- Check for the yarn package manager ------------------------
+rc = call(["which", "yarn"])
+if rc == 0:
+    print("yarn already installed!")
+else:
+    print("yarn missing, installing now...")
+    run("npm install yarn")
+    run("yarn --version")
+    print("yarn install complete!")
+
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
     run("make js")
