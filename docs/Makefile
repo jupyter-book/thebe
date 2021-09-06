@@ -40,7 +40,7 @@ clean-js:
 	rm -rf _static/lib
 
 js: clean-js
-	cd ..; yarn build
+	cd ..; yarn install --frozen-lockfile; yarn build
 	cp -R ../lib _static/lib
 
 show:
