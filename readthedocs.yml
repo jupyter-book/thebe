@@ -2,4 +2,4 @@ version: 2
 
 build:
   apt_packages:
-    - nodejs==12
+    - nodejs
