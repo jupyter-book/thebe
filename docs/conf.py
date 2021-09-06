@@ -169,13 +169,13 @@ if rc == 0:
     print("yarn already installed!")
 else:
     print("yarn missing, installing now...")
-    run("npm install yarn")
-    run("yarn --version")
+    run(["npm", "install", "yarn"])
+    run(["yarn", "--version"])
     print("yarn install complete!")
 
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
-    run("make js")
+    run(["make", "js"])
     print("Finished building local `thebe` bundle.")
 else:
     print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")
