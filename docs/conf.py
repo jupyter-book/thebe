@@ -164,15 +164,21 @@ import shutil as sh
 import os
 
 # -- Check for the yarn package manager ------------------------
-rc = call(["which", "yarn"])
-if rc == 0:
-    print("yarn already installed!")
-else:
-    run(["yarn", "--version"])
+path_root = Path(__file__).parent.parent
+print(path_root)
+local_yarn = Path("../node_modules/yarn/bin/yarn")
+if not local_yarn.is_file():
+    print("Local yarn not found, installing...")
+    run(["npm","install","yarn"])
+    run(["node_modules/yarn/bin/yarn", "--version"], cwd=path_root)
+    print("yarn available!")
 
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
     run(["make", "js"])
+    run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
+    run(["yarn", "build",], cwd=path_root)
+    sh.copytree("../lib", "_static/lib")
     print("Finished building local `thebe` bundle.")
 else:
     print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")

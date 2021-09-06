@@ -10,5 +10,8 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "jsdoc": "^3.6.5"
+  },
+  "dependencies": {
+    "yarn": "^1.22.11"
   }
 }
