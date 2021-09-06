@@ -1,5 +1,7 @@
 name: Docs
-on: [push, release]
+on:
+  - push
+  - pull_request
 
 jobs:
   thebe-build:

@@ -15,7 +15,8 @@ from datetime import date
 extensions = ['sphinx.ext.mathjax',
               'sphinx_copybutton',
               'sphinx_js',
-              'myst_parser']
+              'myst_parser',
+              'rtds_action']
 
 # sphinx-js config
 primary_domain = 'js'
@@ -157,31 +158,38 @@ epub_exclude_files = ['search.html']
 # -- Linkcheck options ------------------
 linkcheck_anchors_ignore = ["/#!"]
 
-# -- Build the latest JS for local preview -----------------------------
-from subprocess import run, call
+import os
+from subprocess import run
 from pathlib import Path
 import shutil as sh
-import os
 
-# -- Check for the yarn package manager ------------------------
-path_root = Path(__file__).parent.parent
-print(path_root)
-run(["ls","-l", path_root])
-local_yarn = Path("../node_modules/yarn/bin/yarn")
-if not local_yarn.is_file():
-    print("Local yarn not found, installing...")
-    run(["npm","install","yarn"], cwd=path_root)
-    run(["node_modules/yarn/bin/yarn", "--version"], cwd=path_root)
-    print("yarn available!")
-else:
-    print("yarn available!")
+if os.environ["READ_THE_DOCS"]:
+    # -- Fetch current js build from GitHub using teh rtds-action extension -
 
-if not Path("_static/lib").exists():
-    print("Couldn't find local `thebe` build for docs, building now...")
-    run(["node_modules/yarn/bin/yarn", "install", "--frozen-lockfile"], cwd=path_root)
-    run(["node_modules/yarn/bin/yarn", "build",], cwd=path_root)
-    run(["ls","-l", f"{path_root}/lib"])
-    sh.copytree(f"{path_root}/lib", "_static/lib")
-    print("Finished building local `thebe` bundle.")
+    # The name of your GitHub repository
+    rtds_action_github_repo = "executablebooks/thebe"
+
+    # The path where the artifact should be extracted
+    # Note: this is relative to the conf.py file!
+    rtds_action_path = "_static/lib"
+
+    # The "prefix" used in the `upload-artifact` step of the action
+    rtds_action_artifact_prefix = "thebe-lib-"
+
+    # A GitHub personal access token is required, more info below
+    rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+
+    # Whether or not to raise an error on ReadTheDocs if the
+    # artifact containing the notebooks can't be downloaded (optional)
+    rtds_action_error_if_missing = True
+
 else:
-    print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")
+    # -- Use the latest JS for local preview -----------------------------
+    path_root = Path(__file__).parent.parent
+    if not Path("_static/lib").exists():
+        print("Couldn't find local `thebe` build for docs, building now...")
+        run(["make", "js"], cwd=path_root)
+        sh.copytree(f"{path_root}/lib", "_static/lib")
+        print("Finished building local `thebe` bundle.")
+    else:
+        print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")
