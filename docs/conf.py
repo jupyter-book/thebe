@@ -166,12 +166,11 @@ import os
 # -- Check for the yarn package manager ------------------------
 path_root = Path(__file__).parent.parent
 print(path_root)
-run(["pwd"])
-run(["ls","-l"])
-local_yarn = Path("./node_modules/yarn/bin/yarn")
+run(["ls","-l", path_root])
+local_yarn = Path("../node_modules/yarn/bin/yarn")
 if not local_yarn.is_file():
     print("Local yarn not found, installing...")
-    run(["npm","install","yarn"])
+    run(["npm","install","yarn"], cwd=path_root)
     run(["node_modules/yarn/bin/yarn", "--version"], cwd=path_root)
     print("yarn available!")
 else:
