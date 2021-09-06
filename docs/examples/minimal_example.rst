@@ -49,7 +49,7 @@ Next, we'll load Thebe from a CDN:
 
 .. raw:: html
 
-   <script src="_static/lib/index.js"></script>
+   <script src="../_static/lib/index.js"></script>
 
 .. code:: html
 

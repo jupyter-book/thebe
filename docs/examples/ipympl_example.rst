@@ -92,7 +92,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        },
      }
    </script>
-   <script src="_static/lib/index.js"></script>
+   <script src="../_static/lib/index.js"></script>
 
 
 2D plot

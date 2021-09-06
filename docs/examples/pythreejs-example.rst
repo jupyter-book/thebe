@@ -71,7 +71,7 @@ Examples
        },
      }
    </script>
-   <script src="_static/lib/index.js"></script>
+   <script src="../_static/lib/index.js"></script>
 
 Press the "Activate" button below to connect to a Jupyter server:
 
