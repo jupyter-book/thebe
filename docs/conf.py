@@ -175,7 +175,6 @@ if not local_yarn.is_file():
 
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
-    run(["make", "js"])
     run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
     run(["yarn", "build",], cwd=path_root)
     sh.copytree("../lib", "_static/lib")
