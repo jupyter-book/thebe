@@ -1,0 +1,48 @@
+name: Docs
+on: [push, release]
+
+jobs:
+  thebe-build:
+    name: "Buil the current version of thebe for ue in the docs"
+    runs-on: ubuntu-latest
+    steps:
+      # Action Repo: https://github.com/actions/checkout
+      - uses: actions/checkout@v2
+
+      # Action Repo: https://github.com/actions/setup-node
+      - name: "Setup Node"
+        uses: actions/setup-node@v1
+        with:
+          node-version: "15"
+
+      # Action Repo: https://github.com/actions/cache
+      - name: "Cache node_modules"
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Build the library
+        run: |
+          yarn build:prod
+
+      # Action Repo: https://github.com/actions/upload-artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: thebe-lib-${{ github.sha }}
+          path: lib/
+          retention-days: 1
+
+      # Action Repo: https://github.com/dfm/rtds-action
+      - name: Trigger RTDs build
+        uses: dfm/rtds-action@v1
+        with:
+          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
+          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
+          commit_ref: ${{ github.ref }}
