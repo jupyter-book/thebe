@@ -1,4 +1,4 @@
-name: Docs
+name: build latest as artifact
 on:
   - push
   - pull_request
