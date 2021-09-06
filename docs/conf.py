@@ -180,6 +180,7 @@ if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
     run(["node_modules/yarn/bin/yarn", "install", "--frozen-lockfile"], cwd=path_root)
     run(["node_modules/yarn/bin/yarn", "build",], cwd=path_root)
+    run(["ls","-l", f"{path_root}/lib"])
     sh.copytree("../lib", "_static/lib")
     print("Finished building local `thebe` bundle.")
 else:
