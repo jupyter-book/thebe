@@ -4,8 +4,8 @@ IPyCytoscape Example
 
 Thebe can display output from ipycytoscape_, which could visualize graphs using Cytoscape.js_.
 
-.. _ipycytoscape: https://github.com/QuantStack/ipycytoscape 
-.. _Cytoscape.js: https://js.cytoscape.org/ 
+.. _ipycytoscape: https://github.com/QuantStack/ipycytoscape
+.. _Cytoscape.js: https://js.cytoscape.org/
 
 Setup
 =====
@@ -91,7 +91,7 @@ Press the "Activate" button below to connect to a Jupyter server:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+   <script src="../_static/lib/index.js"></script>
 
 
 .. raw:: html

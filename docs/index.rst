@@ -34,7 +34,7 @@ For example, see the following code cell:
        },
      }
    </script>
-   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+   <script src="_static/lib/index.js"></script>
 
    <pre data-executable="true" data-language="python">
    %matplotlib inline

@@ -156,3 +156,30 @@ epub_exclude_files = ['search.html']
 
 # -- Linkcheck options ------------------
 linkcheck_anchors_ignore = ["/#!"]
+
+# -- Build the latest JS for local preview -----------------------------
+from subprocess import run, call
+from pathlib import Path
+import shutil as sh
+import os
+
+# -- Check for the yarn package manager ------------------------
+path_root = Path(__file__).parent.parent
+local_yarn = Path("../node_modules/yarn/bin/yarn")
+if not local_yarn.is_file():
+    print("Local yarn not found, installing...")
+    run(["npm","install","yarn"], cwd=path_root)
+    run(["node_modules/yarn/bin/yarn", "--version"], cwd=path_root)
+    print("yarn available!")
+else:
+    print("yarn available!")
+
+if not Path("_static/lib").exists():
+    print("Couldn't find local `thebe` build for docs, building now...")
+    run(["node_modules/yarn/bin/yarn", "install", "--frozen-lockfile"], cwd=path_root)
+    run(["node_modules/yarn/bin/yarn", "build",], cwd=path_root)
+    run(["ls","-l", f"{path_root}/lib"])
+    sh.copytree(f"{path_root}/lib", "_static/lib")
+    print("Finished building local `thebe` bundle.")
+else:
+    print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")

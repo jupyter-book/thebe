@@ -49,7 +49,7 @@ Next, we'll load Thebe from a CDN:
 
 .. raw:: html
 
-   <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
+   <script src="../_static/lib/index.js"></script>
 
 .. code:: html
 
@@ -144,7 +144,7 @@ Here's the HTML for the cell above:
    plt.plot(x, np.sin(x))
    plt.plot(x, np.cos(x))
    </pre>
-   
+
 And here's an example where the contents cannot be modified once instantiated:
 
 .. raw:: html
