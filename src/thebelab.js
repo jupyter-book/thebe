@@ -19,7 +19,6 @@ import "@lumino/widgets/style/index.css";
 import "@jupyterlab/apputils/style/base.css";
 import "@jupyterlab/rendermime/style/base.css";
 import "@jupyterlab/codemirror/style/base.css";
-import "./patch.css";
 import "./index.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
