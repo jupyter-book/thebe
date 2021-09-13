@@ -63,7 +63,7 @@
     "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
     "html-loader-jest": "^0.2.1",
-    "htmlparser2": "^6.1.0",
+    "htmlparser2": "^7.1.2",
     "http-server": "^0.12.3",
     "identity-obj-proxy": "^3.0.0",
     "istanbul-instrumenter-loader": "^3.0.1",
