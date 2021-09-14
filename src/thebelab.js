@@ -15,7 +15,10 @@ if (typeof window !== "undefined") {
 
 import "@jupyterlab/theme-light-extension/style/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
-import "@jupyterlab/rendermime/style/index.css";
+import "@lumino/widgets/style/index.css";
+import "@jupyterlab/apputils/style/base.css";
+import "@jupyterlab/rendermime/style/base.css";
+import "@jupyterlab/codemirror/style/base.css";
 import "./index.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
