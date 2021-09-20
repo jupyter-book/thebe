@@ -1,60 +1,57 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Thebe activate button</title>
+    <title>Thebe Activate Button</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
 
     <!-- Thebe configuration !-->
     <script type="text/x-thebe-config">
-        {
-          binderOptions: {
-            repo: "binder-examples/requirements"
-          },
-          stripPrompts: {
-            inPrompt: 'sage: ',
-            continuationPrompt: '....: ',
-            selector: '.sage-input',
-          },
-          requestKernel: true
+      {
+        binderOptions: {
+          repo: "binder-examples/requirements"
+        },
+        requestKernel: true,
+        mountStatusWidget: true,
+        mountActivateWidget: true,
       }
     </script>
-
+    <script src="../lib/index.js"></script>
     <!-- Dependency: jquery !-->
     <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       type="text/javascript"
     ></script>
-
-    <!-- Style sheet and javascript for the status field !-->
-    <script src="status/thebe_status_field.js" type="text/javascript"></script>
-    <link
-      href="status/thebe_status_field.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-
-    <script>
-      <!-- use window.onload to defer the execution until the page is loaded !-->
-      window.onload = function () {
-        thebe_place_activate_button();
-      };
-    </script>
+    <style>
+      body: {
+        padding: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Support for activate button</h1>
-    <div class="thebe_status_field"></div>
-    <p>This page illustrates the use of an activation button.</p>
-    <p>This cell will turn into the live cell:</p>
-    <pre class="sage-input" data-language="python">
-    sage: 1 + 1
-    2
-    sage: x = 3
-    sage: y = 4
+    <h1>Built In Activate Button</h1>
+    <p>
+      This page illustrates the use of the built in activation button in Thebe.
+      By adding an element with the <code>.thebe-activate</code> class and
+      setting the <code>mountActivateWidget</code> option, an activate button
+      will be added to the page. Add rules to the
+      <code>.thebe-activate</code> class to change styling to suit your needs.
+    </p>
 
-    sage: z = 5
-    sage: x + y + \
-    ....: z
-    12
-  </pre
-    >
+    <div class="thebe-activate"></div>
+    <div class="thebe-status"></div>
+    <p>This cell will turn into the live cell:</p>
+    <pre data-executable>
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+    </pre>
+    <p>
+      Note: this page also contains the built in status widget - see
+      <a href="./demo-status-widget.html">demo-status-widget.html</a> for more
+      info.
+    </p>
   </body>
 </html>

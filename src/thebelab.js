@@ -6,8 +6,10 @@ import { ThebeManager } from "./manager";
 import { hookupKernel, requestKernel, requestBinderKernel } from "./kernels";
 import { mergeOptions } from "./options";
 import { renderAllCells } from "./render";
+import { stripPrompts, stripOutputPrompts } from "./utils";
 import * as events from "./events";
 import { KernelStatus } from "./status";
+import { ActivateWidget } from "./activate";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -22,6 +24,7 @@ import "@jupyterlab/rendermime/style/base.css";
 import "@jupyterlab/codemirror/style/base.css";
 import "./index.css";
 import "./status.css";
+import "./activate.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -59,6 +62,11 @@ export * from "./events";
 export function mountStatusWidget() {
   thebelab.kernelStatus = new KernelStatus(thebelab);
   thebelab.kernelStatus.mount();
+}
+
+export function mountActivateWidget() {
+  thebelab.activateButton = new ActivateWidget(thebelab);
+  thebelab.activateButton.mount();
 }
 
 export function bootstrap(options) {

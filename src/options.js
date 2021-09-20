@@ -28,6 +28,7 @@ const _defaultOptions = {
   requestKernel: false,
   predefinedOutput: true,
   mountStatusWidget: true,
+  mountActivateWidget: true,
   mathjaxUrl: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
   mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
   selector: "[data-executable]",

@@ -1,5 +1,8 @@
 .thebe-status {
   display: inline-block;
+}
+.thebe-status-mounted {
+  display: inline-block;
   margin: 10px 5px;
   text-align: left;
   border: 1px black solid;

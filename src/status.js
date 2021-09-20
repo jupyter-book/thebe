@@ -30,7 +30,7 @@ export class KernelStatus {
   mount() {
     const el = $(".thebe-status");
     el.replaceWith(
-      `<div class="thebe-status"
+      `<div class="thebe-status thebe-status-mounted"
         title="${this.status_stub}">
         <span class="thebe-status-stub">${this.status_stub}</span>
         <span class="thebe-status-field">
