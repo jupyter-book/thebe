@@ -10,6 +10,7 @@ Thebe
    configure
    security
    events
+   ui
    config_reference
    howto/initialize_cells
    contribute
@@ -53,7 +54,7 @@ Try clicking the button. The cell will be come active!
 
 .. raw:: html
 
-   <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">Activate</button>
+
    <script>
    var bootstrapThebe = function() {
        thebelab.bootstrap();

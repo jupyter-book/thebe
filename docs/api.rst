@@ -10,4 +10,4 @@ The thebe JavaScript API
     We need to add jsdoc-style docstrings to our exported functions.
 
 
-.. js:autofunction:: bootstrap
+.. js:autofunction:: thebelab.bootstrap

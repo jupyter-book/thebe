@@ -44,21 +44,6 @@ export * from "./kernels";
 export * from "./options";
 export * from "./events";
 
-/**
- * Do it all in one go.
-
- * 1. load options
- * 2. run hooks
- * 3. render cells
- * 4. request a Kernel
- * 5. hook everything up
-
- * @param {Object} options Object containing thebe options.
- * Same structure as x-thebe-options.
- * @returns {Promise} Promise for connected Kernel object
-
- */
-
 export function mountStatusWidget() {
   thebelab.kernelStatus = new KernelStatus(thebelab);
   thebelab.kernelStatus.mount();
@@ -69,6 +54,16 @@ export function mountActivateWidget() {
   thebelab.activateButton.mount();
 }
 
+/**
+ * Bootstrap the library based on the configuration given.
+ *
+ * If bootstrap === true in the configuration and the library is loaded statically
+ * then this function will be called automatically on the document load event.
+ *
+ * @param {Object} options Object containing thebe options.
+ * Same structure as x-thebe-options.
+ * @returns {Promise} Promise for connected Kernel object
+ */
 export function bootstrap(options) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.

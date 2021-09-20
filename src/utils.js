@@ -44,7 +44,6 @@ function splitCell(element, { inPrompt, continuationPrompt } = {}) {
   if (cell) {
     cells.push(cell);
   }
-  // console.log("cells: ", cells);
   // clear the parent element
   element.html("");
   // add the thebe-able cells
@@ -80,7 +79,6 @@ function splitCellOutputPrompt(element, { outPrompt } = {}) {
   if (cell) {
     cells.push(cell);
   }
-  // console.log("cells: ", cells);
   // clear the parent element
   element.html("");
   // add the thebe-able cells

@@ -27,8 +27,8 @@ const _defaultOptions = {
   stripPrompts: false,
   requestKernel: false,
   predefinedOutput: true,
-  mountStatusWidget: true,
-  mountActivateWidget: true,
+  mountStatusWidget: false,
+  mountActivateWidget: false,
   mathjaxUrl: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
   mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
   selector: "[data-executable]",
@@ -51,8 +51,14 @@ const _defaultOptions = {
 };
 
 let _pageConfigData = undefined;
+
 function getPageConfig(key) {
   if (typeof window === "undefined") return;
+  ensurePageConfigLoaded();
+  return _pageConfigData[key];
+}
+
+function ensurePageConfigLoaded() {
   if (!_pageConfigData) {
     _pageConfigData = {};
     $("script[type='text/x-thebe-config']").map((i, el) => {
@@ -75,14 +81,15 @@ function getPageConfig(key) {
       }
     });
   }
-  return _pageConfigData[key];
 }
 
 export function mergeOptions(options) {
   // merge options from various sources
   // call > page > defaults
+
   let merged = {};
-  getPageConfig();
+  ensurePageConfigLoaded();
+
   $.extend(true, merged, _defaultOptions);
   $.extend(true, merged, _pageConfigData);
   if (options) $.extend(true, merged, options);
