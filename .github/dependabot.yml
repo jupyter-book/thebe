@@ -7,3 +7,4 @@ updates:
     directory: "/" # Location of yarn.lock
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
