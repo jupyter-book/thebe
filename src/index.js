@@ -3,10 +3,11 @@ export * from "./thebelab";
 export * from "./utils";
 import $ from "jquery";
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (typeof window !== "undefined") {
-    window.thebelab = thebelab;
-    window.thebelab.$ = $;
+if (typeof window !== "undefined") {
+  window.thebelab = thebelab;
+  window.thebelab.$ = $;
+
+  document.addEventListener("DOMContentLoaded", () => {
     const options = thebelab.mergeOptions();
     if (options.mountStatusWidget) {
       thebelab.mountStatusWidget();
@@ -17,5 +18,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if (options["bootstrap"]) {
       thebelab.bootstrap();
     }
-  }
-});
+  });
+}
