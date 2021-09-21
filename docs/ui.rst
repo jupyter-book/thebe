@@ -4,7 +4,7 @@ User Interface
 
 Thebe includes support for some built-in user interface elements.
 
-The aim is to provide simple elements that can be added to a page a styled accordingly by the consumer without neeing to [re]write coont code.
+The aim is to provide simple elements that can be added to a page and styled accordingly by the consumer without needing to [re]write code.
 Using these UI elements in the way shown here, assumes that you already have Thebe statically loaded on page.
 
 Built in UI elements are:
@@ -15,9 +15,10 @@ Built in UI elements are:
 Activate Button
 ===============
 
+When this button is pressed, it will run the `thebelab.bootstrap` function on the page.
 Configure this UI element as follows.
 
-Add a :code:`div` element to the page in the desired location.
+Add a ``div`` element to the page in the desired location.
 
 .. code-block:: html
 
@@ -28,6 +29,7 @@ Then set the following option to :code:`mountActivateWidget:true` in the Thebe c
 Status Widget
 =============
 
+This element will display the status of the kernel, it will update when the kernel sends new messages or when code is executed.
 Configure this UI element as follows.
 
 Add a :code:`div` element to the page in the desired location.
@@ -91,4 +93,4 @@ will show status of the kernel launch.
    </pre>
 
 
-Note: If you are looking to load Thebe dynamically, check the custom launch button in the example `here. <https://github.com/executablebooks/thebe/blob/feat/kernel-status/examples/demo-launch-button.html>`_
+Note: If you are looking to load Thebe dynamically, check the custom launch button `in the example here. <https://github.com/executablebooks/thebe/blob/feat/kernel-status/examples/demo-launch-button.html>`_
