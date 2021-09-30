@@ -9,6 +9,8 @@
       -->
     <script type="text/x-thebe-config">
       {
+        mountStatusWidget: true,
+        mountActivateWidget: true,
         requestKernel: true,
         binderOptions: {
           repo: "binder-examples/requirements",
@@ -22,17 +24,8 @@
   </head>
   <body>
     <div class="container">
-      <button id="activateButton">Activate</button>
-      <script>
-        var bootstrapThebe = function () {
-          thebelab.bootstrap();
-        };
-
-        document
-          .querySelector("#activateButton")
-          .addEventListener("click", bootstrapThebe);
-      </script>
-
+      <div class="thebe-activate"></div>
+      <div class="thebe-status"></div>
       <pre data-executable="true" data-language="python" class="pre-element">
 print("Hello!")</pre
       >

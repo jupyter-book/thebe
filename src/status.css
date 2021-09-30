@@ -1,7 +1,32 @@
+.thebe-status {
+  display: inline-block;
+}
+.thebe-status-mounted {
+  display: inline-block;
+  text-align: left;
+  border: 1px black solid;
+  padding: 10px;
+}
+.thebe-status-stub {
+  display: inline-block;
+  vertical-align: middle;
+  text-transform: uppercase;
+  line-height: 1rem;
+}
+
 .thebe-status-field {
+  display: inline-block;
   background-color: #ccc;
-  margin: auto;
-  padding: 8px;
+  text-transform: uppercase;
+  font-family: monospace;
+  padding: 4px 8px;
+  border-radius: 1em;
+  line-height: 1rem;
+}
+
+.thebe-status-message {
+  text-transform: lowercase;
+  font-family: monospace;
 }
 
 .thebe-status-field.thebe-status-building {

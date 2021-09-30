@@ -1,90 +1,161 @@
 <html>
-<head>
-  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-  <title>Thebe examples</title>
-  <link rel="stylesheet" type="text/css" href="index.css" />
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Thebe examples</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
 
-  <!-- Configure and load Thebe !-->
-  <script type="text/x-thebe-config">
-    {
-      bootstrap: true,
-      binderOptions: {
-        repo: "binder-examples/requirements",
-      },
-      kernelOptions: {
-        name: "python3",
-      },
-    }
-  </script>
-  <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
-  <!-- or to use a local build: -->
-  <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        bootstrap: true,
+        binderOptions: {
+          repo: "binder-examples/requirements",
+        },
+        kernelOptions: {
+          name: "python3",
+        },
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/thebe@latest"
+    ></script>
+    <!-- or to use a local build: -->
+    <!-- <script type="text/javascript" src="../lib/index.js"></script> -->
+  </head>
+  <body>
+    <h1>Thebe</h1>
+    <p>
+      <a href="https://github.com/executablebooks/thebe">Thebe</a>
+      is an experiment attempting to rebuild
+      <a href="https://github.com/oreillymedia/thebe">Thebe</a>
+      with javascript APIs provided by
+      <a href="https://github.com/jupyterlab/jupyterlab">JupyterLab</a>. This
+      should make Thebe a smaller, more sustainable project.
+    </p>
 
-</head>
-<body>
-  <h1>Thebe</h1>
+    <h2>A minimal example</h2>
 
-  <p>
-    <a href="https://github.com/executablebooks/thebe">Thebe</a>
-    is an experiment attempting to rebuild
-    <a href="https://github.com/oreillymedia/thebe">Thebe</a>
-    with javascript APIs provided by
-    <a href="https://github.com/jupyterlab/jupyterlab">JupyterLab</a>.
+    This page illustrates a minimal setup to get Thebe running, using
+    <a href="http://mybinder.org">mybinder</a> as <em>kernel</em> (i.e.
+    computation backend) provider. See the
+    <a
+      href="https://github.com/executablebooks/thebe/blob/master/examples/index.html"
+    >
+      source file</a
+    >
+    for details.
 
-    This should make Thebe a smaller, more sustainable project.
-  </p>
+    <p>This is a cell:</p>
 
-  <h2><a href="demo.html">Step by step demo</a></h2>
+    <pre data-executable="true" data-language="python">print("Hello!")</pre>
 
-  <h2>A minimal example</h2>
+    <p>
+      Press <tt>Shift-Enter</tt> to execute this cell. Launching the computation
+      backend may take a few seconds, and you may need to re-execute it.
+    </p>
 
-  This page illustrates a minimal setup to get Thebe running, using
-  <a href="http://mybinder.org">mybinder</a> as <em>kernel</em> (i.e.
-  computation backend) provider. See the
-  <a href="https://github.com/executablebooks/thebe/blob/master/examples/index.html">
-  source file</a> for details.
+    <p>This is another cell, with plotting. Shift-Enter again!</p>
 
-  <p>This is a cell:</p>
-
-  <pre data-executable="true" data-language="python">print("Hello!")</pre>
-
-  <p>Press <tt>Shift-Enter</tt> to execute this cell. Launching the
-  computation backend may take a few seconds, and you may need to
-  re-execute it.</p>
-
-  <p>
-    This is another cell, with plotting.
-
-    Shift-Enter again!
-  </p>
-
-  <pre data-executable="true" data-language="python">%matplotlib inline
+    <pre data-executable="true" data-language="python">
+%matplotlib inline
 import numpy as np
 import matplotlib.pyplot as plt
 x = np.linspace(0,10)
 plt.plot(x, np.sin(x))
-plt.plot(x, np.cos(x))</pre>
+plt.plot(x, np.cos(x))</pre
+    >
 
-  <h2>More examples</h2>
+    <h2>Step by step demo</h2>
+    <p>
+      See a <a href="demo.html">step by step demo</a> of adding thebe to a
+      static html document containing existing code.
+    </p>
 
-  <ul>
-  <li><a href="widgets.html">Making use of Jupyter interactive widgets</a>;
-  <li><a href="status_field.html">Status field and styling</a>;
-  <li><a href="activate_button.html">Activate/Status button</a>;
-  <li><a href="prompts.html">Alternative computational environments; code cells with prompts and outputs</a>;
-  <li><a href="local.html">Using a local Jupyter server as kernel provider</a>;
-  <li><a href="demo-preview.html">Setting predefined output for cells</a>;
-  <li><a href="http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html">Thebe in use for SageMath documentation</a>
-        <a href="http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html">(about)</a>;
-        Showcases a fancy activate button, and fetching thebe and running computations locally when possible.
-        Relevant files:
-        <ul><li><a href="https://github.com/sagemath/sage-package/blob/master/sage_package/themes/sage/thebe.html">thebe.html</a></li>
-            <li><a href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
-            <li><a href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js">thebe_status_field.js</a></li>
+    <h2>More examples &amp; demos</h2>
+    <ul>
+      <li>
+        <a href="local.html">Using a local Jupyter server as kernel provider</a>
+      </li>
+      <li>
+        <a href="widgets.html">Making use of Jupyter interactive widgets</a>
+      </li>
+
+      <li>
+        <a href="demo-preview.html">Setting predefined output for cells</a>
+      </li>
+      <li><a href="demo-activate-button.html">Simple activate button</a></li>
+      <li>
+        <a href="demo-status-widget.html">Using the Status Widget on a page</a>
+      </li>
+      <li>
+        <a href="prompts.html"
+          >Alternative computational environments; code cells with prompts and
+          outputs</a
+        >
+      </li>
+    </ul>
+
+    <h2>Thebe in use - external</h2>
+    <ul>
+      <li>
+        <a
+          href="http://sage-package.readthedocs.io/en/latest/sage_package/sphinx-demo.html"
+          >Thebe in use for SageMath documentation - showcases a fancy activate
+          button, status field and fetching thebe and running computations
+          locally when possible.</a
+        >
+        <ul>
+          <li>
+            <a
+              href="http://sage-package.readthedocs.io/en/latest/sage_package/thebe.html"
+              >About Thebe in SageMath docs</a
+            >
+          </li>
+          <li>
+            Relevant files (on SageMath GitHub Repo):
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/sagemath/sage-package/blob/master/sage_package/themes/sage/thebe.html"
+                  >thebe.html</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.js"
+                  >thebe_status_field.js</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/sagemath/sage-package/tree/master/sage_package/themes/sage/static/thebe_status_field.css"
+                  >thebe_status_field.css</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li>
+            Minimal DIY status field examples (in this repo):
+            <ul>
+              <li><a href="status/status_field.html">status_field.html</a></li>
+              <li>
+                <a href="status/thebe_status_field.js">thebe_status_field.js</a>
+              </li>
+              <li>
+                <a href="status/thebe_status_field.css"
+                  >thebe_status_field.css</a
+                >
+              </li>
+            </ul>
+          </li>
         </ul>
-  </li>
-  <li><a href="https://sebasguts.github.io/thebelab_test_gap/chap42">Thebe in use for GAP documentation</a>.</li>
-  </ul>
-
-</body>
+      </li>
+      <li>
+        <a href="https://sebasguts.github.io/thebelab_test_gap/chap42"
+          >Thebe in use for GAP documentation</a
+        >.
+      </li>
+    </ul>
+  </body>
 </html>

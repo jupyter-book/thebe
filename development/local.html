@@ -10,7 +10,9 @@
         -->
     <script type="text/x-thebe-config">
       {
-        requestKernel: true,
+        requestKernel: false,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
         kernelOptions: {
           name: "python3",
           path: ".",
@@ -41,16 +43,8 @@
             </pre
         >
       </div>
-      <button id="activateButton">Activate</button>
-      <script>
-        var bootstrapThebe = function () {
-          thebelab.bootstrap();
-        };
-
-        document
-          .querySelector("#activateButton")
-          .addEventListener("click", bootstrapThebe);
-      </script>
+      <div class="thebe-activate"></div>
+      <div class="thebe-status"></div>
       <pre data-executable="true" data-language="python" class="pre-element">
 print("Hello!")</pre
       >

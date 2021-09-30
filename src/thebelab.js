@@ -6,7 +6,10 @@ import { ThebeManager } from "./manager";
 import { hookupKernel, requestKernel, requestBinderKernel } from "./kernels";
 import { mergeOptions } from "./options";
 import { renderAllCells } from "./render";
+import { stripPrompts, stripOutputPrompts } from "./utils";
 import * as events from "./events";
+import { KernelStatus } from "./status";
+import { ActivateWidget } from "./activate";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -20,6 +23,8 @@ import "@jupyterlab/apputils/style/base.css";
 import "@jupyterlab/rendermime/style/base.css";
 import "@jupyterlab/codemirror/style/base.css";
 import "./index.css";
+import "./status.css";
+import "./activate.css";
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -39,21 +44,26 @@ export * from "./kernels";
 export * from "./options";
 export * from "./events";
 
+export function mountStatusWidget() {
+  thebelab.kernelStatus = new KernelStatus(thebelab);
+  thebelab.kernelStatus.mount();
+}
+
+export function mountActivateWidget() {
+  thebelab.activateButton = new ActivateWidget(thebelab);
+  thebelab.activateButton.mount();
+}
+
 /**
- * Do it all in one go.
-
- * 1. load options
- * 2. run hooks
- * 3. render cells
- * 4. request a Kernel
- * 5. hook everything up
-
+ * Bootstrap the library based on the configuration given.
+ *
+ * If bootstrap === true in the configuration and the library is loaded statically
+ * then this function will be called automatically on the document load event.
+ *
  * @param {Object} options Object containing thebe options.
  * Same structure as x-thebe-options.
  * @returns {Promise} Promise for connected Kernel object
-
  */
-
 export function bootstrap(options) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
