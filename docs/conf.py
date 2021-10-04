@@ -75,7 +75,18 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static", "../examples"]
+html_static_path = ["_static"]
+
+# In order to link examples to the local build we need to copy these to a subfolder
+import os
+import shutil as sh
+html_examples_target = "_static/html_examples"
+if os.path.exists(html_examples_target):
+    sh.rmtree(html_examples_target)
+sh.copytree("../examples", html_examples_target)
+
+
+
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -158,11 +169,9 @@ epub_exclude_files = ['search.html']
 linkcheck_anchors_ignore = ["/#!"]
 
 # -- Build the latest JS for local preview -----------------------------
-from subprocess import run, getstatusoutput, Popen
+from subprocess import run
 from pathlib import Path
-import shutil as sh
 import os
-import re
 
 
 print('*************************** RUNNING CONF.PY ***************************')
