@@ -6,6 +6,6 @@ python:
 
 build:
   os: "ubuntu-20.04"
-  languages:
+  tools:
     python: "3.9"
     nodejs: "14"
