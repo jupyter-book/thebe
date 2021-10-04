@@ -1,5 +1,11 @@
 version: 2
 
+python:
+  install:
+    - requirements: docs/doc-requirements.txt
+
 build:
-  apt_packages:
-    - nodejs
+  os: "ubuntu20"
+  languages:
+    python: "3.9"
+    nodejs: "14"

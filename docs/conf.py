@@ -158,28 +158,48 @@ epub_exclude_files = ['search.html']
 linkcheck_anchors_ignore = ["/#!"]
 
 # -- Build the latest JS for local preview -----------------------------
-from subprocess import run, call
+from subprocess import run, getstatusoutput
 from pathlib import Path
 import shutil as sh
 import os
+import re
 
-# -- Check for the yarn package manager ------------------------
+
+print('*************************** RUNNING CONF.PY ***************************')
+
+# -- Run JS Build if needed ------------------------
+# Note: this will be a one off run on RTD but may be run mulitple times locally
+# during development and testing
 path_root = Path(__file__).parent.parent
-local_yarn = Path("../node_modules/yarn/bin/yarn")
-if not local_yarn.is_file():
-    print("Local yarn not found, installing...")
-    run(["npm","install","yarn"], cwd=path_root)
-    run(["node_modules/yarn/bin/yarn", "--version"], cwd=path_root)
-    print("yarn available!")
-else:
-    print("yarn available!")
 
+# local_yarn = Path(f"{path_root}/node_modules/.bin/yarn")
+yarn_status, _ = getstatusoutput("yarn")
+if yarn_status != 0:
+    print("Local yarn not found, installing...")
+    run(["npm", "install", "yarn", "--no-save"], cwd=path_root)
+print(f'yarn --version:')
+run(["yarn", "--version"], cwd=path_root)
+
+
+# local_jsdoc = Path(f"{path_root}/node_modules/.bin/jsdoc")
+jsdoc_status, _ = getstatusoutput("jsdoc")
+if jsdoc_status != 0:
+    print("Local jsdoc not found, installing...")
+    run(["npm", "install", "jsdoc", "--no-save"], cwd=path_root)
+print(f'jsdoc --version:')
+run(["jsdoc", "--version"], cwd=path_root)
+
+node_modules_bin = f'{path_root}/node_modules/.bin/';
+if not re.search(r"\b(?<=\w)%s\b(?!\w)" % node_modules_bin, os.environ["PATH"]):
+    os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
+
+# on RTD this will trigger the build - Locally when using `make` we will have already
+# run a clean js build
 if not Path("_static/lib").exists():
     print("Couldn't find local `thebe` build for docs, building now...")
-    run(["node_modules/yarn/bin/yarn", "install", "--frozen-lockfile"], cwd=path_root)
-    run(["node_modules/yarn/bin/yarn", "build",], cwd=path_root)
-    run(["ls","-l", f"{path_root}/lib"])
+    run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
+    run(["yarn", "build"], cwd=path_root)
     sh.copytree(f"{path_root}/lib", "_static/lib")
     print("Finished building local `thebe` bundle.")
 else:
-    print("Found local `thebe` build, to update it, delete `_static/lib` and build docs")
+    print("Using existing `thebe` build - when building locally using `make html` this will be the latest build")
