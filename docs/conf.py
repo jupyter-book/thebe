@@ -171,7 +171,6 @@ print('*************************** RUNNING CONF.PY ***************************')
 # Note: this will be a one off run on RTD but may be run mulitple times locally
 # during development and testing
 path_root = Path(__file__).parent.parent
-print(f"path_root: {path_root}")
 
 node_modules_bin = f'{path_root}/node_modules/.bin/';
 os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
@@ -180,13 +179,18 @@ yarn_status, _ = getstatusoutput("yarn")
 if yarn_status != 0:
     print("Local yarn not found, installing...")
     run(["npm", "install", "yarn", "--no-save"], cwd=path_root)
+    print("yarn installed.")
 run(["yarn", "--version"], cwd=path_root)
 
 jsdoc_status, _ = getstatusoutput("jsdoc")
 if jsdoc_status != 0:
     print("Local jsdoc not found, installing...")
     run(["npm", "install", "jsdoc", "--no-save"], cwd=path_root)
+    print("jdsoc installed.")
 run(["jsdoc", "--version"], cwd=path_root)
+
+print(getstatusoutput("yarn"))
+print(getstatusoutput("jsdoc"))
 
 run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
 run(["webpack", "--mode" ,"production"], cwd=path_root)
