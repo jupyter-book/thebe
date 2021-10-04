@@ -180,17 +180,15 @@ yarn_status, _ = getstatusoutput("yarn")
 if yarn_status != 0:
     print("Local yarn not found, installing...")
     run(["npm", "install", "yarn", "--no-save"], cwd=path_root)
-print(f'yarn --version:')
 run(["yarn", "--version"], cwd=path_root)
 
 jsdoc_status, _ = getstatusoutput("jsdoc")
 if jsdoc_status != 0:
     print("Local jsdoc not found, installing...")
     run(["npm", "install", "jsdoc", "--no-save"], cwd=path_root)
-print(f'jsdoc --version:')
 run(["jsdoc", "--version"], cwd=path_root)
 
-
+run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
 
 # # on RTD this will trigger the build - Locally when using `make` we will have already
 # # run a clean js build
