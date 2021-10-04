@@ -171,6 +171,7 @@ print('*************************** RUNNING CONF.PY ***************************')
 # Note: this will be a one off run on RTD but may be run mulitple times locally
 # during development and testing
 path_root = Path(__file__).parent.parent
+print(f"path_root: {path_root}")
 
 node_modules_bin = f'{path_root}/node_modules/.bin/';
 if not re.search(r"%s" % node_modules_bin, os.environ["PATH"]):
@@ -189,6 +190,8 @@ if jsdoc_status != 0:
 run(["jsdoc", "--version"], cwd=path_root)
 
 run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
+run(["yarn", "build:prod"], cwd=path_root)
+sh.copytree(f"{path_root}/lib", "_static/lib")
 
 # # on RTD this will trigger the build - Locally when using `make` we will have already
 # # run a clean js build
