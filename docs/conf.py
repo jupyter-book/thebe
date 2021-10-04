@@ -178,14 +178,14 @@ os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
 yarn_status, _ = getstatusoutput("yarn")
 if yarn_status != 0:
     print("Local yarn not found, installing...")
-    run(["npm", "install", "yarn", "--no-save"], cwd=path_root)
+    run(["npm", "install", "yarn"], cwd=path_root)
     print("yarn installed.")
 run(["yarn", "--version"], cwd=path_root)
 
 jsdoc_status, _ = getstatusoutput("jsdoc")
 if jsdoc_status != 0:
     print("Local jsdoc not found, installing...")
-    run(["npm", "install", "jsdoc", "--no-save"], cwd=path_root)
+    run(["npm", "install", "jsdoc"], cwd=path_root)
     print("jdsoc installed.")
 run(["jsdoc", "--version"], cwd=path_root)
 
