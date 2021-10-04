@@ -174,8 +174,7 @@ path_root = Path(__file__).parent.parent
 print(f"path_root: {path_root}")
 
 node_modules_bin = f'{path_root}/node_modules/.bin/';
-if not re.search(r"%s" % node_modules_bin, os.environ["PATH"]):
-    os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
+os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
 
 yarn_status, _ = getstatusoutput("yarn")
 if yarn_status != 0:
@@ -190,7 +189,6 @@ if jsdoc_status != 0:
 run(["jsdoc", "--version"], cwd=path_root)
 
 run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
-run(["which", "yarn"], cwd=path_root)
 run(["webpack", "--mode" ,"production"], cwd=path_root)
 sh.copytree(f"{path_root}/lib", "_static/lib")
 
