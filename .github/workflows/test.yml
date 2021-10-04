@@ -79,6 +79,10 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
+      - name: "Build the library"
+        run: |
+          yarn run build:prod
+
       - name: "Run tests"
         run: |
           yarn run test
