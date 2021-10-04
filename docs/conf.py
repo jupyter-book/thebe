@@ -173,7 +173,7 @@ print('*************************** RUNNING CONF.PY ***************************')
 path_root = Path(__file__).parent.parent
 
 node_modules_bin = f'{path_root}/node_modules/.bin/';
-if not re.search(r"\b(?<=\w)%s\b(?!\w)" % node_modules_bin, os.environ["PATH"]):
+if not re.search(r"%s" % node_modules_bin, os.environ["PATH"]):
     os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
 
 yarn_status, _ = getstatusoutput("yarn")
@@ -192,13 +192,13 @@ run(["jsdoc", "--version"], cwd=path_root)
 
 
 
-# on RTD this will trigger the build - Locally when using `make` we will have already
-# run a clean js build
-if not Path("_static/lib").exists():
-    print("Couldn't find local `thebe` build for docs, building now...")
-    run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
-    run(["yarn", "build"], cwd=path_root)
-    sh.copytree(f"{path_root}/lib", "_static/lib")
-    print("Finished building local `thebe` bundle.")
-else:
-    print("Using existing `thebe` build - when building locally using `make html` this will be the latest build")
+# # on RTD this will trigger the build - Locally when using `make` we will have already
+# # run a clean js build
+# if not Path("_static/lib").exists():
+#     print("Couldn't find local `thebe` build for docs, building now...")
+#     run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
+#     run(["yarn", "build:prod"], cwd=path_root)
+#     sh.copytree(f"{path_root}/lib", "_static/lib")
+#     print("Finished building local `thebe` bundle.")
+# else:
+#     print("Using existing `thebe` build - when building locally using `make html` this will be the latest build")
