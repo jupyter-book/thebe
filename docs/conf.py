@@ -190,7 +190,7 @@ if jsdoc_status != 0:
 run(["jsdoc", "--version"], cwd=path_root)
 
 run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
-run(["yarn", "build:prod"], cwd=path_root)
+run(["yarn", "run" ,"build:prod"], cwd=path_root)
 sh.copytree(f"{path_root}/lib", "_static/lib")
 
 # # on RTD this will trigger the build - Locally when using `make` we will have already
