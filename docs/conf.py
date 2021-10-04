@@ -172,7 +172,10 @@ print('*************************** RUNNING CONF.PY ***************************')
 # during development and testing
 path_root = Path(__file__).parent.parent
 
-# local_yarn = Path(f"{path_root}/node_modules/.bin/yarn")
+node_modules_bin = f'{path_root}/node_modules/.bin/';
+if not re.search(r"\b(?<=\w)%s\b(?!\w)" % node_modules_bin, os.environ["PATH"]):
+    os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
+
 yarn_status, _ = getstatusoutput("yarn")
 if yarn_status != 0:
     print("Local yarn not found, installing...")
@@ -180,8 +183,6 @@ if yarn_status != 0:
 print(f'yarn --version:')
 run(["yarn", "--version"], cwd=path_root)
 
-
-# local_jsdoc = Path(f"{path_root}/node_modules/.bin/jsdoc")
 jsdoc_status, _ = getstatusoutput("jsdoc")
 if jsdoc_status != 0:
     print("Local jsdoc not found, installing...")
@@ -189,9 +190,7 @@ if jsdoc_status != 0:
 print(f'jsdoc --version:')
 run(["jsdoc", "--version"], cwd=path_root)
 
-node_modules_bin = f'{path_root}/node_modules/.bin/';
-if not re.search(r"\b(?<=\w)%s\b(?!\w)" % node_modules_bin, os.environ["PATH"]):
-    os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
+
 
 # on RTD this will trigger the build - Locally when using `make` we will have already
 # run a clean js build
