@@ -189,11 +189,9 @@ if jsdoc_status != 0:
     print("jdsoc installed.")
 run(["jsdoc", "--version"], cwd=path_root)
 
-run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
+run(["yarn", "install"], cwd=path_root)
 run(["webpack", "--mode" ,"production"], cwd=path_root)
 sh.copytree(f"{path_root}/lib", "_static/lib")
-
-Popen("jsdoc", cwd=path_root)
 
 
 # # on RTD this will trigger the build - Locally when using `make` we will have already
