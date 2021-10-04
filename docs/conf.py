@@ -158,7 +158,7 @@ epub_exclude_files = ['search.html']
 linkcheck_anchors_ignore = ["/#!"]
 
 # -- Build the latest JS for local preview -----------------------------
-from subprocess import run, getstatusoutput
+from subprocess import run, getstatusoutput, Popen
 from pathlib import Path
 import shutil as sh
 import os
@@ -189,12 +189,12 @@ if jsdoc_status != 0:
     print("jdsoc installed.")
 run(["jsdoc", "--version"], cwd=path_root)
 
-print(getstatusoutput("yarn"))
-print(getstatusoutput("jsdoc"))
-
 run(["yarn", "install", "--frozen-lockfile"], cwd=path_root)
 run(["webpack", "--mode" ,"production"], cwd=path_root)
 sh.copytree(f"{path_root}/lib", "_static/lib")
+
+Popen("jsdoc", cwd=path_root)
+
 
 # # on RTD this will trigger the build - Locally when using `make` we will have already
 # # run a clean js build
