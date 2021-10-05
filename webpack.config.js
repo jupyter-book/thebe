@@ -114,6 +114,8 @@ module.exports = {
       { test: /\.html$/, loader: "file-loader" },
       // jquery-ui loads some images
       { test: /\.(jpg|png|gif)$/, loader: "file-loader" },
+      // for pyodide kernels
+      { test: /\.whl$/, loader: "file-loader" },
       // required to load font-awesome
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,

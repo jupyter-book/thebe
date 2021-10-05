@@ -10,6 +10,7 @@ import { stripPrompts, stripOutputPrompts } from "./utils";
 import * as events from "./events";
 import { KernelStatus } from "./status";
 import { ActivateWidget } from "./activate";
+import { JupyterLiteBackend } from "./jupyterlite";
 
 // make CodeMirror public for loading additional themes
 if (typeof window !== "undefined") {
@@ -52,6 +53,10 @@ export function mountStatusWidget() {
 export function mountActivateWidget() {
   thebelab.activateButton = new ActivateWidget(thebelab);
   thebelab.activateButton.mount();
+}
+
+export function enableJupyterLite() {
+  thebelab.jupyterlite = new JupyterLiteBackend();
 }
 
 /**
