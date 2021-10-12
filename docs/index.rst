@@ -107,6 +107,15 @@ HTML based examples
 
 Source code for these examples can be found in `thebe/examples in the repository.<https://github.com/executablebooks/thebe/tree/master/examples>`_
 
+.. ATTENTION:: Use the latest release of `thebe` on unpkg
+  These examples build a _local_ version of `thebe` in order to show off the latest features.
+  If you'd like to instead load the latest _release_ of Thebe, replace the `<script>` elements with the following:
+
+  ```html
+  <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
+  ```
+
+
 External Examples
 -----------------
 
