@@ -78,6 +78,7 @@ html_theme_options = {
 html_static_path = ["_static"]
 
 # In order to link examples to the local build we need to copy these to a subfolder
+# This allows us to keep our examples in the root of the repo, and re-use them here for docs
 import os
 import shutil as sh
 html_examples_target = "_static/html_examples"
