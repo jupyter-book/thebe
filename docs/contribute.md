@@ -128,7 +128,21 @@ to run auto-formatting prior to each commit.
 
 ## Testing Thebe
 
-You can test manually, interactively by running `yarn run develop` to open and serve `development.html` with the current build of thebe.
+You can test manually, interactively by running `yarn run develop` to open and serve `development.html` with the current build of `thebe`.
+This allows you to develop and test something that you are implementing locally, for example a version of your page where you intend to use the library.
+
+When modifying the `thebe` library manually testing is still required as automated test coverage is limited. Changes to `thebe` can tested for regression in two ways:
+
+1.  via the `html` examples in the `examples/` folder
+2.  via the sphinx documentation in `docs` - see the section on `Building the Docs` below. When testing all `thebe` examples implemented in the documentation should work.
+
+### Testing HTML examples
+
+While most of the html examples can be run as files (`file://`) it's better to serve the examples using a local server where we can expect all to work, this can be done by:
+
+```bash
+  yarn serve:examples
+```
 
 ### Running automated tests
 
@@ -192,6 +206,21 @@ Once you are in the documentation folder:
 make html
 ```
 
+This will also trigger a build of the library and copy this into the `docs/_static/lib` folder for inclusion in the local docs build.
+To update this local build at any time run:
+
+```bash
+make js
+```
+
+or
+
+```bash
+make js-dev
+```
+
+for a development build.
+
 Finally, run the following to view the built documentation locally:
 
 ```bash
@@ -205,8 +234,7 @@ To release thebe, follow the [EBP guidelines](https://executablebooks.org/en/lat
 Once prepared, bump the version with:
 
 1. Use yarn to update the thebe version in the `package.json` file and to
-   create a git tag for the version using `yarn version --new-version
-   NEW_VERSION`, e.g. `yarn version --new-version 0.5.1`
+   create a git tag for the version using `yarn version --new-version NEW_VERSION`, e.g. `yarn version --new-version 0.5.1`
 2. Push the tag to github: `git push --follow-tags`
 3. Create a release for the new tag on github at
    https://github.com/executablebooks/thebe/releases/new; this will trigger a

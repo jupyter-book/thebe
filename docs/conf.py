@@ -182,23 +182,20 @@ print('*************************** RUNNING CONF.PY ***************************')
 path_root = Path(__file__).parent.parent
 
 if os.environ.get('READ_THE_DOCS'):
+    # setup the build environment on RTD
     node_modules_bin = f'{path_root}/node_modules/.bin/';
     os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
     run(["npm", "install", "yarn", "jsdoc"], cwd=path_root)
     run(["yarn", "--version"], cwd=path_root)
     run(["jsdoc", "--version"], cwd=path_root)
+
+if not Path("_static/lib").exists():
+    print("Local `thebe` not found, building...")
     run(["yarn", "install"], cwd=path_root)
     run(["yarn", "build:prod"], cwd=path_root)
-    # run(["webpack", "--mode" ,"production"], cwd=path_root)
     sh.copytree(f"{path_root}/lib", "_static/lib")
-    print("Finished building local `thebe` bundle.")
+    print("Finished building local `thebe` (production) bundle.")
 else:
-    # Locally when using `make` we should already have fresh js build
-    if not Path("_static/lib").exists():
-        print("Couldn't find local `thebe` build for docs, building now...")
-        run(["yarn", "install"], cwd=path_root)
-        run(["webpack", "--mode" ,"production"], cwd=path_root)
-        sh.copytree(f"{path_root}/lib", "_static/lib")
-        print("Finished building local `thebe` bundle.")
-    else:
-        print("Using existing `thebe` build - when building locally using `make html` this will be the latest build")
+    print("Using existing `thebe` build in `_static/lib`")
+    print("To ensure this is the latest build run `make js` or `make js html` to also build the docs")
+    print("To build the latest development bundle locally run `make js-dev` or `make js-dev html` to also build the docs")

@@ -26,21 +26,25 @@ yarn-lock.json: package.json
 
 $(JSDOC): yarn-lock.json
 	# install from yarn-lock
-	yarn install --frozen-lockfile
+	yarn install
 	# refresh mtime
 	test -f $@ && touch $@
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 
-%: Makefile $(JSDOC) js
+%: Makefile $(JSDOC)
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 clean-js:
 	rm -rf _static/lib
 
 js: clean-js
-	cd ..; yarn install --frozen-lockfile; yarn build
+	cd ..; yarn install; yarn build:prod
+	cp -R ../lib _static/lib
+
+js-dev: clean-js
+	cd ..; yarn install; yarn build
 	cp -R ../lib _static/lib
 
 show:
