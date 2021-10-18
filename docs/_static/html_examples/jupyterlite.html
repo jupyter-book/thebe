@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Connect to Jupyterlite</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <script type="text/x-thebe-config">
+      {
+        bootstrap: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        requestKernel: true,
+        jupyterlite: true,
+        kernelOptions: {
+          name: "python3",
+          kernelName: "python3",
+          path: "."
+          serverSettings: {
+            "baseUrl": "http://127.0.0.1:8888",
+            "token": "test-secret"
+          }
+        },
+      }
+    </script>
+    <script src="../lib/index.js"></script>
+    <style>
+      p {
+        margin: 10px 0;
+      }
+      .container {
+        width: 800px;
+        margin: auto;
+        justify-content: start;
+        align-items: start;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Connecting to a Jupyterlite Kernel</h1>
+      <div class="thebe-activate"></div>
+      <div class="thebe-status"></div>
+      <p>This cell will turn into the live cell:</p>
+      <pre data-executable>
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(0,10)
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+    </pre
+      >
+    </div>
+  </body>
+</html>

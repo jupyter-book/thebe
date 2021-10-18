@@ -104,6 +104,7 @@ HTML based examples
 * `Using a local Jupyter server as kernel provider <_static/html_examples/local.html>`_
 * `Setting predefined output for cells <_static/html_examples/demo-preview.html>`_
 * `Example of a custom launch button, loading from unpgk.com <_static/html_examples/demo-launch-button.html>`_
+* `Run thebe using a JupyterLite kernel <_static/html_examples/jupyterlite.html>`
 
 Source code for these examples can be found in `thebe/docs/_static/html_examples folder.<https://github.com/executablebooks/thebe/tree/master/examples>`_
 

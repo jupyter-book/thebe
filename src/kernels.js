@@ -13,6 +13,8 @@ if (typeof window !== "undefined") {
 import { KernelManager, KernelAPI } from "@jupyterlab/services";
 import { ServerConnection } from "@jupyterlab/services";
 
+import { WebSocket } from "mock-socket";
+
 import {
   WIDGET_MIMETYPE,
   WidgetRenderer,
@@ -42,11 +44,22 @@ export function requestKernel(kernelOptions) {
   let serverSettings = ServerConnection.makeSettings(
     kernelOptions.serverSettings
   );
+
   events.trigger("status", {
     status: "starting",
     message: "Starting Kernel",
   });
-  let km = new KernelManager({ serverSettings });
+
+  if (thebelab.jupyterlite) {
+    server = thebelab.jupyterlite.server;
+    serverSettings = {
+      ...serverSettings,
+      WebSocket,
+      fetch: server.fetch.bind(server) ?? undefined,
+    };
+  }
+
+  let km = new KernelManager({ serverSettings, WebSocket });
   return km.ready
     .then(() => {
       return km.startNew(kernelOptions);

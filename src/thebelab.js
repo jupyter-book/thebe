@@ -83,6 +83,9 @@ export function bootstrap(options) {
   if (options.stripOutputPrompts) {
     stripOutputPrompts(options.stripOutputPrompts);
   }
+  if (options.jupyterlite) {
+    enableJupyterLite();
+  }
 
   function getKernel() {
     if (options.binderOptions.repo) {
