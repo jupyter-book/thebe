@@ -1,10 +1,12 @@
-.thebelab-cell {
+.thebelab-cell,
+.thebe-cell {
   border: 2px solid #aaa;
   border-radius: 4px;
   margin-top: 8px;
   margin-bottom: 8px;
 }
-.thebelab-cell:focus-within {
+.thebelab-cell:focus-within,
+.thebelab:focus-within {
   border-color: green;
 }
 
@@ -34,14 +36,16 @@
   display: none;
 }
 
-.thebelab-busy {
+.thebelab-busy,
+.thebe-busy {
   display: inline-block;
   vertical-align: middle;
   padding-left: 2px;
   visibility: hidden;
 }
 
-.thebelab-busy-spinner {
+.thebelab-busy-spinner,
+.thebe-busy-spinner {
   border: 2px solid #f3f3f3; /* Light grey */
   border-top: 2px solid #3498db; /* Blue */
   border-radius: 50%;

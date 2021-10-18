@@ -23,9 +23,8 @@
         // Load the Thebe library
         $.getScript("https://unpkg.com/thebe@latest")
           .done(function (script, textStatus) {
-            console.log(thebelab);
-            thebelab.mountStatusWidget();
-            thebelab.bootstrap();
+            thebe.mountStatusWidget();
+            thebe.bootstrap();
             $("#launch-button").remove();
           })
           .fail(function (jqxhr, settings, exception) {

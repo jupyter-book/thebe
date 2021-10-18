@@ -39,7 +39,7 @@ Create a button to activate thebe:
    </button>
    <script>
    var bootstrapThebe = function() {
-       thebelab.bootstrap();
+       thebe.bootstrap();
    }
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>
@@ -78,7 +78,7 @@ Press the "Activate" button below to connect to a Jupyter server:
    </button>
    <script>
    var bootstrapThebe = function() {
-       thebelab.bootstrap();
+       thebe.bootstrap();
    }
    document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
    </script>

@@ -25,6 +25,7 @@ body {
   margin-top: 8px;
   margin-bottom: 8px;
 }
+.thebe-cell,
 .thebelab-cell {
   width: 50vw;
 }

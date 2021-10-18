@@ -43,7 +43,7 @@ Bootstrap Thebe on the page
 If the Thebe Javascript bundle is loaded, and the configuration file is present,
 you may bootstrap (i.e., launch) Thebe by calling the following Javascript function:
 
-``thebelab.bootstrap()``
+``thebe.bootstrap()``
 
 This will take one or more of the following actions:
 

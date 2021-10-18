@@ -1,73 +1,112 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<!-- Configure and load Thebe !-->
-	<!-- two config sections: first binder, second local
+  <head>
+    <!-- Configure and load Thebe !-->
+    <!-- two config sections: first binder, second local
 	switch which one has type="text/x-thebe-config"
 	to activate it
   -->
-	<title>readonly1</title>
-	<script
-			src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-			integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
-			crossorigin="anonymous"></script>
-	<script type="text/x-thebe-config">
-          {
-            bootstrap: true,
-            binderOptions: {
-              repo: "binder-examples/requirements",
-              codeMirrorConfig: {
-                "theme": "abcdef"
-              },
-            },
-          }
-        
-	</script>
-	<script src="../../../lib/index.js"></script>
-</head>
-<body>
-<div class="container">
-	<pre data-executable="true" data-language="python" class="pre-element" id="case-noconfig">print("Hello!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" id="case-standalone" data-readonly>print("standalone!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" id="case-empty" data-readonly="">print("empty!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" id="case-true" data-readonly="true">print("true!")</pre>
-	<pre data-executable="true" data-language="python" class="pre-element" id="case-false" data-readonly="false">print("false!")</pre>
-</div>
-</body>
-<style>
-	body {
-		margin: 0;
-	}
+    <title>readonly1</title>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/x-thebe-config">
+      {
+        bootstrap: true,
+        binderOptions: {
+          repo: "binder-examples/requirements",
+          codeMirrorConfig: {
+            "theme": "abcdef"
+          },
+        },
+      }
+    </script>
+    <script src="../../../lib/index.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <pre
+        data-executable="true"
+        data-language="python"
+        class="pre-element"
+        id="case-noconfig"
+      >
+print("Hello!")</pre
+      >
+      <pre
+        data-executable="true"
+        data-language="python"
+        class="pre-element"
+        id="case-standalone"
+        data-readonly
+      >
+print("standalone!")</pre
+      >
+      <pre
+        data-executable="true"
+        data-language="python"
+        class="pre-element"
+        id="case-empty"
+        data-readonly=""
+      >
+print("empty!")</pre
+      >
+      <pre
+        data-executable="true"
+        data-language="python"
+        class="pre-element"
+        id="case-true"
+        data-readonly="true"
+      >
+print("true!")</pre
+      >
+      <pre
+        data-executable="true"
+        data-language="python"
+        class="pre-element"
+        id="case-false"
+        data-readonly="false"
+      >
+print("false!")</pre
+      >
+    </div>
+  </body>
+  <style>
+    body {
+      margin: 0;
+    }
 
-	.container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-	}
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-	#activateButton {
-		width: 130px;
-		height: 50px;
-		font-size: 1.25em;
-		border: 1px solid black;
-		border-radius: 5px;
-		background-color: lightblue;
-		text-transform: uppercase;
-	}
+    #activateButton {
+      width: 130px;
+      height: 50px;
+      font-size: 1.25em;
+      border: 1px solid black;
+      border-radius: 5px;
+      background-color: lightblue;
+      text-transform: uppercase;
+    }
 
-	.pre-element {
-		width: 50vw;
-		height: 20vh;
-		border: 2px solid #aaa;
-		border-radius: 4px;
-		margin-top: 8px;
-		margin-bottom: 8px;
-	}
+    .pre-element {
+      width: 50vw;
+      height: 20vh;
+      border: 2px solid #aaa;
+      border-radius: 4px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
 
-	.thebelab-cell {
-		width: 50vw;
-	}
-</style>
+    .thebe-cell {
+      width: 50vw;
+    }
+  </style>
 </html>
