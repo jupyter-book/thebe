@@ -137,7 +137,7 @@ A full config script with defaults:
 
 To see examples of `thebe` in use, check the project documentation on [read the docs](https://thebe.readthedocs.io/en/latest/).
 
-Alternatively,you can also check the HTML based examples included in the in `examples/` folder. To run these either [setup a local development environment](https://thebe.readthedocs.io/en/latest/contribute.html) or replace the `<script>` element in each file with the following:
+Alternatively,you can also check the HTML based examples included in the in `docs/_static/html_examples/` folder. To run these either [setup a local development environment](https://thebe.readthedocs.io/en/latest/contribute.html) or replace the `<script>` element in each file with the following:
 
 ```
 <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>

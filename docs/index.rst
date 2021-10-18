@@ -105,7 +105,7 @@ HTML based examples
 * `Setting predefined output for cells <_static/html_examples/demo-preview.html>`_
 * `Example of a custom launch button, loading from unpgk.com <_static/html_examples/demo-launch-button.html>`_
 
-Source code for these examples can be found in `thebe/examples in the repository.<https://github.com/executablebooks/thebe/tree/master/examples>`_
+Source code for these examples can be found in `thebe/docs/_static/html_examples folder.<https://github.com/executablebooks/thebe/tree/master/examples>`_
 
 .. ATTENTION:: Use the latest release of `thebe` on unpkg
   These examples build a _local_ version of `thebe` in order to show off the latest features.
@@ -115,6 +115,7 @@ Source code for these examples can be found in `thebe/examples in the repository
   <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
   ```
 
+  Serve these examples indepenently by running `yarn serve:examples` in your local development environment.
 
 External Examples
 -----------------
