@@ -33,6 +33,9 @@ const _defaultOptions = {
   mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
   selector: "[data-executable]",
   outputSelector: "[data-output]",
+  button_run: true,
+  button_restart: true,
+  button_restartall: true,
   binderOptions: {
     ref: "master",
     binderUrl: "https://mybinder.org",

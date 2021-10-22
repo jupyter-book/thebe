@@ -75,24 +75,30 @@ export function renderCell(element, options) {
 
   let $cm_element = $("<div class='thebelab-input'>");
   $cell.append($cm_element);
-  $cell.append(
-    $("<button class='thebelab-button thebelab-run-button'>")
-      .text("run")
-      .attr("title", "run this cell")
-      .click(execute)
-  );
-  $cell.append(
-    $("<button class='thebelab-button thebelab-restart-button'>")
-      .text("restart")
-      .attr("title", "restart the kernel")
-      .click(restart)
-  );
-  $cell.append(
-    $("<button class='thebelab-button thebelab-restartall-button'>")
-      .text("restart & run all")
-      .attr("title", "restart the kernel and run all cells")
-      .click(restartAndRunAll)
-  );
+  if (mergedOptions.button_run) {
+      $cell.append(
+        $("<button class='thebelab-button thebelab-run-button'>")
+          .text("run")
+          .attr("title", "run this cell")
+          .click(execute)
+      );
+  }
+  if (mergedOptions.button_restart) {
+    $cell.append(
+      $("<button class='thebelab-button thebelab-restart-button'>")
+        .text("restart")
+        .attr("title", "restart the kernel")
+        .click(restart)
+    );
+  }
+  if (mergedOptions.button_restartall) {
+    $cell.append(
+      $("<button class='thebelab-button thebelab-restartall-button'>")
+        .text("restart & run all")
+        .attr("title", "restart the kernel and run all cells")
+        .click(restartAndRunAll)
+    );
+  }
   $cell.append(
     $("<div class='thebelab-busy'><div class='thebelab-busy-spinner'></div>")
   );
