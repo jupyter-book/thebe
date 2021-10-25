@@ -1,4 +1,22 @@
-#  Changelog
+# Changelog
+
+## 0.8.1 - 2021-08-25
+
+### Fixed
+
+- Fixed import of jupyterlab css which was clobbering on page css in downstream usage.
+  [#464](https://github.com/executablebooks/thebe/issues/464)
+
+### Added
+
+- Added a built in status indicator and activate button that can be enabled via configuration options.
+  [#470](https://github.com/executablebooks/thebe/issues/470)
+
+### Improved
+
+- Latest version of Thebe is built and used in the documentation and in local development builds.
+  [#285](https://github.com/executablebooks/thebe/issues/285)
+- Improved and updated examples in the documentation
 
 ## 0.8.0 - 2021-08-16
 
@@ -35,6 +53,7 @@
 ## 0.6.0 - 2020-12-23
 
 ### Added
+
 - New versions of thebe (>=0.5.1) should be loaded from
   https://unpkg.com/thebe@latest/lib/index.js instead of
   https://unpkg.com/thebelab@latest/lib/index.js
@@ -49,6 +68,7 @@
 - Add CSS with Jupyter ANSI colors [#176](https://github.com/executablebooks/thebe/pull/176)
 
 ### Improved
+
 - Adds more user options for persisting saved Binder sessions [#280](https://github.com/executablebooks/thebe/pull/280)
 - Updated the development HTML page for more test code cells and configs [#267](https://github.com/executablebooks/thebe/pull/267)
 - Fail linter on diffs [#258](https://github.com/executablebooks/thebe/pull/258)
@@ -57,10 +77,12 @@
 - Update Thebe to use the latest JupyterLab 3.0 APIs [#268](https://github.com/executablebooks/thebe/pull/268)
 
 ### Fixed
+
 - Fix Python mode in CodeMirror configuration [#172](https://github.com/executablebooks/thebe/pull/172)
 - Use merged options in CodeMirror configuration [#171](https://github.com/executablebooks/thebe/pull/171)
 
 ### Documented
+
 - Moved example pages into their own subdirectory [#281](https://github.com/executablebooks/thebe/pull/281)
 - Added example pages for using Thebe with other Jupyter widgets
   - Bqplot [#295](https://github.com/executablebooks/thebe/pull/295), [#301](https://github.com/executablebooks/thebe/pull/301)
