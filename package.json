@@ -7,10 +7,11 @@
     "build": "webpack --mode development --progress",
     "build:prod": "webpack --mode production",
     "build:watch": "webpack --mode development --progress --color --watch",
-    "prepare": "yarn run build:prod",
-    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js examples/**/*.js test/*.js",
+    "prePublishOnly": "NODE_PREPUBLISH=true yarn run build:prod",
+    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js test/*.js",
     "serve": "http-server -c-1 -a 127.0.0.1 -o development/binder.html",
     "serve:local": "http-server -c-1 -a 127.0.0.1 -o development/local.html",
+    "serve:examples": "http-server -c-1 -a 127.0.0.1 -o docs/_static/html_examples/index.html",
     "develop": "concurrently \"yarn run build:watch\" \"yarn run serve\"",
     "develop:local": "concurrently \"yarn run build:watch\" \"yarn run serve:local\"",
     "test": "jest",
@@ -71,6 +72,7 @@
     "jest-puppeteer": "^4.4.0",
     "jquery": "^3.5.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
+    "ncp": "^2.0.0",
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
     "puppeteer": ">=1.5.0",
@@ -80,5 +82,6 @@
     "webpack": "^4.0",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.1.0"
-  }
+  },
+  "dependencies": {}
 }

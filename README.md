@@ -1,20 +1,24 @@
 # Thebe: turn static HTML pages into live documents
+
 ![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
+[![Documentation Status](https://readthedocs.org/projects/thebe/badge/?version=latest)](https://thebe.readthedocs.io/en/latest/?badge=latest)
 
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
+
 - A brief header in the HTML page
 - The Thebe javascript library (which can be fetched from the web)
 - A computing backend (typically [binder](https://mybinder.org))
 
 ![Demo](docs/_static/demo.png)
 
-Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base. 
+Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base.
 
 See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more information. See also this [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
 ## How Thebe works
 
 Starting Thebe involves the following steps:
+
 - Loading the thebe javascript, typically [from a CDN](https://unpkg.com/thebe);
 - Fetching the Thebe configuration from the page header;
 - Bootstrapping Thebe:
@@ -40,12 +44,12 @@ with a javascript object containing configuration options.
 
 ```html
 <script type="text/x-thebe-config">
-{
-  binderOptions: {
-    repo: "minrk/ligo-binder",
-    ref: "master",
+  {
+    binderOptions: {
+      repo: "minrk/ligo-binder",
+      ref: "master",
+    }
   }
-}
 </script>
 ```
 
@@ -127,6 +131,16 @@ A full config script with defaults:
   // Additional options to pass to CodeMirror instances
   codeMirrorConfig: {},
 }
+```
+
+### Examples
+
+To see examples of `thebe` in use, check the project documentation on [read the docs](https://thebe.readthedocs.io/en/latest/).
+
+Alternatively,you can also check the HTML based examples included in the in `docs/_static/html_examples/` folder. To run these either [setup a local development environment](https://thebe.readthedocs.io/en/latest/contribute.html) or replace the `<script>` element in each file with the following:
+
+```
+<script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
 ```
 
 ## Contribute to `thebe`

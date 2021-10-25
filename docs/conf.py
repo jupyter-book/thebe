@@ -75,7 +75,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static", "../examples"]
+html_static_path = ["_static"]
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -156,3 +156,34 @@ epub_exclude_files = ['search.html']
 
 # -- Linkcheck options ------------------
 linkcheck_anchors_ignore = ["/#!"]
+
+# -- Build the latest JS for local preview -----------------------------
+from subprocess import run
+from pathlib import Path
+import os
+import shutil as sh
+
+# -- Run JS Build if needed ------------------------
+# Note: this will be a one off run on RTD but may be run mulitple times locally
+# during development and testing
+
+path_root = Path(__file__).parent.parent
+
+if os.environ.get('READ_THE_DOCS'):
+    # setup the build environment on RTD
+    node_modules_bin = f'{path_root}/node_modules/.bin/';
+    os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
+    run(["npm", "install", "yarn", "jsdoc"], cwd=path_root)
+    run(["yarn", "--version"], cwd=path_root)
+    run(["jsdoc", "--version"], cwd=path_root)
+
+if not Path("_static/lib").exists():
+    print("Local `thebe` not found, building...")
+    run(["yarn", "install"], cwd=path_root)
+    run(["yarn", "build:prod"], cwd=path_root)
+    sh.copytree(f"{path_root}/lib", "_static/lib")
+    print("Finished building local `thebe` (production) bundle.")
+else:
+    print("Using existing `thebe` build in `_static/lib`")
+    print("To ensure this is the latest build run `make js` or `make js html` to also build the docs")
+    print("To build the latest development bundle locally run `make js-dev` or `make js-dev html` to also build the docs")

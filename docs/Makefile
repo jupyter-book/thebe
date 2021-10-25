@@ -14,7 +14,7 @@ PATH 		 := node_modules/.bin:$(PATH)
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+.PHONY: js help Makefile
 
 package.json:
 	yarn ls
@@ -26,7 +26,7 @@ yarn-lock.json: package.json
 
 $(JSDOC): yarn-lock.json
 	# install from yarn-lock
-	yarn install --frozen-lockfile
+	yarn install
 	# refresh mtime
 	test -f $@ && touch $@
 
@@ -35,6 +35,17 @@ $(JSDOC): yarn-lock.json
 
 %: Makefile $(JSDOC)
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+clean-js:
+	rm -rf _static/lib
+
+js: clean-js
+	cd ..; yarn install; yarn build:prod
+	cp -R ../lib _static/lib
+
+js-dev: clean-js
+	cd ..; yarn install; yarn build
+	cp -R ../lib _static/lib
 
 show:
 	@python -c "import webbrowser; webbrowser.open_new_tab('file://$(PWD)/_build/html/index.html')"

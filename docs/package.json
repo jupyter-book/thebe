@@ -9,6 +9,7 @@
   "author": "",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "jsdoc": "^3.6.5"
-  }
+    "jsdoc": "^3.6.7"
+  },
+  "dependencies": {}
 }
