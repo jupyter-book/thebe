@@ -69,7 +69,7 @@ Press the "Activate" button below to connect to a Jupyter server:
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
 
-   <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
+   <button id="activateButton" style="width: 120px; height: 45px; font-size: 1.5em;">
      Activate
    </button>
    <script>

@@ -47,7 +47,6 @@ Adding the following to a page will render both Activate and Status widgets.
 
 .. code-block:: html
 
-  <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
   <script type="text/x-thebe-config">
     {
       requestKernel: true,
@@ -60,13 +59,13 @@ Adding the following to a page will render both Activate and Status widgets.
   </script>
   <div class="thebe-activate" />
   <div class="thebe-status" />
+  <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
 Pressing activate will convert the following code into an activate cell, and the kernel status widget
 will show status of the kernel launch.
 
 .. raw:: html
 
-  <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
   <script type="text/x-thebe-config">
     {
       requestKernel: true,
@@ -79,6 +78,7 @@ will show status of the kernel launch.
   </script>
   <div class="thebe-activate"></div>
   <div class="thebe-status"></div>
+  <script src="./_static/lib/index.js"></script>
 
 
 .. raw:: html
