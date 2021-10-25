@@ -78,7 +78,7 @@ Press the "Activate" button below to connect to a Jupyter server:
 
 .. raw:: html
 
-   <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">
+   <button id="activateButton" style="width: 120px; height: 45px; font-size: 1.5em;">
      Activate
    </button>
    <script>

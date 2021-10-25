@@ -78,7 +78,7 @@ code below:
 
 .. code:: html
 
-   <button id="activateButton"  style="width: 150px; height: 75px; font-size: 1.5em;">Activate</button>
+   <button id="activateButton"  style="width: 150px; height: 45px; font-size: 1.5em;">Activate</button>
    <script>
    var bootstrapThebe = function() {
        thebelab.bootstrap();

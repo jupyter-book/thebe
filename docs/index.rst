@@ -96,10 +96,9 @@ HTML based examples
 -------------------
 
 * `Built in status field and styling <_static/html_examples/demo-status-widget.html>`_
-* `Build in activate button <_static/html_examples/demo-activate-button.html>`_
+* `Built in activate button <_static/html_examples/demo-activate-button.html>`_
 * `Step-by-step demo <_static/html_examples/demo.html>`_
 * `Making use of Jupyter interactive widgets <_static/html_examples/widgets.html>`_
-* `Activate/Status button <_static/html_examples/activate_button.html>`_
 * `Alternative computational environments; code cells with prompts and outputs <_static/html_examples/prompts.html>`_
 * `Using a local Jupyter server as kernel provider <_static/html_examples/local.html>`_
 * `Setting predefined output for cells <_static/html_examples/demo-preview.html>`_
