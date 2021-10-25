@@ -133,7 +133,7 @@ This allows you to develop and test something that you are implementing locally,
 
 When modifying the `thebe` library manually testing is still required as automated test coverage is limited. Changes to `thebe` can tested for regression in two ways:
 
-1.  via the `html` examples in the `examples/` folder
+1.  via the `html` examples in the `docs/_static/html_examples/` folder
 2.  via the sphinx documentation in `docs` - see the section on `Building the Docs` below. When testing all `thebe` examples implemented in the documentation should work.
 
 ### Testing HTML examples
