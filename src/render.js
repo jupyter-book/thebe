@@ -40,8 +40,25 @@ function getRenderers(options) {
   return _renderers;
 }
 
-// rendering cells
-
+/**
+ * Function to render (initialize) an executable thebe cell.
+ * When called with a jquery element, this function will:
+ *
+ * - Replace that element, with a thebe-cell
+ * - Insert an output element immedately after the call with an attached OutputAreaModel
+ * - Render Run, Run All & Restart buttons
+ * - Attach a CodeMirror Instance
+ * - Return the new element and closed over functions for execution
+ *
+ * @param {Object} element - a jquery element containing the source code for the cell.
+ * Typically this is a ``<pre>`` tag, a tag with ``<div data-executable="true" />`` or any element
+ * decorated in line with the ``options.selector`` option.
+ * @param {Object} options - thebe options to apply
+ * @returns {object} ``reference`` - The cell reference information object
+ * @returns {object} ``reference.cell`` - The jquery element for the cell
+ * @returns {function} ``reference.execute`` - The function to execute the contents of this cell
+ * @returns {function} ``reference.setOutputText`` - A function to render a text stream to the cell OutputArea
+ */
 export function renderCell(element, options) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
@@ -278,6 +295,15 @@ export function renderCell(element, options) {
   return { cell: $cell, execute, setOutputText };
 }
 
+/**
+ * Find all elements on the page that conform to the css selector provided and
+ * render these as thebe cells.
+ *
+ * @param {Object} options - partial options object
+ * @param {string} options.selector - css selector used to find code cells. By default ``_defaultOptions.selector``
+ * @param {*} kernelPromise unused
+ * @returns {object[]} an array of cell reference objects. See ``renderCell`` return object
+ */
 export function renderAllCells(
   { selector = _defaultOptions.selector } = {},
   kernelPromise

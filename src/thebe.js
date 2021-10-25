@@ -44,20 +44,50 @@ export * from "./kernels";
 export * from "./options";
 export * from "./events";
 
+/**
+ * Mount the built-in Status Widget to DOM on a root element expected to
+ * already be on page.
+ *
+ * If the ``mountStatusWidget`` option is ``true`` when ``bootstrap()``
+ * is called the widget will be mounted automatically
+ *
+ * @example
+ * <div class="thebe-status" />
+ * <script>
+ *  thebelab.mountStatusWidget();
+ * </script>
+ *
+ * @returns {undefined}
+ */
 export function mountStatusWidget() {
   thebe.kernelStatus = new KernelStatus(thebe);
   thebe.kernelStatus.mount();
 }
 
+/**
+ * Mount the built-in Activate Button to DOM on a root element expected to
+ * already be on page.
+ *
+ * If the ``mountActivateWidget`` option is ``true`` when ``bootstrap()``
+ * is called the widget will be mounted automatically
+ *
+ * @example
+ * <div class="thebe-activate" />
+ * <script>
+ *  thebelab.mountActivateWidget();
+ * </script>
+ *
+ * @returns {undefined}
+ */
 export function mountActivateWidget() {
   thebe.activateButton = new ActivateWidget(thebe);
   thebe.activateButton.mount();
 }
 
 /**
- * Bootstrap the library based on the configuration given.
+ * Bootstrap the library based on the configuration provided.
  *
- * If bootstrap === true in the configuration and the library is loaded statically
+ * If ``bootstrap === true`` in the configuration and the library is loaded statically
  * then this function will be called automatically on the document load event.
  *
  * @param {Object} options Object containing thebe options.
