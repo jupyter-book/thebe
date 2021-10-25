@@ -213,19 +213,19 @@ To update this local build at any time run:
 make js
 ```
 
-or
-
-```bash
-make js-dev
-```
-
-for a development build.
-
 Finally, run the following to view the built documentation locally:
 
 ```bash
 make show
 ```
+
+Additionally, you can run:
+
+```bash
+make js-dev
+```
+
+at any time to produce for a development build of the library. Development builds enable useful names for modules and remove production optimizations, which can be helpful when debugging.
 
 ## Releasing Thebe
 
