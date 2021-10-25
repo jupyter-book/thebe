@@ -1,13 +1,32 @@
 =========
-thebe API
+Thebe API
 =========
 
-The thebe JavaScript API
+When adding Thebe to a page one only needs to know about the bootstrap process and option object.
+By configuring the options you can already manipulate
+
+.. js:autofunction:: thebelab.bootstrap
+
+Configuration Options
+---------------------
+
+.. js:autoclass:: Options
+    :members:
+    :exclude-members: Options
 
 .. note::
 
-    This document is a work in progress.
-    We need to add jsdoc-style docstrings to our exported functions.
+    Above we document the javascript Thebe Options class which provides the default options for Thebe
+    and is a good reference for all current options.
 
+    In typical usage, we add any desired options as an object literal in a script tag on our page,
+    see :doc:`./configure`. for details. Option specified on page will be override the defaults
+    listed above.
 
-.. js:autofunction:: thebe.bootstrap
+High Level JQuery API
+---------------------
+
+.. js:autofunction:: ./render.renderCell
+.. js:autofunction:: ./render.renderAllCells
+.. js:autofunction:: thebelab.mountActivateWidget
+.. js:autofunction:: thebelab.mountStatusWidget
