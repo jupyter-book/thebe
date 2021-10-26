@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.8.1 - 2021-08-25
+## 0.8.2 - 2021-10-26
+
+### Fixed
+
+- Fixed broken distribution on `npm`/`unpkg.com` for last release.
+  [#509](https://github.com/executablebooks/thebe/issues/509)
+
+## 0.8.1 - 2021-10-25
 
 ### Fixed
 
@@ -17,6 +24,7 @@
 - Latest version of Thebe is built and used in the documentation and in local development builds.
   [#285](https://github.com/executablebooks/thebe/issues/285)
 - Improved and updated examples in the documentation
+- `yarn install` no longer builds the library automatically, `yarn build` or `yarn build:prod` should be called explicitly.
 
 ## 0.8.0 - 2021-08-16
 
