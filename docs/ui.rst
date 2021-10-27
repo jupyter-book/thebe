@@ -11,6 +11,7 @@ Built in UI elements are:
 
 - Activate Button
 - Kernel Status Widget
+- Cell Buttons (for every cell): Run, Restart and Restart All
 
 Activate Button
 ===============
@@ -39,6 +40,12 @@ Add a :code:`div` element to the page in the desired location.
   <div class="thebe-status" />
 
 Then set the following option to :code:`mountStatusWidget:true` in the Thebe config object
+
+Cell Buttons
+=============
+
+The buttons are optional. By default, all buttons are mounted. To remove a button set its respective option to :code:`false`.
+The options are :code:`mountRunButton`, :code:`mountRestartButton`, :code:`mountRestartallButton`.
 
 Example
 =======
