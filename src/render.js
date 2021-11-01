@@ -75,7 +75,7 @@ export function renderCell(element, options) {
 
   let $cm_element = $("<div class='thebelab-input'>");
   $cell.append($cm_element);
-  if (mergedOptions.MountRunButton) {
+  if (mergedOptions.mountRunButton) {
     $cell.append(
       $("<button class='thebelab-button thebelab-run-button'>")
         .text("run")
@@ -83,7 +83,7 @@ export function renderCell(element, options) {
         .click(execute)
     );
   }
-  if (mergedOptions.MountRestartButton) {
+  if (mergedOptions.mountRestartButton) {
     $cell.append(
       $("<button class='thebelab-button thebelab-restart-button'>")
         .text("restart")
@@ -91,7 +91,7 @@ export function renderCell(element, options) {
         .click(restart)
     );
   }
-  if (mergedOptions.MountRestartallButton) {
+  if (mergedOptions.mountRestartallButton) {
     $cell.append(
       $("<button class='thebelab-button thebelab-restartall-button'>")
         .text("restart & run all")
