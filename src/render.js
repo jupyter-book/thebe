@@ -1,6 +1,7 @@
 import $ from "jquery";
 import CodeMirror from "codemirror/lib/codemirror";
 import "codemirror/lib/codemirror.css";
+import "codemirror/addon/hint/show-hint";
 
 import { mergeOptions } from "./options";
 import * as events from "./events";
@@ -134,14 +135,28 @@ export function renderCell(element, options) {
     });
   }
 
-  function execute() {
-    let kernel = $cell.data("kernel");
-    let code = cm.getValue();
+  function clearOnError(error) {
+    outputArea.model.clear();
+    outputArea.model.add({
+      output_type: "stream",
+      name: "stderr",
+      text: `Failed to execute. ${error} Please refresh the page.`,
+    });
+    $cell.find("div.thebelab-busy").css("visibility", "hidden");
+  }
+
+  function getKernel() {
+    const kernel = $cell.data("kernel");
     if (!kernel) {
       console.debug("No kernel connected");
       setOutputText();
       events.trigger("request-kernel");
     }
+  }
+
+  function execute() {
+    getKernel();
+    let code = cm.getValue();
     kernelPromise.then((kernel) => {
       try {
         $cell.find(".thebelab-busy").css("visibility", "visible");
@@ -150,13 +165,7 @@ export function renderCell(element, options) {
           $cell.find(".thebelab-busy").css("visibility", "hidden");
         });
       } catch (error) {
-        outputArea.model.clear();
-        outputArea.model.add({
-          output_type: "stream",
-          name: "stderr",
-          text: `Failed to execute. ${error} Please refresh the page.`,
-        });
-        $cell.find("div.thebelab-busy").css("visibility", "hidden");
+        clearOnError(error);
       }
     });
     return false;
@@ -185,6 +194,38 @@ export function renderCell(element, options) {
     });
   }
 
+  function codeCompletion() {
+    getKernel();
+    let code = cm.getValue();
+    const cursor = cm.getDoc().getCursor();
+    kernelPromise.then((kernel) => {
+      try {
+        kernel
+          .requestComplete({
+            code: code,
+            cursor_pos: cm.getDoc().indexFromPos(cursor),
+          })
+          .then((value) => {
+            const from = cm.getDoc().posFromIndex(value.content.cursor_start);
+            const to = cm.getDoc().posFromIndex(value.content.cursor_end);
+            cm.showHint({
+              container: $cell[0],
+              hint: () => {
+                return {
+                  from: from,
+                  to: to,
+                  list: value.content.matches,
+                };
+              },
+            });
+          });
+      } catch (error) {
+        clearOnError(error);
+      }
+    });
+    return false;
+  }
+
   let theDiv = document.createElement("div");
   $cell.append(theDiv);
   Widget.attach(outputArea, theDiv);
@@ -196,6 +237,7 @@ export function renderCell(element, options) {
     mode: mode,
     extraKeys: {
       "Shift-Enter": execute,
+      "Ctrl-Space": codeCompletion,
     },
   };
   if (isReadOnly !== undefined) {
