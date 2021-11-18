@@ -61,7 +61,7 @@ If you are using `npm` v7 you may encounter **Peer Dependency Errors** see comme
 Using `yarn install` will ensure that you install the latest tested dependencies, and will not make any unintentional local upgrades. `yarn` uses `npm` under the hood, please do not use `npm install` directly to install dependencies.
 ```
 
-#### Peer Dependency Errors
+### Peer Dependency Errors
 
 Due to recent changes in `npm` as of v7 peer dependency issues are flagged as critical errors. However, many projects have not yet resolved these issues in their code base, this means that a project's co-dependencies can prevent installation of a package. This is a know issue, to resolve this there are two options:
 

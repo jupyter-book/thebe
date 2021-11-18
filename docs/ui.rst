@@ -13,6 +13,21 @@ Built in UI elements are:
 - Kernel Status Widget
 - Cell Buttons (for every cell): Run, Restart and Restart All
 
+Cell Buttons
+=============
+
+When Thebe is activated, all `<pre>data-executable="true"</pre>` will be converted to code cells and control buttons are rendered by default.
+The buttons are optional, to remove a button, set its respective option to :code:`false`.
+The options are :code:`mountRunButton`, :code:`mountRestartButton`, :code:`mountRestartallButton`.
+
+Keyboard Shortcuts
+==================
+
+The following Keyboard shortcuts are active in code cells:
+
+* `Shift+Enter` - will execute the Cell
+* `Ctrl+Space` - will provide a code completion hint at the cursor
+
 Activate Button
 ===============
 
@@ -40,12 +55,6 @@ Add a :code:`div` element to the page in the desired location.
   <div class="thebe-status" />
 
 Then set the following option to :code:`mountStatusWidget:true` in the Thebe config object
-
-Cell Buttons
-=============
-
-The buttons are optional. By default, all buttons are mounted. To remove a button set its respective option to :code:`false`.
-The options are :code:`mountRunButton`, :code:`mountRestartButton`, :code:`mountRestartallButton`.
 
 Example
 =======
