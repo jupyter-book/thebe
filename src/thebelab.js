@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
   window.CodeMirror = CodeMirror;
 }
 
-import "@jupyterlab/theme-light-extension/style/index.css";
+import "@jupyterlab/theme-light-extension/style/theme.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
 import "@lumino/widgets/style/index.css";
 import "@jupyterlab/apputils/style/base.css";
