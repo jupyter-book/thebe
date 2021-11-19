@@ -45,13 +45,13 @@ export * from "./options";
 export * from "./events";
 
 export function mountStatusWidget() {
-  thebelab.kernelStatus = new KernelStatus(thebelab);
-  thebelab.kernelStatus.mount();
+  thebe.kernelStatus = new KernelStatus(thebe);
+  thebe.kernelStatus.mount();
 }
 
 export function mountActivateWidget() {
-  thebelab.activateButton = new ActivateWidget(thebelab);
-  thebelab.activateButton.mount();
+  thebe.activateButton = new ActivateWidget(thebe);
+  thebe.activateButton.mount();
 }
 
 /**
@@ -101,7 +101,7 @@ export function bootstrap(options) {
     });
   }
 
-  // bootstrap thebelab on the page
+  // bootstrap thebe on the page
   const cells = renderAllCells({
     selector: options.selector,
   });
@@ -114,6 +114,6 @@ export function bootstrap(options) {
 
     hookupKernel(kernel, cells, manager);
   });
-  if (window.thebelab) window.thebelab.cells = cells;
+  if (window.thebe) window.thebe.cells = cells;
   return kernelPromise;
 }

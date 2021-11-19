@@ -14,8 +14,8 @@ describe("Initialization check", () => {
   });
   test("should have CodeMirror initalized", async () => {
     const text = await page.evaluate(() => document.body.innerHTML);
-    // console.log(text);
-    expect(text).toContain('class="thebelab-cell"');
+    expect(text).toContain("thebe-cell");
+    expect(text).toContain("thebelab-cell");
   });
 });
 

@@ -23,12 +23,12 @@ simulates a click on the button.
 
 .. code-block:: javascript
 
-   thebelab.events.on("request-kernel")(() => {
+   thebe.events.on("request-kernel")(() => {
        // Find any cells with an initialization tag and ask Thebe to run them when ready
-       var thebeInitCells = document.querySelectorAll('.thebelab-init');
+       var thebeInitCells = document.querySelectorAll('.thebe-init');
        thebeInitCells.forEach((cell) => {
            console.log("Initializing Thebe with cell: " + cell.id);
-           const initButton = cell.querySelector('.thebelab-run-button');
+           const initButton = cell.querySelector('.thebe-run-button');
            initButton.click();
        });
    });
@@ -43,7 +43,7 @@ once it is ready.
 
 .. code-block:: javascript
 
-   thebelab.events.on("request-kernel")((kernel) => {
+   thebe.events.on("request-kernel")((kernel) => {
        // Find any cells with an initialization tag and ask Thebe to run them when ready
        kernel.requestExecute({code: "import numpy"})
    });

@@ -1,22 +1,22 @@
-import * as thebelab from "./thebelab";
-export * from "./thebelab";
+import * as thebe from "./thebe";
+export * from "./thebe";
 export * from "./utils";
 import $ from "jquery";
 
 if (typeof window !== "undefined") {
-  window.thebelab = thebelab;
-  window.thebelab.$ = $;
+  window.thebelab = window.thebe = thebe;
+  window.thebelab.$ = window.thebe.$ = $;
 
   document.addEventListener("DOMContentLoaded", () => {
-    const options = thebelab.mergeOptions();
+    const options = thebe.mergeOptions();
     if (options.mountStatusWidget) {
-      thebelab.mountStatusWidget();
+      thebe.mountStatusWidget();
     }
     if (options.mountActivateWidget) {
-      thebelab.mountActivateWidget();
+      thebe.mountActivateWidget();
     }
     if (options["bootstrap"]) {
-      thebelab.bootstrap();
+      thebe.bootstrap();
     }
   });
 }

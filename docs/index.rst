@@ -68,6 +68,10 @@ Getting Started
 
 To get started, check out :doc:`start`.
 
+.. admonition:: References to `thebelab` will be removed in version 0.9.0
+  :class: warning
+
+  As part of the library migration to an executable books project (`#230 <https://github.com/executablebooks/thebe/issues/230>`_), `thebe` has been added as an alias for `thebelab` and all css classes beginning with `thebelab-` duplicated as `thebe-`. The `thebelab` global object, exposed functions and user code reliant on css classes `thebelab-*`, will continue to work and any DOM elements created during operation will be decorated with `thebelab-` classes as expected, until removed in version 0.9.0.
 
 .. _more_examples:
 
@@ -83,6 +87,7 @@ see how Thebe is used.
    :maxdepth: 1
 
    examples/minimal_example
+   examples/custom_activate_button
    examples/bqplot_example
    examples/ipyleaflet_example
    examples/ipympl_example
@@ -90,6 +95,7 @@ see how Thebe is used.
    examples/ipycytoscape_example
    examples/pythreejs-example
    examples/matplotlib_interact_example
+
 
 
 HTML based examples
@@ -104,17 +110,19 @@ HTML based examples
 * `Setting predefined output for cells <_static/html_examples/demo-preview.html>`_
 * `Example of a custom launch button, loading from unpgk.com <_static/html_examples/demo-launch-button.html>`_
 
-Source code for these examples can be found in `thebe/docs/_static/html_examples folder. <https://github.com/executablebooks/thebe/tree/master/examples>`_
+Source code for these examples can be found in `thebe/docs/_static/html_examples folder <https://github.com/executablebooks/thebe/tree/master/examples>`_
 
-.. ATTENTION:: Use the latest release of `thebe` on unpkg
-  These examples build a _local_ version of `thebe` in order to show off the latest features.
+.. IMPORTANT::
+  All examples build a _local_ version of `thebe` in order to show off the latest features.
   If you'd like to instead load the latest _release_ of Thebe, replace the `<script>` elements with the following:
 
   ```html
   <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
   ```
 
-  Serve these examples indepenently by running `yarn serve:examples` in your local development environment.
+.. IMPORTANT::
+
+  Serve the HTML examples indepenently by running `yarn serve:examples` in your local development environment.
 
 External Examples
 -----------------

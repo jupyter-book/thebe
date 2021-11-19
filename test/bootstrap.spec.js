@@ -1,4 +1,4 @@
-import * as thebelab from "../src/thebelab";
+import * as thebe from "../src/thebe";
 
 /**
  * Test the bootstrapping process
@@ -9,17 +9,17 @@ describe("bootstrap", () => {
   });
   it("calls pre-render hook", () => {
     const spy = jest.fn();
-    thebelab.bootstrap({ preRenderHook: spy }); // don't wait for kernel
+    thebe.bootstrap({ preRenderHook: spy }); // don't wait for kernel
     expect(spy).toHaveBeenCalledTimes(1);
   });
   it.skip("calls strip prompts, when specified in options", () => {
     const spy = jest.spyOn(thebelab, "stripPrompts");
 
-    thebelab.bootstrap();
-    expect(thebelab.stripPrompts).not.toHaveBeenCalled();
+    thebe.bootstrap();
+    expect(thebe.stripPrompts).not.toHaveBeenCalled();
 
-    thebelab.bootstrap({ stripPrompts: true });
-    expect(thebelab.stripPrompts).toHaveBeenCalled(1);
+    thebe.bootstrap({ stripPrompts: true });
+    expect(thebe.stripPrompts).toHaveBeenCalled(1);
 
     spy.mockRestore();
   });

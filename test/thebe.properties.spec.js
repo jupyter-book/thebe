@@ -1,7 +1,8 @@
 import * as thebe from "../src";
 
 describe("properties", () => {
-  it("thebelab  is on window", () => {
+  it("thebe  is on window", () => {
+    expect(window.thebe).toBeDefined();
     expect(window.thebelab).toBeDefined();
   });
   it("should define events", () => {

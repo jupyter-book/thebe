@@ -31,7 +31,7 @@ The following Keyboard shortcuts are active in code cells:
 Activate Button
 ===============
 
-When this button is pressed, it will run the `thebelab.bootstrap` function on the page.
+When this button is pressed, it will run the `thebe.bootstrap` function on the page.
 Configure this UI element as follows.
 
 Add a ``div`` element to the page in the desired location.

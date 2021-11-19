@@ -12,7 +12,7 @@ describe("rendering cells via bootstrap", () => {
     const p = thebe.bootstrap(); // don't wait for kernel
     expect(p.then).toBeDefined();
 
-    const cells = document.body.getElementsByClassName("thebelab-input");
+    const cells = document.body.getElementsByClassName("thebe-input");
     expect(cells.length).toEqual(1);
   });
   it("cell rendering (selector)", () => {
@@ -21,7 +21,7 @@ describe("rendering cells via bootstrap", () => {
     const p = thebe.bootstrap({ selector: ".mycode" }); // don't wait for kernel
     expect(p.then).toBeDefined();
 
-    const cells = document.body.getElementsByClassName("thebelab-input");
+    const cells = document.body.getElementsByClassName("thebe-input");
     expect(cells.length).toEqual(1);
   });
   it("output preview rendering (default)", () => {
