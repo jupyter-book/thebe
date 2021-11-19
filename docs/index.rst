@@ -68,13 +68,10 @@ Getting Started
 
 To get started, check out :doc:`start`.
 
-.. DANGER::
-
-  References to `thebelab` will be removed in version 0.9.0.
+.. admonition:: References to `thebelab` will be removed in version 0.9.0
+  :class: warning
 
   As part of the library migration to an executable books project (`#230 <https://github.com/executablebooks/thebe/issues/230>`_), `thebe` has been added as an alias for `thebelab` and all css classes beginning with `thebelab-` duplicated as `thebe-`. The `thebelab` global object, exposed functions and user code reliant on css classes `thebelab-*`, will continue to work and any DOM elements created during operation will be decorated with `thebelab-` classes as expected, until removed in version 0.9.0.
-
-  Please migrate existing code to use the new `thebe` object and `thebe-*` css classes.
 
 .. _more_examples:
 

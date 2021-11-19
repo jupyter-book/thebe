@@ -67,9 +67,17 @@ Next, we'll load Thebe from a CDN:
 Adding a Thebe UI widgets to your page
 ======================================
 
-When the configuration options are set ot mount and activate button and status field you need
-to include mount points in your page which will be used to place the widgets. We can do this by
-adding the following `div` elements.
+When the configuration options are set to mount the activate button and status field, you will need
+to include mount points in your page which will be used to place the widgets.
+
+We can do this by adding the following `div` elements:
+
+.. code:: html
+
+   <div class="thebe-activate"></div>
+   <div class="thebe-status"></div>
+
+The following UI widgets are then mounted on the page.
 
 .. raw:: html
 
@@ -81,14 +89,7 @@ adding the following `div` elements.
    <div class="thebe-activate"></div>
    <div class="thebe-status"></div>
 
-
-Placing the button and adding the JavaScript to enable Thebe was done with the
-code below:
-
-.. code:: html
-
-   <div class="thebe-activate""></div>
-   <div class="thebe-status"></div>
+These widgets are minimally styled, but can be modified by overrriding or extending the following classes; `thebe-status`, `thebe-status-mounted`, `thebe-status-stub`, `thebe-status-field`, `thebe-status-message`, `thebe-status-building`, `thebe-status-launching`, `thebe-status-starting`, `thebe-status-ready`, `thebe-status-failed`, `thebe-status-busy`.
 
 Adding code cells
 =================

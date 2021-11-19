@@ -5,7 +5,7 @@ Custom activate button
 ======================
 
 There are many ways you can activate Thebe. In this case, we'll add a
-custom button to our page, instead of using the built in UI widgets and
+custom button to our page (instead of using the built in UI widgets) and
 configure it to **bootstrap** Thebe once it is clicked.
 
 As before we setup Thebe with a basic configuration.
