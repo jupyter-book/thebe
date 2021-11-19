@@ -15,6 +15,12 @@ Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a 
 
 See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more information. See also this [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
+**Deprecation Notice**
+
+> `thebe` has been added as an alias for `thebelab` and all css classes beginning with `thebelab-` duplicated as `thebe-` (as of 0.8.3).
+>
+> The `thebelab` global object, exposed functions and user code reliant on css classes `thebelab-*`, will continue to work and any DOM elements created during operation will be decorated with `thebelab-` classes as expected, until it is removed in version 0.9.0.
+
 ## How Thebe works
 
 Starting Thebe involves the following steps:

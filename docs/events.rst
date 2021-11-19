@@ -1,7 +1,7 @@
 Event hooks in Thebe
 ====================
 
-When Thebe is launched (with ``thebelab.bootstrap``), it will emit a series
+When Thebe is launched (with ``thebe.bootstrap``), it will emit a series
 of events corresponding to the state of the launch process. You can plug into
 these events to control the behavior on your page.
 
@@ -9,7 +9,7 @@ To do so, use the ``status`` event within Thebe, like so:
 
 .. code-block:: javascript
 
-       thebelab.on("status", function (evt, data) {
+       thebe.on("status", function (evt, data) {
         console.log("Status changed:", data.status, data.message);
     });
 

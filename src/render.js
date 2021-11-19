@@ -46,7 +46,7 @@ export function renderCell(element, options) {
   // render a single cell
   // element should be a `<pre>` tag with some code in it
   let mergedOptions = mergeOptions({ options });
-  let $cell = $("<div class='thebelab-cell'/>");
+  let $cell = $("<div class='thebe-cell thebelab-cell'/>");
   let $element = $(element);
   let $output = $element.next(mergedOptions.outputSelector);
   let source = $element.text().trim();
@@ -74,11 +74,13 @@ export function renderCell(element, options) {
 
   $element.replaceWith($cell);
 
-  let $cm_element = $("<div class='thebelab-input'>");
+  let $cm_element = $("<div class='thebe-input thebelab-input'>");
   $cell.append($cm_element);
   if (mergedOptions.mountRunButton) {
     $cell.append(
-      $("<button class='thebelab-button thebelab-run-button'>")
+      $(
+        "<button class='thebe-button thebe-run-button thebelab-button thebelab-run-button'>"
+      )
         .text("run")
         .attr("title", "run this cell")
         .click(execute)
@@ -86,7 +88,9 @@ export function renderCell(element, options) {
   }
   if (mergedOptions.mountRestartButton) {
     $cell.append(
-      $("<button class='thebelab-button thebelab-restart-button'>")
+      $(
+        "<button class='thebe-button thebe-restart-button thebelab-button thebelab-restart-button'>"
+      )
         .text("restart")
         .attr("title", "restart the kernel")
         .click(restart)
@@ -94,14 +98,18 @@ export function renderCell(element, options) {
   }
   if (mergedOptions.mountRestartallButton) {
     $cell.append(
-      $("<button class='thebelab-button thebelab-restartall-button'>")
+      $(
+        "<button class='thebe-button thebelab-button thebe-restartall-button thebelab-restartall-button'>"
+      )
         .text("restart & run all")
         .attr("title", "restart the kernel and run all cells")
         .click(restartAndRunAll)
     );
   }
   $cell.append(
-    $("<div class='thebelab-busy'><div class='thebelab-busy-spinner'></div>")
+    $(
+      "<div class='thebe-busy thebelab-busy'><div class='thebe-busy-spinner thebelab-busy-spinner'></div>"
+    )
   );
 
   let kernelResolve, kernelReject;
@@ -142,7 +150,7 @@ export function renderCell(element, options) {
       name: "stderr",
       text: `Failed to execute. ${error} Please refresh the page.`,
     });
-    $cell.find("div.thebelab-busy").css("visibility", "hidden");
+    $cell.find("div.thebe-busy").css("visibility", "hidden");
   }
 
   function getKernel() {
@@ -159,10 +167,10 @@ export function renderCell(element, options) {
     let code = cm.getValue();
     kernelPromise.then((kernel) => {
       try {
-        $cell.find(".thebelab-busy").css("visibility", "visible");
+        $cell.find(".thebe-busy").css("visibility", "visible");
         outputArea.future = kernel.requestExecute({ code: code });
         outputArea.future.done.then(() => {
-          $cell.find(".thebelab-busy").css("visibility", "hidden");
+          $cell.find(".thebe-busy").css("visibility", "hidden");
         });
       } catch (error) {
         clearOnError(error);
@@ -183,13 +191,13 @@ export function renderCell(element, options) {
   }
 
   function restartAndRunAll() {
-    if (window.thebelab) {
-      window.thebelab.cells.map((idx, { setOutputText }) => setOutputText());
+    if (window.thebe) {
+      thebe.cells.map((idx, { setOutputText }) => setOutputText());
     }
     restart().then((kernel) => {
-      if (!window.thebelab) return kernel;
+      if (!window.thebe) return kernel;
       // Note, the jquery map is overridden, and is in the opposite order of native JS
-      window.thebelab.cells.map((idx, { execute }) => execute());
+      window.thebe.cells.map((idx, { execute }) => execute());
       return kernel;
     });
   }

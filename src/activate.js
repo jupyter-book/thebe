@@ -8,7 +8,7 @@ export class ActivateWidget {
   mount() {
     const el = $(".thebe-activate");
     el.replaceWith(`<div class="thebe-activate">
-      <button type="button" class="thebe-activate-button" onclick="thebelab.bootstrap()">${this.title}</button>
+      <button type="button" class="thebe-activate-button" onclick="thebe.bootstrap()">${this.title}</button>
     </div>`);
   }
 }

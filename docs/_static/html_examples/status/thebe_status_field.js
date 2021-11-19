@@ -24,11 +24,11 @@ function thebe_place_status_field() {
 
 function thebe_activate_cells() {
   // Download thebe
-  thebelab.on("status", function (evt, data) {
+  thebe.on("status", function (evt, data) {
     console.log("Status changed:", data.status, data.message);
     $(".thebe-status-field")
       .attr("class", "thebe-status-field thebe-status-" + data.status)
       .text(data.status);
   });
-  thebelab.bootstrap();
+  thebe.bootstrap();
 }

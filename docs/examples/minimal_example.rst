@@ -15,6 +15,10 @@ Loading and configuring Thebe
 In order to use Thebe, we must first set its configuration. This must be
 done **before** Thebe is loaded from a CDN or a local script.
 
+There are many ways you can activate Thebe. In this case, we'll add a
+button to our page, using the built in UI widgets, this will **bootstrap**
+Thebe once clicked. We'll do this with a little bit of Javascript.
+
 Here's a sample configuration for Thebe
 
 .. raw:: html
@@ -23,6 +27,8 @@ Here's a sample configuration for Thebe
    <script type="text/x-thebe-config">
      {
        requestKernel: true,
+       mountActivateWidget: true,
+       mountStatusWidget: true,
        binderOptions: {
          repo: "binder-examples/requirements",
        },
@@ -34,10 +40,12 @@ Here's a sample configuration for Thebe
    <!-- Configure and load Thebe !-->
    <script type="text/x-thebe-config">
      {
-       requestKernel: true,
-       binderOptions: {
+         requestKernel: true,
+         mountActivateWidget: true,
+         mountStatusWidget: true,
+         binderOptions: {
          repo: "binder-examples/requirements",
-       },
+         },
      }
    </script>
 
@@ -55,38 +63,33 @@ Next, we'll load Thebe from a CDN:
 
    <script src="https://unpkg.com/thebe@latest/lib/index.js"></script>
 
-Adding a button to activate Thebe
-=================================
 
-There are many ways you can activate Thebe. In this case, we'll add a
-button to our page, and configure it to **bootstrap** Thebe once it is
-clicked. We'll do this with a little bit of Javascript.
+Adding a Thebe UI widgets to your page
+======================================
 
-.. raw:: html
+When the configuration options are set to mount the activate button and status field, you will need
+to include mount points in your page which will be used to place the widgets.
 
-   <button id="activateButton" style="width: 150px; height: 75px; font-size: 1.5em;">Activate</button>
-   <script>
-   var bootstrapThebe = function() {
-       thebelab.bootstrap();
-   }
-
-   document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
-   </script>
-
-Placing the button and adding the JavaScript to enable Thebe was done with the
-code below:
+We can do this by adding the following `div` elements:
 
 .. code:: html
 
-   <button id="activateButton"  style="width: 150px; height: 45px; font-size: 1.5em;">Activate</button>
-   <script>
-   var bootstrapThebe = function() {
-       thebelab.bootstrap();
-   }
+   <div class="thebe-activate"></div>
+   <div class="thebe-status"></div>
 
-   document.querySelector("#activateButton").addEventListener('click', bootstrapThebe)
-   </script>
+The following UI widgets are then mounted on the page.
 
+.. raw:: html
+
+   <style>
+      .thebe-activate, .thebe-status {
+         margin-bottom: 10px;
+      }
+   </style>
+   <div class="thebe-activate"></div>
+   <div class="thebe-status"></div>
+
+These widgets are minimally styled, but can be modified by overrriding or extending the following classes; `thebe-status`, `thebe-status-mounted`, `thebe-status-stub`, `thebe-status-field`, `thebe-status-message`, `thebe-status-building`, `thebe-status-launching`, `thebe-status-starting`, `thebe-status-ready`, `thebe-status-failed`, `thebe-status-busy`.
 
 Adding code cells
 =================

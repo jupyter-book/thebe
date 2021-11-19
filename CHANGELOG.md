@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.3 - To be confirmed
+
+### Deprecations
+
+- `thebe` has been added as an alias for `thebelab` and all css classes beginning with `thebelab-` duplicated as `thebe-`. The `thebelab` global object, exposed functions and user code reliant on css classes `thebelab-*`, will continue to work and any DOM elements created during operation will be decorated with `thebelab-` classes as expected, until removed in version 0.9.0.
+  [#230](https://github.com/executablebooks/thebe/issues/230)
+
 ## 0.8.2 - 2021-10-26
 
 ### Fixed
