@@ -18,7 +18,7 @@ are created when you launch Thebe. By selecting the Thebe button and calling
 the ``click()`` method, the code in that cell will be run (and outputs will show)
 once the Thebe kernel is ready.
 
-Here's a code sample that selects all cells with a tag called ``thebelab-init`` and
+Here's a code sample that selects all cells with a tag called ``thebe-init`` and
 simulates a click on the button.
 
 .. code-block:: javascript

@@ -129,7 +129,7 @@ The below code cell demonstrates this theme:
 
    <button id="activateButton" style="width: 120px; height: 40px; font-size: 1.5em;">Activate</button>
    <script>
-   document.querySelector("#activateButton").addEventListener('click', thebelab.bootstrap)
+   document.querySelector("#activateButton").addEventListener('click', thebe.bootstrap)
    </script>
 
 The above code should be styled according to the

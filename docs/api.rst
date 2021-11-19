@@ -5,7 +5,7 @@ Thebe API
 When adding Thebe to a page one only needs to know about the bootstrap process and option object.
 By configuring the options you can already manipulate
 
-.. js:autofunction:: thebelab.bootstrap
+.. js:autofunction:: thebe.bootstrap
 
 Configuration Options
 ---------------------
@@ -28,5 +28,5 @@ High Level JQuery API
 
 .. js:autofunction:: ./render.renderCell
 .. js:autofunction:: ./render.renderAllCells
-.. js:autofunction:: thebelab.mountActivateWidget
-.. js:autofunction:: thebelab.mountStatusWidget
+.. js:autofunction:: thebe.mountActivateWidget
+.. js:autofunction:: thebe.mountStatusWidget
