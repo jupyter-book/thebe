@@ -11,6 +11,7 @@
     "build": "turbo run build",
     "build:prod": "turbo run build:prod",
     "build:docs": "turbo run docs#build",
+    "build:publish": "turbo run build:prod",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",

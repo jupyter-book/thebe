@@ -31,20 +31,15 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
 
       - name: 'Install'
-        run: |
-          yarn install --frozen-lockfile
+        run: npm ci
 
-      - name: '`yarn run fmt` and check for changes'
-        run: |
-          # If this fails, run `yarn run fmt` and push the result
-          # amend if you feel so inclined.
-          yarn run fmt
-          git diff --exit-code
+      - name:
+        run: npm run lint
 
   test:
     # no need to wait for lint
