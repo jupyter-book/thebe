@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+from pathlib import Path
 
 # -- General configuration ------------------------------------------------
 
@@ -18,8 +19,9 @@ extensions = ['sphinx.ext.mathjax',
               'myst_parser']
 
 # sphinx-js config
+path_root = Path(__file__).parent.parent.parent
 primary_domain = 'js'
-js_source_path = '../src'
+js_source_path = f'{path_root}/packages/thebe/src'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -159,15 +161,12 @@ linkcheck_anchors_ignore = ["/#!"]
 
 # -- Build the latest JS for local preview -----------------------------
 from subprocess import run
-from pathlib import Path
 import os
 import shutil as sh
 
 # -- Run JS Build if needed ------------------------
 # Note: this will be a one off run on RTD but may be run mulitple times locally
 # during development and testing
-
-path_root = Path(__file__).parent.parent
 
 if os.environ.get('READ_THE_DOCS'):
     # setup the build environment on RTD
@@ -181,7 +180,7 @@ if not Path("_static/lib").exists():
     print("Local `thebe` not found, building...")
     run(["yarn", "install"], cwd=path_root)
     run(["yarn", "build:prod"], cwd=path_root)
-    sh.copytree(f"{path_root}/lib", "_static/lib")
+    sh.copytree(f"{path_root}/packages/thebe/lib", "_static/lib")
     print("Finished building local `thebe` (production) bundle.")
 else:
     print("Using existing `thebe` build in `_static/lib`")

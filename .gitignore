@@ -1,7 +1,6 @@
 build
 node_modules
 npm-debug.log
-package-lock.json
 target
 node
 src/_tmp
@@ -16,6 +15,9 @@ env
 .cache
 
 webpack.stats.*
-docs/_build
+apps/docs/_build
+apps/docs/_static/lib
 /.idea/
 junit.xml
+
+.turbo

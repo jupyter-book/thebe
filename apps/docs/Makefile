@@ -7,8 +7,8 @@ SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = Thebe
 SOURCEDIR     = .
 BUILDDIR      = _build
-JSDOC         = node_modules/.bin/jsdoc
-PATH 		 := node_modules/.bin:$(PATH)
+JSDOC         = ../../node_modules/.bin/jsdoc
+PATH 		 := ../../node_modules/.bin:$(PATH)
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -19,14 +19,13 @@ help:
 package.json:
 	yarn ls
 
-yarn-lock.json: package.json
-	# package.json updated, refresh lock with npm install
-	yarn install
-	touch $@
+# npm-ci: package.json
+# 	# package.json updated, refresh lock with npm install
+# 	npm ci
+# 	touch $@
 
-$(JSDOC): yarn-lock.json
-	# install from yarn-lock
-	yarn install
+$(JSDOC):
+	npm ci
 	# refresh mtime
 	test -f $@ && touch $@
 
@@ -40,11 +39,11 @@ clean-js:
 	rm -rf _static/lib
 
 js: clean-js
-	cd ..; yarn install; yarn build:prod
+	cd ..; npm ci; yarn build:prod
 	cp -R ../lib _static/lib
 
 js-dev: clean-js
-	cd ..; yarn install; yarn build
+	cd ..; npm ci; yarn build
 	cp -R ../lib _static/lib
 
 show:

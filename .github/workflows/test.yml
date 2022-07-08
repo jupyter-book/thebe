@@ -17,17 +17,17 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       # Action Repo: https://github.com/actions/checkout
-      - name: "Checkout repo"
+      - name: 'Checkout repo'
         uses: actions/checkout@v2
 
       # Action Repo: https://github.com/actions/setup-node
-      - name: "Setup Node"
+      - name: 'Setup Node'
         uses: actions/setup-node@v1
         with:
-          node-version: "15"
+          node-version: '15'
 
       # Action Repo: https://github.com/actions/cache
-      - name: "Cache node_modules"
+      - name: 'Cache node_modules'
         uses: actions/cache@v2
         with:
           path: node_modules
@@ -35,11 +35,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: "Install"
+      - name: 'Install'
         run: |
           yarn install --frozen-lockfile
 
-      - name: "`yarn run fmt` and check for changes"
+      - name: '`yarn run fmt` and check for changes'
         run: |
           # If this fails, run `yarn run fmt` and push the result
           # amend if you feel so inclined.
@@ -54,40 +54,40 @@ jobs:
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
-        node_version: ["12", "14", "15"]
+        node_version: ['12', '14', '15']
 
     steps:
-      - name: "Checkout repo"
+      - name: 'Checkout repo'
         uses: actions/checkout@v2
 
       # Action Repo: https://github.com/actions/setup-node
-      - name: "Setup Node"
+      - name: 'Setup Node'
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
 
       # Action Repo: https://github.com/actions/cache
-      - name: "Cache node_modules"
+      - name: 'Cache node_modules'
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn-lock.json') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
 
-      - name: "Install dependencies"
+      - name: 'Install dependencies'
         run: |
-          yarn install --frozen-lockfile
+          npm ci
 
-      - name: "Build the library"
+      - name: 'Build the library'
         run: |
-          yarn run build:prod
+          npm run build:prod
 
-      - name: "Run tests"
+      - name: 'Run tests'
         run: |
-          yarn run test
-          yarn run test:e2e
+          npm run test
+          npm run test:e2e
 
       # Action Repo: https://github.com/codecov/codecov-action
-      - name: "Upload coverage to codecov"
+      - name: 'Upload coverage to codecov'
         uses: codecov/codecov-action@v1
