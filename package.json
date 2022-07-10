@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "clean": "turbo run clean",
     "build": "turbo run build",
     "build:core": "turbo run build --filter=thebe-core",
     "build:thebe": "turbo run build --filter=thebe",
@@ -18,7 +19,8 @@
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
     "watch:core": "turbo run dev --filter=thebe-core",
-    "watch:thebe": "turbo run dev --filter=thebe"
+    "watch:thebe": "turbo run dev --filter=thebe",
+    "start": "turbo run start --filter=demo"
   },
   "repository": {
     "type": "git",

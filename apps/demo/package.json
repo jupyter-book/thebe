@@ -1,0 +1,60 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Demonstration App for thebe",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npx ts-node ./bin/buildLiteDemo.ts; webpack --config webpack.dev.js",
+    "start": "webpack serve --open --config webpack.dev.js"
+  },
+  "keywords": [
+    "jupyter",
+    "interactivity",
+    "jupyter-book"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/executablebooks/thebe-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/executablebooks/thebe-core/issues"
+  },
+  "author": "Steve Purves",
+  "license": "MIT",
+  "devDependencies": {
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
+    "@jupyterlite/server": "0.1.0-beta.10",
+    "@jupyterlite/server-extension": "0.1.0-beta.10",
+    "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.6.0",
+    "express": "^4.17.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "http-server": "^14.1.0",
+    "ignore-loader": "^0.1.2",
+    "jest": "^28.1.2",
+    "style-loader": "^3.3.1",
+    "ts-jest": "^28.0.5",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.7.4",
+    "webpack-merge": "^5.8.0"
+  },
+  "peerDependencies": {
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
+    "@jupyterlite/server": "0.1.0-beta.10",
+    "@jupyterlite/server-extension": "0.1.0-beta.10"
+  },
+  "dependencies": {
+    "thebe": "*",
+    "thebe-core": "*"
+  }
+}

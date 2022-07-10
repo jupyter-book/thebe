@@ -17,6 +17,11 @@ import '@jupyterlab/rendermime/style/base.css';
 import 'font-awesome/css/font-awesome.css';
 import '../index.css';
 
+/**
+ * This file is the main entrypoint for the cjs bundle
+ * For the TS module, use setupThebeCore()
+ */
+
 export interface JsApi {
   connect: (options: Partial<Options>) => Promise<{ server: ThebeServer; session?: ThebeSession }>;
   setupNotebook: (blocks: CodeBlock[], options: Partial<Options>) => ThebeNotebook;

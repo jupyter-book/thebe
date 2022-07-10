@@ -7,3 +7,4 @@ tmp/
 .jupyterlite.doit.db
 .DS_Store
 junit.xml
+./package-lock.json

@@ -4,6 +4,7 @@ import '@lumino/widgets/style/index.css';
 import '@jupyterlab/apputils/style/base.css';
 import '@jupyterlab/rendermime/style/base.css';
 import './index.css';
+import { connect, setupNotebook } from './thebe/api';
 
 export { default as ThebeServer } from './server';
 export { default as ThebeSession } from './session';
@@ -12,3 +13,13 @@ export { default as ThebeCell } from './cell';
 export { default as PassiveCellRenderer } from './passive';
 
 export * from './types';
+
+export function setupThebeCore() {
+  window.thebeCore = {
+    ...window.thebeCore,
+    api: {
+      connect,
+      setupNotebook,
+    },
+  };
+}
