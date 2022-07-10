@@ -9,13 +9,16 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:core": "turbo run build --filter=thebe-core",
+    "build:thebe": "turbo run build --filter=thebe",
     "build:prod": "turbo run build:prod",
     "build:docs": "turbo run docs#build",
     "build:publish": "turbo run build:prod",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
-    "dev": "turbo run dev"
+    "watch:core": "turbo run dev --filter=thebe-core",
+    "watch:thebe": "turbo run dev --filter=thebe"
   },
   "repository": {
     "type": "git",
@@ -39,5 +42,8 @@
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
     "turbo": "^1.3.1"
+  },
+  "overrides": {
+    "webpack": "^5.73.0"
   }
 }

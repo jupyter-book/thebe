@@ -1,29 +1,27 @@
-const path = require("path");
-const webpack = require("webpack");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const path = require('path');
+const webpack = require('webpack');
 
-const shimJS = path.resolve(__dirname, "src", "emptyshim.js");
+const shimJS = path.resolve(__dirname, 'src', 'emptyshim.js');
 function shim(regExp) {
   return new webpack.NormalModuleReplacementPlugin(regExp, shimJS);
 }
-const pkg = require("./package.json");
+const pkg = require('./package.json');
 
 module.exports = (env, argv) => {
-  let publicPath = "_static/lib/";
+  let publicPath = '_static/lib/';
   if (process.env.NODE_PREPUBLISH) {
-    publicPath = "https://unpkg.com/thebe@" + pkg.version + "/lib/";
-  } else if (argv.mode === "development") {
-    publicPath = "../lib/";
+    publicPath = 'https://unpkg.com/thebe@' + pkg.version + '/lib/';
+  } else if (argv.mode === 'development') {
+    publicPath = '../lib/';
   }
-  console.log("Public Path set to", publicPath);
+  console.log('Public Path set to', publicPath);
 
   return {
-    devtool: "source-map",
-    entry: ["./src/index.js"],
+    mode: 'development',
+    devtool: 'source-map',
     output: {
-      filename: "index.js",
-      path: path.resolve(__dirname, "lib"),
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'lib'),
       publicPath,
     },
     plugins: [
@@ -70,12 +68,6 @@ module.exports = (env, argv) => {
       shim(/@jupyterlab\/statusbar\/.*/),
       shim(/@jupyterlab\/theme-light-extension\/style\/(icons|images)\/.*/),
       shim(/@jupyterlab\/theme-light-extension\/style\/(urls).css/),
-
-      new BundleAnalyzerPlugin({
-        analyzerMode: "static",
-        openAnalyzer: false,
-        reportFilename: "../webpack.stats.html",
-      }),
     ],
     optimization: {},
     module: {
@@ -84,62 +76,81 @@ module.exports = (env, argv) => {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
               cacheDirectory: true,
               presets: [
                 [
-                  "@babel/preset-env",
+                  '@babel/preset-env',
                   {
-                    useBuiltIns: "usage",
+                    useBuiltIns: 'usage',
                     corejs: 3,
                     shippedProposals: true,
                     targets: {
-                      browsers: [
-                        "chrome 60",
-                        "edge 15",
-                        "firefox 45",
-                        "safari 10",
-                      ],
+                      browsers: ['chrome 60', 'edge 15', 'firefox 45', 'safari 10'],
                     },
                   },
                 ],
               ],
             },
           },
+          type: 'javascript/auto',
         },
         {
           test: /\.js$/,
           use: {
-            loader: "istanbul-instrumenter-loader",
+            loader: 'istanbul-instrumenter-loader',
             options: { esModules: true },
           },
-          enforce: "post",
+          enforce: 'post',
           exclude: /node_modules|\.spec\.js$/,
+          type: 'javascript/auto',
         },
-        { test: /\.css$/, loader: "style-loader!css-loader" },
-        { test: /\.html$/, loader: "file-loader" },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+          type: 'javascript/auto',
+        },
+        { test: /\.html$/, type: 'asset/resource' },
         // jquery-ui loads some images
-        { test: /\.(jpg|png|gif)$/, loader: "file-loader" },
-        // for pyodide kernels
-        { test: /\.whl$/, loader: "file-loader" },
+        { test: /\.(jpg|png|gif)$/, type: 'asset/resource' },
         // required to load font-awesome
         {
           test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url-loader?limit=10000&mimetype=application/font-woff",
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/font-woff',
+          },
+          type: 'javascript/auto',
         },
         {
           test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url-loader?limit=10000&mimetype=application/font-woff",
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/font-woff',
+          },
+          type: 'javascript/auto',
         },
         {
           test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url-loader?limit=10000&mimetype=application/octet-stream",
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/octet-stream',
+          },
+          type: 'javascript/auto',
         },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
+        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader', type: 'javascript/auto' },
         {
           test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url-loader?limit=10000&mimetype=image/svg+xml",
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'image/svg+xml',
+          },
+          type: 'javascript/auto',
         },
       ],
     },
