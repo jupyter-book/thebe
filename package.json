@@ -12,6 +12,7 @@
     "build": "turbo run build",
     "build:core": "turbo run build --filter=thebe-core",
     "build:thebe": "turbo run build --filter=thebe",
+    "build:demo": "turbo run build --filter=demo",
     "build:prod": "turbo run build:prod",
     "build:docs": "turbo run docs#build",
     "build:publish": "turbo run build:prod",

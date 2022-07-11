@@ -20,5 +20,5 @@
     "skipLibCheck": true,
     "allowJs": true
   },
-  "include": ["."]
+  "include": ["src"]
 }

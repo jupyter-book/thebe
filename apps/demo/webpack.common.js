@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 
-const shimJS = path.resolve(__dirname, 'empty.js');
+const shimJS = path.resolve(__dirname, 'src', 'empty.js');
 function shim(regExp) {
   return new NormalModuleReplacementPlugin(regExp, shimJS);
 }
@@ -11,7 +11,7 @@ module.exports = {
   optimization: {
     usedExports: true,
   },
-  entry: './index.ts',
+  entry: './src/index.ts',
   plugins: [
     shim(/\.(svg|ttf|eot|woff2|woff)/),
     new HtmlWebpackPlugin({
@@ -30,6 +30,7 @@ module.exports = {
       {
         test: /pypi\/.*/,
         type: 'asset/source',
+        use: 'null-loader',
       },
       {
         resourceQuery: /raw/,

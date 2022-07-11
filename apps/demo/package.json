@@ -54,6 +54,7 @@
     "@jupyterlite/server-extension": "0.1.0-beta.10"
   },
   "dependencies": {
+    "null-loader": "^4.0.1",
     "thebe": "*",
     "thebe-core": "*"
   }
