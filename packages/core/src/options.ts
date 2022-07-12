@@ -57,7 +57,7 @@ export function ensureOptions(options: Partial<Options>): Options {
   const kernelOptions = ensureKernelOptions(options.kernelOptions ?? {});
 
   return {
-    useBinder: true,
+    useBinder: false,
     useJupyterLite: false,
     requestKernel: true,
     ...options,

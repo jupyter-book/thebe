@@ -65,14 +65,14 @@ class PassiveCellRenderer {
     });
   }
 
-  clearOnError(error: any) {
+  clearOnError(error?: any) {
     if (!this.area) return;
     // could update redux with state here?
     this.area.model.clear();
     this.area.model.add({
       output_type: 'stream',
       name: 'stderr',
-      text: `Failed to execute. ${error} Please refresh the page.`,
+      text: `Failed to execute. ${error ?? ''} Please refresh the page.`,
     });
   }
 

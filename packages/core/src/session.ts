@@ -11,7 +11,7 @@ class ThebeSession {
     this._connection = connection;
   }
 
-  get session() {
+  get connection() {
     return this._connection;
   }
 

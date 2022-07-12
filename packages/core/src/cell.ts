@@ -59,7 +59,7 @@ class ThebeCell extends PassiveCellRenderer {
     console.debug(`thebe:renderer:busy ${show} ${this.id}`);
     if (show) {
       const busy = document.createElement('div');
-      busy.className = 'thebe-busy';
+      busy.className = 'thebe-output-busy';
       busy.style.position = 'absolute';
       busy.style.top = '0px';
       busy.style.left = '0px';
@@ -68,15 +68,15 @@ class ThebeCell extends PassiveCellRenderer {
       busy.style.height = '100%';
       busy.style.width = '100%';
       busy.style.zIndex = '100';
-      busy.setAttribute('data-thebe-busy', `c-${this.id}`);
+      busy.setAttribute('data-thebe-output-busy', `c-${this.id}`);
 
       const spinner = document.createElement('div');
-      spinner.className = 'thebe-core-busy-spinner';
+      spinner.className = 'thebe-output-busy-spinner';
       busy.append(spinner);
 
       this.area.node.parentElement?.append(busy);
     } else {
-      const busy = this.area.node.parentElement?.querySelector('.thebe-busy');
+      const busy = this.area.node.parentElement?.querySelector('.thebe-output-busy');
       busy?.parentElement?.removeChild(busy);
     }
   }

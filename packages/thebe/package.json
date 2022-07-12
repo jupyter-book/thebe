@@ -3,11 +3,16 @@
   "version": "0.8.2",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
-    "webpack:version": "webpack --version",
-    "build": "webpack --mode development --devtool inline-source-map --progress",
-    "build:watch": "webpack --mode development --devtool inline-source-map --progress --color --watch",
-    "build:prod": "webpack --mode production --devtool source-map",
+    "clean": "rm -rf ./lib",
+    "build:bundle": "webpack --mode development --devtool inline-source-map --progress --color",
+    "build:bundle:prod": "webpack --mode production --devtool source-map",
+    "build:css": "concat -o lib/index.css ./src/*.css",
+    "build": "npm-run-all -l clean -p build:css build:bundle declarations",
+    "build:prod": "npm-run-all -l clean -p build:css build:bundle:prod declarations",
+    "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir lib/types",
+    "build:watch": "npm run build:bundle -- --watch",
     "build:publish": "NODE_PREPUBLISH=true yarn run build:prod",
     "lint": "prettier --trailing-comma=es5 *.js src/*.js test/*.js",
     "serve": "http-server -c-1 -a 127.0.0.1 -o development/binder.html",
@@ -58,9 +63,11 @@
     "@jupyterlab/services": "^6.0.0",
     "@jupyterlab/testutils": "^3.2.4",
     "@jupyterlab/theme-light-extension": "^3.0.0",
+    "@types/codemirror": "^5.60.5",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.1.0",
     "codecov": "^3.8.0",
+    "concat": "^1.0.3",
     "concurrently": "^6.2.1",
     "core-js": "^3.6.5",
     "css-loader": "^5.0.0",
@@ -76,14 +83,18 @@
     "jquery-ui-bundle": "^1.12.1-migrate",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "puppeteer": ">=1.5.0",
     "style-loader": "^2.0.0",
     "ts-jest": "^27.1.4",
+    "ts-loader": "^9.3.1",
     "url-loader": "^4.1.1",
     "webpack": "^5.73.0",
     "webpack-cli": "^4.10.0",
     "webpack-merge": "^5.8.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "thebe-core": "*"
+  }
 }

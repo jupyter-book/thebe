@@ -19,6 +19,7 @@ module.exports = (env, argv) => {
   return {
     mode: 'development',
     devtool: 'source-map',
+    entry: './src/index.ts',
     output: {
       filename: 'index.js',
       path: path.resolve(__dirname, 'lib'),
@@ -73,6 +74,15 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
+          test: /pypi\/.*/,
+          type: 'asset/source',
+        },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+        {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,
           use: {
@@ -109,7 +119,7 @@ module.exports = (env, argv) => {
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
-          type: 'javascript/auto',
+          // type: 'javascript/auto',
         },
         { test: /\.html$/, type: 'asset/resource' },
         // jquery-ui loads some images
@@ -153,6 +163,9 @@ module.exports = (env, argv) => {
           type: 'javascript/auto',
         },
       ],
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
     },
   };
 };

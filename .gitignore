@@ -14,6 +14,7 @@ env
 .DS_Store
 .cache
 
+*._
 webpack.stats.*
 apps/docs/_build
 apps/docs/_static/lib

@@ -31,4 +31,4 @@ export interface MessageCallbackArgs {
   message: string;
 }
 
-export type MessageCallback = ({ id, message }: MessageCallbackArgs) => void;
+export type MessageCallback = (args: MessageCallbackArgs) => void;
