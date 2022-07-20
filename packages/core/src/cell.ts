@@ -115,7 +115,7 @@ class ThebeCell extends PassiveCellRenderer {
    * @param source
    * @returns
    */
-  async execute(source: string): Promise<{ height: number; width: number } | null> {
+  async execute(source: string): Promise<{ id: string; height: number; width: number } | null> {
     if (!this.session || !this.session.kernel) {
       console.warn('Attempting to execute on a cell without an attached kernel');
       return null;
@@ -150,6 +150,7 @@ class ThebeCell extends PassiveCellRenderer {
 
       this.messageCompleted();
       return {
+        id: this.id,
         height: this.area.node.offsetHeight,
         width: this.area.node.offsetWidth,
       };

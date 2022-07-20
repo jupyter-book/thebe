@@ -2,8 +2,14 @@ import { nanoid } from 'nanoid';
 import ThebeCell from './cell';
 import ThebeSession from './session';
 import { ThebeManager } from './manager';
-import { MathjaxOptions, ThebeContext } from './types';
+import { MathjaxOptions } from './types';
 import { MessageCallback, MessageCallbackArgs, MessageSubject, NotebookStatus } from './messaging';
+
+interface ExecuteReturn {
+  id: string;
+  height: number;
+  width: number;
+}
 
 export interface CodeBlock {
   id: string;
@@ -99,29 +105,20 @@ class ThebeNotebook {
     });
   }
 
-  async executeUpTo(cellId: string, preprocessor?: (s: string) => string) {
-    if (!this.cells) return null;
+  async executeUpTo(
+    cellId: string,
+    preprocessor?: (s: string) => string
+  ): Promise<(ExecuteReturn | null)[]> {
+    if (!this.cells) return [];
     this.message({
       status: NotebookStatus.executing,
       message: `executeUpTo ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
     });
     const idx = this.cells.findIndex((c) => c.id === cellId);
-    if (idx === -1) return null;
+    if (idx === -1) return [];
     const cellsToExecute = this.cells.slice(0, idx + 1);
     cellsToExecute.map((cell) => cell.messageBusy());
-    let result = null;
-    for (let cell of cellsToExecute) {
-      console.debug(`Executing cell ${cell.id}`);
-      result = await cell?.execute(preprocessor ? preprocessor(cell.source) : cell.source);
-      if (!result) {
-        console.error(`Error executing cell ${cell.id}`);
-        this.message({
-          status: NotebookStatus.error,
-          message: `executeUpTo: Error executing cell ${cell.id}`,
-        });
-        return null;
-      }
-    }
+    const result = this.executeCells(cellsToExecute.map((c) => c.id));
     this.message({
       status: NotebookStatus.completed,
       message: `executeUpTo ${cellId}`,
@@ -129,28 +126,30 @@ class ThebeNotebook {
     return result;
   }
 
-  async executeOnly(cellId: string, preprocessor?: (s: string) => string) {
+  async executeOnly(
+    cellId: string,
+    preprocessor?: (s: string) => string
+  ): Promise<ExecuteReturn | null> {
     if (!this.cells) return null;
     this.message({
       status: NotebookStatus.executing,
       message: `executeOnly ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
     });
+
     const retval = await this.executeCells([cellId], preprocessor);
+
     this.message({
       status: NotebookStatus.completed,
       message: `executeOnly ${cellId}`,
     });
-    return retval;
+    return retval[0];
   }
 
   async executeCells(
     cellIds: string[],
     preprocessor?: (s: string) => string
-  ): Promise<{
-    height: number;
-    width: number;
-  } | null> {
-    if (!this.cells) return null;
+  ): Promise<(ExecuteReturn | null)[]> {
+    if (!this.cells) return [];
     this.message({
       status: NotebookStatus.executing,
       message: `executeCells ${cellIds.length} cells${preprocessor ? ' with preprocessor' : ''}`,
@@ -163,18 +162,10 @@ class ThebeNotebook {
       return Boolean(found);
     });
 
-    let result = null;
-    for (let cell of cells) {
-      result = await cell.execute(preprocessor ? preprocessor(cell.source) : cell.source);
-      if (!result) {
-        console.error(`Error executing cell ${cell.id}`);
-        this.message({
-          status: NotebookStatus.error,
-          message: `executeCells: Error executing cell ${cell.id}`,
-        });
-        return null;
-      }
-    }
+    let result = Promise.all(
+      cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source))
+    );
+
     this.message({
       status: NotebookStatus.completed,
       message: `executeCells ${cellIds.length} cells`,
@@ -182,32 +173,23 @@ class ThebeNotebook {
     return result;
   }
 
-  async executeAll(preprocessor?: (s: string) => string): Promise<{
-    height: number;
-    width: number;
-  } | null> {
-    if (!this.cells) return null;
+  async executeAll(preprocessor?: (s: string) => string): Promise<(ExecuteReturn | null)[]> {
+    if (!this.cells) return [];
+
     this.message({
       status: NotebookStatus.executing,
       message: `executeAll${preprocessor ? ' with preprocessor' : ''}`,
     });
+
     this.cells.map((cell) => cell.messageBusy());
-    let result = null;
-    for (let cell of this.cells) {
-      result = await cell.execute(preprocessor ? preprocessor(cell.source) : cell.source);
-      if (!result) {
-        console.error(`Error executing cell ${cell.id}`);
-        this.message({
-          status: NotebookStatus.error,
-          message: `executeAll: Error executing cell ${cell.id}`,
-        });
-        return null;
-      }
-    }
+
+    const result = this.executeCells(this.cells.map((c) => c.id));
+
     this.message({
       status: NotebookStatus.completed,
       message: `executeAll`,
     });
+
     return result;
   }
 }
