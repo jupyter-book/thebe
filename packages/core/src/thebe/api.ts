@@ -33,7 +33,11 @@ export async function connect(
   return { server };
 }
 
-export function setupNotebook(blocks: CodeBlock[], options: Partial<Options>) {
+export function setupNotebook(
+  blocks: CodeBlock[],
+  options: Partial<Options>,
+  messages?: MessageCallback
+) {
   const { mathjaxUrl, mathjaxConfig } = ensureOptions(options);
-  return ThebeNotebook.fromCodeBlocks(blocks, { url: mathjaxUrl, config: mathjaxConfig });
+  return ThebeNotebook.fromCodeBlocks(blocks, { url: mathjaxUrl, config: mathjaxConfig }, messages);
 }

@@ -25,6 +25,8 @@ import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
 import { connect, setupNotebook } from 'thebe-core';
+import * as events from './events';
+import { MessageCallbackArgs } from 'thebe-core/dist/types/messaging';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -44,6 +46,11 @@ export function mountStatusWidget() {
 export function mountActivateWidget() {
   window.thebe.activateButton = new ActivateWidget();
   window.thebe.activateButton.mount();
+}
+
+function messageCallback({ id, subject, status, message }: MessageCallbackArgs) {
+  events.trigger('status', { id, subject, status, message });
+  console.log(`[${subject}][${id}]: ${status}|${message}`);
 }
 
 /**
@@ -66,9 +73,7 @@ export async function bootstrap(opts: Partial<Options>) {
   if (options.stripPrompts) stripPrompts(options);
   if (options.stripOutputPrompts) stripOutputPrompts(options);
 
-  const { server, session } = await connect(options, ({ status, message }) => {
-    console.log(`[${status}]: ${message}`);
-  });
+  const { server, session } = await connect(options, messageCallback);
 
   const { selector, outputSelector } = options;
   const items: CellDOMItem[] = findCells(selector, outputSelector);
@@ -77,7 +82,7 @@ export async function bootstrap(opts: Partial<Options>) {
     return { id, source: el.textContent?.trim() ?? '' };
   });
 
-  const notebook = setupNotebook(codeWithIds, options);
+  const notebook = setupNotebook(codeWithIds, options, messageCallback);
 
   renderAllCells(options, notebook, items);
 
