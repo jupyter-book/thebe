@@ -6,6 +6,7 @@ import { Options } from './options';
 import { randomId } from './utils';
 import { Mode } from '@jupyterlab/codemirror';
 import { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
+import { output } from '@jupyter-widgets/jupyterlab-manager';
 
 export interface CellDOMItem {
   id: string;
@@ -67,6 +68,7 @@ function buildButton(
 function buildButtonBusySpinner(parent: Element) {
   const outer = document.createElement('div');
   outer.classList.add('thebe-busy');
+  outer.style.display = 'none';
   const inner = document.createElement('div');
   inner.classList.add('thebe-busy-spinner');
   outer.appendChild(inner);
@@ -76,23 +78,24 @@ function buildButtonBusySpinner(parent: Element) {
 
 function getButtonsBusy(id: string) {
   const cell = document.getElementById(id);
-  console.log('cell', cell);
-  const busy = cell?.getElementsByClassName('.thebe-busy').item(0);
-  console.log('busy', busy);
+  const busy = cell?.getElementsByClassName('thebe-busy').item(0);
   if (!busy) return;
   return busy as HTMLElement;
 }
 
 export function setButtonsBusy(id: string) {
   const busy = getButtonsBusy(id);
-  if (busy) busy.style.visibility = 'visible';
+  if (busy) {
+    busy.style.display = 'inline-block';
+  }
 }
 
 export function clearButtonsBusy(id: string) {
   setTimeout(() => {
     const busy = getButtonsBusy(id);
-    if (busy) busy.style.visibility = 'hidden';
-  }, 3000);
+    console.log('clear busy', busy);
+    if (busy) busy.style.display = 'none';
+  }, 300);
 }
 
 function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, el: HTMLElement) {
@@ -206,16 +209,19 @@ function buildCellUI(
   console.debug(`thebe:buildCellUI adding cell controls`);
   let run, runAll, restart, restartAll;
 
+  const controls = document.createElement('div');
+  controls.classList.add('thebe-controls');
+
   if (options.mountRunButton)
-    run = buildButton(box, 'run', 'run', 'run this cell', async () => {
+    run = buildButton(controls, 'run', 'run', 'run this cell', async () => {
       console.debug(`thebe:run:${cell.id} run`);
       setButtonsBusy(cell.id);
       await cell.execute(cell.source);
-      // clearButtonsBusy(cell.id);
+      clearButtonsBusy(cell.id);
     });
 
   if (options.mountRunAllButton) {
-    runAll = buildButton(box, 'runall', 'run all', 'run all cells', async () => {
+    runAll = buildButton(controls, 'runall', 'run all', 'run all cells', async () => {
       console.debug(`thebe:run:${cell.id} runall`);
       notebook.cells?.forEach(({ id }) => setButtonsBusy(id));
       // TODO notebook should return an array of promises, one for each cell
@@ -226,7 +232,7 @@ function buildCellUI(
   }
 
   if (options.mountRestartButton) {
-    restart = buildButton(box, 'restart', 'restart', 'restart the kernel', async () => {
+    restart = buildButton(controls, 'restart', 'restart', 'restart the kernel', async () => {
       console.debug(`thebe:run:${cell.id} restart`);
       await notebook.session?.kernel?.restart();
     });
@@ -234,14 +240,15 @@ function buildCellUI(
 
   if (options.mountRestartallButton) {
     restartAll = buildButton(
-      box,
+      controls,
       'restartall',
       'restart & run all',
       'restart the kernel and run all cells'
     );
   }
 
-  buildButtonBusySpinner(box);
+  buildButtonBusySpinner(controls);
+  box.append(controls);
 
   // no output placeholder for this cell, append a new element
   let output = item.placeholders.output;
