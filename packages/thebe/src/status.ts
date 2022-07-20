@@ -1,3 +1,5 @@
+import { MessageCallbackArgs, ServerStatus, SessionStatus } from 'thebe-core';
+
 // Functions for the thebe activate button and status field
 export class KernelStatus {
   stub: string;
@@ -7,12 +9,46 @@ export class KernelStatus {
   }
 
   _registerHandlers() {
-    // window.thebe.on('status', function (name: string, data: any) {
-    //   // $('.thebe-status .thebe-status-field')
-    //   //   .attr('class', 'thebe-status-field thebe-status-' + data.status)
-    //   //   .text(data.status);
-    //   // $('.thebe-status .thebe-status-message').attr('style', 'margin-top:4px').text(data.message);
-    // });
+    window.thebe.on('status', (name: string, data: MessageCallbackArgs) => {
+      const field = this._fieldElement();
+      if (field) {
+        switch (data.status) {
+          case ServerStatus.launching:
+            field.textContent = 'Launching...';
+          case ServerStatus.failed:
+            field.textContent = 'Failed to connect to server';
+          case ServerStatus.closed:
+            field.textContent = 'Server connection closed';
+          case SessionStatus.dead:
+            field.textContent = 'Session is dead';
+          case SessionStatus.starting:
+            field.className = `thebe-status-field thebe-status-${data.status}`;
+            field.textContent = 'Starting session';
+            break;
+          case SessionStatus.ready:
+            field.className = `thebe-status-field thebe-status-ready`;
+            field.textContent = 'Kernel Connected';
+            break;
+          case ServerStatus.ready:
+            field.className = `thebe-status-field thebe-status-ready`;
+            field.textContent = 'Conected to Server';
+            break;
+        }
+      }
+
+      const msg = this._messageElement();
+      if (msg) msg.textContent = data.message;
+    });
+  }
+
+  _messageElement() {
+    const collection = document.getElementsByClassName('thebe-status-message');
+    return collection.length ? collection.item(0) : undefined;
+  }
+
+  _fieldElement() {
+    const collection = document.getElementsByClassName('thebe-status-field');
+    return collection.length ? collection.item(0) : undefined;
   }
 
   /**
@@ -30,7 +66,7 @@ export class KernelStatus {
     }
 
     const box = document.createElement('div');
-    box.classList.add('thebe-status","thebe-status-mounted');
+    box.className = 'thebe-status thebe-status-mounted';
     box.setAttribute('title', this.stub);
 
     const stub = document.createElement('span');

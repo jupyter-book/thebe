@@ -19,6 +19,7 @@
   background-color: #ccc;
   text-transform: uppercase;
   font-family: monospace;
+  margin-left: 4px;
   padding: 4px 8px;
   border-radius: 1em;
   line-height: 1rem;
@@ -27,6 +28,7 @@
 .thebe-status-message {
   text-transform: lowercase;
   font-family: monospace;
+  margin-top: 4px;
 }
 
 .thebe-status-field.thebe-status-building {
@@ -52,6 +54,16 @@
 .thebe-status-field.thebe-status-failed {
   /* Building the image or launching the kernel failed */
   background-color: red;
+}
+
+.thebe-status-field.thebe-status-closed {
+  /* Building the image or launching the kernel failed */
+  background-color: grey;
+}
+
+.thebe-status-field.thebe-status-dead {
+  /* Building the image or launching the kernel failed */
+  background-color: grey;
 }
 
 .thebe-status-field.thebe-status-busy {

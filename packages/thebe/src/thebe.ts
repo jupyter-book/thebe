@@ -50,7 +50,7 @@ export function mountActivateWidget() {
 
 function messageCallback({ id, subject, status, message }: MessageCallbackArgs) {
   events.trigger('status', { id, subject, status, message });
-  console.log(`[${subject}][${id}]: ${status}|${message}`);
+  console.log(`[${subject}][${id}][${status}]: ${message}`);
 }
 
 /**
