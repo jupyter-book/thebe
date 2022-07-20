@@ -71,7 +71,7 @@ jobs:
 
       - name: 'Install dependencies'
         run: |
-          npm ci
+          npm ci --include=dev --include=optional --include=peer
 
       - name: 'Build the library'
         run: |
