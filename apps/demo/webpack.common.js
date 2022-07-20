@@ -30,7 +30,6 @@ module.exports = {
       {
         test: /pypi\/.*/,
         type: 'asset/source',
-        use: 'null-loader',
       },
       {
         resourceQuery: /raw/,

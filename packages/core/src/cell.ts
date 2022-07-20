@@ -3,25 +3,44 @@ import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { ThebeManager, WIDGET_MIMETYPE } from './manager';
 import ThebeSession from './session';
 import PassiveCellRenderer from './passive';
+import { CellStatus, MessageCallback, MessageCallbackArgs, MessageSubject } from './messaging';
 
 class ThebeCell extends PassiveCellRenderer {
   notebookId: string;
   session?: ThebeSession;
   source: string;
+  busy: boolean;
+  _messages?: MessageCallback;
 
-  constructor(id: string, notebookId: string, source: string, mathjaxOptions: MathjaxOptions) {
+  constructor(
+    id: string,
+    notebookId: string,
+    source: string,
+    mathjaxOptions: MathjaxOptions,
+    messages?: MessageCallback
+  ) {
     super(id, mathjaxOptions);
     this.id = id;
     this.notebookId = notebookId;
     this.source = source;
+    this.busy = false;
+    this._messages = messages;
   }
 
   get isBusy() {
-    return this.area.node.parentElement?.querySelector(`[data-thebe-busy=c-${this.id}]`) != null;
+    return this.busy;
   }
 
   get isAttached() {
     return this.session !== undefined;
+  }
+
+  message(data: Omit<MessageCallbackArgs, 'id' | 'subject'>) {
+    this._messages?.({
+      ...data,
+      id: this.id,
+      subject: MessageSubject.cell,
+    });
   }
 
   /**
@@ -47,38 +66,46 @@ class ThebeCell extends PassiveCellRenderer {
     this.rendermime.removeMimeType(WIDGET_MIMETYPE);
     if (this.rendermime) manager.addWidgetFactories(this.rendermime);
     this.session = session;
+    this.message({
+      status: CellStatus.changed,
+      message: 'Attached to session',
+    });
   }
 
   detachSession() {
     this.rendermime.removeMimeType(WIDGET_MIMETYPE);
     this.session = undefined;
+    this.message({
+      status: CellStatus.changed,
+      message: 'Detached from session',
+    });
   }
 
-  renderBusy(show: boolean) {
-    if (!this.isAttachedToDOM) return;
-    console.debug(`thebe:renderer:busy ${show} ${this.id}`);
-    if (show) {
-      const busy = document.createElement('div');
-      busy.className = 'thebe-output-busy';
-      busy.style.position = 'absolute';
-      busy.style.top = '0px';
-      busy.style.left = '0px';
-      busy.style.backgroundColor = 'white';
-      busy.style.opacity = '0.5';
-      busy.style.height = '100%';
-      busy.style.width = '100%';
-      busy.style.zIndex = '100';
-      busy.setAttribute('data-thebe-output-busy', `c-${this.id}`);
+  messageBusy() {
+    console.debug(`thebe:renderer:message:busy ${this.id}`);
+    this.busy = true;
+    this.message({
+      status: CellStatus.executing,
+      message: 'Executing...',
+    });
+  }
 
-      const spinner = document.createElement('div');
-      spinner.className = 'thebe-output-busy-spinner';
-      busy.append(spinner);
+  messageCompleted() {
+    console.debug(`thebe:renderer:message:completed ${this.id}`);
+    this.busy = false;
+    this.message({
+      status: CellStatus.completed,
+      message: 'Completed',
+    });
+  }
 
-      this.area.node.parentElement?.append(busy);
-    } else {
-      const busy = this.area.node.parentElement?.querySelector('.thebe-output-busy');
-      busy?.parentElement?.removeChild(busy);
-    }
+  messageError(message: string) {
+    console.debug(`thebe:renderer:message:error ${this.id}`);
+    this.busy = false;
+    this.message({
+      status: CellStatus.completed,
+      message: `Error... ${message}`,
+    });
   }
 
   /**
@@ -96,7 +123,7 @@ class ThebeCell extends PassiveCellRenderer {
 
     try {
       console.debug(`thebe:renderer:execute ${this.id}`);
-      if (!this.isBusy) this.renderBusy(true);
+      if (!this.isBusy) this.messageBusy();
 
       const useShadow = true;
       if (useShadow) {
@@ -121,7 +148,7 @@ class ThebeCell extends PassiveCellRenderer {
         await this.area.future.done;
       }
 
-      this.renderBusy(false);
+      this.messageCompleted();
       return {
         height: this.area.node.offsetHeight,
         width: this.area.node.offsetWidth,
@@ -129,7 +156,7 @@ class ThebeCell extends PassiveCellRenderer {
     } catch (err: any) {
       console.error('thebe:renderer:execute Error:', err);
       this.clearOnError(err);
-      this.renderBusy(false);
+      this.messageError(err.message);
       return null;
     }
   }

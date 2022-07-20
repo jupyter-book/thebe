@@ -16,13 +16,13 @@ class ThebeServer {
   id: string;
   sessionManager: SessionManager | undefined;
   _ready: Promise<void>;
-  _log?: MessageCallback;
+  _messages?: MessageCallback;
 
-  constructor(id: string, sessionManager: SessionManager, log?: MessageCallback) {
+  constructor(id: string, sessionManager: SessionManager, messages?: MessageCallback) {
     this.id = id;
     this.sessionManager = sessionManager;
     this._ready = this.sessionManager.ready;
-    this._log = log;
+    this._messages = messages;
   }
 
   get ready() {
@@ -41,7 +41,7 @@ class ThebeServer {
     if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
-    this._log?.({
+    this._messages?.({
       id: this.id,
       subject: MessageSubject.session,
       status: SessionStatus.starting,
@@ -59,7 +59,7 @@ class ThebeServer {
     // TODO register to handle the statusChanged signal
     // connection.statusChanged
 
-    this._log?.({
+    this._messages?.({
       id: this.id,
       subject: MessageSubject.session,
       status: SessionStatus.ready,
@@ -91,14 +91,14 @@ class ThebeServer {
    */
   static async connectToJupyterServer(
     options: Options,
-    log?: MessageCallback
+    messages?: MessageCallback
   ): Promise<ThebeServer> {
     const id = nanoid();
     const serverSettings = ServerConnection.makeSettings(options.kernelOptions.serverSettings);
     console.debug('thebe:api:connectToJupyterServer:serverSettings:', serverSettings);
 
     let kernelManager = new KernelManager({ serverSettings });
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
@@ -106,17 +106,17 @@ class ThebeServer {
     });
 
     const sessionManager = new SessionManager({ kernelManager, serverSettings });
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
       message: `Created SessionMananger: ${serverSettings.baseUrl}`,
     });
 
-    const server = new ThebeServer(id, sessionManager, log);
+    const server = new ThebeServer(id, sessionManager, messages);
     await server.ready;
 
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.ready,
       id,
@@ -130,10 +130,10 @@ class ThebeServer {
    * Connect to Jupyterlite Server
    *
    */
-  static async connectToJupyterLiteServer(log?: MessageCallback): Promise<ThebeServer> {
+  static async connectToJupyterLiteServer(messages?: MessageCallback): Promise<ThebeServer> {
     const id = nanoid();
-    const serviceManager = await startJupyterLiteServer(log);
-    log?.({
+    const serviceManager = await startJupyterLiteServer(messages);
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
@@ -146,17 +146,17 @@ class ThebeServer {
     );
 
     const sessionManager = serviceManager.sessions;
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    const server = new ThebeServer(id, sessionManager, log);
+    const server = new ThebeServer(id, sessionManager, messages);
     await server.ready;
 
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.ready,
       id,
@@ -176,13 +176,13 @@ class ThebeServer {
    */
   static async connectToServerViaBinder(
     options: Options,
-    log?: MessageCallback
+    messages?: MessageCallback
   ): Promise<ThebeServer> {
     const { binderOptions } = options;
     // request new server
     const id = nanoid();
     console.debug('thebe:server:connectToServerViaBinder binderUrl:', binderOptions.binderUrl);
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       id,
       status: ServerStatus.launching,
@@ -203,7 +203,7 @@ class ThebeServer {
         break;
     }
     console.debug('thebe:server:connectToServerViaBinder Binder build URL:', url);
-    log?.({
+    messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
@@ -214,7 +214,7 @@ class ThebeServer {
       console.debug('thebe:server:connectToServerViaBinder Checking for saved session...');
       const existing = await getExistingServer(binderOptions, url);
       if (existing) {
-        log?.({
+        messages?.({
           subject: MessageSubject.server,
           status: ServerStatus.launching,
           id,
@@ -225,7 +225,7 @@ class ThebeServer {
           const serverSettings = ServerConnection.makeSettings(settings);
           let kernelManager = new KernelManager({ serverSettings });
           const sessionManager = new SessionManager({ kernelManager, serverSettings });
-          return new ThebeServer(existing.id, sessionManager, log);
+          return new ThebeServer(existing.id, sessionManager, messages);
         }
       }
     }
@@ -233,7 +233,7 @@ class ThebeServer {
     return new Promise((resolve, reject) => {
       // Talk to the binder server
       const es = new EventSource(url);
-      log?.({
+      messages?.({
         subject: MessageSubject.server,
         status: ServerStatus.launching,
         id,
@@ -244,7 +244,7 @@ class ThebeServer {
       es.onerror = (evt: Event) => {
         console.error(`Lost connection to binder: ${url}`, evt);
         es?.close();
-        log?.({
+        messages?.({
           subject: MessageSubject.server,
           status: ServerStatus.failed,
           id,
@@ -266,7 +266,7 @@ class ThebeServer {
         switch (phase) {
           case 'failed':
             es?.close();
-            log?.({
+            messages?.({
               subject: MessageSubject.server,
               status: ServerStatus.failed,
               id,
@@ -295,16 +295,16 @@ class ThebeServer {
               );
             }
 
-            log?.({
+            messages?.({
               subject: MessageSubject.server,
               status: ServerStatus.ready,
               id,
               message: `Binder server is ready: ${msg.message}`,
             });
-            resolve(new ThebeServer(id, sessionManager, log));
+            resolve(new ThebeServer(id, sessionManager, messages));
           }
           default:
-            log?.({
+            messages?.({
               subject: MessageSubject.server,
               status: ServerStatus.launching,
               id,

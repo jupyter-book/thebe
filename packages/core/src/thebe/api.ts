@@ -7,18 +7,18 @@ import { ensureOptions } from '../options';
 
 export async function connect(
   options: Partial<Options>,
-  log?: MessageCallback
+  messages?: MessageCallback
 ): Promise<{ server: ThebeServer; session?: ThebeSession }> {
   const opts = ensureOptions(options);
   let server: ThebeServer;
   if (options.useBinder) {
     console.debug(`thebe:api:connect useBinder`, options);
-    server = await ThebeServer.connectToServerViaBinder(opts, log);
+    server = await ThebeServer.connectToServerViaBinder(opts, messages);
   } else if (options.useJupyterLite) {
     console.debug(`thebe:api:connect JupyterLite`, options);
-    server = await ThebeServer.connectToJupyterLiteServer(log);
+    server = await ThebeServer.connectToJupyterLiteServer(messages);
   } else {
-    server = await ThebeServer.connectToJupyterServer(opts, log);
+    server = await ThebeServer.connectToJupyterServer(opts, messages);
   }
 
   if (options.requestKernel) {

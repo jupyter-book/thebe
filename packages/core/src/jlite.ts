@@ -6,7 +6,7 @@ const serverExtensions = [
   import('@jupyterlite/server-extension'),
 ];
 
-export async function startJupyterLiteServer(log?: MessageCallback) {
+export async function startJupyterLiteServer(messsages?: MessageCallback) {
   const litePluginsToRegister: JupyterLiteServer.IPluginModule[] = [];
 
   /**

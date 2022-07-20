@@ -18,17 +18,33 @@ export enum KernelStatus {
   'dead' = 'dead',
 }
 
+export enum NotebookStatus {
+  'changed' = 'changed',
+  'executing' = 'executing',
+  'completed' = 'completed',
+  'error' = 'error',
+}
+
+export enum CellStatus {
+  'changed' = 'changed',
+  'executing' = 'executing',
+  'completed' = 'completed',
+  'error' = 'error',
+}
+
 export enum MessageSubject {
   'server' = 'server',
   'session' = 'session',
   'kernel' = 'kernel',
+  'notebook' = 'notebook',
+  'cell' = 'cell',
 }
 
 export interface MessageCallbackArgs {
   subject?: MessageSubject;
   id?: string;
-  status: ServerStatus | SessionStatus | KernelStatus;
+  status: ServerStatus | SessionStatus | KernelStatus | NotebookStatus | CellStatus;
   message: string;
 }
 
-export type MessageCallback = (args: MessageCallbackArgs) => void;
+export type MessageCallback = ({ id, message }: MessageCallbackArgs) => void;
