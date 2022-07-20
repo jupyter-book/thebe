@@ -93,9 +93,8 @@ export function setButtonsBusy(id: string) {
 export function clearButtonsBusy(id: string) {
   setTimeout(() => {
     const busy = getButtonsBusy(id);
-    console.log('clear busy', busy);
     if (busy) busy.style.display = 'none';
-  }, 300);
+  }, 200);
 }
 
 function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, el: HTMLElement) {
@@ -243,7 +242,15 @@ function buildCellUI(
       controls,
       'restartall',
       'restart & run all',
-      'restart the kernel and run all cells'
+      'restart the kernel and run all cells',
+      async () => {
+        console.debug(`thebe:run:${cell.id} runall`);
+        notebook.cells?.forEach(({ id }) => setButtonsBusy(id));
+        // TODO notebook should return an array of promises, one for each cell
+        // TODO return the cell id along with the each promise
+        await notebook.executeAll();
+        notebook.cells?.forEach(({ id }) => clearButtonsBusy(id));
+      }
     );
   }
 

@@ -1,4 +1,4 @@
-import { MessageCallbackArgs, ServerStatus, SessionStatus } from 'thebe-core';
+import { MessageCallbackArgs, MessageSubject, ServerStatus, SessionStatus } from 'thebe-core';
 
 // Functions for the thebe activate button and status field
 export class KernelStatus {
@@ -9,10 +9,16 @@ export class KernelStatus {
   }
 
   _registerHandlers() {
-    window.thebe.on('status', (name: string, data: MessageCallbackArgs) => {
+    window.thebe.on('status', (name: string, { subject, status, message }: MessageCallbackArgs) => {
+      if (
+        subject !== MessageSubject.server &&
+        subject !== MessageSubject.session &&
+        subject !== MessageSubject.kernel
+      )
+        return;
       const field = this._fieldElement();
       if (field) {
-        switch (data.status) {
+        switch (status) {
           case ServerStatus.launching:
             field.textContent = 'Launching...';
           case ServerStatus.failed:
@@ -22,7 +28,7 @@ export class KernelStatus {
           case SessionStatus.dead:
             field.textContent = 'Session is dead';
           case SessionStatus.starting:
-            field.className = `thebe-status-field thebe-status-${data.status}`;
+            field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Starting session';
             break;
           case SessionStatus.ready:
@@ -37,7 +43,7 @@ export class KernelStatus {
       }
 
       const msg = this._messageElement();
-      if (msg) msg.textContent = data.message;
+      if (msg) msg.textContent = message;
     });
   }
 
