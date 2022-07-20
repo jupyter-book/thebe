@@ -5,6 +5,7 @@ import { ThebeCell, ThebeNotebook, ThebeSession } from 'thebe-core';
 import { Options } from './options';
 import { randomId } from './utils';
 import { Mode } from '@jupyterlab/codemirror';
+import { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
 
 export interface CellDOMItem {
   id: string;
@@ -115,10 +116,35 @@ function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, e
     }
   }
 
+  const ref: { cm?: any } = { cm: undefined };
+
   function codeCompletion() {
-    console.debug(`thebe:codemirror:ctrl-space`);
-    // TODO
-    const a = cm;
+    console.debug(`thebe:codemirror:codeCompletion`);
+    let code = ref.cm?.getValue();
+    const cursor = ref.cm?.getDoc().getCursor();
+    if (cell.session?.kernel) {
+      cell.session?.kernel
+        .requestComplete({
+          code,
+          cursor_pos: ref.cm?.getDoc().indexFromPos(cursor),
+        })
+        .then((value: ICompleteReplyMsg) => {
+          if (value.content.status === 'ok') {
+            const from = ref.cm?.getDoc().posFromIndex(value.content.cursor_start);
+            const to = ref.cm?.getDoc().posFromIndex(value.content.cursor_end);
+            ref.cm?.showHint({
+              container: el,
+              hint: () => {
+                return {
+                  from: from,
+                  to: to,
+                  list: (value.content as { matches: string[] }).matches,
+                };
+              },
+            });
+          }
+        });
+    }
   }
 
   const requiredSettings = {
@@ -139,23 +165,23 @@ function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, e
     import(`codemirror/theme/${codeMirrorConfig.theme}.css`);
   }
 
-  const cm = new CodeMirror(el as HTMLElement, codeMirrorConfig);
+  ref.cm = new CodeMirror(el as HTMLElement, codeMirrorConfig);
 
   // All cells in the notebook automatically update their sources on change
-  cm.on('change', () => {
-    const code = cm.getValue();
+  ref?.cm?.on('change', () => {
+    const code = ref?.cm?.getValue();
     cell.source = code;
   });
 
   // TODO can we avoid this?
-  Mode.ensure(mode).then(() => cm.setOption('mode', 'mode'));
-  if (cm.isReadOnly()) {
-    cm.display.lineDiv.setAttribute('data-readonly', 'true');
+  Mode.ensure(mode).then(() => ref.cm?.setOption('mode', 'mode'));
+  if (ref.cm?.isReadOnly()) {
+    ref.cm?.display.lineDiv.setAttribute('data-readonly', 'true');
     item.ui?.editor.setAttribute('data-readonly', 'true');
     item.ui?.cell.setAttribute('data-readonly', 'true');
   }
 
-  return cm;
+  return ref.cm;
 }
 
 function buildCellUI(
@@ -175,7 +201,7 @@ function buildCellUI(
   box.append(editor);
 
   console.debug(`thebe:buildCellUI setup CodeMirror`);
-  const { execute } = setupCodemirror(options, item, cell, editor);
+  setupCodemirror(options, item, cell, editor);
 
   console.debug(`thebe:buildCellUI adding cell controls`);
   let run, runAll, restart, restartAll;
