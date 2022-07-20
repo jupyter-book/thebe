@@ -14,8 +14,8 @@
     "build:css": "npx copyfiles src/index.css dist -u 1",
     "build:cjs": "tsc --project ./tsconfig.json",
     "build:esm": "tsc --project ./tsconfig.json --module ES2020 --outDir ./dist/esm",
-    "build:bundle": "npm run clean; webpack --config webpack.dev.js",
-    "build:bundle:prod": "npm run clean; webpack --config webpack.prod.js",
+    "build:bundle": "webpack --config webpack.dev.js",
+    "build:bundle:prod": "webpack --config webpack.prod.js",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
     "build": "npm-run-all -l clean -p build:cjs build:esm build:css build:bundle declarations",
     "build:prod": "npm-run-all -l clean -p build:cjs build:esm build:css build:bundle:prod declarations",
@@ -60,6 +60,7 @@
     "jest": "^28.1.2",
     "npm-run-all": "^4.1.5",
     "style-loader": "^3.3.1",
+    "ts-node": "^10.8.2",
     "ts-jest": "^28.0.5",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.5",
@@ -92,7 +93,6 @@
     "fontawesome": "^5.6.3",
     "jest-environment-jsdom": "^28.1.2",
     "lodash.merge": "^4.6.2",
-    "nanoid": "^3.2.0",
-    "ts-node": "^10.8.2"
+    "nanoid": "^3.2.0"
   }
 }
