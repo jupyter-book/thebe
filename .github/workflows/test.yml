@@ -23,19 +23,17 @@ jobs:
       - name: 'Setup Node'
         uses: actions/setup-node@v1
         with:
-          node-version: '15'
+          node-version: '16'
 
       # Action Repo: https://github.com/actions/cache
       - name: 'Cache node_modules'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
 
       - name: 'Install'
-        run: npm ci
+        run: npm ci --include=dev --include=optional --include=peer
 
       - name:
         run: npm run lint
@@ -48,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
-        node_version: ['12', '14', '15']
+        node_version: ['12', '14', '16']
 
     steps:
       - name: 'Checkout repo'
@@ -62,12 +60,10 @@ jobs:
 
       # Action Repo: https://github.com/actions/cache
       - name: 'Cache node_modules'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
 
       - name: 'Install dependencies'
         run: |
