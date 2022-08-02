@@ -33,7 +33,7 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
 
       - name: 'Install'
-        run: npm ci
+        run: npm install
 
       - name:
         run: npm run lint
@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
-        node_version: ['14', '16', '18']
+        node_version: ['14', '16']
 
     steps:
       - name: 'Checkout repo'
@@ -67,7 +67,7 @@ jobs:
 
       - name: 'Install dependencies'
         run: |
-          npm ci
+          npm install
 
       - name: 'Build the library'
         run: |
