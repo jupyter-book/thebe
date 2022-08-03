@@ -1,6 +1,7 @@
-import type { BinderOptions, Options as CoreOptions } from 'thebe-core';
+import type { Options as CoreOptions } from 'thebe-core';
 import { ensureOptions as ensureCoreOptions } from 'thebe-core';
 import merge from 'lodash.merge';
+import JSON5 from 'json5';
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -30,7 +31,7 @@ export interface Options extends CoreOptions {
 }
 
 // options
-const _defaultOptions: Options = {
+export const _defaultOptions: Options = {
   ...ensureCoreOptions({ requestKernel: false }),
   bootstrap: false,
   preRenderHook: undefined,
@@ -56,7 +57,11 @@ const getKeyValue =
 
 export function mergeOptions(options: Partial<Options>): Options {
   const optionsOnPage = getPageConfig();
-  return merge(optionsOnPage, options);
+  return merge({}, optionsOnPage, options);
+}
+
+export function resetPageConfig() {
+  _pageConfigData = undefined;
 }
 
 export function getPageConfig(): Options {
@@ -71,19 +76,20 @@ export function getPageConfigValue(key: keyof Options) {
 
 export function ensurePageConfigLoaded() {
   if (!_pageConfigData) {
-    _pageConfigData = _defaultOptions;
+    _pageConfigData = { ..._defaultOptions };
     const elList = document.querySelectorAll("script[type='text/x-thebe-config']");
     elList.forEach((el) => {
       if (el.getAttribute('data-thebe-loaded')) return;
       el.setAttribute('data-thebe-loaded', 'true');
+      if (!el.textContent) return;
       let pageConfigFragment = undefined;
       try {
-        pageConfigFragment = eval(`(${el.textContent})`);
+        pageConfigFragment = JSON5.parse(el.textContent);
         if (pageConfigFragment) {
-          console.log('loading thebe config', pageConfigFragment);
+          console.debug('loading thebe config', pageConfigFragment);
           _pageConfigData = merge(_pageConfigData, pageConfigFragment);
         } else {
-          console.log('No thebeConfig found in ', el);
+          console.debug('No thebeConfig found in ', el);
         }
       } catch (e) {
         console.error('Error loading thebe config', e, el.textContent);

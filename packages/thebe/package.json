@@ -96,6 +96,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "json5": "^2.2.1",
     "thebe-core": "*"
   }
 }

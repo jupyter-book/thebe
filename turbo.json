@@ -23,12 +23,10 @@
     },
     "docs#py:deps": {},
     "test": {
-      "dependsOn": ["thebe#build"],
-      "outputs": [],
+      "outputs": ["build:thebe"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
     },
     "test:e2e": {
-      "dependsOn": ["thebe#build"],
       "outputs": [],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "e2e/**/*.ts", "e2e/**/*.tsx"]
     },

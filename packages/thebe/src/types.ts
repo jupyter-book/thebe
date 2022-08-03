@@ -1,7 +1,7 @@
 import type { CodeMirrorEditor } from '@jupyterlab/codemirror';
 import { ThebeNotebook, ThebeServer, ThebeSession } from 'thebe-core';
 import type { ActivateWidget } from './activate';
-import { ThebeEventCb } from './events';
+import { ThebeEventCb, ThebeEvents } from './events';
 import { Options } from './options';
 import type { KernelStatus } from './status';
 
@@ -15,6 +15,7 @@ interface thebe {
   session?: ThebeSession;
   kernelStatus?: KernelStatus;
   activateButton?: ActivateWidget;
+  events: ThebeEvents;
   trigger: ThebeEventCb;
   on: (event: string, cb: ThebeEventCb) => void;
   one: (event: string, cb: ThebeEventCb) => void;

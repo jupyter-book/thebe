@@ -4,8 +4,9 @@ export * from './types';
 export * from './thebe';
 export * from './utils';
 
-if (typeof window !== 'undefined') {
+if ((window as any) !== undefined) {
   window.thebe = { ...thebe };
+  window.thebelab = window.thebe;
 
   document.addEventListener('DOMContentLoaded', () => {
     const options = thebe.getPageConfig();

@@ -39,7 +39,7 @@ export class ThebeEvents {
   }
 }
 
-const events = new ThebeEvents();
+export const events = new ThebeEvents();
 
 export const trigger = function (event: string, evt: MessageCallbackArgs) {
   events.trigger.apply(events, [event, evt]);

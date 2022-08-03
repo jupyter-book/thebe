@@ -1,4 +1,3 @@
-import { ServerConnection } from '@jupyterlab/services';
 import {
   RequestServerSettings,
   BinderOptions,

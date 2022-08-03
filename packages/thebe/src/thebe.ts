@@ -1,6 +1,6 @@
 import 'codemirror/lib/codemirror.css';
 
-import { getPageConfig, mergeOptions } from './options';
+import { mergeOptions } from './options';
 import { CellDOMItem, findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
@@ -35,8 +35,15 @@ if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
 }
 
 export * from './render';
-export * from './options';
+export {
+  Options,
+  mergeOptions,
+  getPageConfig,
+  getPageConfigValue,
+  ensurePageConfigLoaded,
+} from './options';
 export * from './events';
+export * from './utils';
 
 export function mountStatusWidget() {
   window.thebe.kernelStatus = new KernelStatus();
@@ -50,7 +57,6 @@ export function mountActivateWidget() {
 
 function messageCallback({ id, subject, status, message }: MessageCallbackArgs) {
   events.trigger('status', { id, subject, status, message });
-  console.log(`[${subject}][${id}][${status}]: ${message}`);
 }
 
 /**
@@ -63,12 +69,11 @@ function messageCallback({ id, subject, status, message }: MessageCallbackArgs) 
  * Same structure as x-thebe-options.
  * @returns {Promise} Promise for connected Kernel object
  */
-export async function bootstrap(opts: Partial<Options>) {
+export async function bootstrap(opts: Partial<Options> = {}) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
-  window.thebe.options = mergeOptions(opts);
+  const options = mergeOptions(opts);
 
-  const { options } = window.thebe;
   if (options.preRenderHook) options.preRenderHook();
   if (options.stripPrompts) stripPrompts(options);
   if (options.stripOutputPrompts) stripOutputPrompts(options);
@@ -94,6 +99,7 @@ export async function bootstrap(opts: Partial<Options>) {
   }
 
   if (window.thebe) {
+    window.thebe.options = options;
     window.thebe.server = server;
     window.thebe.session = session;
     window.thebe.notebook = notebook;

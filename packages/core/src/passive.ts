@@ -49,7 +49,7 @@ class PassiveCellRenderer {
 
     const div = document.createElement('div');
     div.style.position = 'relative';
-    div.className = 'thebe-cell-renderer';
+    div.className = 'thebe-output';
     el.append(div);
 
     Widget.attach(this.area, div);
