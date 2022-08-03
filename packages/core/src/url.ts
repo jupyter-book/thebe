@@ -36,7 +36,7 @@ export function makeGitLabUrl(opts: BinderRequestOptions): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.gitlab);
   let binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   const repo = encodeURIComponent(
-    opts.repo.replace(/^(https?:\/\/)?gitlab.com\//, '').replace(/(^\/)|(\/?$)/g, '')
+    opts.repo.replace(/^(https?:\/\/)?gitlab.com\//, '').replace(/(^\/)|(\/?$)/g, ''),
   );
   return `${binderUrl}/build/gl/${repo}/${opts.ref}`;
 }

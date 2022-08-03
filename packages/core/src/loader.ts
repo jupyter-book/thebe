@@ -1,4 +1,4 @@
-const cdn = "https://cdn.jsdelivr.net/npm/";
+const cdn = 'https://cdn.jsdelivr.net/npm/';
 
 /**
  * Load a package using requirejs and return a promise
@@ -6,22 +6,20 @@ const cdn = "https://cdn.jsdelivr.net/npm/";
  * @param pkg Package name or names to load
  */
 function requirePromise(moduleName: string) {
-  return new Promise((resolve, reject) =>
-    window.requirejs([`${moduleName}`], resolve, reject)
-  );
+  return new Promise((resolve, reject) => window.requirejs([`${moduleName}`], resolve, reject));
 }
 
 function moduleNameToCDNUrl(moduleName: string, moduleVersion: string) {
   let packageName = moduleName;
-  let fileName = "index"; // default filename
+  let fileName = 'index'; // default filename
   // if a '/' is present, like 'foo/bar', packageName is changed to 'foo', and path to 'bar'
   // We first find the first '/'
-  let index = moduleName.indexOf("/");
-  if (index !== -1 && moduleName[0] === "@") {
+  let index = moduleName.indexOf('/');
+  if (index !== -1 && moduleName[0] === '@') {
     // if we have a namespace, it's a different story
     // @foo/bar/baz should translate to @foo/bar and baz
     // so we find the 2nd '/'
-    index = moduleName.indexOf("/", index + 1);
+    index = moduleName.indexOf('/', index + 1);
   }
   if (index !== -1) {
     fileName = moduleName.substr(index + 1);
@@ -61,13 +59,11 @@ async function requireFromCDN(moduleName: string, moduleVersion: string) {
 export async function requireLoader(
   moduleName: string,
   moduleVersion: string,
-  useCDNOnly: boolean = false
+  useCDNOnly: boolean = false,
 ): Promise<any> {
   if (window.requirejs === undefined) {
     console.error(`thebe:loader requirejs is undefined`);
-    throw new Error(
-      "Requirejs is needed, please ensure it is loaded on the page."
-    );
+    throw new Error('Requirejs is needed, please ensure it is loaded on the page.');
   }
   console.log(`thebe:loader loading ${moduleName}@${moduleVersion}`);
   if (useCDNOnly) {
@@ -86,9 +82,7 @@ export async function requireLoader(
         throw err;
       } else {
         // If it fails, try to load it from the CDN
-        console.debug(
-          `thebe:loader falling back to ${cdn} for ${moduleName}@${moduleVersion}`
-        );
+        console.debug(`thebe:loader falling back to ${cdn} for ${moduleName}@${moduleVersion}`);
         window.requirejs.undef(failedId);
         return requireFromCDN(moduleName, moduleVersion);
       }

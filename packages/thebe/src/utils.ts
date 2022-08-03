@@ -29,13 +29,13 @@ function splitCell(
   }: {
     inPrompt?: string;
     continuationPrompt?: string;
-  } = {}
+  } = {},
 ) {
-  let rawText = el.textContent?.trim() ?? '';
+  const rawText = el.textContent?.trim() ?? '';
   if (!inPrompt || rawText.indexOf(inPrompt) == -1) {
     return el;
   }
-  let listOfCellContents: string[] = [];
+  const listOfCellContents: string[] = [];
   let cellContents: string | null = null;
   rawText.split('\n').map((line) => {
     line = line.trim();
@@ -71,11 +71,11 @@ function splitCell(
 }
 
 function splitCellOutputPrompt(el: Element, { outPrompt }: { outPrompt?: string } = {}) {
-  let rawText = el.textContent?.trim() ?? '';
+  const rawText = el.textContent?.trim() ?? '';
   if (!outPrompt || rawText.indexOf(outPrompt) == -1) {
     return el;
   }
-  let listOfCellContents: string[] = [];
+  const listOfCellContents: string[] = [];
   let cellContents: string | null = null;
   rawText.split('\n').map((line) => {
     line = line.trim();

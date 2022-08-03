@@ -7,10 +7,10 @@ import {
   svgRendererFactory,
   imageRendererFactory,
   textRendererFactory,
-} from "@jupyterlab/rendermime";
-import { MathjaxOptions } from "./types";
-import { MathJaxTypesetter } from "@jupyterlab/mathjax2";
-import { rendererFactory as javascriptRendererFactory } from "@jupyterlab/javascript-extension";
+} from '@jupyterlab/rendermime';
+import { MathjaxOptions } from './types';
+import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
+import { rendererFactory as javascriptRendererFactory } from '@jupyterlab/javascript-extension';
 
 const EXTENDED_FACTORIES = [
   htmlRendererFactory,
@@ -28,11 +28,11 @@ export function getRenderers(mathjax: MathjaxOptions) {
   if (RENDERERS == null) {
     RENDERERS = EXTENDED_FACTORIES.filter((f) => {
       // filter out latex renderer if mathjax is unavailable
-      if (f.mimeTypes.indexOf("text/latex") >= 0) {
+      if (f.mimeTypes.indexOf('text/latex') >= 0) {
         if (mathjax.url) {
           return true;
         } else {
-          console.debug("thebe:getRenderers MathJax unavailable");
+          console.debug('thebe:getRenderers MathJax unavailable');
           return false;
         }
       } else {

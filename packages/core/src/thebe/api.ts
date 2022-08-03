@@ -2,12 +2,12 @@ import { MessageCallback } from '../messaging';
 import ThebeServer from '../server';
 import ThebeSession from '../session';
 import ThebeNotebook, { CodeBlock } from '../notebook';
-import { MathjaxOptions, Options } from '../types';
+import { Options } from '../types';
 import { ensureOptions } from '../options';
 
 export async function connect(
   options: Partial<Options>,
-  messages?: MessageCallback
+  messages?: MessageCallback,
 ): Promise<{ server: ThebeServer; session?: ThebeSession }> {
   const opts = ensureOptions(options);
   let server: ThebeServer;
@@ -36,7 +36,7 @@ export async function connect(
 export function setupNotebook(
   blocks: CodeBlock[],
   options: Partial<Options>,
-  messages?: MessageCallback
+  messages?: MessageCallback,
 ) {
   const { mathjaxUrl, mathjaxConfig } = ensureOptions(options);
   return ThebeNotebook.fromCodeBlocks(blocks, { url: mathjaxUrl, config: mathjaxConfig }, messages);

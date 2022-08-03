@@ -20,7 +20,7 @@ export function updateLastUsedTimestamp(savedSession: SavedSessionOptions, url: 
 export function saveServerInfo(
   savedSession: SavedSessionOptions,
   url: string,
-  serverSettings: BasicServerSettings
+  serverSettings: BasicServerSettings,
 ) {
   try {
     // save the current connection url+token to reuse later
@@ -29,7 +29,7 @@ export function saveServerInfo(
       JSON.stringify({
         ...serverSettings,
         lastUsed: new Date(),
-      })
+      }),
     );
   } catch (e) {
     // storage quota full, gently ignore nonfatal error
@@ -39,7 +39,7 @@ export function saveServerInfo(
 
 export async function getExistingServer(
   { savedSession }: BinderOptions,
-  url: string
+  url: string,
 ): Promise<ServerInfo | null> {
   if (!savedSession.enabled) return null;
   const storageKey = makeStorageKey(savedSession.storagePrefix, url);
@@ -56,7 +56,7 @@ export async function getExistingServer(
   let ageSeconds = (now.getTime() - lastUsed.getTime()) / 1000;
   if (ageSeconds > savedSession.maxAge) {
     console.debug(
-      `thebe:getExistingServer Not using expired binder session for ${existingServer.url} from ${lastUsed}`
+      `thebe:getExistingServer Not using expired binder session for ${existingServer.url} from ${lastUsed}`,
     );
     window.localStorage.removeItem(storageKey);
     return null;
@@ -67,7 +67,7 @@ export async function getExistingServer(
   } catch (err) {
     console.debug(
       'thebe:getExistingServer Saved binder connection appears to be invalid, requesting new session',
-      err
+      err,
     );
     window.localStorage.removeItem(storageKey);
     return null;
@@ -76,7 +76,7 @@ export async function getExistingServer(
   // refresh lastUsed timestamp in stored info
   updateLastUsedTimestamp(savedSession, existingServer.id);
   console.debug(
-    `thebe:getExistingServer Saved binder session is valid, reusing connection to ${existingServer.url}`
+    `thebe:getExistingServer Saved binder session is valid, reusing connection to ${existingServer.url}`,
   );
 
   return existingServer;

@@ -19,6 +19,8 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
+    "lint:format": "turbo run lint:format",
+    "lint:format:fix": "turbo run lint:format:fix",
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
     "start": "turbo run start --filter=demo"

@@ -1,4 +1,4 @@
-import { MathjaxOptions, Options, ThebeContext } from './types';
+import { MathjaxOptions } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { ThebeManager, WIDGET_MIMETYPE } from './manager';
 import ThebeSession from './session';
@@ -17,7 +17,7 @@ class ThebeCell extends PassiveCellRenderer {
     notebookId: string,
     source: string,
     mathjaxOptions: MathjaxOptions,
-    messages?: MessageCallback
+    messages?: MessageCallback,
   ) {
     super(id, mathjaxOptions);
     this.id = id;

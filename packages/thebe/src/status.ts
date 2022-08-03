@@ -20,13 +20,21 @@ export class KernelStatus {
       if (field) {
         switch (status) {
           case ServerStatus.launching:
+            field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Launching...';
+            break;
           case ServerStatus.failed:
+            field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Failed to connect to server';
+            break;
           case ServerStatus.closed:
+            field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Server connection closed';
+            break;
           case SessionStatus.dead:
+            field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Session is dead';
+            break;
           case SessionStatus.starting:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Starting session';

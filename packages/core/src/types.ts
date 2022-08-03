@@ -15,12 +15,6 @@ export interface ServerInfo {
   specs: KernelSpecAPI.ISpecModels;
 }
 
-export interface ThebeContext {
-  servers: Record<string, ThebeServer>;
-  kernels: Record<string, ThebeSession>;
-  notebooks: Record<string, ThebeNotebook>;
-}
-
 export interface Options {
   mathjaxUrl?: string;
   mathjaxConfig?: string;

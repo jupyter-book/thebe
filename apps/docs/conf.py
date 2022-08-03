@@ -18,15 +18,18 @@ extensions = ['sphinx.ext.mathjax',
               'sphinx_js',
               'myst_parser']
 
-# sphinx-js config
+# sphinx-js configw
 path_root = Path(__file__).parent.parent.parent
+js_language = 'typescript'
 primary_domain = 'js'
-js_source_path = f'{path_root}/packages/thebe/src'
+js_source_path = f'{path_root}/packages/thebe'
+# jsdoc_config_path = f'{path_root}/packages/thebe/tsconfig.json'
+# print("js_source_path", js_source_path)
 
-# Add any paths that contain templates here, relative to this directory.
+# Add any paths that contain templates here, relative to this directory.root_for_relative_js_paths
 templates_path = ['_templates']
 
-# The suffix(es) of source filenames.
+# The suffix(es) of source filenames.root_for_relative_js_paths
 # You can specify multiple suffix as a list of string:
 #
 source_suffix = ['.rst', '.md']
@@ -172,9 +175,10 @@ if os.environ.get('READ_THE_DOCS'):
     # setup the build environment on RTD
     node_modules_bin = f'{path_root}/node_modules/.bin/';
     os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
-    run(["npm", "install", "yarn", "jsdoc"], cwd=path_root)
+    run(["npm", "install", "yarn", "jsdoc", "typedoc"], cwd=path_root)
     run(["yarn", "--version"], cwd=path_root)
     run(["jsdoc", "--version"], cwd=path_root)
+    run(["typedoc", "--version"], cwd=path_root)
 
 if not Path("_static/lib").exists():
     print("Local `thebe` not found, building...")

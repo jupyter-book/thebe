@@ -10,11 +10,13 @@
   "author": "",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "jsdoc": "^3.6.7"
+    "jsdoc": "^3.6.7",
+    "typedoc": "^0.23.8"
   },
   "workspaces": {
     "nohoist": [
-      "jsdoc"
+      "jsdoc",
+      "typedoc"
     ]
   },
   "dependencies": {}

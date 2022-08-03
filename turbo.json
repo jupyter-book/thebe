@@ -33,6 +33,12 @@
     "lint": {
       "outputs": []
     },
+    "lint:format": {
+      "outputs": []
+    },
+    "lint:format:fix": {
+      "outputs": []
+    },
     "deploy": {
       "dependsOn": ["build", "test", "lint"],
       "outputs": []

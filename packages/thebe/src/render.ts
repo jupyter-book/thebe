@@ -53,7 +53,7 @@ function buildButton(
   classSlug: string,
   text: string,
   title: string,
-  onClickCb?: () => void
+  onClickCb?: () => void,
 ) {
   const btn = document.createElement('button');
   btn.classList.add('thebe-button', `thebe-${classSlug}-button`);
@@ -101,7 +101,7 @@ function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, e
   const mode = sourceEl.getAttribute('data-language') || 'python';
   const isReadOnly = Boolean(sourceEl.getAttribute('data-readonly'));
   console.debug(
-    `thebe:setupCodemirror source: ${cell.source.slice(0, 50) ?? 'no source code found'}...`
+    `thebe:setupCodemirror source: ${cell.source.slice(0, 50) ?? 'no source code found'}...`,
   );
   console.debug(`thebe:setupCodemirror mode: ${mode}`);
   console.debug(`thebe:setupCodemirror isReadOnly: ${isReadOnly}`);
@@ -121,7 +121,7 @@ function setupCodemirror(options: Options, item: CellDOMItem, cell: ThebeCell, e
 
   function codeCompletion() {
     console.debug(`thebe:codemirror:codeCompletion`);
-    let code = ref.cm?.getValue();
+    const code = ref.cm?.getValue();
     const cursor = ref.cm?.getDoc().getCursor();
     if (cell.session?.kernel) {
       cell.session?.kernel
@@ -189,7 +189,7 @@ function buildCellUI(
   options: Options,
   item: CellDOMItem,
   notebook: ThebeNotebook,
-  cell: ThebeCell
+  cell: ThebeCell,
 ) {
   console.debug(`thebe:buildCellUI CellId:${item.id}`);
   const box = document.createElement('div');
@@ -249,7 +249,7 @@ function buildCellUI(
         // TODO return the cell id along with the each promise
         await notebook.executeAll();
         notebook.cells?.forEach(({ id }) => clearButtonsBusy(id));
-      }
+      },
     );
   }
 

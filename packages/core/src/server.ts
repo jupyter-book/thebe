@@ -73,7 +73,7 @@ class ThebeServer {
   async fetchKernelNames() {
     if (!this.sessionManager) return { default: 'python', kernelSpecs: {} };
     return KernelSpecAPI.getSpecs(
-      ServerConnection.makeSettings(this.sessionManager.serverSettings)
+      ServerConnection.makeSettings(this.sessionManager.serverSettings),
     );
   }
 
@@ -81,7 +81,7 @@ class ThebeServer {
     const url = this.sessionManager?.serverSettings?.baseUrl;
     if (url)
       window.localStorage.removeItem(
-        makeStorageKey(options.binderOptions.savedSession.storagePrefix, url)
+        makeStorageKey(options.binderOptions.savedSession.storagePrefix, url),
       );
   }
 
@@ -91,7 +91,7 @@ class ThebeServer {
    */
   static async connectToJupyterServer(
     options: Options,
-    messages?: MessageCallback
+    messages?: MessageCallback,
   ): Promise<ThebeServer> {
     const id = nanoid();
     const serverSettings = ServerConnection.makeSettings(options.kernelOptions.serverSettings);
@@ -105,7 +105,10 @@ class ThebeServer {
       message: `Created KernelManager: ${serverSettings.baseUrl}`,
     });
 
-    const sessionManager = new SessionManager({ kernelManager, serverSettings });
+    const sessionManager = new SessionManager({
+      kernelManager,
+      serverSettings,
+    });
     messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
@@ -142,7 +145,7 @@ class ThebeServer {
 
     console.debug(
       'thebe:api:connectToJupyterLiteServer:serverSettings:',
-      serviceManager.serverSettings
+      serviceManager.serverSettings,
     );
 
     const sessionManager = serviceManager.sessions;
@@ -176,7 +179,7 @@ class ThebeServer {
    */
   static async connectToServerViaBinder(
     options: Options,
-    messages?: MessageCallback
+    messages?: MessageCallback,
   ): Promise<ThebeServer> {
     const { binderOptions } = options;
     // request new server
@@ -224,7 +227,10 @@ class ThebeServer {
         if (settings) {
           const serverSettings = ServerConnection.makeSettings(settings);
           let kernelManager = new KernelManager({ serverSettings });
-          const sessionManager = new SessionManager({ kernelManager, serverSettings });
+          const sessionManager = new SessionManager({
+            kernelManager,
+            serverSettings,
+          });
           return new ThebeServer(existing.id, sessionManager, messages);
         }
       }
@@ -286,12 +292,15 @@ class ThebeServer {
 
             const serverSettings = ServerConnection.makeSettings(settings);
             let kernelManager = new KernelManager({ serverSettings });
-            const sessionManager = new SessionManager({ kernelManager, serverSettings });
+            const sessionManager = new SessionManager({
+              kernelManager,
+              serverSettings,
+            });
 
             if (binderOptions.savedSession.enabled) {
               saveServerInfo(binderOptions.savedSession, url, settings);
               console.debug(
-                `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`
+                `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`,
               );
             }
 

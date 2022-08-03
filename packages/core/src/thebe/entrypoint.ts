@@ -6,7 +6,7 @@
 import ThebeServer from '../server';
 import ThebeSession from '../session';
 import ThebeNotebook, { CodeBlock } from '../notebook';
-import { Options, ThebeContext } from '../types';
+import { Options } from '../types';
 import { connect, setupNotebook } from './api';
 
 import '@jupyterlab/theme-light-extension/style/theme.css';

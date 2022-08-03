@@ -1,6 +1,6 @@
 import { requireLoader } from './loader';
 import { DocumentRegistry } from '@jupyterlab/docregistry';
-import { INotebookModel } from '@jupyterlab/notebook';
+import type { INotebookModel } from '@jupyterlab/notebook';
 
 import * as LuminoWidget from '@lumino/widgets';
 
@@ -49,7 +49,7 @@ export class ThebeManager extends JupyterLabManager {
         mimeTypes: [WIDGET_MIMETYPE],
         createRenderer: (options) => new WidgetRenderer(options, this),
       },
-      0
+      0,
     );
   }
 
@@ -81,7 +81,7 @@ export class ThebeManager extends JupyterLabManager {
   async loadClass(
     className: string,
     moduleName: string,
-    moduleVersion: string
+    moduleVersion: string,
   ): Promise<typeof base.WidgetModel | typeof base.WidgetView> {
     console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
     if (
@@ -104,7 +104,7 @@ export class ThebeManager extends JupyterLabManager {
         return module[className];
       } else {
         console.error(
-          `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`
+          `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`,
         );
         throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
       }

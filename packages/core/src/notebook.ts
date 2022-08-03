@@ -26,7 +26,7 @@ class ThebeNotebook {
   static fromCodeBlocks(
     blocks: CodeBlock[],
     mathjaxOptions: MathjaxOptions,
-    messages?: MessageCallback
+    messages?: MessageCallback,
   ) {
     const id = nanoid();
     const notebook = new ThebeNotebook(id, messages);
@@ -107,7 +107,7 @@ class ThebeNotebook {
 
   async executeUpTo(
     cellId: string,
-    preprocessor?: (s: string) => string
+    preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
     if (!this.cells) return [];
     this.message({
@@ -128,7 +128,7 @@ class ThebeNotebook {
 
   async executeOnly(
     cellId: string,
-    preprocessor?: (s: string) => string
+    preprocessor?: (s: string) => string,
   ): Promise<ExecuteReturn | null> {
     if (!this.cells) return null;
     this.message({
@@ -147,7 +147,7 @@ class ThebeNotebook {
 
   async executeCells(
     cellIds: string[],
-    preprocessor?: (s: string) => string
+    preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
     if (!this.cells) return [];
     this.message({
@@ -163,7 +163,7 @@ class ThebeNotebook {
     });
 
     let result = Promise.all(
-      cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source))
+      cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
     );
 
     this.message({
