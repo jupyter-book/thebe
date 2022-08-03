@@ -73,11 +73,12 @@ jobs:
           python-version: 3.9
 
       - name: 'Run tests'
+        shell: bash -l {0}
         run: |
-          conda activate jupyter-server
           npm run test
 
       - name: 'Run e2e tests'
+        shell: bash -l {0}
         run: |
           npm run test:e2e
 
