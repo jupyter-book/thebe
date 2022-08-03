@@ -74,6 +74,7 @@ jobs:
 
       - name: 'Run tests'
         run: |
+          conda activate jupyter-server
           npm run test
 
       - name: 'Run e2e tests'
