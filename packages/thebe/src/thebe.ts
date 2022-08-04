@@ -1,7 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 
 import { mergeOptions } from './options';
-import { CellDOMItem, findCells, renderAllCells } from './render';
+import { CellDOMItem, CellDOMPlaceholder, findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
 import { ActivateWidget } from './activate';
@@ -73,6 +73,7 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
   const options = mergeOptions(opts);
+  console.log(options);
 
   if (options.preRenderHook) options.preRenderHook();
   if (options.stripPrompts) stripPrompts(options);
@@ -81,7 +82,7 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   const { server, session } = await connect(options, messageCallback);
 
   const { selector, outputSelector } = options;
-  const items: CellDOMItem[] = findCells(selector, outputSelector);
+  const items: CellDOMPlaceholder[] = findCells(selector, outputSelector);
 
   const codeWithIds = items.map(({ id, placeholders: { source: el } }) => {
     return { id, source: el.textContent?.trim() ?? '' };

@@ -57,7 +57,11 @@ const getKeyValue =
 
 export function mergeOptions(options: Partial<Options>): Options {
   const optionsOnPage = getPageConfig();
-  return merge({}, optionsOnPage, options);
+  const merged = merge({}, optionsOnPage, options);
+  if (!merged.codeMirrorConfig && (merged.binderOptions as any).codeMirrorConfig) {
+    merged.codeMirrorConfig = (merged.binderOptions as any).codeMirrorConfig;
+  }
+  return merged;
 }
 
 export function resetPageConfig() {

@@ -3,7 +3,15 @@
  * https://jestjs.io/docs/en/configuration.html
  */
 
+const ts_preset = require('ts-jest/jest-preset');
+const puppeteer_preset = require('jest-puppeteer/jest-preset');
+
 module.exports = {
+  globals: {
+    'ts-jest': {
+      tsconfig: './tsconfig.test.json',
+    },
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -93,7 +101,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: "jest-puppeteer",
+  preset: './jest.e2e.preset',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -146,7 +154,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/e2e/?(*.)+(spec|test).[tj]s?(x)"],
+  testMatch: ['**/e2e/?(*.)+(spec|test).ts'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -171,7 +179,7 @@ module.exports = {
   // A map from regular expressions to paths to transformers
   transform: {
     // "^.+\\.js?$": "babel-jest",
-    "^.+\\.html?$": "html-loader-jest",
+    '^.+\\.html?$': 'html-loader-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
