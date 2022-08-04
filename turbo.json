@@ -18,7 +18,7 @@
       "dependsOn": ["build:prod"]
     },
     "docs#build": {
-      "dependsOn": ["^build", "docs#py:deps"],
+      "dependsOn": ["build:prod", "docs#py:deps"],
       "outputs": ["_build/**"]
     },
     "docs#py:deps": {},

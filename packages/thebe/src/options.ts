@@ -32,7 +32,7 @@ export interface Options extends CoreOptions {
 
 // options
 export const _defaultOptions: Options = {
-  ...ensureCoreOptions({ requestKernel: false }),
+  ...ensureCoreOptions({ requestKernel: false, useBinder: true }),
   bootstrap: false,
   preRenderHook: undefined,
   stripPrompts: undefined,

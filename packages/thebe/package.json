@@ -82,6 +82,7 @@
     "core-js": "^3.6.5",
     "css-loader": "^5.0.0",
     "eslint-config-thebe": "*",
+    "eventsource": "^2.0.2",
     "file-loader": "^6.1.1",
     "html-loader-jest": "^0.2.1",
     "htmlparser2": "^6.1.0",

@@ -7,6 +7,14 @@ describe('options', () => {
     document.body.innerHTML = '';
     resetPageConfig();
   });
+  describe('default options', () => {
+    test('in thebe, requestKernel is default false', () => {
+      expect(_defaultOptions.requestKernel).toEqual(false);
+    });
+    test('in thebe, useBinder is default true', () => {
+      expect(_defaultOptions.useBinder).toEqual(true);
+    });
+  });
   describe('getPageConfig', () => {
     test.skip('no page config', () => {
       expect(getPageConfig()).toEqual(_defaultOptions);
@@ -15,7 +23,7 @@ describe('options', () => {
       const el = appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       );
       el.textContent = '';
       expect(getPageConfig()).toEqual(_defaultOptions);
@@ -24,7 +32,7 @@ describe('options', () => {
       const el = appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       );
       el.textContent = '{}';
       const cfg = getPageConfig();
@@ -35,7 +43,7 @@ describe('options', () => {
       const el = appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       );
       el.textContent = '{ bootstrap: true }';
       const cfg = getPageConfig();
@@ -45,13 +53,13 @@ describe('options', () => {
       const el1 = appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       );
       el1.textContent = '{ bootstrap: true }';
       appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       ).textContent = '{ useJupyterLite: true }';
 
       const cfg = getPageConfig();
@@ -80,7 +88,7 @@ describe('options', () => {
       const el = appendElementToBody(
         'script',
         { name: 'type', value: 'text/x-thebe-config' },
-        null
+        null,
       );
       el.textContent = '{ selector: "pre" }';
 
