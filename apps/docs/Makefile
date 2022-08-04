@@ -39,12 +39,12 @@ clean-js:
 	rm -rf _static/lib
 
 js: clean-js
-	cd ..; npm ci; yarn build:prod
-	cp -R ../lib _static/lib
+	cd ../..; npm ci; npm run build:prod
+	cp -R ../../packages/thebe/lib _static/lib
 
 js-dev: clean-js
-	cd ..; npm ci; yarn build
-	cp -R ../lib _static/lib
+	cd ../..; npm ci; npm run build
+	cp -R ../../packages/thebe/lib _static/lib
 
 show:
 	@python -c "import webbrowser; webbrowser.open_new_tab('file://$(PWD)/_build/html/index.html')"

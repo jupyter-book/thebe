@@ -5,7 +5,9 @@
   "main": "''",
   "scripts": {
     "py:deps": "pip install -r doc-requirements.txt",
-    "build": "make html"
+    "build:js": "make js",
+    "build:html": "make html",
+    "build": "make js html"
   },
   "author": "",
   "license": "BSD-3-Clause",

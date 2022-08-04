@@ -14,7 +14,6 @@ Thebe
    config_reference
    howto/initialize_cells
    contribute
-   api
 
 `Thebe <https://github.com/executablebooks/thebe>`_ turns your static HTML pages
 into interactive ones, powered by a kernel. It is the evolution of the

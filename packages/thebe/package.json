@@ -4,6 +4,10 @@
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "displayName": "Child Package"
+  },
   "scripts": {
     "clean": "rm -rf ./lib",
     "build:bundle": "webpack --mode development --devtool inline-source-map --progress --color",

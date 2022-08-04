@@ -15,16 +15,9 @@ from pathlib import Path
 # ones.
 extensions = ['sphinx.ext.mathjax',
               'sphinx_copybutton',
-              'sphinx_js',
               'myst_parser']
 
-# sphinx-js configw
 path_root = Path(__file__).parent.parent.parent
-js_language = 'typescript'
-primary_domain = 'js'
-js_source_path = f'{path_root}/packages/thebe'
-# jsdoc_config_path = f'{path_root}/packages/thebe/tsconfig.json'
-# print("js_source_path", js_source_path)
 
 # Add any paths that contain templates here, relative to this directory.root_for_relative_js_paths
 templates_path = ['_templates']
