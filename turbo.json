@@ -10,15 +10,15 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "lib/**"]
     },
-    "build:prod": {
-      "dependsOn": ["^build:prod"],
+    "build:dev": {
+      "dependsOn": ["^build:dev"],
       "outputs": ["dist/**", "lib/**"]
     },
     "build:publish": {
-      "dependsOn": ["build:prod"]
+      "dependsOn": ["build"]
     },
     "docs#build": {
-      "dependsOn": ["build:prod", "docs#py:deps"],
+      "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
       "outputs": ["_build/**"]
     },
     "docs#py:deps": {},

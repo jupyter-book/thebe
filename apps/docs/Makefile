@@ -17,12 +17,7 @@ help:
 .PHONY: js help Makefile
 
 package.json:
-	yarn ls
-
-# npm-ci: package.json
-# 	# package.json updated, refresh lock with npm install
-# 	npm ci
-# 	touch $@
+	npm ls
 
 $(JSDOC):
 	npm ci
@@ -39,7 +34,7 @@ clean-js:
 	rm -rf _static/lib
 
 js: clean-js
-	cd ../..; npm ci; npm run build:prod
+	cd ../..; npm ci; npm run build
 	cp -R ../../packages/thebe/lib _static/lib
 
 js-dev: clean-js
