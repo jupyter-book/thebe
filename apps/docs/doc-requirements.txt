@@ -1,6 +1,5 @@
 sphinx_copybutton
 sphinx_book_theme
-sphinx-js
 sphinx>2
 myst_parser
 markupsafe==2.0.1
