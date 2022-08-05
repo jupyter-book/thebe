@@ -53,7 +53,7 @@ jobs:
 
       - name: 'Build the library'
         run: |
-          npm run build:prod
+          npm run build
 
       - name: Cache conda
         uses: actions/cache@v3
