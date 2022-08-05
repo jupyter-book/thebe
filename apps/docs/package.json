@@ -7,7 +7,7 @@
     "py:deps": "pip install -r doc-requirements.txt",
     "build:js": "make js",
     "build:html": "make html",
-    "build": "make html"
+    "docs": "make html"
   },
   "author": "",
   "license": "BSD-3-Clause",

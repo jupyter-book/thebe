@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npx ts-node ./bin/buildLiteDemo.ts; webpack --config webpack.dev.js",
+    "demo": "npx ts-node ./bin/buildLiteDemo.ts; webpack --config webpack.dev.js",
     "start": "webpack serve --open --config webpack.dev.js"
   },
   "keywords": [

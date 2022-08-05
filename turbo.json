@@ -17,7 +17,11 @@
     "build:publish": {
       "dependsOn": ["build"]
     },
-    "docs#build": {
+    "demo": {
+      "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
+      "outputs": ["_build/**"]
+    },
+    "docs": {
       "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
       "outputs": ["_build/**"]
     },

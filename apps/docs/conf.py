@@ -169,13 +169,16 @@ if os.environ.get('READ_THE_DOCS'):
     node_modules_bin = f'{path_root}/node_modules/.bin/';
     os.environ['PATH'] = f'{node_modules_bin}:' + os.environ["PATH"]
     run(["npm", "install", "jsdoc", "typedoc"], cwd=path_root)
-    run(["jsdoc", "--version"], cwd=path_root)
-    run(["typedoc", "--version"], cwd=path_root)
-
-if not Path("_static/lib").exists():
     print("Local `thebe` not found, building...")
     run(["npm", "install"], cwd=path_root)
-    run(["npm", "run build"], cwd=path_root)
+    run(["npm", "run", "build"], cwd=path_root)
+    if not Path("_static/lib").exists():
+        print("Local `thebe` not found, building...")
+        run(["npm", "install"], cwd=path_root)
+        run(["npm", "run", "build"], cwd=path_root)
+
+if not Path("_static/lib").exists():
+    print("Local `thebe` not found, copying...")
     sh.copytree(f"{path_root}/packages/thebe/lib", "_static/lib")
     print("Finished building local `thebe` (production) bundle.")
 else:
