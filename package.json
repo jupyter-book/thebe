@@ -23,7 +23,8 @@
     "lint:format:fix": "turbo run lint:format:fix",
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
-    "start": "turbo run start --filter=demo"
+    "start:thebe": "turbo run start --filter=demo",
+    "start:core": "turbo run start --filter=demo-core"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,6 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "start": {
-      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "build": {
@@ -18,8 +17,8 @@
       "dependsOn": ["build"]
     },
     "demo": {
-      "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
-      "outputs": ["_build/**"]
+      "dependsOn": ["thebe#build", "thebe-core#build"],
+      "outputs": ["dist/**"]
     },
     "docs": {
       "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
