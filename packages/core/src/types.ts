@@ -16,6 +16,7 @@ export interface ServerInfo {
 }
 
 export interface Options {
+  id?: string;
   mathjaxUrl?: string;
   mathjaxConfig?: string;
   useBinder: boolean;

@@ -93,7 +93,7 @@ class ThebeServer {
     options: Options,
     messages?: MessageCallback,
   ): Promise<ThebeServer> {
-    const id = nanoid();
+    const id = options.id ?? nanoid();
     const serverSettings = ServerConnection.makeSettings(options.kernelOptions.serverSettings);
     console.debug('thebe:api:connectToJupyterServer:serverSettings:', serverSettings);
 
@@ -133,8 +133,11 @@ class ThebeServer {
    * Connect to Jupyterlite Server
    *
    */
-  static async connectToJupyterLiteServer(messages?: MessageCallback): Promise<ThebeServer> {
-    const id = nanoid();
+  static async connectToJupyterLiteServer(
+    options?: { id?: string },
+    messages?: MessageCallback,
+  ): Promise<ThebeServer> {
+    const id = options?.id ?? nanoid();
     const serviceManager = await startJupyterLiteServer(messages);
     messages?.({
       subject: MessageSubject.server,
@@ -183,7 +186,7 @@ class ThebeServer {
   ): Promise<ThebeServer> {
     const { binderOptions } = options;
     // request new server
-    const id = nanoid();
+    const id = options.id ?? nanoid();
     console.debug('thebe:server:connectToServerViaBinder binderUrl:', binderOptions.binderUrl);
     messages?.({
       subject: MessageSubject.server,

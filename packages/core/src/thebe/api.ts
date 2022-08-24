@@ -16,7 +16,7 @@ export async function connect(
     server = await ThebeServer.connectToServerViaBinder(opts, messages);
   } else if (options.useJupyterLite) {
     console.debug(`thebe:api:connect JupyterLite`, options);
-    server = await ThebeServer.connectToJupyterLiteServer(messages);
+    server = await ThebeServer.connectToJupyterLiteServer({}, messages);
   } else {
     server = await ThebeServer.connectToJupyterServer(opts, messages);
   }

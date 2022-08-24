@@ -27,8 +27,9 @@ class ThebeNotebook {
     blocks: CodeBlock[],
     mathjaxOptions: MathjaxOptions,
     messages?: MessageCallback,
+    externalId?: string,
   ) {
-    const id = nanoid();
+    const id = externalId ?? nanoid();
     const notebook = new ThebeNotebook(id, messages);
     notebook.cells = blocks.map((c) => {
       const cell = new ThebeCell(c.id, id, c.source, mathjaxOptions);
