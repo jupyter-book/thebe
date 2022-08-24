@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "demo-thebe",
   "version": "1.0.0",
   "description": "Minimal demo for thebe",
   "main": "dist/cjs/index.js",
@@ -17,7 +17,7 @@
   "private": true,
   "author": "Steve Purves",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "copyfiles": "^2.4.1",
     "http-server": "^14.1.1"
   }

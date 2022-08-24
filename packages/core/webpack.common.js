@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 
 const shimJS = path.resolve(__dirname, 'src', 'empty.js');
@@ -9,19 +8,12 @@ function shim(regExp) {
 
 module.exports = {
   optimization: {
-    usedExports: true,
+    usedExports: false,
   },
   entry: {
     app: './src/thebe/entrypoint.ts',
   },
-  plugins: [
-    shim(/\.(svg|ttf|eot|woff2|woff)/),
-    new HtmlWebpackPlugin({
-      title: 'thebe-core',
-      template: 'demo/index.html',
-    }),
-    new DefinePlugin({ 'process.env': {} }),
-  ],
+  plugins: [shim(/\.(svg|ttf|eot|woff2|woff)/), new DefinePlugin({ 'process.env': {} })],
   output: {
     filename: 'thebe-core.min.js',
     path: path.resolve(__dirname, 'dist', 'lib'),

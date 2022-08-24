@@ -48,9 +48,6 @@
   "author": "Steve Purves",
   "license": "MIT",
   "devDependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
-    "@jupyterlite/server": "0.1.0-beta.10",
-    "@jupyterlite/server-extension": "0.1.0-beta.10",
     "chalk": "4.1.2",
     "concurrently": "^7.0.0",
     "copy-webpack-plugin": "^10.2.4",
@@ -62,6 +59,7 @@
     "http-server": "^14.1.0",
     "ignore-loader": "^0.1.2",
     "jest": "^28.1.2",
+    "jest-environment-jsdom": "^28.1.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "style-loader": "^3.3.1",
@@ -73,11 +71,6 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.7.4",
     "webpack-merge": "^5.8.0"
-  },
-  "peerDependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
-    "@jupyterlite/server": "0.1.0-beta.10",
-    "@jupyterlite/server-extension": "0.1.0-beta.10"
   },
   "dependencies": {
     "@jupyter-widgets/base": "^4.0.0",
@@ -91,12 +84,14 @@
     "@jupyterlab/services": "^6.2.8",
     "@jupyterlab/testutils": "^3.4.3",
     "@jupyterlab/theme-light-extension": "^3.2.9",
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
+    "@jupyterlite/server": "0.1.0-beta.10",
+    "@jupyterlite/server-extension": "0.1.0-beta.10",
     "@lumino/widgets": "^1.31.1",
     "@reduxjs/toolkit": "^1.7.1",
     "@types/jest": "^28.1.4",
     "@types/lodash.merge": "^4.6.6",
     "fontawesome": "^5.6.3",
-    "jest-environment-jsdom": "^28.1.2",
     "lodash.merge": "^4.6.2",
     "nanoid": "^3.2.0"
   }

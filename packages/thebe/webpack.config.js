@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const FailOnErrorsPlugin = require('fail-on-errors-webpack-plugin');
 
 const shimJS = path.resolve(__dirname, 'src', 'emptyshim.js');
 function shim(regExp) {
@@ -8,13 +9,13 @@ function shim(regExp) {
 const pkg = require('./package.json');
 
 module.exports = (env, argv) => {
-  let publicPath = '_static/lib/';
-  if (process.env.NODE_PREPUBLISH) {
-    publicPath = 'https://unpkg.com/thebe@' + pkg.version + '/lib/';
-  } else if (argv.mode === 'development') {
-    publicPath = '../lib/';
-  }
-  console.log('Public Path set to', publicPath);
+  // let publicPath = '_static/lib/';
+  // if (process.env.NODE_PREPUBLISH) {
+  //   publicPath = 'https://unpkg.com/thebe@' + pkg.version + '/lib/';
+  // } else if (argv.mode === 'development') {
+  //   publicPath = '../lib/';
+  // }
+  // console.log('Public Path set to', publicPath);
 
   return {
     mode: 'development',
@@ -23,14 +24,21 @@ module.exports = (env, argv) => {
     output: {
       filename: 'index.js',
       path: path.resolve(__dirname, 'lib'),
-      publicPath,
+      publicPath: 'auto',
     },
     plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1,
+      }),
+      new FailOnErrorsPlugin({
+        failOnErrors: true,
+        failOnWarnings: false,
+      }),
       // Not using moment
       shim(/moment/),
       // Don't need vim keymap
-      shim(/codemirror\/keymap\/vim/),
-      shim(/codemirror\/addon\/search/),
+      // shim(/codemirror\/keymap\/vim/),
+      // shim(/codemirror\/addon\/search/),
       // shim out some unused packages
       shim(/elliptic/),
       shim(/bn\.js/),
@@ -45,17 +53,17 @@ module.exports = (env, argv) => {
       // shim(/lodash/),
       // shim(/@lumino\/coreutils\/lib\/random/),
       // shim out some unused lumino
-      shim(
-        /@lumino\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/
-      ),
-      shim(/@lumino\/collections\/lib\/(bplustree).*/),
-      shim(/@lumino\/(dragdrop|commands).*/),
+      // shim(
+      //   /@lumino\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/,
+      // ),
+      // shim(/@lumino\/collections\/lib\/(bplustree).*/),
+      // shim(/@lumino\/dragdrop.*/),
 
       // unused @jupyterlab
       // shim(/@jupyterlab\/apputils/),
-      shim(
-        /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainmenu|thememanager|toolbar)/
-      ),
+      // shim(
+      //   /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainmenu|thememanager|toolbar)/,
+      // ),
       // shim(/@jupyterlab\/ui-components/),
       // shim(/@jupyterlab\/apputils\/style\/.*/),
 
@@ -63,12 +71,12 @@ module.exports = (env, argv) => {
       // but not so trival to shim
       // we only need CodeMirrorEditor.defaultConfig to be defined, as far as I can tell
       // shim(/@jupyterlab\/codemirror\/lib\/editor/),
-      shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
-      shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
-      shim(/@jupyterlab\/services\/lib\/(contents|terminal)\/.*/),
-      shim(/@jupyterlab\/statusbar\/.*/),
-      shim(/@jupyterlab\/theme-light-extension\/style\/(icons|images)\/.*/),
-      shim(/@jupyterlab\/theme-light-extension\/style\/(urls).css/),
+      // shim(/@jupyterlab\/codeeditor\/lib\/jsoneditor/),
+      // shim(/@jupyterlab\/coreutils\/lib\/(time|settingregistry|.*menu.*)/),
+      // shim(/@jupyterlab\/services\/lib\/(contents|terminal)\/.*/),
+      // shim(/@jupyterlab\/statusbar\/.*/),
+      // shim(/@jupyterlab\/theme-light-extension\/style\/(icons|images)\/.*/),
+      // shim(/@jupyterlab\/theme-light-extension\/style\/(urls).css/),
     ],
     optimization: {},
     module: {
@@ -82,40 +90,16 @@ module.exports = (env, argv) => {
           use: 'ts-loader',
           exclude: /node_modules/,
         },
-        {
-          test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'usage',
-                    corejs: 3,
-                    shippedProposals: true,
-                    targets: {
-                      browsers: ['chrome 60', 'edge 15', 'firefox 45', 'safari 10'],
-                    },
-                  },
-                ],
-              ],
-            },
-          },
-          type: 'javascript/auto',
-        },
-        {
-          test: /\.js$/,
-          use: {
-            loader: 'istanbul-instrumenter-loader',
-            options: { esModules: true },
-          },
-          enforce: 'post',
-          exclude: /node_modules|\.spec\.js$/,
-          type: 'javascript/auto',
-        },
+        // {
+        //   test: /\.js$/,
+        //   use: {
+        //     loader: 'istanbul-instrumenter-loader',
+        //     options: { esModules: true },
+        //   },
+        //   enforce: 'post',
+        //   exclude: /node_modules|\.spec\.js$/,
+        //   type: 'javascript/auto',
+        // },
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],

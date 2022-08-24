@@ -31,7 +31,8 @@
     "test:e2e:watch": "jest --config=./jest.e2e.config.js  --watchAll",
     "lint": "eslint src/**/*.ts*",
     "lint:format": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
+    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "stats": "webpack --stats-modules-space 999"
   },
   "files": [
     "lib/**",
@@ -83,6 +84,7 @@
     "css-loader": "^5.0.0",
     "eslint-config-thebe": "*",
     "eventsource": "^2.0.2",
+    "fail-on-errors-webpack-plugin": "^3.0.0",
     "file-loader": "^6.1.1",
     "html-loader-jest": "^0.2.1",
     "htmlparser2": "^6.1.0",
@@ -107,7 +109,10 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
+    "@jupyterlite/server": "0.1.0-beta.10",
+    "@jupyterlite/server-extension": "0.1.0-beta.10",
     "json5": "^2.2.1",
-    "thebe-core": "*"
+    "thebe-core": "^0.0.13"
   }
 }

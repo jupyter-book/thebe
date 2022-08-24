@@ -23,7 +23,8 @@
     "lint:format:fix": "turbo run lint:format:fix",
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
-    "start:thebe": "turbo run start --filter=demo",
+    "start:demo-thebe": "turbo run start --filter=demo-thebe",
+    "watch:demo-thebe": "turbo run watch --filter=demo-thebe",
     "start:core": "turbo run start --filter=demo-core"
   },
   "repository": {
@@ -47,9 +48,11 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
+    "npm-watch": "^0.11.0",
     "turbo": "^1.4.2"
   },
   "dependencies": {
+    "esbuild": "^0.15.5",
     "npm-run-all": "^4.1.5"
   }
 }
