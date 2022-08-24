@@ -22,7 +22,7 @@ export async function connect(
   }
 
   if (options.requestKernel) {
-    const session = await server.requestKernel({
+    const session = await server.requestSession({
       name: opts.kernelOptions.name,
       path: opts.kernelOptions.path,
       kernelName: opts.kernelOptions.kernelName ?? opts.kernelOptions.name,

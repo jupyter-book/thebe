@@ -37,36 +37,35 @@ class ThebeServer {
     return this.sessionManager?.serverSettings;
   }
 
-  async requestKernel(kernelOptions: Omit<KernelOptions, 'serverSettings'>) {
+  async requestSession(options: { name: string; path: string; kernelName?: string; id?: string }) {
     if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
+    const id = options.id ?? nanoid();
     this._messages?.({
-      id: this.id,
+      id,
       subject: MessageSubject.session,
       status: SessionStatus.starting,
       message: 'requesting a new session',
     });
     const connection = await this.sessionManager?.startNew({
-      name: kernelOptions.name,
-      path: kernelOptions.path,
+      name: options.name,
+      path: options.path,
       type: 'notebook',
       kernel: {
-        name: kernelOptions.kernelName ?? kernelOptions.name,
+        name: options.kernelName ?? options.name,
       },
     });
-
     // TODO register to handle the statusChanged signal
     // connection.statusChanged
-
     this._messages?.({
-      id: this.id,
+      id,
       subject: MessageSubject.session,
       status: SessionStatus.ready,
       message: `New session started, kernel '${connection.kernel?.name}' available`,
     });
 
-    return new ThebeSession(nanoid(), connection);
+    return new ThebeSession(id, connection);
   }
 
   // TODO ThunkAction
