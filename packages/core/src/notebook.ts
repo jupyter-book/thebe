@@ -88,7 +88,6 @@ class ThebeNotebook {
 
   attachSession(session: ThebeSession) {
     if (!session.kernel) return;
-    // TODO some typeof redux.config hookup for
     const cdnOnly = true;
     const manager = new ThebeManager(session.kernel, cdnOnly);
     this.cells?.map((cell) => cell.attachSession(session, manager));

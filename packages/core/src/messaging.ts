@@ -43,7 +43,7 @@ export enum MessageSubject {
 export interface MessageCallbackArgs {
   subject?: MessageSubject;
   id?: string;
-  status: ServerStatus | SessionStatus | KernelStatus | NotebookStatus | CellStatus;
+  status?: ServerStatus | SessionStatus | KernelStatus | NotebookStatus | CellStatus;
   message: string;
 }
 

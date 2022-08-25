@@ -34,7 +34,7 @@ export function makeGitUrl(opts: BinderRequestOptions): string {
  */
 export function makeGitLabUrl(opts: BinderRequestOptions): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.gitlab);
-  let binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
+  const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   const repo = encodeURIComponent(
     opts.repo.replace(/^(https?:\/\/)?gitlab.com\//, '').replace(/(^\/)|(\/?$)/g, ''),
   );
@@ -55,13 +55,13 @@ export function makeGitLabUrl(opts: BinderRequestOptions): string {
 export function makeGitHubUrl(opts: BinderRequestOptions): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.github);
   const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
-  let binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
+  const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   return `${binderUrl}/build/gh/${repo}/${opts.ref}`;
 }
 
 export function makeGistUrl(opts: BinderRequestOptions): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.gist);
   const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
-  let binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
+  const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   return `${binderUrl}/build/gist/${repo}/${opts.ref}`;
 }
