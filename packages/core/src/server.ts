@@ -56,8 +56,10 @@ class ThebeServer {
         name: options.kernelName ?? options.name,
       },
     });
+
     // TODO register to handle the statusChanged signal
     // connection.statusChanged
+
     this._messages?.({
       id,
       subject: MessageSubject.session,
@@ -96,7 +98,7 @@ class ThebeServer {
     const serverSettings = ServerConnection.makeSettings(options.kernelOptions.serverSettings);
     console.debug('thebe:api:connectToJupyterServer:serverSettings:', serverSettings);
 
-    let kernelManager = new KernelManager({ serverSettings });
+    const kernelManager = new KernelManager({ serverSettings });
     messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
@@ -228,7 +230,7 @@ class ThebeServer {
         const { settings } = existing;
         if (settings) {
           const serverSettings = ServerConnection.makeSettings(settings);
-          let kernelManager = new KernelManager({ serverSettings });
+          const kernelManager = new KernelManager({ serverSettings });
           const sessionManager = new SessionManager({
             kernelManager,
             serverSettings,
@@ -240,10 +242,11 @@ class ThebeServer {
 
     return new Promise((resolve, reject) => {
       // Talk to the binder server
+      const state = { status: ServerStatus.launching };
       const es = new EventSource(url);
       messages?.({
         subject: MessageSubject.server,
-        status: ServerStatus.launching,
+        status: state.status,
         id,
         message: `Opened connection to binder: ${url}`,
       });
@@ -252,9 +255,10 @@ class ThebeServer {
       es.onerror = (evt: Event) => {
         console.error(`Lost connection to binder: ${url}`, evt);
         es?.close();
+        state.status = ServerStatus.failed;
         messages?.({
           subject: MessageSubject.server,
-          status: ServerStatus.failed,
+          status: state.status,
           id,
           message: (evt as MessageEvent)?.data,
         });
@@ -274,51 +278,55 @@ class ThebeServer {
         switch (phase) {
           case 'failed':
             es?.close();
+            state.status = ServerStatus.failed;
             messages?.({
               subject: MessageSubject.server,
-              status: ServerStatus.failed,
+              status: state.status,
               id,
               message: `Binder: failed to build - ${url} - ${msg.message}`,
             });
             reject(msg);
             break;
-          case 'ready': {
-            es?.close();
+          case 'ready':
+            {
+              es?.close();
 
-            const settings: BasicServerSettings = {
-              baseUrl: msg.url,
-              wsUrl: 'ws' + msg.url.slice(4),
-              token: msg.token,
-              appendToken: true,
-            };
+              const settings: BasicServerSettings = {
+                baseUrl: msg.url,
+                wsUrl: 'ws' + msg.url.slice(4),
+                token: msg.token,
+                appendToken: true,
+              };
 
-            const serverSettings = ServerConnection.makeSettings(settings);
-            let kernelManager = new KernelManager({ serverSettings });
-            const sessionManager = new SessionManager({
-              kernelManager,
-              serverSettings,
-            });
+              const serverSettings = ServerConnection.makeSettings(settings);
+              const kernelManager = new KernelManager({ serverSettings });
+              const sessionManager = new SessionManager({
+                kernelManager,
+                serverSettings,
+              });
 
-            if (binderOptions.savedSession.enabled) {
-              saveServerInfo(binderOptions.savedSession, url, settings);
-              console.debug(
-                `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`,
-              );
+              if (binderOptions.savedSession.enabled) {
+                saveServerInfo(binderOptions.savedSession, url, settings);
+                console.debug(
+                  `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`,
+                );
+              }
+
+              state.status = ServerStatus.ready;
+              messages?.({
+                subject: MessageSubject.server,
+                status: state.status,
+                id,
+                message: `Binder server is ready: ${msg.message}`,
+              });
+              resolve(new ThebeServer(id, sessionManager, messages));
             }
-
-            messages?.({
-              subject: MessageSubject.server,
-              status: ServerStatus.ready,
-              id,
-              message: `Binder server is ready: ${msg.message}`,
-            });
-            resolve(new ThebeServer(id, sessionManager, messages));
-          }
+            break;
           default:
             messages?.({
               subject: MessageSubject.server,
-              status: ServerStatus.launching,
               id,
+              status: state.status,
               message: `Binder is: ${phase} - ${msg.message}`,
             });
         }
