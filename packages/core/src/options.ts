@@ -1,66 +1,64 @@
+import { Config } from './config';
 import {
-  RequestServerSettings,
+  ServerSettings,
   BinderOptions,
   KernelOptions,
-  Options,
+  CoreOptions,
   RepoProvider,
+  SavedSessionOptions,
 } from './types';
 
-const DEFAULT_BINDER_OPTIONS: BinderOptions = {
-  repo: 'binder-examples/requirements',
-  ref: 'master',
-  binderUrl: 'https://mybinder.org',
-  repoProvider: RepoProvider.github,
-  savedSession: {
+export function makeBinderOptions(opts: BinderOptions) {
+  return {
+    repo: 'binder-examples/requirements',
+    ref: 'master',
+    binderUrl: 'https://mybinder.org',
+    repoProvider: RepoProvider.github,
+    ...opts,
+  };
+}
+
+export function makeSavedSessionOptions(opts: SavedSessionOptions) {
+  return {
     enabled: true,
     maxAge: 86400,
     storagePrefix: 'thebe-binder-',
-  },
-};
-
-export function ensureBinderOptions(options: Partial<BinderOptions>) {
-  return {
-    ...DEFAULT_BINDER_OPTIONS,
-    ...options,
-    savedSession: {
-      ...DEFAULT_BINDER_OPTIONS.savedSession,
-      ...options?.savedSession,
-    },
+    ...opts,
   };
 }
 
-const DEFAULT_KERNEL_OPTIONS: KernelOptions = {
-  path: '/',
-  name: 'python',
-  kernelName: 'python',
-  serverSettings: {
+export function makeKernelOptions(opts: KernelOptions) {
+  return {
+    path: '/',
+    name: 'python',
+    kernelName: 'python',
+    ...opts,
+  };
+}
+
+export function makeServerSettings(settings: ServerSettings) {
+  return {
     baseUrl: 'http://localhost:8888',
     token: 'test-secret',
     appendToken: true,
-  } as RequestServerSettings,
-};
-
-export function ensureKernelOptions(options: Partial<KernelOptions>) {
-  return {
-    ...DEFAULT_KERNEL_OPTIONS,
-    ...options,
-    serverSettings: {
-      ...DEFAULT_KERNEL_OPTIONS.serverSettings,
-      ...options.serverSettings,
-    },
+    ...settings,
   };
 }
 
-export function ensureOptions(options: Partial<Options>): Options {
-  const binderOptions = ensureBinderOptions(options.binderOptions ?? {});
-  const kernelOptions = ensureKernelOptions(options.kernelOptions ?? {});
+export function makeConfiguration(options: CoreOptions & { [k: string]: any }) {
+  return new Config(options);
+}
+
+export function ensureCoreOptions(
+  options: CoreOptions & { [k: string]: any },
+): Required<CoreOptions> {
+  const config = new Config(options);
 
   return {
-    useBinder: false,
-    useJupyterLite: false,
-    requestKernel: true,
-    ...options,
-    binderOptions,
-    kernelOptions,
+    ...config.base,
+    binderOptions: config.binder,
+    savedSessionOptions: config.savedSessions,
+    kernelOptions: config.kernels,
+    serverSettings: config.serverSettings,
   };
 }

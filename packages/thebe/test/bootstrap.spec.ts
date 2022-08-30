@@ -4,30 +4,35 @@ jest.mock('../src/utils');
 /**
  * Test the bootstrapping process
  */
-describe('bootstrap', () => {
+describe.only('bootstrap', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
   test('calls pre-render hook', async () => {
     const spy = jest.fn();
-    await thebe.bootstrap({ useBinder: false, preRenderHook: spy }); // don't wait for kernel
+    await thebe.bootstrap({ useBinder: false, requestKernel: false, preRenderHook: spy }); // don't wait for kernel
     expect(spy).toHaveBeenCalledTimes(1);
   });
   test('calls strip prompts, when specified in options', async () => {
-    await thebe.bootstrap({ useBinder: false });
+    await thebe.bootstrap({ useBinder: false, requestKernel: false });
     expect(thebe.stripPrompts).not.toHaveBeenCalled();
 
     await thebe.bootstrap({
       useBinder: false,
+      requestKernel: false,
       stripPrompts: { inPrompt: '%', continuationPrompt: '>>' },
     });
     expect(thebe.stripPrompts).toHaveBeenCalledTimes(1);
   });
   test('calls strip outputPrompts, when specified in options', async () => {
-    await thebe.bootstrap({ useBinder: false });
+    await thebe.bootstrap({ useBinder: false, requestKernel: false });
     expect(thebe.stripOutputPrompts).not.toHaveBeenCalled();
 
-    await thebe.bootstrap({ useBinder: false, stripOutputPrompts: { outPrompt: '%:' } });
+    await thebe.bootstrap({
+      useBinder: false,
+      requestKernel: false,
+      stripOutputPrompts: { outPrompt: '%:' },
+    });
     expect(thebe.stripOutputPrompts).toHaveBeenCalledTimes(1);
   });
   test('Returns server and notebook', async () => {

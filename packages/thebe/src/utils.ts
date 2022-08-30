@@ -1,15 +1,16 @@
 import type { Options } from './options';
+import { defaultSelector } from './options';
 
 export function stripPrompts({ selector, stripPrompts }: Options) {
   // strip prompts from a cell
-  document.querySelectorAll(selector).forEach((el) => {
+  document.querySelectorAll(selector ?? defaultSelector).forEach((el) => {
     splitCell(el, stripPrompts);
   });
 }
 
 export function stripOutputPrompts({ selector, stripOutputPrompts }: Options) {
   // strip output prompts from a cell
-  document.querySelectorAll(selector).forEach((el) => {
+  document.querySelectorAll(selector ?? defaultSelector).forEach((el) => {
     splitCellOutputPrompt(el, stripOutputPrompts);
   });
 }

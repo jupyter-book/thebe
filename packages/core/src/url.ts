@@ -1,4 +1,4 @@
-import { BinderRequestOptions, RepoProvider } from './types';
+import { BinderOptions, RepoProvider } from './types';
 
 function throwOnBadProvider(actual: RepoProvider, expected: RepoProvider) {
   if (actual !== expected) throw Error(`Bad Provider, expected ${expected} got ${actual}`);
@@ -14,7 +14,7 @@ function throwOnBadProvider(actual: RepoProvider, expected: RepoProvider) {
  * @param opts BinderOptions
  * @returns a binder compatible url
  */
-export function makeGitUrl(opts: BinderRequestOptions): string {
+export function makeGitUrl(opts: Required<BinderOptions>): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.git);
   const { repo, binderUrl, ref } = opts;
   const encodedRepo = encodeURIComponent(repo.replace(/(^\/)|(\/?$)/g, ''));
@@ -32,7 +32,7 @@ export function makeGitUrl(opts: BinderRequestOptions): string {
  * @param opts BinderOptions
  * @returns  a binder compatible url
  */
-export function makeGitLabUrl(opts: BinderRequestOptions): string {
+export function makeGitLabUrl(opts: Required<BinderOptions>): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.gitlab);
   const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   const repo = encodeURIComponent(
@@ -52,14 +52,14 @@ export function makeGitLabUrl(opts: BinderRequestOptions): string {
  * @param opts BinderOptions
  * @returns  a binder compatible url
  */
-export function makeGitHubUrl(opts: BinderRequestOptions): string {
+export function makeGitHubUrl(opts: Required<BinderOptions>): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.github);
   const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
   const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');
   return `${binderUrl}/build/gh/${repo}/${opts.ref}`;
 }
 
-export function makeGistUrl(opts: BinderRequestOptions): string {
+export function makeGistUrl(opts: Required<BinderOptions>): string {
   throwOnBadProvider(opts.repoProvider, RepoProvider.gist);
   const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
   const binderUrl = opts.binderUrl.replace(/(\/?$)/g, '');

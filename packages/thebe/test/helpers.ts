@@ -1,4 +1,4 @@
-import { Options } from 'thebe-core';
+import { Options } from '../src/options';
 
 export function appendConfig(config: Partial<Options>) {
   const script = document.createElement('script');
@@ -15,7 +15,7 @@ interface AttrObj {
 export function appendElementToBody(
   tagName: string,
   attribute: AttrObj | string | null,
-  className: string | null
+  className: string | null,
 ) {
   const tag = document.createElement(tagName);
   tag.textContent = 'print("Hello Thebe!");';

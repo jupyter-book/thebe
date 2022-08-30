@@ -1,24 +1,25 @@
-import type { Options as CoreOptions } from 'thebe-core';
-import { ensureOptions as ensureCoreOptions } from 'thebe-core';
+import type { CoreOptions } from 'thebe-core';
+import { ensureCoreOptions } from 'thebe-core';
 import merge from 'lodash.merge';
 import JSON5 from 'json5';
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
 
-export interface Options extends CoreOptions {
-  selector: string;
-  outputSelector: string;
-  bootstrap: boolean;
-  preRenderHook?: () => void;
-  requestKernel: boolean;
-  predefinedOutput: boolean;
-  mountStatusWidget: boolean;
-  mountActivateWidget: boolean;
-  mountRunButton: boolean;
-  mountRunAllButton: boolean;
-  mountRestartButton: boolean;
-  mountRestartallButton: boolean;
+export interface ThebeOptions {
+  bootstrap?: boolean;
+  // UI related options
+  selector?: string;
+  outputSelector?: string;
+  predefinedOutput?: boolean;
+  mountStatusWidget?: boolean;
+  mountActivateWidget?: boolean;
+  mountRunButton?: boolean;
+  mountRunAllButton?: boolean;
+  mountRestartButton?: boolean;
+  mountRestartallButton?: boolean;
+  preRenderHook?: (() => void) | null;
+  // thebe specific options
   stripPrompts?: {
     inPrompt?: string;
     continuationPrompt?: string;
@@ -30,22 +31,25 @@ export interface Options extends CoreOptions {
   };
 }
 
+export type Options = ThebeOptions & CoreOptions;
+
+export const defaultSelector = '[data-executable]';
+export const defaultOutputSelector = '[data-output]';
+
 // options
-export const _defaultOptions: Options = {
-  ...ensureCoreOptions({ requestKernel: false, useBinder: true }),
+export const defaultOptions: ThebeOptions = {
   bootstrap: false,
-  preRenderHook: undefined,
-  stripPrompts: undefined,
-  stripOutputPrompts: undefined,
+  preRenderHook: null,
   predefinedOutput: true,
   mountStatusWidget: true,
   mountActivateWidget: true,
-  selector: '[data-executable]',
-  outputSelector: '[data-output]',
+  selector: defaultSelector,
+  outputSelector: defaultOutputSelector,
   mountRunButton: true,
   mountRunAllButton: true,
   mountRestartButton: true,
   mountRestartallButton: true,
+  codeMirrorConfig: {},
 };
 
 let _pageConfigData: Options | undefined;
@@ -61,7 +65,7 @@ export function mergeOptions(options: Partial<Options>): Options {
   if (!merged.codeMirrorConfig && (merged.binderOptions as any).codeMirrorConfig) {
     merged.codeMirrorConfig = (merged.binderOptions as any).codeMirrorConfig;
   }
-  return merged;
+  return { ...merged, ...ensureCoreOptions(merged) };
 }
 
 export function resetPageConfig() {
@@ -80,7 +84,7 @@ export function getPageConfigValue(key: keyof Options) {
 
 export function ensurePageConfigLoaded() {
   if (!_pageConfigData) {
-    _pageConfigData = { ..._defaultOptions };
+    let fragments = {};
     const elList = document.querySelectorAll("script[type='text/x-thebe-config']");
     elList.forEach((el) => {
       if (el.getAttribute('data-thebe-loaded')) return;
@@ -91,7 +95,7 @@ export function ensurePageConfigLoaded() {
         pageConfigFragment = JSON5.parse(el.textContent);
         if (pageConfigFragment) {
           console.debug('loading thebe config', pageConfigFragment);
-          _pageConfigData = merge(_pageConfigData, pageConfigFragment);
+          fragments = merge(fragments, pageConfigFragment);
         } else {
           console.debug('No thebeConfig found in ', el);
         }
@@ -99,6 +103,8 @@ export function ensurePageConfigLoaded() {
         console.error('Error loading thebe config', e, el.textContent);
       }
     });
+
+    _pageConfigData = { ...defaultOptions, ...fragments };
   }
   return _pageConfigData;
 }

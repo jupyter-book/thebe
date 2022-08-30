@@ -1,15 +1,15 @@
 import { KernelAPI, ServerConnection } from '@jupyterlab/services';
-import { BasicServerSettings, BinderOptions, SavedSessionOptions, ServerInfo } from './types';
+import { SavedSessionOptions, ServerInfo, ServerSettings } from './types';
 
 export function makeStorageKey(storagePrefix: string, url: string) {
   return storagePrefix + url;
 }
 
-export function removeServerInfo(savedSession: SavedSessionOptions, url: string) {
+export function removeServerInfo(savedSession: Required<SavedSessionOptions>, url: string) {
   window.localStorage.removeItem(makeStorageKey(savedSession.storagePrefix, url));
 }
 
-export function updateLastUsedTimestamp(savedSession: SavedSessionOptions, url: string) {
+export function updateLastUsedTimestamp(savedSession: Required<SavedSessionOptions>, url: string) {
   const storageKey = makeStorageKey(savedSession.storagePrefix, url);
   const saved = window.localStorage.getItem(storageKey);
   if (!saved) return;
@@ -18,9 +18,9 @@ export function updateLastUsedTimestamp(savedSession: SavedSessionOptions, url: 
 }
 
 export function saveServerInfo(
-  savedSession: SavedSessionOptions,
+  savedSession: Required<SavedSessionOptions>,
   url: string,
-  serverSettings: BasicServerSettings,
+  serverSettings: Required<ServerSettings>,
 ) {
   try {
     // save the current connection url+token to reuse later
@@ -38,23 +38,23 @@ export function saveServerInfo(
 }
 
 export async function getExistingServer(
-  { savedSession }: BinderOptions,
+  savedSessionOptions: Required<SavedSessionOptions>,
   url: string,
 ): Promise<ServerInfo | null> {
-  if (!savedSession.enabled) return null;
-  const storageKey = makeStorageKey(savedSession.storagePrefix, url);
-  let storedInfoJSON = window.localStorage.getItem(storageKey);
+  if (!savedSessionOptions.enabled) return null;
+  const storageKey = makeStorageKey(savedSessionOptions.storagePrefix, url);
+  const storedInfoJSON = window.localStorage.getItem(storageKey);
   if (storedInfoJSON == null) {
     console.debug('thebe:getExistingServer No session saved in ', storageKey);
     return null;
   }
 
   console.debug('thebe:getExistingServer Saved binder session detected');
-  let existingServer = JSON.parse(storedInfoJSON ?? '');
-  let lastUsed = new Date(existingServer.lastUsed);
+  const existingServer = JSON.parse(storedInfoJSON ?? '');
+  const lastUsed = new Date(existingServer.lastUsed);
   const now = new Date();
-  let ageSeconds = (now.getTime() - lastUsed.getTime()) / 1000;
-  if (ageSeconds > savedSession.maxAge) {
+  const ageSeconds = (now.getTime() - lastUsed.getTime()) / 1000;
+  if (ageSeconds > savedSessionOptions.maxAge) {
     console.debug(
       `thebe:getExistingServer Not using expired binder session for ${existingServer.url} from ${lastUsed}`,
     );
@@ -74,7 +74,7 @@ export async function getExistingServer(
   }
 
   // refresh lastUsed timestamp in stored info
-  updateLastUsedTimestamp(savedSession, existingServer.id);
+  updateLastUsedTimestamp(savedSessionOptions, existingServer.id);
   console.debug(
     `thebe:getExistingServer Saved binder session is valid, reusing connection to ${existingServer.url}`,
   );

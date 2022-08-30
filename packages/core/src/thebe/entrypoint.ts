@@ -6,7 +6,7 @@
 import ThebeServer from '../server';
 import ThebeSession from '../session';
 import ThebeNotebook, { CodeBlock } from '../notebook';
-import { Options } from '../types';
+import { CoreOptions } from '../types';
 import { connect, setupNotebook } from './api';
 
 import '@jupyterlab/theme-light-extension/style/theme.css';
@@ -23,8 +23,10 @@ import '../index.css';
  */
 
 export interface JsApi {
-  connect: (options: Partial<Options>) => Promise<{ server: ThebeServer; session?: ThebeSession }>;
-  setupNotebook: (blocks: CodeBlock[], options: Partial<Options>) => ThebeNotebook;
+  connect: (
+    options: Partial<CoreOptions>,
+  ) => Promise<{ server: ThebeServer; session?: ThebeSession }>;
+  setupNotebook: (blocks: CodeBlock[], options: Partial<CoreOptions>) => ThebeNotebook;
 }
 
 declare global {

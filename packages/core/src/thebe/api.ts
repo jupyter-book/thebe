@@ -1,33 +1,38 @@
-import { MessageCallback } from '../messaging';
+import { MessageCallback, MessageSubject, ServerStatus } from '../messaging';
 import ThebeServer from '../server';
-import ThebeSession from '../session';
-import ThebeNotebook, { CodeBlock } from '../notebook';
-import { Options } from '../types';
-import { ensureOptions } from '../options';
+import type ThebeSession from '../session';
+import type { CodeBlock } from '../notebook';
+import ThebeNotebook from '../notebook';
+import type { CoreOptions } from '../types';
+import { makeConfiguration } from '..';
 
 export async function connect(
-  options: Partial<Options>,
+  options: CoreOptions,
   messages?: MessageCallback,
 ): Promise<{ server: ThebeServer; session?: ThebeSession }> {
-  const opts = ensureOptions(options);
   let server: ThebeServer;
   if (options.useBinder) {
     console.debug(`thebe:api:connect useBinder`, options);
-    server = await ThebeServer.connectToServerViaBinder(opts, messages);
+    server = await ThebeServer.connectToServerViaBinder(options, messages);
   } else if (options.useJupyterLite) {
     console.debug(`thebe:api:connect JupyterLite`, options);
     server = await ThebeServer.connectToJupyterLiteServer({}, messages);
   } else {
-    server = await ThebeServer.connectToJupyterServer(opts, messages);
+    server = await ThebeServer.connectToJupyterServer(options, messages);
   }
 
-  if (options.requestKernel) {
-    const session = await server.requestSession({
-      name: opts.kernelOptions.name,
-      path: opts.kernelOptions.path,
-      kernelName: opts.kernelOptions.kernelName ?? opts.kernelOptions.name,
-    });
-    return { server, session };
+  if (server.isReady() && options.requestKernel) {
+    try {
+      const session = await server.requestSession({});
+      return { server, session };
+    } catch (err: any) {
+      messages?.({
+        subject: MessageSubject.server,
+        status: ServerStatus.failed,
+        id: server.id,
+        message: `Failed to connect to server ${server.id}: ${err.message}`,
+      });
+    }
   }
 
   return { server };
@@ -35,9 +40,10 @@ export async function connect(
 
 export function setupNotebook(
   blocks: CodeBlock[],
-  options: Partial<Options>,
+  options: CoreOptions,
   messages?: MessageCallback,
 ) {
-  const { mathjaxUrl, mathjaxConfig } = ensureOptions(options);
+  const config = makeConfiguration(options);
+  const { mathjaxUrl, mathjaxConfig } = config.base;
   return ThebeNotebook.fromCodeBlocks(blocks, { url: mathjaxUrl, config: mathjaxConfig }, messages);
 }

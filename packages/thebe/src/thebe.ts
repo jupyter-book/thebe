@@ -1,7 +1,8 @@
 import 'codemirror/lib/codemirror.css';
 
-import { mergeOptions } from './options';
-import { CellDOMPlaceholder, findCells, renderAllCells } from './render';
+import { defaultOutputSelector, defaultSelector, mergeOptions } from './options';
+import type { CellDOMPlaceholder } from './render';
+import { findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
 import { ActivateWidget } from './activate';
@@ -26,7 +27,7 @@ import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
 import { connect, setupNotebook } from 'thebe-core';
 import * as events from './events';
-import { MessageCallbackArgs } from 'thebe-core/dist/types/messaging';
+import type { MessageCallbackArgs } from 'thebe-core/dist/types/messaging';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -72,16 +73,18 @@ function messageCallback({ id, subject, status, message }: MessageCallbackArgs) 
 export async function bootstrap(opts: Partial<Options> = {}) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
-  const options = mergeOptions(opts);
+  const options = mergeOptions({ useBinder: true, requestKernel: true, ...opts });
 
   if (options.preRenderHook) options.preRenderHook();
   if (options.stripPrompts) stripPrompts(options);
   if (options.stripOutputPrompts) stripOutputPrompts(options);
-
   const { server, session } = await connect(options, messageCallback);
 
   const { selector, outputSelector } = options;
-  const items: CellDOMPlaceholder[] = findCells(selector, outputSelector);
+  const items: CellDOMPlaceholder[] = findCells(
+    selector ?? defaultSelector,
+    outputSelector ?? defaultOutputSelector,
+  );
 
   const codeWithIds = items.map(({ id, placeholders: { source: el } }) => {
     return { id, source: el.textContent?.trim() ?? '' };

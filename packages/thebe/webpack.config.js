@@ -46,7 +46,7 @@ module.exports = (env, argv) => {
       // shim(/@lumino\/coreutils\/lib\/random/),
       // shim out some unused lumino
       shim(
-        /@lumino\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/
+        /@lumino\/widgets\/lib\/(box|commandpalette|contextmenu|dock|grid|menu|scroll|split|stacked|tab).*/,
       ),
       shim(/@lumino\/collections\/lib\/(bplustree).*/),
       shim(/@lumino\/(dragdrop|commands).*/),
@@ -54,7 +54,7 @@ module.exports = (env, argv) => {
       // unused @jupyterlab
       // shim(/@jupyterlab\/apputils/),
       shim(
-        /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainmenu|thememanager|toolbar)/
+        /@jupyterlab\/apputils\/lib\/(clientsession|dialog|instancetracker|mainmenu|thememanager|toolbar)/,
       ),
       // shim(/@jupyterlab\/ui-components/),
       // shim(/@jupyterlab\/apputils\/style\/.*/),
