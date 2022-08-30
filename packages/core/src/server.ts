@@ -40,7 +40,7 @@ class ThebeServer {
     return this._ready;
   }
 
-  isReady(): boolean {
+  get isReady(): boolean {
     return this.sessionManager?.isReady ?? false;
   }
 
@@ -95,6 +95,30 @@ class ThebeServer {
       window.localStorage.removeItem(makeStorageKey(this.config.savedSessions.storagePrefix, url));
   }
 
+  static async status(
+    id: string,
+    serverSettings: Required<ServerSettings>,
+    throwOnError = true,
+    messages?: MessageCallback,
+  ) {
+    try {
+      return await ServerConnection.makeRequest(
+        `${serverSettings.baseUrl}api/status`,
+        {},
+        ServerConnection.makeSettings(serverSettings),
+      );
+    } catch (err: any) {
+      console.debug('thebe:api:connectToJupyterServer:', 'server unreachable');
+      messages?.({
+        subject: MessageSubject.server,
+        status: ServerStatus.failed,
+        id,
+        message: `Failed to connect to server ${id}: ${err?.message}`,
+      });
+      if (throwOnError) throw Error(`Jupyter server unreachable ${err?.message}`);
+    }
+  }
+
   /**
    * Connect to a Jupyter server directly
    *
@@ -109,6 +133,7 @@ class ThebeServer {
     console.debug('thebe:api:connectToJupyterServer:serverSettings:', config.serverSettings);
 
     const serverSettings = ServerConnection.makeSettings(config.serverSettings);
+
     const kernelManager = new KernelManager({ serverSettings });
     messages?.({
       subject: MessageSubject.server,
@@ -129,9 +154,14 @@ class ThebeServer {
     });
 
     const server = new ThebeServer(id, config, sessionManager, messages);
+    await server.ready;
 
     try {
-      await server.ready;
+      // TODO? move this behind .ready? is it safe to do so far binder & jupyterlite?
+      // or actually a better way of doing this is to setup the server to respond to the
+      // connection failure signal
+      // https://jupyterlab.readthedocs.io/en/stable/api/interfaces/services.session.imanager.html#connectionfailure
+      await ThebeServer.status(id, serverSettings, true, messages);
 
       messages?.({
         subject: MessageSubject.server,
@@ -139,14 +169,8 @@ class ThebeServer {
         id,
         message: `Server connection established`,
       });
-    } catch (err: any) {
-      messages?.({
-        subject: MessageSubject.server,
-        status: ServerStatus.failed,
-        id,
-        message: `Failed to connect to server ${server.id}: ${err.message}`,
-      });
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err: any) {}
 
     return server;
   }

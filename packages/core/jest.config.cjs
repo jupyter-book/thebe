@@ -11,7 +11,7 @@ module.exports = {
     '^.+\\.svg$': '<rootDir>/jest.svg.transform.js',
     '^.+\\.(js|ts|tsx)$': 'ts-jest',
   },
-  transformIgnorePatterns: ['/node_modules/(?!@jupyterlab/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(@jupyterlab|nanoid|@jupyterlite)/)'],
   globals: {
     'ts-jest': {
       tsconfig: './tsconfig.json',
@@ -20,5 +20,6 @@ module.exports = {
   verbose: true,
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['/node_modules/', '/.yalc/', '/dist/'],
-  setupFiles: ['@jupyterlab/testutils/lib/jest-shim.js'],
+  setupFiles: ['./jest.setup.js'],
+  setupFilesAfterEnv: ['@jupyterlab/testutils/lib/jest-shim.js'],
 };

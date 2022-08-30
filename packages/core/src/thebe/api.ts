@@ -21,7 +21,7 @@ export async function connect(
     server = await ThebeServer.connectToJupyterServer(options, messages);
   }
 
-  if (server.isReady() && options.requestKernel) {
+  if (server.isReady && options.requestKernel) {
     try {
       const session = await server.requestSession({});
       return { server, session };

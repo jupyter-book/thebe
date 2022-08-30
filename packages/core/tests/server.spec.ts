@@ -1,18 +1,14 @@
-import { JupyterServer } from '@jupyterlab/testutils';
-let server: JupyterServer | undefined;
-
-beforeAll(async () => {
-  console.log('Starting Jupyter Test Server');
-  server = new JupyterServer();
-  await server?.start();
-}, 30000);
-
-afterAll(async () => {
-  await server?.shutdown();
-}, 30000);
+import { MessageSubject, ServerStatus } from '../src/messaging';
+import ThebeServer from '../src/server';
 
 describe('server', () => {
-  test('check environment', () => {
+  test('server unavailable', async () => {
+    const messageSpy = jest.fn();
+    const server = await ThebeServer.connectToJupyterServer({}, messageSpy);
     expect(server).toBeDefined();
+    expect(server.id).toBeDefined();
+    expect(messageSpy).toBeCalledTimes(3);
+    expect(messageSpy.mock.calls[2][0].subject).toEqual(MessageSubject.server);
+    expect(messageSpy.mock.calls[2][0].status).toEqual(ServerStatus.failed);
   });
 });
