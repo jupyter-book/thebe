@@ -1,9 +1,10 @@
 import { nanoid } from 'nanoid';
 import ThebeCell from './cell';
-import ThebeSession from './session';
+import type ThebeSession from './session';
 import { ThebeManager } from './manager';
-import { MathjaxOptions } from './types';
-import { MessageCallback, MessageCallbackArgs, MessageSubject, NotebookStatus } from './messaging';
+import type { MathjaxOptions } from './types';
+import type { MessageCallback, MessageCallbackArgs } from './messaging';
+import { MessageSubject, NotebookStatus } from './messaging';
 
 interface ExecuteReturn {
   id: string;
@@ -70,7 +71,7 @@ class ThebeNotebook {
   }
 
   getCellById(id: string) {
-    const cell = this.cells?.find((cell: ThebeCell) => cell.id === id);
+    const cell = this.cells?.find((c: ThebeCell) => c.id === id);
     return cell;
   }
 
@@ -162,7 +163,7 @@ class ThebeNotebook {
       return Boolean(found);
     });
 
-    let result = Promise.all(
+    const result = Promise.all(
       cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
     );
 

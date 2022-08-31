@@ -4,12 +4,13 @@ import {
   makeSavedSessionOptions,
   makeServerSettings,
 } from './options';
-import {
+import type {
   BinderOptions,
   KernelOptions,
   CoreOptions,
   SavedSessionOptions,
   ServerSettings,
+  MathjaxOptions,
 } from './types';
 
 export class Config {
@@ -39,6 +40,13 @@ export class Config {
 
   get base() {
     return this._options;
+  }
+
+  get mathjax(): MathjaxOptions {
+    return {
+      url: this._options.mathjaxUrl,
+      config: this._options.mathjaxConfig,
+    };
   }
 
   get binder() {

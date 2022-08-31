@@ -1,9 +1,9 @@
-import * as nbformat from '@jupyterlab/nbformat';
+import type * as nbformat from '@jupyterlab/nbformat';
 import { getRenderMimeRegistry } from './rendermime';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { Widget } from '@lumino/widgets';
-import { IRenderMime, RenderMimeRegistry } from '@jupyterlab/rendermime';
-import { MathjaxOptions } from './types';
+import type { IRenderMime, RenderMimeRegistry } from '@jupyterlab/rendermime';
+import type { MathjaxOptions } from './types';
 
 class PassiveCellRenderer {
   id: string;

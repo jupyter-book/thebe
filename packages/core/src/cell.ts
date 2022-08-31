@@ -1,9 +1,10 @@
-import { MathjaxOptions } from './types';
+import type { MathjaxOptions } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { ThebeManager, WIDGET_MIMETYPE } from './manager';
-import ThebeSession from './session';
+import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
-import { CellStatus, MessageCallback, MessageCallbackArgs, MessageSubject } from './messaging';
+import type { MessageCallback, MessageCallbackArgs } from './messaging';
+import { CellStatus, MessageSubject } from './messaging';
 
 class ThebeCell extends PassiveCellRenderer {
   notebookId: string;
