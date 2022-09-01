@@ -1,12 +1,12 @@
 import { Config } from './config';
-import {
+import type {
   ServerSettings,
   BinderOptions,
   KernelOptions,
   CoreOptions,
-  RepoProvider,
   SavedSessionOptions,
 } from './types';
+import { RepoProvider } from './types';
 
 export function makeBinderOptions(opts: BinderOptions) {
   return {

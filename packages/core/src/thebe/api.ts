@@ -1,4 +1,5 @@
-import { MessageCallback, MessageSubject, ServerStatus } from '../messaging';
+import type { MessageCallback } from '../messaging';
+import { MessageSubject, ServerStatus } from '../messaging';
 import ThebeServer from '../server';
 import type ThebeSession from '../session';
 import type { CodeBlock } from '../notebook';

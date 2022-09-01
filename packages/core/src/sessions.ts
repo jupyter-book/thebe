@@ -1,5 +1,5 @@
 import { KernelAPI, ServerConnection } from '@jupyterlab/services';
-import { SavedSessionOptions, ServerInfo, ServerSettings } from './types';
+import type { SavedSessionOptions, ServerInfo, ServerSettings } from './types';
 
 export function makeStorageKey(storagePrefix: string, url: string) {
   return storagePrefix + url;

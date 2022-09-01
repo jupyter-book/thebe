@@ -4,7 +4,14 @@ import ThebeServer from '../src/server';
 describe('server', () => {
   test('server unavailable', async () => {
     const messageSpy = jest.fn();
-    const server = await ThebeServer.connectToJupyterServer({}, messageSpy);
+    const server = await ThebeServer.connectToJupyterServer(
+      {
+        serverSettings: {
+          baseUrl: 'http://localhost:9999',
+        },
+      },
+      messageSpy,
+    );
     expect(server).toBeDefined();
     expect(server.id).toBeDefined();
     expect(messageSpy).toBeCalledTimes(3);

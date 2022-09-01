@@ -1,4 +1,5 @@
-import { MessageCallbackArgs, MessageSubject, ServerStatus, SessionStatus } from 'thebe-core';
+import type { MessageCallbackArgs } from 'thebe-core';
+import { MessageSubject, ServerStatus, SessionStatus } from 'thebe-core';
 
 // Functions for the thebe activate button and status field
 export class KernelStatus {

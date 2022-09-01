@@ -36,19 +36,19 @@ describe.only('bootstrap', () => {
     expect(thebe.stripOutputPrompts).toHaveBeenCalledTimes(1);
   });
   test('Returns server and notebook', async () => {
-    const retval = await thebe.bootstrap({ useBinder: false });
+    const retval = await thebe.bootstrap({ useBinder: false, requestKernel: false });
     expect(retval.server).toBeDefined();
     expect(retval.notebook).toBeDefined();
     expect(retval.session).toBeUndefined(); // no server, so cannot start a session
   });
   test('Notebook is empty when no code cells are found', async () => {
-    const { notebook } = await thebe.bootstrap({ useBinder: false });
+    const { notebook } = await thebe.bootstrap({ useBinder: false, requestKernel: false });
     expect(notebook).toBeDefined();
     expect(notebook.cells).toHaveLength(0);
   });
   test('Attaches objects to window when thebe is on window', async () => {
     (window as any).thebe = {};
-    await thebe.bootstrap({ useBinder: false });
+    await thebe.bootstrap({ useBinder: false, requestKernel: false });
     const { thebe: thebeObject } = window as unknown as { thebe: any };
     expect(thebeObject.options).toBeDefined();
     expect(thebeObject.server).toBeDefined();

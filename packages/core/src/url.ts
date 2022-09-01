@@ -1,4 +1,5 @@
-import { BinderOptions, RepoProvider } from './types';
+import type { BinderOptions } from './types';
+import { RepoProvider } from './types';
 
 function throwOnBadProvider(actual: RepoProvider, expected: RepoProvider) {
   if (actual !== expected) throw Error(`Bad Provider, expected ${expected} got ${actual}`);

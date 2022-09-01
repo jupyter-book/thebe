@@ -1,22 +1,9 @@
-import 'codemirror/lib/codemirror.css';
-
 import { defaultOutputSelector, defaultSelector, mergeOptions } from './options';
 import type { CellDOMPlaceholder } from './render';
 import { findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
 import { ActivateWidget } from './activate';
-
-import '@jupyterlab/theme-light-extension/style/theme.css';
-import '@jupyter-widgets/controls/css/widgets-base.css';
-import '@lumino/widgets/style/index.css';
-import '@jupyterlab/apputils/style/base.css';
-import '@jupyterlab/rendermime/style/base.css';
-import '@jupyterlab/codemirror/style/base.css';
-import 'thebe-core/dist/index.css';
-import './index.css';
-import './status.css';
-import './activate.css';
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.

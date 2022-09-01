@@ -2,7 +2,6 @@ import * as thebe from './thebe';
 
 export * from './types';
 export * from './thebe';
-export * from './utils';
 
 if ((window as any) !== undefined) {
   window.thebe = { ...thebe };

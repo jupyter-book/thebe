@@ -1,4 +1,4 @@
-import { Options } from './options';
+import type { Options } from './options';
 
 export class ActivateWidget {
   options: Partial<Options>;

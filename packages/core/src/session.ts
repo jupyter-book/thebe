@@ -1,5 +1,5 @@
-import { Session } from '@jupyterlab/services';
-import { ISessionConnection } from '@jupyterlab/services/lib/session/session';
+import type { Session } from '@jupyterlab/services';
+import type { ISessionConnection } from '@jupyterlab/services/lib/session/session';
 
 class ThebeSession {
   id: string;

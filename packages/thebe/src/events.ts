@@ -1,4 +1,4 @@
-import { MessageCallbackArgs } from 'thebe-core';
+import type { MessageCallbackArgs } from 'thebe-core';
 
 export type ThebeEventCb = (event: string, data: MessageCallbackArgs) => void;
 

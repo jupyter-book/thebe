@@ -1,3 +1,9 @@
+@import '@jupyterlab/codemirror/style/base.css';
+@import 'codemirror/lib/codemirror.css';
+@import 'thebe-core/dist/thebe-core.css';
+@import './activate.css';
+@import './status.css';
+
 .thebelab-cell,
 .thebe-cell {
   margin-top: 8px;

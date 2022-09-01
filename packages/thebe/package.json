@@ -3,6 +3,7 @@
   "version": "0.9.0-rc.0",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
+  "style": "lib/thebe.css",
   "types": "lib/types/index.d.ts",
   "typedoc": {
     "entryPoint": "./src/index.ts",
@@ -13,7 +14,7 @@
     "build:bundle:dev": "webpack --mode development --devtool inline-source-map --progress --color",
     "build:bundle": "webpack --mode production --devtool source-map",
     "build:mkdir": "mkdir -p lib",
-    "build:css": "npm run build:mkdir; concat -o lib/index.css ./src/*.css",
+    "build:css": "node ./esbuild.css.js",
     "build:dev": "npm-run-all -l clean -p build:css build:bundle:dev declarations",
     "build": "npm-run-all -l clean -p build:css build:bundle declarations",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir lib/types",
@@ -81,6 +82,7 @@
     "concurrently": "^6.2.1",
     "core-js": "^3.6.5",
     "css-loader": "^5.0.0",
+    "esbuild": "^0.15.6",
     "eslint-config-thebe": "*",
     "eventsource": "^2.0.2",
     "file-loader": "^6.1.1",
@@ -108,6 +110,6 @@
   },
   "dependencies": {
     "json5": "^2.2.1",
-    "thebe-core": "*"
+    "thebe-core": "^0.0.13"
   }
 }
