@@ -9,12 +9,12 @@ import ThebeNotebook, { CodeBlock } from '../notebook';
 import { CoreOptions } from '../types';
 import { connect, setupNotebook } from './api';
 
-import '@jupyterlab/theme-light-extension/style/theme.css';
-import '@jupyter-widgets/controls/css/widgets-base.css';
-import '@lumino/widgets/style/index.css';
-import '@jupyterlab/apputils/style/base.css';
-import '@jupyterlab/rendermime/style/base.css';
-import 'font-awesome/css/font-awesome.css';
+// import '@jupyterlab/theme-light-extension/style/theme.css';
+// import '@jupyter-widgets/controls/css/widgets-base.css';
+// import '@lumino/widgets/style/index.css';
+// import '@jupyterlab/apputils/style/base.css';
+// import '@jupyterlab/rendermime/style/base.css';
+// import 'font-awesome/css/font-awesome.css';
 import '../index.css';
 
 /**
