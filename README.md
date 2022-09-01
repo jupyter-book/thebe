@@ -9,7 +9,7 @@ Have a static HTML page with code snippets? Your readers can edit and execute th
 - The Thebe javascript library (which can be fetched from the web)
 - A computing backend (typically [binder](https://mybinder.org))
 
-![Demo](docs/_static/demo.png)
+![Demo](apps/docs/_static/demo.png)
 
 Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base.
 
@@ -147,6 +147,12 @@ Alternatively,you can also check the HTML based examples included in the in `doc
 
 ```
 <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
+```
+
+Also include the css bundle on your page:
+
+```
+<link rel="stylesheet" href="https://unpkg.com/thebe@latest/lib/thebe.css">
 ```
 
 ## Contribute to `thebe`
