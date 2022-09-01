@@ -1,5 +1,5 @@
 import { requireLoader } from './loader';
-import { DocumentRegistry } from '@jupyterlab/docregistry';
+import type { DocumentRegistry } from '@jupyterlab/docregistry';
 import type { INotebookModel } from '@jupyterlab/notebook';
 
 import * as LuminoWidget from '@lumino/widgets';
@@ -12,9 +12,9 @@ import {
   output,
 } from '@jupyter-widgets/jupyterlab-manager';
 
-import { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
-import { ISessionConnection } from '@jupyterlab/services/lib/session/session';
-import { Widget } from '@lumino/widgets';
+import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
+import type { ISessionConnection } from '@jupyterlab/services/lib/session/session';
+import type { Widget } from '@lumino/widgets';
 
 export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
 

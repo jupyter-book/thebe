@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "copy:static": "copyfiles -u 1 static/* dist",
-    "copy:thebe": "cp -R ../../packages/thebe/lib dist/_static",
+    "copy:thebe": "mkdir -p dist/_static; cp -R ../../packages/thebe/lib dist/_static",
     "demo": "npm run copy:static; npm run copy:thebe",
     "start": "http-server ./dist"
   },

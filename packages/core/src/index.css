@@ -1,3 +1,9 @@
+@import '@jupyterlab/theme-light-extension/style/theme.css';
+@import '@jupyter-widgets/controls/css/widgets-base.css';
+@import '@lumino/widgets/style/index.css';
+@import '@jupyterlab/apputils/style/base.css';
+@import '@jupyterlab/rendermime/style/base.css';
+
 .thebe-output-busy-spinner-alt {
   border: 2px solid #f3f3f3; /* Light grey */
   border-top: 2px solid #3498db; /* Blue */

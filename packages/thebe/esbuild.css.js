@@ -9,5 +9,5 @@ require('esbuild').buildSync({
     '.woff': 'file',
     '.woff2': 'file',
   },
-  outfile: 'dist/thebe-core.css',
+  outfile: 'lib/thebe.css',
 });

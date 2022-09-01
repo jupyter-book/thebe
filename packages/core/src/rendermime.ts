@@ -1,5 +1,5 @@
+import type { IRenderMime } from '@jupyterlab/rendermime';
 import {
-  IRenderMime,
   RenderMimeRegistry,
   htmlRendererFactory,
   markdownRendererFactory,
@@ -8,7 +8,7 @@ import {
   imageRendererFactory,
   textRendererFactory,
 } from '@jupyterlab/rendermime';
-import { MathjaxOptions } from './types';
+import type { MathjaxOptions } from './types';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
 import { rendererFactory as javascriptRendererFactory } from '@jupyterlab/javascript-extension';
 

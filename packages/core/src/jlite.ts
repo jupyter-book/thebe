@@ -1,5 +1,5 @@
 import { JupyterLiteServer } from '@jupyterlite/server';
-import { MessageCallback } from './messaging';
+import type { MessageCallback } from './messaging';
 
 const serverExtensions = [
   import('@jupyterlite/pyolite-kernel-extension'),
@@ -22,8 +22,8 @@ export async function startJupyterLiteServer(messsages?: MessageCallback) {
       exports = extension;
     }
 
-    let plugins = Array.isArray(exports) ? exports : [exports];
-    for (let plugin of plugins) {
+    const plugins = Array.isArray(exports) ? exports : [exports];
+    for (const plugin of plugins) {
       yield plugin;
     }
   }
@@ -31,7 +31,7 @@ export async function startJupyterLiteServer(messsages?: MessageCallback) {
   // Add the base serverlite extensions
   const baseServerExtensions = await Promise.all(serverExtensions);
   baseServerExtensions.forEach((p) => {
-    for (let plugin of activePlugins(p)) {
+    for (const plugin of activePlugins(p)) {
       litePluginsToRegister.push(plugin);
     }
   });
