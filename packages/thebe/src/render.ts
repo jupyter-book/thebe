@@ -1,11 +1,11 @@
 import CodeMirror from 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/hint/show-hint';
-import { ThebeCell, ThebeNotebook } from 'thebe-core';
-import { Options } from './options';
+import type { ThebeCell, ThebeNotebook } from 'thebe-core';
+import type { Options } from './options';
 import { randomId } from './utils';
 import { Mode } from '@jupyterlab/codemirror';
-import { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
+import type { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
 
 export interface CellDOMPlaceholder {
   id: string;

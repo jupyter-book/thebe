@@ -1,11 +1,11 @@
 import type { CodeMirrorEditor } from '@jupyterlab/codemirror';
-import { ThebeNotebook, ThebeServer, ThebeSession } from 'thebe-core';
+import type { ThebeNotebook, ThebeServer, ThebeSession } from 'thebe-core';
 import type { ActivateWidget } from './activate';
-import { ThebeEventCb, ThebeEvents } from './events';
-import { Options } from './options';
+import type { ThebeEventCb, ThebeEvents } from './events';
+import type { Options } from './options';
 import type { KernelStatus } from './status';
 
-interface thebe {
+export interface thebe {
   mountStatusWidget: () => void;
   mountActivateWidget: () => void;
   bootstrap: (options: Partial<Options>) => Promise<any>;

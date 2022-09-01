@@ -1,17 +1,17 @@
 import type { Options } from './options';
 import { defaultSelector } from './options';
 
-export function stripPrompts({ selector, stripPrompts }: Options) {
+export function stripPrompts({ selector, stripPrompts: prompts }: Options) {
   // strip prompts from a cell
   document.querySelectorAll(selector ?? defaultSelector).forEach((el) => {
-    splitCell(el, stripPrompts);
+    splitCell(el, prompts);
   });
 }
 
-export function stripOutputPrompts({ selector, stripOutputPrompts }: Options) {
+export function stripOutputPrompts({ selector, stripOutputPrompts: prompts }: Options) {
   // strip output prompts from a cell
   document.querySelectorAll(selector ?? defaultSelector).forEach((el) => {
-    splitCellOutputPrompt(el, stripOutputPrompts);
+    splitCellOutputPrompt(el, prompts);
   });
 }
 
