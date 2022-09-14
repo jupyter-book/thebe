@@ -12,6 +12,14 @@ export interface ServerInfo {
   specs: KernelSpecAPI.ISpecModels;
 }
 
+export interface SavedSessionInfo {
+  id: string;
+  baseUrl: string;
+  token: string;
+  wsUrl: string;
+  lastUsed: Date;
+}
+
 export interface CoreOptions {
   mathjaxUrl?: string;
   mathjaxConfig?: string;

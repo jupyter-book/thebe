@@ -267,29 +267,36 @@ class ThebeServer {
 
     if (config.savedSessions.enabled) {
       console.debug('thebe:server:connectToServerViaBinder Checking for saved session...');
-      const existing = await getExistingServer(config.savedSessions, url);
-      if (existing) {
+      // the follow function will ping the server based on the settings and only return
+      // non-null if the server is still alive. So highly likely that the remainder of
+      // the connection calls below, work.
+      const existingSettings = await getExistingServer(config.savedSessions, url);
+      if (existingSettings) {
         messages?.({
           subject: MessageSubject.server,
           status: ServerStatus.launching,
           id,
           message: 'Found existing binder session, connecting...',
         });
-        const { settings } = existing;
-        if (settings) {
-          const serverSettings = ServerConnection.makeSettings(settings);
-          const kernelManager = new KernelManager({ serverSettings });
-          const sessionManager = new SessionManager({
-            kernelManager,
-            serverSettings,
-          });
-          return new ThebeServer(
-            existing.id,
-            makeConfiguration({ ...options, serverSettings }),
-            sessionManager,
-            messages,
-          );
-        }
+        const serverSettings = ServerConnection.makeSettings(existingSettings);
+        const kernelManager = new KernelManager({ serverSettings });
+        const sessionManager = new SessionManager({
+          kernelManager,
+          serverSettings,
+        });
+        const server = new ThebeServer(
+          options?.id ?? nanoid(),
+          makeConfiguration({ ...options, serverSettings }),
+          sessionManager,
+          messages,
+        );
+        messages?.({
+          subject: MessageSubject.server,
+          status: ServerStatus.ready,
+          id,
+          message: `Reconnected to existing binder server.`,
+        });
+        return server;
       }
     }
 
@@ -359,7 +366,7 @@ class ThebeServer {
               });
 
               if (config.savedSessions.enabled) {
-                saveServerInfo(config.savedSessions, url, serverSettings);
+                saveServerInfo(config.savedSessions, url, id, serverSettings);
                 console.debug(
                   `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`,
                 );
