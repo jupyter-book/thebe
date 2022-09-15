@@ -22,6 +22,9 @@ export async function connect(
     server = await ThebeServer.connectToJupyterServer(options, messages);
   }
 
+  // TODO move this out to a start session call the takes a server
+  // remove requestKernel from CoreOptions and move to thebe
+  // update thebe.bootstrap to request the kernel
   if (server.isReady && options.requestKernel) {
     try {
       const session = await server.requestSession({});
