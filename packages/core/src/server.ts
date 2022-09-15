@@ -48,6 +48,10 @@ class ThebeServer {
     return this.sessionManager?.serverSettings;
   }
 
+  async shutdownAll() {
+    return this.sessionManager?.shutdownAll();
+  }
+
   async requestSession(kernelOptions: KernelOptions & { id?: string }) {
     if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');

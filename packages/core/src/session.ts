@@ -11,6 +11,10 @@ class ThebeSession {
     this._connection = connection;
   }
 
+  get remoteId() {
+    return this._connection?.id;
+  }
+
   get connection() {
     return this._connection;
   }
@@ -25,11 +29,13 @@ class ThebeSession {
       return;
     }
     console.debug(`requesting restart for kernel ${this.id}`);
-    await this._connection.kernel!.restart();
+    await this._connection.kernel?.restart();
   }
 
-  async refresh() {}
-  async dispose() {}
+  async shutdown() {
+    await this._connection?.shutdown();
+    return this._connection?.dispose();
+  }
 }
 
 export default ThebeSession;
