@@ -68,7 +68,6 @@ export async function getExistingServer(
   }
 
   try {
-    console.log('existingServer', existingSettings);
     await KernelAPI.listRunning(ServerConnection.makeSettings(existingSettings));
   } catch (err) {
     console.debug(
