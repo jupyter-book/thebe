@@ -1,4 +1,4 @@
-import type { CoreOptions, KernelOptions, ServerSettings } from './types';
+import type { CoreOptions, JsonObject, KernelOptions, ServerSettings } from './types';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
@@ -16,7 +16,57 @@ import type { Config } from './config';
 import { makeConfiguration } from './options';
 import { shortId } from './utils';
 
-class ThebeServer {
+interface ServerRuntime {
+  ready: Promise<void>;
+  isReady: boolean;
+  settings: ServerConnection.ISettings | undefined;
+  shutdownAll: () => Promise<void>;
+}
+
+interface RestAPIContentsResponse {
+  content: string | null;
+  created: string;
+  format: string;
+  last_modified: string;
+  mimetype: string;
+  name: string;
+  path: string;
+  size: number;
+  type: string;
+  writable: boolean;
+}
+
+// https://jupyter-server.readthedocs.io/en/latest/developers/rest-api.html#get--api-contents-path
+interface ServerRestAPI {
+  getContents: (opts: {
+    path: string;
+    type?: 'notebook' | 'file' | 'directory';
+    format?: 'text' | 'base64';
+    returnContent?: boolean;
+  }) => Promise<RestAPIContentsResponse>;
+  duplicateFile: (opts: {
+    path: string;
+    copy_from: string;
+    ext?: string;
+    type?: 'notebook' | 'file';
+  }) => Promise<RestAPIContentsResponse>;
+  renameContents: (opts: { path: string; newPath: string }) => Promise<RestAPIContentsResponse>;
+  uploadFile: (opts: {
+    path: string;
+    content: string;
+    format?: 'json' | 'text' | 'base64';
+    type?: 'notebook' | 'file';
+  }) => Promise<RestAPIContentsResponse>;
+  createDirectory: (opts: { path: string }) => Promise<RestAPIContentsResponse>;
+}
+
+async function responseToJson(res: Response) {
+  if (!res.ok) throw Error(`${res.status} - ${res.statusText}`);
+  const json = await res.json();
+  return json as RestAPIContentsResponse;
+}
+
+class ThebeServer implements ServerRuntime, ServerRestAPI {
   id: string;
   sessionManager: SessionManager | undefined;
   config: Config;
@@ -36,6 +86,89 @@ class ThebeServer {
     this._messages = messages;
   }
 
+  getFetchUrl(relative: string) {
+    if (!this.isReady) throw Error('Calling ServerRestAPI without an active server connection');
+    const settings = this.sessionManager!.serverSettings;
+    const url = new URL(relative, settings.baseUrl);
+    url.searchParams.append('token', settings.token);
+    return url;
+  }
+
+  async getContents(opts: {
+    path: string;
+    type?: 'notebook' | 'file' | 'directory';
+    format?: 'text' | 'base64';
+    returnContent?: boolean;
+  }) {
+    const url = this.getFetchUrl(`/api/contents/${opts.path}`);
+    if (opts.type) url.searchParams.append('type', opts.type);
+    if (opts.format) url.searchParams.append('format', opts.format);
+    url.searchParams.append('content', opts.returnContent ? '1' : '0');
+    return responseToJson(await fetch(url));
+  }
+
+  async duplicateFile(opts: {
+    path: string;
+    copy_from: string;
+    ext?: string;
+    type?: 'notebook' | 'file';
+  }) {
+    const url = this.getFetchUrl(`/api/contents/${opts.path}`);
+    const { copy_from, ext, type } = opts;
+    return responseToJson(
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ copy_from, ext, type }),
+      }),
+    );
+  }
+
+  async createDirectory(opts: { path: string }) {
+    const url = this.getFetchUrl(`/api/contents/${opts.path}`);
+    return responseToJson(
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'directory' }),
+      }),
+    );
+  }
+
+  async renameContents(opts: { path: string; newPath: string }) {
+    const { path, newPath } = opts;
+    const url = this.getFetchUrl(`/api/contents/${path}`);
+    return responseToJson(
+      await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: newPath }),
+      }),
+    );
+  }
+
+  async uploadFile(opts: {
+    path: string;
+    content: string;
+    format?: 'json' | 'text' | 'base64';
+    type?: 'notebook' | 'file';
+  }) {
+    const { path, content, format, type } = opts;
+    const url = this.getFetchUrl(`/api/contents/${path}`);
+    return responseToJson(
+      await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path,
+          content,
+          format: format ?? 'json',
+          type: type ?? 'notebook',
+        }),
+      }),
+    );
+  }
+
   get ready() {
     return this._ready;
   }
@@ -49,7 +182,7 @@ class ThebeServer {
   }
 
   async shutdownAll() {
-    return this.sessionManager?.shutdownAll();
+    await this.sessionManager?.shutdownAll();
   }
 
   async requestSession(kernelOptions: KernelOptions & { id?: string }) {
