@@ -1,3 +1,8 @@
+import type ThebeCell from './cell';
+import type ThebeNotebook from './notebook';
+import type ThebeServer from './server';
+import type ThebeSession from './session';
+
 export enum ServerStatus {
   'launching' = 'launching',
   'ready' = 'server-ready',
@@ -45,6 +50,7 @@ export interface MessageCallbackArgs {
   id?: string;
   status?: ServerStatus | SessionStatus | KernelStatus | NotebookStatus | CellStatus;
   message: string;
+  object?: ThebeServer | ThebeSession | ThebeNotebook | ThebeCell;
 }
 
 export type MessageCallback = (args: MessageCallbackArgs) => void;

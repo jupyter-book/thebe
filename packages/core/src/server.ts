@@ -1,7 +1,6 @@
 import type { CoreOptions, KernelOptions, ServerSettings } from './types';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
-import { nanoid } from 'nanoid';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
 import {
   KernelManager,
@@ -15,6 +14,7 @@ import { MessageSubject, ServerStatus, SessionStatus } from './messaging';
 import { startJupyterLiteServer } from './jlite';
 import type { Config } from './config';
 import { makeConfiguration } from './options';
+import { shortId } from './utils';
 
 class ThebeServer {
   id: string;
@@ -56,7 +56,9 @@ class ThebeServer {
     if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
-    const id = kernelOptions.id ?? nanoid();
+
+    // TODO should be inside session!
+    const id = kernelOptions.id ?? shortId();
     this._messages?.({
       id,
       subject: MessageSubject.session,
@@ -74,15 +76,17 @@ class ThebeServer {
 
     // TODO register to handle the statusChanged signal
     // connection.statusChanged
+    const session = new ThebeSession(id, connection);
 
     this._messages?.({
       id,
       subject: MessageSubject.session,
       status: SessionStatus.ready,
       message: `New session started, kernel '${connection.kernel?.name}' available`,
+      object: session,
     });
 
-    return new ThebeSession(id, connection);
+    return session;
   }
 
   // TODO ThunkAction
@@ -131,7 +135,7 @@ class ThebeServer {
     options: CoreOptions & { id?: string },
     messages?: MessageCallback,
   ): Promise<ThebeServer> {
-    const id = options.id ?? nanoid();
+    const id = options.id ?? shortId();
     const config = makeConfiguration(options);
 
     console.debug('thebe:api:connectToJupyterServer:serverSettings:', config.serverSettings);
@@ -150,14 +154,17 @@ class ThebeServer {
       kernelManager,
       serverSettings,
     });
+
+    const server = new ThebeServer(id, config, sessionManager, messages);
+
     messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
       message: `Created SessionMananger: ${serverSettings.baseUrl}`,
+      object: server,
     });
 
-    const server = new ThebeServer(id, config, sessionManager, messages);
     await server.ready;
 
     try {
@@ -172,6 +179,7 @@ class ThebeServer {
         status: ServerStatus.ready,
         id,
         message: `Server connection established`,
+        object: server,
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {}
@@ -187,7 +195,7 @@ class ThebeServer {
     options: CoreOptions & { id?: string },
     messages?: MessageCallback,
   ): Promise<ThebeServer> {
-    const id = options?.id ?? nanoid();
+    const id = options?.id ?? shortId();
     const config = makeConfiguration(options);
 
     const serviceManager = await startJupyterLiteServer(messages);
@@ -204,14 +212,16 @@ class ThebeServer {
     );
 
     const sessionManager = serviceManager.sessions;
+    const server = new ThebeServer(id, config, sessionManager, messages);
+
     messages?.({
       subject: MessageSubject.server,
       status: ServerStatus.launching,
       id,
       message: `Received SessionMananger from JupyterLite`,
+      object: server,
     });
 
-    const server = new ThebeServer(id, config, sessionManager, messages);
     await server.ready;
 
     messages?.({
@@ -219,6 +229,7 @@ class ThebeServer {
       status: ServerStatus.ready,
       id,
       message: `Server connection established`,
+      object: server,
     });
 
     return server;
@@ -237,7 +248,7 @@ class ThebeServer {
     messages?: MessageCallback,
   ): Promise<ThebeServer> {
     // request new server
-    const id = options.id ?? nanoid();
+    const id = options.id ?? shortId();
     const config = makeConfiguration(options);
 
     console.debug('thebe:server:connectToServerViaBinder binderUrl:', config.binder.binderUrl);
@@ -289,16 +300,20 @@ class ThebeServer {
           serverSettings,
         });
         const server = new ThebeServer(
-          options?.id ?? nanoid(),
+          options?.id ?? shortId(),
           makeConfiguration({ ...options, serverSettings }),
           sessionManager,
           messages,
         );
+
+        await server.ready;
+
         messages?.({
           subject: MessageSubject.server,
           status: ServerStatus.ready,
           id,
           message: `Reconnected to existing binder server.`,
+          object: server,
         });
         return server;
       }
@@ -376,14 +391,20 @@ class ThebeServer {
                 );
               }
 
+              const server = new ThebeServer(id, config, sessionManager, messages);
+
+              await server.ready;
+
               state.status = ServerStatus.ready;
               messages?.({
                 subject: MessageSubject.server,
                 status: state.status,
                 id,
                 message: `Binder server is ready: ${msg.message}`,
+                object: server,
               });
-              resolve(new ThebeServer(id, config, sessionManager, messages));
+
+              resolve(server);
             }
             break;
           default:

@@ -1,10 +1,10 @@
-import { nanoid } from 'nanoid';
 import ThebeCell from './cell';
 import type ThebeSession from './session';
 import { ThebeManager } from './manager';
 import type { MathjaxOptions } from './types';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { MessageSubject, NotebookStatus } from './messaging';
+import { shortId } from './utils';
 
 interface ExecuteReturn {
   id: string;
@@ -30,7 +30,7 @@ class ThebeNotebook {
     messages?: MessageCallback,
     externalId?: string,
   ) {
-    const id = externalId ?? nanoid();
+    const id = externalId ?? shortId();
     const notebook = new ThebeNotebook(id, messages);
     notebook.cells = blocks.map((c) => {
       const cell = new ThebeCell(c.id, id, c.source, mathjaxOptions);
@@ -51,11 +51,12 @@ class ThebeNotebook {
     this._messages = messages;
   }
 
-  message(data: Omit<MessageCallbackArgs, 'id' | 'subject'>) {
+  message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
     this._messages?.({
       ...data,
       id: this.id,
       subject: MessageSubject.notebook,
+      object: this,
     });
   }
 

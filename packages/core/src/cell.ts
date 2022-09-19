@@ -36,11 +36,12 @@ class ThebeCell extends PassiveCellRenderer {
     return this.session !== undefined;
   }
 
-  message(data: Omit<MessageCallbackArgs, 'id' | 'subject'>) {
+  message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
     this._messages?.({
       ...data,
       id: this.id,
       subject: MessageSubject.cell,
+      object: this,
     });
   }
 
