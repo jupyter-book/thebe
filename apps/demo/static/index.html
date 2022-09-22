@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: true,
+        useBinder: false
+      }
+    </script>
+    <link rel="stylesheet" href="_static/index.css" />
+    <script src="_static/index.js"></script>
+  </head>
+  <body>
+    <div class="thebe-activate"></div>
+    <div class="thebe-status"></div>
+    <pre data-executable="true" data-language="python">print("Hello!")</pre>
+  </body>
+</html>
