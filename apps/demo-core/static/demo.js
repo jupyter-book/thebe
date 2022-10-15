@@ -28,9 +28,10 @@ plt.grid(True)
 ];
 
 const IPYWIDGETS_CODE = [
-  `import piplite
-await piplite.install(["ipywidgets", "ipympl"])`,
-  `%matplotlib widget
+  `#import piplite
+#await piplite.install(["ipywidgets", "ipympl"])
+
+%matplotlib widget
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import numpy as np
@@ -99,7 +100,7 @@ async function demoBasic(code, options) {
 
   const { server, session } = await thebeCore.api.connect(
     options,
-    statusCallback ?? loggingCallback
+    statusCallback ?? loggingCallback,
   );
 
   await server.ready;

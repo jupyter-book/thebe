@@ -3,6 +3,7 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "start": {
+      "dependsOn": ["thebe#build", "thebe-core#build"],
       "outputs": ["dist/**"]
     },
     "build": {

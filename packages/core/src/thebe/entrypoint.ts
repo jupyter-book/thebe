@@ -16,9 +16,7 @@ import { connect, setupNotebook } from './api';
  */
 
 export interface JsApi {
-  connect: (
-    options: Partial<CoreOptions>,
-  ) => Promise<{ server: ThebeServer; session?: ThebeSession }>;
+  connect: (options: Partial<CoreOptions>) => Promise<ThebeServer>;
   setupNotebook: (blocks: CodeBlock[], options: Partial<CoreOptions>) => ThebeNotebook;
 }
 

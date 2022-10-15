@@ -90,8 +90,7 @@ class ThebeNotebook {
 
   attachSession(session: ThebeSession) {
     if (!session.kernel) return;
-    const cdnOnly = true;
-    const manager = new ThebeManager(session.kernel, cdnOnly);
+    const manager = new ThebeManager(session.kernel);
     this.cells?.map((cell) => cell.attachSession(session, manager));
     this.message({
       status: NotebookStatus.changed,

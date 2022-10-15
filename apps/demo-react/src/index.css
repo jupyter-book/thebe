@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  h1 {
+    @apply text-4xl font-normal leading-normal mt-0 mb-2 text-slate-800;
+  }
+  h2 {
+    @apply text-3xl font-normal leading-normal mt-0 mb-2 text-slate-800;
+  }
+  h3 {
+    @apply text-2xl font-normal leading-normal mt-0 mb-2 text-slate-800;
+  }
+  h4 {
+    @apply text-xl font-normal leading-normal mt-0 mb-2 text-slate-800;
+  }
+  p {
+    @apply py-3;
+  }
+  pre {
+    @apply whitespace-pre bg-slate-100 rounded inline-block p-2 ml-4 shadow-md;
+  }
+  textarea,
+  input {
+    @apply rounded p-1 border;
+  }
+  button {
+    @apply rounded border p-2 my-1 hover:contrast-50 shadow-sm bg-green-400;
+  }
+  code {
+    @apply rounded bg-slate-100 shadow-md px-1 inline-block;
+  }
+  .section {
+    @apply mt-4 border-t-2;
+  }
+}

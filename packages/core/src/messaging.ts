@@ -14,13 +14,13 @@ export enum ServerStatus {
 export enum SessionStatus {
   'starting' = 'starting',
   'ready' = 'ready',
-  'dead' = 'dead',
+  'shutdown' = 'shutdown',
 }
 
 export enum KernelStatus {
   'starting' = 'starting',
   'ready' = 'ready',
-  'dead' = 'dead',
+  'shutdown' = 'shutdown',
 }
 
 export enum NotebookStatus {

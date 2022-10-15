@@ -1,6 +1,7 @@
 import type { MathjaxOptions } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
-import { ThebeManager, WIDGET_MIMETYPE } from './manager';
+import type { ThebeManager } from './manager';
+import { WIDGET_MIMETYPE } from './manager';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
@@ -8,9 +9,9 @@ import { CellStatus, MessageSubject } from './messaging';
 
 class ThebeCell extends PassiveCellRenderer {
   notebookId: string;
-  session?: ThebeSession;
   source: string;
   busy: boolean;
+  _session?: ThebeSession;
   _messages?: MessageCallback;
 
   constructor(
@@ -33,7 +34,11 @@ class ThebeCell extends PassiveCellRenderer {
   }
 
   get isAttached() {
-    return this.session !== undefined;
+    return this._session !== undefined;
+  }
+
+  get session() {
+    return this._session;
   }
 
   message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
@@ -45,29 +50,9 @@ class ThebeCell extends PassiveCellRenderer {
     });
   }
 
-  /**
-   * Wait for a kernel to be available and attach it to the cell
-   *
-   * NOTE: this function is intentended to be used when rendering a single cell only
-   * If you are using mulitple cells via Notebook, you should use Notebook.waitForKernel instead
-   *
-   * @param session - ThebeKernel
-   * @returns
-   */
-  async waitForSession(session: Promise<ThebeSession>) {
-    return session.then((s) => {
-      if (!s.kernel) throw Error('Session returned with no kernel connection');
-      const cdnOnly = true;
-      const manager = new ThebeManager(s.kernel, cdnOnly);
-      this.attachSession(s, manager);
-      return s;
-    });
-  }
-
   attachSession(session: ThebeSession, manager: ThebeManager) {
-    this.rendermime.removeMimeType(WIDGET_MIMETYPE);
     if (this.rendermime) manager.addWidgetFactories(this.rendermime);
-    this.session = session;
+    this._session = session;
     this.message({
       status: CellStatus.changed,
       message: 'Attached to session',
@@ -76,7 +61,7 @@ class ThebeCell extends PassiveCellRenderer {
 
   detachSession() {
     this.rendermime.removeMimeType(WIDGET_MIMETYPE);
-    this.session = undefined;
+    this._session = undefined;
     this.message({
       status: CellStatus.changed,
       message: 'Detached from session',
@@ -114,14 +99,16 @@ class ThebeCell extends PassiveCellRenderer {
    * TODO
    *  - pass execute_count or timestamp or something back to redux on success/failure?
    *
-   * @param source
+   * @param source?
    * @returns
    */
-  async execute(source: string): Promise<{ id: string; height: number; width: number } | null> {
-    if (!this.session || !this.session.kernel) {
+  async execute(source?: string): Promise<{ id: string; height: number; width: number } | null> {
+    if (!this._session || !this._session.kernel) {
       console.warn('Attempting to execute on a cell without an attached kernel');
       return null;
     }
+
+    const code = source ?? this.source;
 
     try {
       console.debug(`thebe:renderer:execute ${this.id}`);
@@ -137,16 +124,14 @@ class ThebeCell extends PassiveCellRenderer {
           rendermime: this.rendermime!,
         });
 
-        area.future = this.session.kernel?.requestExecute({ code: source });
+        area.future = this._session.kernel?.requestExecute({ code });
         await area.future.done;
 
         // trigger an update via the model associated with the OutputArea
         // that is attached to the DOM
         this.model.fromJSON(model.toJSON());
       } else {
-        this.area.future = this.session.kernel.requestExecute({
-          code: source,
-        });
+        this.area.future = this._session.kernel.requestExecute({ code });
         await this.area.future.done;
       }
 

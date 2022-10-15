@@ -32,7 +32,7 @@ export class KernelStatus {
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Server connection closed';
             break;
-          case SessionStatus.dead:
+          case SessionStatus.shutdown:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Session is dead';
             break;

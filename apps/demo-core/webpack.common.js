@@ -44,10 +44,6 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /fontawesome-free.*\.(svg|eot|ttf|woff)$/,
-        loader: 'ignore-loader',
-      },
     ],
   },
   resolve: {

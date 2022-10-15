@@ -14,14 +14,7 @@ module.exports = {
   entry: {
     app: './src/thebe/entrypoint.ts',
   },
-  plugins: [
-    shim(/\.(svg|ttf|eot|woff2|woff)/),
-    new HtmlWebpackPlugin({
-      title: 'thebe-core',
-      template: 'demo/index.html',
-    }),
-    new DefinePlugin({ 'process.env': {} }),
-  ],
+  plugins: [shim(/\.(svg|ttf|eot|woff2|woff)/), new DefinePlugin({ 'process.env': {} })],
   output: {
     filename: 'thebe-core.min.js',
     path: path.resolve(__dirname, 'dist', 'lib'),
@@ -44,10 +37,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /fontawesome-free.*\.(svg|eot|ttf|woff)$/,
         loader: 'ignore-loader',
       },
     ],
