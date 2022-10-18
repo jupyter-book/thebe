@@ -5,13 +5,15 @@ module.exports = {
   preset: 'ts-jest/presets/default-esm', // or other ESM presets
   testRegex: ['tests/.*.spec.ts'],
   moduleNameMapper: {
-    '\\.(gif|ttf|eot|svg)$': '@jupyterlab/testutils/lib/jest-file-mock.js',
+    '\\.(gif|ttf|eot|svg|css)$': '@jupyterlab/testutils/lib/jest-file-mock.js',
   },
   transform: {
     '^.+\\.svg$': '<rootDir>/jest.svg.transform.js',
     '^.+\\.(js|ts|tsx)$': 'ts-jest',
   },
-  transformIgnorePatterns: ['/node_modules/(?!(@jupyterlab|nanoid|@jupyterlite)/)'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@jupyterlab|nanoid|@jupyterlite|@jupyter-widgets|d3-format|d3-color)/)',
+  ],
   globals: {
     'ts-jest': {
       tsconfig: './tsconfig.json',

@@ -77,7 +77,8 @@ export async function bootstrap(opts: Partial<Options> = {}) {
     return { id, source: el.textContent?.trim() ?? '' };
   });
 
-  const notebook = setupNotebook(codeWithIds, options, undefined, messageCallback);
+  const notebook = setupNotebook(codeWithIds, options, messageCallback);
+  window.thebe = { ...window.thebe, notebook };
 
   renderAllCells(options, notebook, items);
 
@@ -85,13 +86,21 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   // errors cause failure first
   const serverPromise = connect(options, messageCallback);
 
-  if (!opts.requestKernel) return PromiseMap({ server: serverPromise, notebook });
+  if (!opts.requestKernel) {
+    serverPromise.then((s) => (window.thebe = { ...window.thebe, server: s }));
+    return PromiseMap({ server: serverPromise, notebook });
+  }
 
   const server = await serverPromise;
+  window.thebe = { ...window.thebe, server };
+
+  const sessionPromise = server.startNewSession();
+
+  sessionPromise.then((s) => (window.thebe = { ...window.thebe, session: s ?? undefined }));
 
   return PromiseMap({
     server,
-    session: server.startNewSession(),
+    session: sessionPromise,
     notebook,
   });
 }

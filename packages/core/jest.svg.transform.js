@@ -1,6 +1,5 @@
 module.exports = {
   process() {
-    console.log('process!!!');
     return { code: 'module.exports = {};' };
   },
   getCacheKey() {

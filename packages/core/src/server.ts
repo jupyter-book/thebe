@@ -196,6 +196,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // ping the server to check it is alive before trying to
     // hook up services
     try {
+      this.messages({
+        status: ServerStatus.launching,
+        message: `Checking server url`,
+      });
       await ThebeServer.status(serverSettings, true);
       this.messages({
         status: ServerStatus.launching,
@@ -484,7 +488,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   static async status(serverSettings: Required<ServerSettings>, throwOnError = true) {
     try {
-      return await ServerConnection.makeRequest(
+      return ServerConnection.makeRequest(
         `${serverSettings.baseUrl}api/status`,
         {},
         ServerConnection.makeSettings(serverSettings),

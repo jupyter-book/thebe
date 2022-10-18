@@ -4,8 +4,6 @@ import type { CodeBlock } from '../notebook';
 import ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
 import { makeConfiguration } from '..';
-import { getRenderMimeRegistry } from '../rendermime';
-import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 export async function connect(
   options: CoreOptions,
@@ -35,7 +33,6 @@ export async function connect(
 export function setupNotebook(
   blocks: CodeBlock[],
   options: CoreOptions,
-  rendermime?: IRenderMimeRegistry,
   messages?: MessageCallback,
 ) {
   const config = makeConfiguration(options);
