@@ -6,127 +6,16 @@ import {
   KernelISpecModels,
   KernelISpecModel,
   ThebeSession,
-  shortId,
+  NotebookStatus,
+  ThebeCell,
 } from 'thebe-core';
 import './App.css';
-import { examples, useExample } from './example';
+import { examples, useCellExample, useNotebookExample, WIDGETS_MULTICELL_EXAMPLE } from './example';
+import { OutputAreaByRef } from './OutputAreaByRef';
+import { SessionListing } from './SessionListing';
+import { SessionModelListing } from './SessionModelListing';
 
 const config = makeConfiguration({});
-
-function SessionModelListing({
-  list,
-  onShutdown,
-  onConnectTo,
-}: {
-  list: SessionIModel[];
-  onShutdown: (model: SessionIModel) => void;
-  onConnectTo: (model: SessionIModel) => void;
-}) {
-  return (
-    <div>
-      <h3>Sessions running on server</h3>
-      <table className="text-center text-sm border table-auto border-separate">
-        <thead>
-          <tr className="bg-slate-100">
-            <td className="text-center" colSpan={3}>
-              session
-            </td>
-            <td className="text-center" colSpan={6}>
-              kernel
-            </td>
-            <td className="text-center" colSpan={3}>
-              actions
-            </td>
-          </tr>
-          <tr>
-            <td>id</td>
-            <td>name</td>
-            <td>path</td>
-            <td>type</td>
-            <td>#c</td>
-            <td>name</td>
-            <td>state</td>
-            <td>last</td>
-            <td>reason</td>
-            <td>traceback</td>
-            <td>shudown</td>
-            <td>connectTo</td>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item: SessionIModel) => (
-            <tr className="odd:bg-slate-100" key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.path}</td>
-              <td>{item.type}</td>
-              <td title={item.kernel?.id}>{item.kernel?.connections}</td>
-              <td>{item.kernel?.name}</td>
-              <td>{item.kernel?.execution_state}</td>
-              <td>{item.kernel?.last_activity}</td>
-              <td>{item.kernel?.reason}</td>
-              <td>{item.kernel?.traceback}</td>
-              <td>
-                <button onClick={() => onShutdown(item)}>shutdown</button>
-              </td>
-              <td>
-                <button onClick={() => onConnectTo(item)}>connect</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function SessionListing({
-  sessions,
-  onAttach,
-}: {
-  sessions: ThebeSession[];
-  onAttach: (session: ThebeSession) => void;
-}) {
-  return (
-    <div>
-      <table className="text-center text-sm border table-auto border-separate">
-        <thead>
-          <tr className="bg-slate-100">
-            <th>id</th>
-            <th>name</th>
-            <th>path</th>
-            <th>kernel name</th>
-            <th>action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sessions.map((session: ThebeSession) => (
-            <tr key={`${session.id}-${shortId()}`}>
-              <td>{session.id}</td>
-              <td>{session.name}</td>
-              <td>{session.path}</td>
-              <td>{session.kernel?.name}</td>
-              <td>
-                <button onClick={() => onAttach(session)}>attach</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-const OutputAreaByRef = React.forwardRef<HTMLDivElement, { busy: boolean }>(({ busy }, ref) => {
-  return (
-    <div>
-      <div className="border border-white rounded hover:delay-150 hover:border-jupyter max-w-[600px]">
-        <div ref={ref}>[Output Area]</div>
-        {busy && <div>Cell is running...</div>}
-      </div>
-    </div>
-  );
-});
 
 function App() {
   const [server, setServer] = useState<ThebeServer | undefined>();
@@ -137,11 +26,12 @@ function App() {
   const [kernelName, setKernelName] = useState<string>('thebe-demo');
   const [sessionPath, setSessionPath] = useState<string>('unique-path');
 
-  const simple = useExample('simple', 'print("Hello Thebe!!!")');
-  const mplexample = useExample('mpl', examples['matplotlib']);
-  const widgets = useExample('widgets', examples['basic_widgets']);
-  const ipympl = useExample('ipympl', examples['ipympl']);
-  const leaflet = useExample('leaflet', examples['ipyleaflet']);
+  const simple = useCellExample('simple', 'print("Hello Thebe!!!")');
+  const mplexample = useCellExample('mpl', examples['matplotlib']);
+  const widgets = useCellExample('widgets', examples['basic_widgets']);
+  const ipympl = useCellExample('ipympl', examples['ipympl']);
+  const leaflet = useCellExample('leaflet', examples['ipyleaflet']);
+  const notebookExample = useNotebookExample(WIDGETS_MULTICELL_EXAMPLE);
 
   useEffect(() => {});
 
@@ -192,10 +82,10 @@ function App() {
     if (session.kernel == null) return;
     simple.attach(session);
     mplexample.attach(session);
+    widgets.attach(session);
     ipympl.attach(session);
     leaflet.attach(session);
-
-    widgets.attach(session);
+    notebookExample.attach(session);
 
     simple.reRender();
   };
@@ -219,7 +109,7 @@ function App() {
           <button onClick={requestServer}>Connect to a Local Server</button>
         </div>
         {server && (
-          <>
+          <div>
             <div className="section">
               <h2>Step 2 - Which kernels are available</h2>
               <p>Ok, we have a connection to the server! 🤖</p>
@@ -337,22 +227,30 @@ function App() {
                   path will just reconnect to the same session.
                 </p>
               </div>
-              <div className="section">
-                <h2>Step 4 - Client side session connections</h2>
-                <p>
-                  A <code>ThebeSession</code> is a client side object that wraps a connection to the
-                  server session, it's up to the client app to keep track of these.
-                </p>
-                <p>
-                  The <code>id</code> of the session here is actually the <code>id</code> of the
-                  connection, so unless you connect to a different session on the server, or start a
-                  new session with a unique name, you'll establish a connection to the same server
-                  session. If it's the intent of the client to have only a single connection open to
-                  a server session at any time, it will have to manage that.
-                </p>
-                <SessionListing sessions={sessions} onAttach={clickAttach} />
+            </div>
+            <div className="section">
+              <h2>Step 4 - Client side session connections</h2>
+              <p>
+                A <code>ThebeSession</code> is a client side object that wraps a connection to the
+                server session, it's up to the client app to keep track of these.
+              </p>
+              <p>
+                The <code>id</code> of the session here is actually the <code>id</code> of the
+                connection, so unless you connect to a different session on the server, or start a
+                new session with a unique name, you'll establish a connection to the same server
+                session. If it's the intent of the client to have only a single connection open to a
+                server session at any time, it will have to manage that.
+              </p>
+              <SessionListing sessions={sessions} onAttach={clickAttach} />
+            </div>
+            <div className="section">
+              <h2>Step 5 - examples using ThebeCell</h2>
+              <p>
+                Once attached, cells can be executed. The folowing examples all use the ThebeCell
+                interface to independently render different examples.
+              </p>
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p>Once attached, cells can be executed</p>
                   <h3>Hello Thebe!</h3>
                   <textarea
                     onChange={(e) => simple.setSourceCode(e.target.value)}
@@ -363,10 +261,10 @@ function App() {
                   <p>Attached to session: {simple.cell?.session?.id}</p>
                   <button onClick={simple.execute}>execute</button>
                   <OutputAreaByRef ref={simple.ref} busy={simple.busy} />
-                  <p>Once attached, cells can be executed</p>
                 </div>
                 <div>
                   <h3>Plotting with matplotlib</h3>
+                  <p>Display a plot</p>
                   <textarea
                     onChange={(e) => mplexample.setSourceCode(e.target.value)}
                     value={mplexample.sourceCode}
@@ -377,42 +275,45 @@ function App() {
                   <button onClick={mplexample.execute}>execute</button>
                   <OutputAreaByRef ref={mplexample.ref} busy={mplexample.busy} />
                 </div>
+                <div>
+                  <h3>Basic Widgets</h3>
+                  <p>
+                    Basic widgets are controls, UI elements and containers that are bundles in the
+                    main ipywidgets packages, using these widgets should not require any additional
+                    libraries to be loaded at runtime.
+                  </p>
+                  <p>Attached to session: {widgets.cell?.session?.id}</p>
+                  <textarea
+                    onChange={(e) => widgets.setSourceCode(e.target.value)}
+                    value={widgets.sourceCode}
+                    cols={80}
+                    rows={12}
+                  ></textarea>
+                  <div>
+                    <button onClick={widgets.execute}>execute</button>
+                  </div>
+                  <OutputAreaByRef ref={widgets.ref} busy={widgets.busy} />
+                </div>
+                <div>
+                  <h3>IPYMPL</h3>
+                  <p>
+                    For example ipyleaflet or ipympl are custom widgets, that require additional
+                    code to be loaded at runtime.
+                  </p>
+                  <p>Attached to session: {ipympl.cell?.session?.id}</p>
+                  <textarea
+                    onChange={(e) => ipympl.setSourceCode(e.target.value)}
+                    value={ipympl.sourceCode}
+                    cols={80}
+                    rows={12}
+                  ></textarea>
+                  <div>
+                    <button onClick={ipympl.execute}>execute</button>
+                  </div>
+                  <OutputAreaByRef ref={ipympl.ref} busy={ipympl.busy} />
+                </div>
               </div>
-              <div className="section">
-                <h2>Step 5 - rendering ipywidgets</h2>
-                <h3>Basic Widgets</h3>
-                <p>
-                  Basic widgets are controls, UI elements and containers that are bundles in the
-                  main ipywidgets packages, using these widgets should not require any additional
-                  libraries to be loaded at runtime.
-                </p>
-                <p>Attached to session: {widgets.cell?.session?.id}</p>
-                <textarea
-                  onChange={(e) => widgets.setSourceCode(e.target.value)}
-                  value={widgets.sourceCode}
-                  cols={80}
-                  rows={12}
-                ></textarea>
-                <div>
-                  <button onClick={widgets.execute}>execute</button>
-                </div>
-                <OutputAreaByRef ref={widgets.ref} busy={widgets.busy} />
-                <h3>IPYMPL</h3>
-                <p>
-                  For example ipyleaflet or ipympl are custom widgets, that require additional code
-                  to be loaded at runtime.
-                </p>
-                <p>Attached to session: {ipympl.cell?.session?.id}</p>
-                <textarea
-                  onChange={(e) => ipympl.setSourceCode(e.target.value)}
-                  value={ipympl.sourceCode}
-                  cols={80}
-                  rows={12}
-                ></textarea>
-                <div>
-                  <button onClick={ipympl.execute}>execute</button>
-                </div>
-                <OutputAreaByRef ref={ipympl.ref} busy={ipympl.busy} />
+              <div>
                 <h3>IPYLEAFLET</h3>
                 <p>
                   ipyleaflet is a custom widget, that require additional code to be loaded at
@@ -431,7 +332,49 @@ function App() {
                 <OutputAreaByRef ref={leaflet.ref} busy={leaflet.busy} />
               </div>
             </div>
-          </>
+            <div className="section">
+              <h2>An Example using the ThebeNotebook interface</h2>
+              <p>
+                In the following example, the visible code cells here are all contained and executed
+                within a single notebook. That notebook holds the ThebeCells which are then attached
+                to the DOM. We have compete control over where any cell outputs are rendered. We are
+                using this example to show that <code>ipywidgets</code> displayed in multiple cells
+                still work in a linked way and update all widgets whether or not they are in the
+                same cell.
+              </p>
+              <p>Attached to session: {ipympl.cell?.session?.id}</p>
+              <div>
+                <button onClick={notebookExample.execute}>execute all</button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  {notebookExample &&
+                    notebookExample.notebook?.cells.map((cell: ThebeCell) => (
+                      <div key={cell.id}>
+                        <textarea
+                          className="w-full"
+                          onChange={(e) => (cell.source = e.target.value)}
+                          value={cell.source}
+                          rows={(cell.source.match(/\n/g) || []).length + 1}
+                        ></textarea>
+                      </div>
+                    ))}
+                </div>
+                <div>
+                  {notebookExample &&
+                    notebookExample.cellRefs.map((ref, idx) => (
+                      <div key={`${notebookExample.notebook?.cells[idx].id}-output`}>
+                        <OutputAreaByRef
+                          ref={ref}
+                          busy={notebookExample.busy}
+                          content={`[Output Area for Cell #${idx}]`}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
     </div>
