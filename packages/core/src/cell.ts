@@ -1,11 +1,10 @@
 import type { MathjaxOptions } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
-import type { ThebeManager } from './manager';
-import { WIDGET_MIMETYPE } from './manager';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { CellStatus, MessageSubject } from './messaging';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 class ThebeCell extends PassiveCellRenderer {
   notebookId: string;
@@ -18,10 +17,11 @@ class ThebeCell extends PassiveCellRenderer {
     id: string,
     notebookId: string,
     source: string,
-    mathjaxOptions: MathjaxOptions,
+    rendermime?: IRenderMimeRegistry,
+    mathjaxOptions?: MathjaxOptions,
     messages?: MessageCallback,
   ) {
-    super(id, mathjaxOptions);
+    super(id, rendermime, mathjaxOptions);
     this.id = id;
     this.notebookId = notebookId;
     this.source = source;
@@ -41,6 +41,10 @@ class ThebeCell extends PassiveCellRenderer {
     return this._session;
   }
 
+  set session(s: ThebeSession | undefined) {
+    this._session = s;
+  }
+
   message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
     this._messages?.({
       ...data,
@@ -50,8 +54,14 @@ class ThebeCell extends PassiveCellRenderer {
     });
   }
 
-  attachSession(session: ThebeSession, manager: ThebeManager) {
-    if (this.rendermime) manager.addWidgetFactories(this.rendermime);
+  /**
+   * Attaches to the session and adds the widgets factory to the rendermine registry
+   * call this version if using ThebeCell in isolation, otherwise call ThebeNotebook::attachSession
+   *
+   * @param session
+   */
+  attachSession(session: ThebeSession) {
+    session.manager.addWidgetFactories(this.rendermime);
     this._session = session;
     this.message({
       status: CellStatus.changed,
@@ -59,8 +69,13 @@ class ThebeCell extends PassiveCellRenderer {
     });
   }
 
+  /**
+   * Detaches from the session and removes the widgets factory from the rendermine registry
+   * call this version if using ThebeCell in isolation, otherwise call ThebeNotebook::detachSession
+   *
+   */
   detachSession() {
-    this.rendermime.removeMimeType(WIDGET_MIMETYPE);
+    this._session?.manager.removeWidgetFactories(this.rendermime);
     this._session = undefined;
     this.message({
       status: CellStatus.changed,
@@ -121,7 +136,7 @@ class ThebeCell extends PassiveCellRenderer {
         console.log(`thebe:renderer:execute:rendermine`, this.rendermime);
         const area = new OutputArea({
           model,
-          rendermime: this.rendermime!,
+          rendermime: this.rendermime,
         });
 
         area.future = this._session.kernel?.requestExecute({ code });
@@ -129,17 +144,17 @@ class ThebeCell extends PassiveCellRenderer {
 
         // trigger an update via the model associated with the OutputArea
         // that is attached to the DOM
-        this.model.fromJSON(model.toJSON());
+        this._model.fromJSON(model.toJSON());
       } else {
-        this.area.future = this._session.kernel.requestExecute({ code });
-        await this.area.future.done;
+        this._area.future = this._session.kernel.requestExecute({ code });
+        await this._area.future.done;
       }
 
       this.messageCompleted();
       return {
         id: this.id,
-        height: this.area.node.offsetHeight,
-        width: this.area.node.offsetWidth,
+        height: this._area.node.offsetHeight,
+        width: this._area.node.offsetWidth,
       };
     } catch (err: any) {
       console.error('thebe:renderer:execute Error:', err);

@@ -1,10 +1,11 @@
 import ThebeCell from './cell';
 import type ThebeSession from './session';
-import { ThebeManager } from './manager';
 import type { MathjaxOptions } from './types';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { MessageSubject, NotebookStatus } from './messaging';
 import { shortId } from './utils';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { getRenderMimeRegistry } from './rendermime';
 
 interface ExecuteReturn {
   id: string;
@@ -19,10 +20,30 @@ export interface CodeBlock {
 }
 
 class ThebeNotebook {
-  id: string;
-  cells?: ThebeCell[];
-  session?: ThebeSession;
+  _id: string;
+  _rendermime: IRenderMimeRegistry;
+  _cells: ThebeCell[];
+  _session?: ThebeSession;
   _messages?: MessageCallback;
+
+  constructor(id: string, messages?: MessageCallback) {
+    this._id = id;
+    this._cells = [];
+    this._rendermime = getRenderMimeRegistry();
+    this._messages = messages;
+  }
+
+  get rendermime() {
+    return this._rendermime;
+  }
+
+  get session() {
+    return this._session;
+  }
+
+  get cells() {
+    return this._cells;
+  }
 
   static fromCodeBlocks(
     blocks: CodeBlock[],
@@ -32,53 +53,48 @@ class ThebeNotebook {
   ) {
     const id = externalId ?? shortId();
     const notebook = new ThebeNotebook(id, messages);
-    notebook.cells = blocks.map((c) => {
-      const cell = new ThebeCell(c.id, id, c.source, mathjaxOptions);
+    notebook._cells = blocks.map((c) => {
+      const cell = new ThebeCell(c.id, id, c.source, notebook.rendermime, mathjaxOptions);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
 
     notebook.message({
       status: NotebookStatus.changed,
-      message: `Created notebook with ${notebook.cells.length} cells`,
+      message: `Created notebook with ${notebook._cells.length} cells`,
     });
 
     return notebook;
   }
 
-  constructor(id: string, messages?: MessageCallback) {
-    this.id = id;
-    this._messages = messages;
-  }
-
   message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
     this._messages?.({
       ...data,
-      id: this.id,
+      id: this._id,
       subject: MessageSubject.notebook,
       object: this,
     });
   }
 
   numCells() {
-    return this.cells?.length ?? 0;
+    return this._cells?.length ?? 0;
   }
 
   getCell(idx: number) {
-    if (!this.cells) throw Error('Dag not initialized');
-    if (idx >= this.cells.length)
-      throw Error(`Notebook.cells index out of range: ${idx}:${this.cells.length}`);
-    return this.cells[idx];
+    if (!this._cells) throw Error('Dag not initialized');
+    if (idx >= this._cells.length)
+      throw Error(`Notebook.cells index out of range: ${idx}:${this._cells.length}`);
+    return this._cells[idx];
   }
 
   getCellById(id: string) {
-    const cell = this.cells?.find((c: ThebeCell) => c.id === id);
+    const cell = this._cells?.find((c: ThebeCell) => c.id === id);
     return cell;
   }
 
   lastCell() {
-    if (!this.cells) throw Error('Notebook not initialized');
-    return this.cells[this.cells.length - 1];
+    if (!this._cells) throw Error('Notebook not initialized');
+    return this._cells[this._cells.length - 1];
   }
 
   async waitForKernel(kernel: Promise<ThebeSession>) {
@@ -89,9 +105,12 @@ class ThebeNotebook {
   }
 
   attachSession(session: ThebeSession) {
-    if (!session.kernel) return;
-    const manager = new ThebeManager(session.kernel);
-    this.cells?.map((cell) => cell.attachSession(session, manager));
+    if (!session.kernel) throw Error('ThebeNotebook - cannot connect to session, no kernel');
+    // note all cells in a notebook share the rendermime registry
+    // we only need to add the widgets factory once
+    this._session = session;
+    session.manager.addWidgetFactories(this._rendermime);
+    this._cells?.forEach((cell) => (cell.session = session));
     this.message({
       status: NotebookStatus.changed,
       message: 'Attached to session',
@@ -99,7 +118,9 @@ class ThebeNotebook {
   }
 
   detachSession() {
-    this.cells?.map((cell) => cell.detachSession());
+    this._session?.manager.removeWidgetFactories(this._rendermime);
+    this._cells?.map((cell) => (cell.session = undefined));
+    this._session = undefined;
     this.message({
       status: NotebookStatus.changed,
       message: 'Detached from session',
@@ -110,14 +131,14 @@ class ThebeNotebook {
     cellId: string,
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
-    if (!this.cells) return [];
+    if (!this._cells) return [];
     this.message({
       status: NotebookStatus.executing,
       message: `executeUpTo ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
     });
-    const idx = this.cells.findIndex((c) => c.id === cellId);
+    const idx = this._cells.findIndex((c) => c.id === cellId);
     if (idx === -1) return [];
-    const cellsToExecute = this.cells.slice(0, idx + 1);
+    const cellsToExecute = this._cells.slice(0, idx + 1);
     cellsToExecute.map((cell) => cell.messageBusy());
     const result = this.executeCells(cellsToExecute.map((c) => c.id));
     this.message({
@@ -131,7 +152,7 @@ class ThebeNotebook {
     cellId: string,
     preprocessor?: (s: string) => string,
   ): Promise<ExecuteReturn | null> {
-    if (!this.cells) return null;
+    if (!this._cells) return null;
     this.message({
       status: NotebookStatus.executing,
       message: `executeOnly ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
@@ -150,12 +171,12 @@ class ThebeNotebook {
     cellIds: string[],
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
-    if (!this.cells) return [];
+    if (!this._cells) return [];
     this.message({
       status: NotebookStatus.executing,
       message: `executeCells ${cellIds.length} cells${preprocessor ? ' with preprocessor' : ''}`,
     });
-    const cells = this.cells.filter((c) => {
+    const cells = this._cells.filter((c) => {
       const found = cellIds.find((id) => id === c.id);
       if (!found) {
         console.warn(`Cell ${c.id} not found in notebook`);
@@ -175,16 +196,16 @@ class ThebeNotebook {
   }
 
   async executeAll(preprocessor?: (s: string) => string): Promise<(ExecuteReturn | null)[]> {
-    if (!this.cells) return [];
+    if (!this._cells) return [];
 
     this.message({
       status: NotebookStatus.executing,
       message: `executeAll${preprocessor ? ' with preprocessor' : ''}`,
     });
 
-    this.cells.map((cell) => cell.messageBusy());
+    this._cells.map((cell) => cell.messageBusy());
 
-    const result = this.executeCells(this.cells.map((c) => c.id));
+    const result = this.executeCells(this._cells.map((c) => c.id));
 
     this.message({
       status: NotebookStatus.completed,

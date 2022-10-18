@@ -77,7 +77,7 @@ export async function bootstrap(opts: Partial<Options> = {}) {
     return { id, source: el.textContent?.trim() ?? '' };
   });
 
-  const notebook = setupNotebook(codeWithIds, options, messageCallback);
+  const notebook = setupNotebook(codeWithIds, options, undefined, messageCallback);
 
   renderAllCells(options, notebook, items);
 

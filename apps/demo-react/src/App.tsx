@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   makeConfiguration,
   ThebeServer,
@@ -7,10 +7,9 @@ import {
   KernelISpecModel,
   ThebeSession,
   shortId,
-  ThebeCell,
-  ThebeManager,
 } from 'thebe-core';
 import './App.css';
+import { examples, useExample } from './example';
 
 const config = makeConfiguration({});
 
@@ -129,96 +128,6 @@ const OutputAreaByRef = React.forwardRef<HTMLDivElement, { busy: boolean }>(({ b
   );
 });
 
-const MATPLOTLIB_EXAMPLE = `
-import numpy as np
-import matplotlib.pyplot as plt
-
-%matplotlib inline
-
-R = np.random.random((32,32))
-plt.imshow(R)
-plt.title('A Random Grid of Numbers');
-`;
-
-const BASIC_WIDGETS_EXAMPLE = `
-from ipywidgets import interact, interactive, fixed, interact_manual
-import ipywidgets as widgets
-
-def f(x):
-    return x
-
-interact(f, x=10);
-`;
-
-const IPYMPL_EXAMPLE = `
-%matplotlib ipympl
-import matplotlib.pyplot as plt
-import numpy as np
-
-fig, ax = plt.subplots()
-
-
-x = np.linspace(0, 2*np.pi, 100)
-y = np.sin(3*x)
-ax.plot(x, y)
-`;
-
-const IPYLEAFLET_EXAMPLE = `
-from ipyleaflet import Map, basemaps, basemap_to_tiles
-
-m = Map(
-    basemap=basemap_to_tiles(basemaps.OpenStreetMap.Mapnik),
-    center=(48.204793, 350.121558),
-    zoom=3
-    )
-m
-`;
-
-function useExample(name: string, code: string) {
-  const [sourceCode, setSourceCode] = useState<string>(code);
-  const [busy, setBusy] = useState<boolean>(false);
-  const [cell, setCell] = useState<ThebeCell | undefined>();
-  const [rr, setReRender] = useState({});
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (cell) return;
-    setCell(new ThebeCell(name, 'none', sourceCode, {}));
-  }, [cell]);
-
-  const execute = () => {
-    if (!cell) return;
-    cell.source = sourceCode;
-    setBusy(true);
-    cell?.execute().then(() => {
-      setBusy(false);
-    });
-  };
-
-  const attach = (session: ThebeSession) => {
-    if (session.kernel == null || !cell) return;
-    const manager = new ThebeManager(session.kernel);
-    console.log({ manager });
-    if (cell?.isAttached) cell.detachSession();
-    cell?.attachSession(session, manager);
-    if (ref.current) cell?.attachToDOM(ref.current);
-    setCell(cell); // trigger a re-render
-  };
-
-  return {
-    sourceCode,
-    setSourceCode,
-    busy,
-    setBusy,
-    cell,
-    setCell,
-    ref,
-    attach,
-    execute,
-    reRender: () => setReRender({}),
-  };
-}
-
 function App() {
   const [server, setServer] = useState<ThebeServer | undefined>();
   const [kernelSpecs, setKernelSpecs] = useState<KernelISpecModels>();
@@ -229,10 +138,10 @@ function App() {
   const [sessionPath, setSessionPath] = useState<string>('unique-path');
 
   const simple = useExample('simple', 'print("Hello Thebe!!!")');
-  const mplexample = useExample('mpl', MATPLOTLIB_EXAMPLE);
-  const widgets = useExample('widgets', BASIC_WIDGETS_EXAMPLE);
-  const ipympl = useExample('ipympl', IPYMPL_EXAMPLE);
-  const leaflet = useExample('leaflet', IPYLEAFLET_EXAMPLE);
+  const mplexample = useExample('mpl', examples['matplotlib']);
+  const widgets = useExample('widgets', examples['basic_widgets']);
+  const ipympl = useExample('ipympl', examples['ipympl']);
+  const leaflet = useExample('leaflet', examples['ipyleaflet']);
 
   useEffect(() => {});
 

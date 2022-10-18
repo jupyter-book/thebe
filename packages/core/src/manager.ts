@@ -5,7 +5,11 @@ import type { INotebookModel } from '@jupyterlab/notebook';
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
 
-import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
+import {
+  IRenderMimeRegistry,
+  RenderMimeRegistry,
+  standardRendererFactories,
+} from '@jupyterlab/rendermime';
 
 import {
   WidgetManager as JupyterLabManager,
@@ -46,7 +50,7 @@ export class ThebeManager extends JupyterLabManager {
     this.loader = (n: string, v: string) => requireLoader(n, v, true);
   }
 
-  addWidgetFactories(rendermime: RenderMimeRegistry) {
+  addWidgetFactories(rendermime: IRenderMimeRegistry) {
     rendermime.addFactory(
       {
         safe: false,
@@ -55,6 +59,10 @@ export class ThebeManager extends JupyterLabManager {
       },
       1,
     );
+  }
+
+  removeWidgetFactories(rendermime: IRenderMimeRegistry) {
+    rendermime.removeMimeType(WIDGET_MIMETYPE);
   }
 
   async build_widgets(): Promise<void> {
