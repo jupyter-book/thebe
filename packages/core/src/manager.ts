@@ -44,7 +44,6 @@ export class ThebeManager extends JupyterLabManager {
     });
     super(context, renderMime, { saveState: false });
 
-    // this.addWidgetFactories(renderMime);
     this.id = shortId();
     this._registerWidgets();
     this.loader = (n: string, v: string) => requireLoader(n, v, true);
@@ -165,6 +164,8 @@ export class ThebeManager extends JupyterLabManager {
   }
 }
 
+// TODO this could be a real context or at least some of these stubbed methods could be
+// made real with appropeaite implementations for thebe
 function createContext(kernel: IKernelConnection): DocumentRegistry.IContext<INotebookModel> {
   return {
     sessionContext: {

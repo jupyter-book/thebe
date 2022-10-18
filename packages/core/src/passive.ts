@@ -64,9 +64,14 @@ class PassiveCellRenderer {
     });
   }
 
+  /**
+   * Will trigger the output to render an error with text taken from the optional argument
+   *
+   * @param error
+   * @returns
+   */
   clearOnError(error?: any) {
     if (!this._area) return;
-    // could update redux with state here?
     this._area.model.clear();
     this._area.model.add({
       output_type: 'stream',
