@@ -209,9 +209,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     } catch (err: any) {
       this.messages?.({
         status: ServerStatus.failed,
-        message: `Server not reachable (${serverSettings.baseUrl})`,
+        message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
       });
-      this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl})`);
+      this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
       return this._ready;
     }
 
@@ -345,7 +345,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             status: ServerStatus.failed,
             message: `Server not reachable (${serverSettings.baseUrl})`,
           });
-          this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl})`);
+          this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
           return this._ready;
         }
 
@@ -488,11 +488,12 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   static async status(serverSettings: Required<ServerSettings>, throwOnError = true) {
     try {
-      return ServerConnection.makeRequest(
+      const status = await ServerConnection.makeRequest(
         `${serverSettings.baseUrl}api/status`,
         {},
         ServerConnection.makeSettings(serverSettings),
       );
+      return status;
     } catch (err: any) {
       console.debug('thebe:api:connectToJupyterServer:', 'server unreachable');
       if (throwOnError) throw Error(`Jupyter server unreachable ${err?.message}`);
