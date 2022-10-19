@@ -4,6 +4,7 @@ import { findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
 import { ActivateWidget } from './activate';
+import PromiseMap from 'p-props';
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -65,7 +66,6 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   if (options.preRenderHook) options.preRenderHook();
   if (options.stripPrompts) stripPrompts(options);
   if (options.stripOutputPrompts) stripOutputPrompts(options);
-  const { server, session } = await connect(options, messageCallback);
 
   const { selector, outputSelector } = options;
   const items: CellDOMPlaceholder[] = findCells(
@@ -78,22 +78,29 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   });
 
   const notebook = setupNotebook(codeWithIds, options, messageCallback);
+  window.thebe = { ...window.thebe, notebook };
 
   renderAllCells(options, notebook, items);
 
-  await server.ready;
+  // starting to talk to binder / server is deferred until here so that any page
+  // errors cause failure first
+  const serverPromise = connect(options, messageCallback);
 
-  // NOTE if no session/kernel requested, caller needs to do that
-  if (session) {
-    notebook.attachSession(session);
+  if (!opts.requestKernel) {
+    serverPromise.then((s) => (window.thebe = { ...window.thebe, server: s }));
+    return PromiseMap({ server: serverPromise, notebook });
   }
 
-  if (window.thebe) {
-    window.thebe.options = options;
-    window.thebe.server = server;
-    window.thebe.session = session;
-    window.thebe.notebook = notebook;
-  }
+  const server = await serverPromise;
+  window.thebe = { ...window.thebe, server };
 
-  return { server, session, notebook };
+  const sessionPromise = server.startNewSession();
+
+  sessionPromise.then((s) => (window.thebe = { ...window.thebe, session: s ?? undefined }));
+
+  return PromiseMap({
+    server,
+    session: sessionPromise,
+    notebook,
+  });
 }

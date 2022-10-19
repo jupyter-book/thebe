@@ -1,6 +1,6 @@
 @import '@jupyterlab/codemirror/style/base.css';
 @import 'codemirror/lib/codemirror.css';
-@import 'thebe-core/dist/thebe-core.css';
+@import 'thebe-core/dist/lib/thebe-core.css';
 @import './activate.css';
 @import './status.css';
 

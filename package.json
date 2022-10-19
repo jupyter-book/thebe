@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "nuke": "npm run clean; npx npkill",
     "clean": "turbo run clean",
     "build": "turbo run build",
     "build:core": "turbo run build --filter=thebe-core",
@@ -24,7 +25,8 @@
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
     "start:thebe": "turbo run start --filter=demo",
-    "start:core": "turbo run start --filter=demo-core"
+    "start:core": "turbo run start --filter=demo-core",
+    "start:react": "turbo run start --filter=demo-react"
   },
   "repository": {
     "type": "git",

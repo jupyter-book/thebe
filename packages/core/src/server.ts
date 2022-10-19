@@ -1,7 +1,8 @@
-import type { CoreOptions, JsonObject, KernelOptions, ServerSettings } from './types';
+import type { KernelOptions, ServerSettings, SessionIModel } from './types';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
+import type { ServiceManager } from '@jupyterlab/services';
 import {
   KernelManager,
   KernelSpecAPI,
@@ -10,17 +11,17 @@ import {
 } from '@jupyterlab/services';
 import ThebeSession from './session';
 import type { MessageCallback } from './messaging';
-import { MessageSubject, ServerStatus, SessionStatus } from './messaging';
+import { MessageSubject, ServerStatus } from './messaging';
 import { startJupyterLiteServer } from './jlite';
 import type { Config } from './config';
-import { makeConfiguration } from './options';
 import { shortId } from './utils';
 
 interface ServerRuntime {
   ready: Promise<void>;
   isReady: boolean;
   settings: ServerConnection.ISettings | undefined;
-  shutdownAll: () => Promise<void>;
+  shutdownSession: (id: string) => Promise<void>;
+  shutdownAllSessions: () => Promise<void>;
 }
 
 interface RestAPIContentsResponse {
@@ -58,6 +59,7 @@ interface ServerRestAPI {
     type?: 'notebook' | 'file';
   }) => Promise<RestAPIContentsResponse>;
   createDirectory: (opts: { path: string }) => Promise<RestAPIContentsResponse>;
+  getKernelSpecs: () => Promise<KernelSpecAPI.ISpecModels>;
 }
 
 async function responseToJson(res: Response) {
@@ -67,31 +69,433 @@ async function responseToJson(res: Response) {
 }
 
 class ThebeServer implements ServerRuntime, ServerRestAPI {
-  id: string;
-  sessionManager: SessionManager | undefined;
   config: Config;
+  id: string;
+  sessionManager?: SessionManager;
+  serviceManager?: ServiceManager; // jlite only
+  private _resolveReadyFn?: (value: void | PromiseLike<void>) => void;
+  private _rejectReadyFn?: (reason?: any) => void;
   private _ready: Promise<void>;
   private _messages?: MessageCallback;
+  private _isDisposed: boolean;
 
-  constructor(
-    id: string,
-    config: Config,
-    sessionManager: SessionManager,
-    messages?: MessageCallback,
-  ) {
-    this.id = id;
-    this.sessionManager = sessionManager;
+  constructor(config: Config, id?: string, messages?: MessageCallback) {
     this.config = config;
-    this._ready = this.sessionManager.ready;
+    this.id = id ?? shortId();
     this._messages = messages;
+    this._ready = new Promise((resolve, reject) => {
+      this._resolveReadyFn = resolve;
+      this._rejectReadyFn = reject;
+    });
+    this._isDisposed = false;
   }
 
-  getFetchUrl(relative: string) {
-    if (!this.isReady) throw Error('Calling ServerRestAPI without an active server connection');
-    const settings = this.sessionManager!.serverSettings;
-    const url = new URL(relative, settings.baseUrl);
+  messages({ status, message }: { status: ServerStatus; message: string }) {
+    this._messages?.({
+      subject: MessageSubject.server,
+      id: this.id,
+      object: this,
+      status,
+      message,
+    });
+  }
+
+  get ready() {
+    return this._ready;
+  }
+
+  get isReady(): boolean {
+    return this.sessionManager?.isReady ?? false;
+  }
+
+  get isDisposed(): boolean {
+    return this._isDisposed;
+  }
+
+  get settings() {
+    return this.sessionManager?.serverSettings;
+  }
+
+  async shutdownSession(id: string) {
+    return this.sessionManager?.shutdown(id);
+  }
+
+  async shutdownAllSessions() {
+    return this.sessionManager?.shutdownAll();
+  }
+
+  dispose() {
+    if (this._isDisposed) return;
+    this.serviceManager?.dispose();
+    this.sessionManager?.dispose();
+
+    // Implementing the flag at this level as
+    this._isDisposed = true;
+  }
+
+  async startNewSession(kernelOptions?: KernelOptions): Promise<ThebeSession | null> {
+    await this.ready;
+
+    if (!this.sessionManager?.isReady) {
+      throw Error('Requesting session from a server, with no SessionManager available');
+    }
+    const connection = await this.sessionManager?.startNew({
+      name: kernelOptions?.name ?? this.config.kernels.name,
+      path: kernelOptions?.path ?? this.config.kernels.path,
+      type: 'notebook',
+      kernel: {
+        name: kernelOptions?.kernelName ?? this.config.kernels.kernelName,
+      },
+    });
+
+    return new ThebeSession(this, connection, this._messages);
+  }
+
+  async listRunningSessions(): Promise<SessionIModel[]> {
+    await this.ready;
+    const iter = this.sessionManager?.running();
+    const models = [];
+    let model;
+    while ((model = iter?.next()) !== undefined) {
+      models.push(model);
+    }
+    return models;
+  }
+
+  async refreshRunningSessions(): Promise<SessionIModel[]> {
+    await this.ready;
+    await this.sessionManager?.refreshRunning();
+    return this.listRunningSessions();
+  }
+
+  async connectTo(model: SessionIModel) {
+    await this.ready;
+    if (!this.sessionManager?.isReady) {
+      throw Error('Requesting session from a server, with no SessionManager available');
+    }
+
+    const connection = this.sessionManager?.connectTo({ model });
+
+    return new ThebeSession(this, connection, this._messages);
+  }
+
+  async clearSavedBinderSessions() {
+    const url = this.sessionManager?.serverSettings?.baseUrl;
+    if (url)
+      window.localStorage.removeItem(makeStorageKey(this.config.savedSessions.storagePrefix, url));
+  }
+
+  /**
+   * Connect to a Jupyter server directly
+   *
+   */
+  async connectToJupyterServer(): Promise<void> {
+    console.debug('thebe:api:connectToJupyterServer:serverSettings:', this.config.serverSettings);
+    const serverSettings = ServerConnection.makeSettings(this.config.serverSettings);
+
+    // ping the server to check it is alive before trying to
+    // hook up services
+    try {
+      this.messages({
+        status: ServerStatus.launching,
+        message: `Checking server url`,
+      });
+      await ThebeServer.status(serverSettings);
+      this.messages({
+        status: ServerStatus.launching,
+        message: `Server responds to pings`,
+      });
+      // eslint-disable-next-line no-empty
+    } catch (err: any) {
+      this.messages?.({
+        status: ServerStatus.failed,
+        message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
+      });
+      this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
+      return this._ready;
+    }
+
+    const kernelManager = new KernelManager({ serverSettings });
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Created KernelManager`,
+    });
+
+    this.sessionManager = new SessionManager({
+      kernelManager,
+      serverSettings,
+    });
+
+    this.messages({
+      status: ServerStatus.ready,
+      message: `Created SessionManager`,
+    });
+
+    // Resolve the ready promise
+    this.sessionManager.ready.then(() => {
+      this.messages({
+        status: ServerStatus.ready,
+        message: `Server connection ready`,
+      });
+      this._resolveReadyFn?.();
+    });
+
+    return this._ready;
+  }
+
+  /**
+   * Connect to Jupyterlite Server
+   */
+  async connectToJupyterLiteServer(): Promise<void> {
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Connecting to JupyterLite`,
+    });
+
+    const serviceManager = await startJupyterLiteServer();
+
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Started JupyterLite server`,
+    });
+
+    console.debug(
+      'thebe:api:connectToJupyterLiteServer:serverSettings:',
+      serviceManager.serverSettings,
+    );
+
+    this.sessionManager = serviceManager.sessions;
+
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Received SessionMananger from JupyterLite`,
+    });
+
+    this.sessionManager.ready.then(() => {
+      this.messages({
+        status: ServerStatus.ready,
+        message: `Server connection established`,
+      });
+      this._resolveReadyFn?.();
+    });
+
+    return this._ready;
+  }
+
+  /**
+   * Connect to a Binder instance in order to
+   * access a Jupyter server that can provide kernels
+   *
+   * @param ctx
+   * @param opts
+   * @returns
+   */
+  async connectToServerViaBinder(): Promise<void> {
+    // request new server
+    console.debug('thebe:server:connectToServerViaBinder binderUrl:', this.config.binder.binderUrl);
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
+    });
+
+    let url: string;
+    switch (this.config.binder.repoProvider) {
+      case RepoProvider.git:
+        url = makeGitUrl(this.config.binder);
+        break;
+      case RepoProvider.gitlab:
+        url = makeGitLabUrl(this.config.binder);
+        break;
+      case RepoProvider.github:
+      default:
+        url = makeGitHubUrl(this.config.binder);
+        break;
+    }
+    console.debug('thebe:server:connectToServerViaBinder Binder build URL:', url);
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Binder build url is ${url}`,
+    });
+
+    if (this.config.savedSessions.enabled) {
+      console.debug('thebe:server:connectToServerViaBinder Checking for saved session...');
+      // the follow function will ping the server based on the settings and only return
+      // non-null if the server is still alive. So highly likely that the remainder of
+      // the connection calls below, work.
+      const existingSettings = await getExistingServer(this.config.savedSessions, url);
+      if (existingSettings) {
+        this.messages({
+          status: ServerStatus.launching,
+          message: 'Found existing binder session, attempting to connect...',
+        });
+
+        const serverSettings = ServerConnection.makeSettings(existingSettings);
+
+        // ping the server to check it is alive before trying to
+        // hook up services
+        try {
+          await ThebeServer.status(serverSettings);
+          this.messages({
+            status: ServerStatus.launching,
+            message: `Server responds to pings`,
+          });
+          // eslint-disable-next-line no-empty
+        } catch (err: any) {
+          this.messages?.({
+            status: ServerStatus.failed,
+            message: `Server not reachable (${serverSettings.baseUrl})`,
+          });
+          this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
+          return this._ready;
+        }
+
+        const kernelManager = new KernelManager({ serverSettings });
+
+        this.messages({
+          status: ServerStatus.launching,
+          message: `Created KernelManager`,
+        });
+
+        this.sessionManager = new SessionManager({
+          kernelManager,
+          serverSettings,
+        });
+
+        this.messages({
+          status: ServerStatus.launching,
+          message: `Created KernelManager`,
+        });
+
+        return this.sessionManager.ready.then(() => {
+          this.messages?.({
+            status: ServerStatus.ready,
+            message: `Re-connected to binder server`,
+          });
+        });
+      }
+    }
+
+    const requestPromise: Promise<void> = new Promise((resolveRequest, rejectRequest) => {
+      // Talk to the binder server
+      const state = { status: ServerStatus.launching };
+      const es = new EventSource(url);
+      this.messages({
+        status: state.status,
+        message: `Opened connection to binder: ${url}`,
+      });
+
+      // handle errors
+      es.onerror = (evt: Event) => {
+        console.error(`Lost connection to binder: ${url}`, evt);
+        es?.close();
+        state.status = ServerStatus.failed;
+        this.messages({
+          status: state.status,
+          message: (evt as MessageEvent)?.data,
+        });
+        rejectRequest(evt);
+      };
+
+      es.onmessage = async (evt: MessageEvent<string>) => {
+        const msg: {
+          // TODO must be in Jupyterlab types somewhere
+          phase: string;
+          message: string;
+          url: string;
+          token: string;
+        } = JSON.parse(evt.data);
+
+        const phase = msg.phase?.toLowerCase() ?? '';
+        switch (phase) {
+          case 'failed':
+            es?.close();
+            state.status = ServerStatus.failed;
+            this.messages({
+              status: state.status,
+              message: `Binder: failed to build - ${url} - ${msg.message}`,
+            });
+            rejectRequest(msg);
+            break;
+          case 'ready':
+            {
+              es?.close();
+
+              const settings: ServerSettings = {
+                baseUrl: msg.url,
+                wsUrl: 'ws' + msg.url.slice(4),
+                token: msg.token,
+                appendToken: true,
+              };
+
+              const serverSettings = ServerConnection.makeSettings(settings);
+              const kernelManager = new KernelManager({ serverSettings });
+              this.sessionManager = new SessionManager({
+                kernelManager,
+                serverSettings,
+              });
+
+              if (this.config.savedSessions.enabled) {
+                saveServerInfo(this.config.savedSessions, url, this.id, serverSettings);
+                console.debug(
+                  `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${url}`,
+                );
+              }
+
+              // promise has already been returned to the caller
+              // so we can await here
+              await this.sessionManager.ready;
+
+              state.status = ServerStatus.ready;
+              this.messages({
+                status: state.status,
+                message: `Binder server is ready: ${msg.message}`,
+              });
+
+              resolveRequest();
+            }
+            break;
+          default:
+            this.messages({
+              status: state.status,
+              message: `Binder is: ${phase} - ${msg.message}`,
+            });
+        }
+      };
+    });
+
+    requestPromise
+      .then(() => {
+        this._resolveReadyFn?.();
+      })
+      .catch(() => {
+        this._rejectReadyFn?.();
+      });
+
+    return this._ready;
+  }
+
+  //
+  // ServerRestAPI Implementation
+  //
+  getFetchUrl(relativeUrl: string) {
+    // TODO use ServerConnection.makeRequest - this willadd the token
+    // and use any internal fetch overrides
+    const settings = this.config.serverSettings;
+    const url = new URL(relativeUrl, settings.baseUrl);
     url.searchParams.append('token', settings.token);
     return url;
+  }
+
+  static status(serverSettings: Required<ServerSettings>): Promise<void | Response> {
+    return ServerConnection.makeRequest(
+      `${serverSettings.baseUrl}api/status`,
+      {},
+      ServerConnection.makeSettings(serverSettings),
+    );
+  }
+
+  async getKernelSpecs() {
+    return KernelSpecAPI.getSpecs(ServerConnection.makeSettings(this.config.serverSettings));
   }
 
   async getContents(opts: {
@@ -167,389 +571,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         }),
       }),
     );
-  }
-
-  get ready() {
-    return this._ready;
-  }
-
-  get isReady(): boolean {
-    return this.sessionManager?.isReady ?? false;
-  }
-
-  get settings() {
-    return this.sessionManager?.serverSettings;
-  }
-
-  async shutdownAll() {
-    await this.sessionManager?.shutdownAll();
-  }
-
-  async requestSession(kernelOptions: KernelOptions & { id?: string }) {
-    if (!this.sessionManager) {
-      throw Error('Requesting session from a server, with no SessionManager available');
-    }
-
-    // TODO should be inside session!
-    const id = kernelOptions.id ?? shortId();
-    this._messages?.({
-      id,
-      subject: MessageSubject.session,
-      status: SessionStatus.starting,
-      message: 'requesting a new session',
-    });
-    const connection = await this.sessionManager?.startNew({
-      name: kernelOptions.name ?? this.config.kernels.name,
-      path: kernelOptions.path ?? this.config.kernels.path,
-      type: 'notebook',
-      kernel: {
-        name: kernelOptions.kernelName ?? kernelOptions.name ?? this.config.kernels.kernelName,
-      },
-    });
-
-    // TODO register to handle the statusChanged signal
-    // connection.statusChanged
-    const session = new ThebeSession(id, connection);
-
-    this._messages?.({
-      id,
-      subject: MessageSubject.session,
-      status: SessionStatus.ready,
-      message: `New session started, kernel '${connection.kernel?.name}' available`,
-      object: session,
-    });
-
-    return session;
-  }
-
-  // TODO ThunkAction
-  async fetchKernelNames() {
-    if (!this.sessionManager) return { default: 'python', kernelSpecs: {} };
-    return KernelSpecAPI.getSpecs(
-      ServerConnection.makeSettings(this.sessionManager.serverSettings),
-    );
-  }
-
-  async clear() {
-    const url = this.sessionManager?.serverSettings?.baseUrl;
-    if (url)
-      window.localStorage.removeItem(makeStorageKey(this.config.savedSessions.storagePrefix, url));
-  }
-
-  static async status(
-    id: string,
-    serverSettings: Required<ServerSettings>,
-    throwOnError = true,
-    messages?: MessageCallback,
-  ) {
-    try {
-      return await ServerConnection.makeRequest(
-        `${serverSettings.baseUrl}api/status`,
-        {},
-        ServerConnection.makeSettings(serverSettings),
-      );
-    } catch (err: any) {
-      console.debug('thebe:api:connectToJupyterServer:', 'server unreachable');
-      messages?.({
-        subject: MessageSubject.server,
-        status: ServerStatus.failed,
-        id,
-        message: `Failed to connect to server ${id}: ${err?.message}`,
-      });
-      if (throwOnError) throw Error(`Jupyter server unreachable ${err?.message}`);
-    }
-  }
-
-  /**
-   * Connect to a Jupyter server directly
-   *
-   */
-  static async connectToJupyterServer(
-    options: CoreOptions & { id?: string },
-    messages?: MessageCallback,
-  ): Promise<ThebeServer> {
-    const id = options.id ?? shortId();
-    const config = makeConfiguration(options);
-
-    console.debug('thebe:api:connectToJupyterServer:serverSettings:', config.serverSettings);
-
-    const serverSettings = ServerConnection.makeSettings(config.serverSettings);
-
-    const kernelManager = new KernelManager({ serverSettings });
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.launching,
-      id,
-      message: `Created KernelManager: ${config.serverSettings.baseUrl}`,
-    });
-
-    const sessionManager = new SessionManager({
-      kernelManager,
-      serverSettings,
-    });
-
-    const server = new ThebeServer(id, config, sessionManager, messages);
-
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.launching,
-      id,
-      message: `Created SessionMananger: ${serverSettings.baseUrl}`,
-      object: server,
-    });
-
-    await server.ready;
-
-    try {
-      // TODO? move this behind .ready? is it safe to do so far binder & jupyterlite?
-      // or actually a better way of doing this is to setup the server to respond to the
-      // connection failure signal
-      // https://jupyterlab.readthedocs.io/en/stable/api/interfaces/services.session.imanager.html#connectionfailure
-      await ThebeServer.status(id, serverSettings, true, messages);
-
-      messages?.({
-        subject: MessageSubject.server,
-        status: ServerStatus.ready,
-        id,
-        message: `Server connection established`,
-        object: server,
-      });
-      // eslint-disable-next-line no-empty
-    } catch (err: any) {}
-
-    return server;
-  }
-
-  /**
-   * Connect to Jupyterlite Server
-   *
-   */
-  static async connectToJupyterLiteServer(
-    options: CoreOptions & { id?: string },
-    messages?: MessageCallback,
-  ): Promise<ThebeServer> {
-    const id = options?.id ?? shortId();
-    const config = makeConfiguration(options);
-
-    const serviceManager = await startJupyterLiteServer(messages);
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.launching,
-      id,
-      message: `Started JupyterLite server`,
-    });
-
-    console.debug(
-      'thebe:api:connectToJupyterLiteServer:serverSettings:',
-      serviceManager.serverSettings,
-    );
-
-    const sessionManager = serviceManager.sessions;
-    const server = new ThebeServer(id, config, sessionManager, messages);
-
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.launching,
-      id,
-      message: `Received SessionMananger from JupyterLite`,
-      object: server,
-    });
-
-    await server.ready;
-
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.ready,
-      id,
-      message: `Server connection established`,
-      object: server,
-    });
-
-    return server;
-  }
-
-  /**
-   * Connect to a Binder instance in order to
-   * access a Jupyter server that can provide kernels
-   *
-   * @param ctx
-   * @param opts
-   * @returns
-   */
-  static async connectToServerViaBinder(
-    options: CoreOptions & { id?: string },
-    messages?: MessageCallback,
-  ): Promise<ThebeServer> {
-    // request new server
-    const id = options.id ?? shortId();
-    const config = makeConfiguration(options);
-
-    console.debug('thebe:server:connectToServerViaBinder binderUrl:', config.binder.binderUrl);
-    messages?.({
-      subject: MessageSubject.server,
-      id,
-      status: ServerStatus.launching,
-      message: `Connecting to binderhub at ${config.binder.binderUrl}`,
-    });
-
-    let url: string;
-    switch (config.binder.repoProvider) {
-      case RepoProvider.git:
-        url = makeGitUrl(config.binder);
-        break;
-      case RepoProvider.gitlab:
-        url = makeGitLabUrl(config.binder);
-        break;
-      case RepoProvider.github:
-      default:
-        url = makeGitHubUrl(config.binder);
-        break;
-    }
-    console.debug('thebe:server:connectToServerViaBinder Binder build URL:', url);
-    messages?.({
-      subject: MessageSubject.server,
-      status: ServerStatus.launching,
-      id,
-      message: `Binder build url is ${url}`,
-    });
-
-    if (config.savedSessions.enabled) {
-      console.debug('thebe:server:connectToServerViaBinder Checking for saved session...');
-      // the follow function will ping the server based on the settings and only return
-      // non-null if the server is still alive. So highly likely that the remainder of
-      // the connection calls below, work.
-      const existingSettings = await getExistingServer(config.savedSessions, url);
-      if (existingSettings) {
-        messages?.({
-          subject: MessageSubject.server,
-          status: ServerStatus.launching,
-          id,
-          message: 'Found existing binder session, connecting...',
-        });
-        const serverSettings = ServerConnection.makeSettings(existingSettings);
-        const kernelManager = new KernelManager({ serverSettings });
-        const sessionManager = new SessionManager({
-          kernelManager,
-          serverSettings,
-        });
-        const server = new ThebeServer(
-          options?.id ?? shortId(),
-          makeConfiguration({ ...options, serverSettings }),
-          sessionManager,
-          messages,
-        );
-
-        await server.ready;
-
-        messages?.({
-          subject: MessageSubject.server,
-          status: ServerStatus.ready,
-          id,
-          message: `Reconnected to existing binder server.`,
-          object: server,
-        });
-        return server;
-      }
-    }
-
-    return new Promise((resolve, reject) => {
-      // Talk to the binder server
-      const state = { status: ServerStatus.launching };
-      const es = new EventSource(url);
-      messages?.({
-        subject: MessageSubject.server,
-        status: state.status,
-        id,
-        message: `Opened connection to binder: ${url}`,
-      });
-
-      // handle errors
-      es.onerror = (evt: Event) => {
-        console.error(`Lost connection to binder: ${url}`, evt);
-        es?.close();
-        state.status = ServerStatus.failed;
-        messages?.({
-          subject: MessageSubject.server,
-          status: state.status,
-          id,
-          message: (evt as MessageEvent)?.data,
-        });
-        reject(evt);
-      };
-
-      es.onmessage = async (evt: MessageEvent<string>) => {
-        const msg: {
-          // TODO must be in Jupyterlab types somewhere
-          phase: string;
-          message: string;
-          url: string;
-          token: string;
-        } = JSON.parse(evt.data);
-
-        const phase = msg.phase?.toLowerCase() ?? '';
-        switch (phase) {
-          case 'failed':
-            es?.close();
-            state.status = ServerStatus.failed;
-            messages?.({
-              subject: MessageSubject.server,
-              status: state.status,
-              id,
-              message: `Binder: failed to build - ${url} - ${msg.message}`,
-            });
-            reject(msg);
-            break;
-          case 'ready':
-            {
-              es?.close();
-
-              const settings: ServerSettings = {
-                baseUrl: msg.url,
-                wsUrl: 'ws' + msg.url.slice(4),
-                token: msg.token,
-                appendToken: true,
-              };
-
-              const serverSettings = ServerConnection.makeSettings(settings);
-              const kernelManager = new KernelManager({ serverSettings });
-              const sessionManager = new SessionManager({
-                kernelManager,
-                serverSettings,
-              });
-
-              if (config.savedSessions.enabled) {
-                saveServerInfo(config.savedSessions, url, id, serverSettings);
-                console.debug(
-                  `thebe:server:connectToServerViaBinder Saved session for ${id} at ${url}`,
-                );
-              }
-
-              const server = new ThebeServer(id, config, sessionManager, messages);
-
-              await server.ready;
-
-              state.status = ServerStatus.ready;
-              messages?.({
-                subject: MessageSubject.server,
-                status: state.status,
-                id,
-                message: `Binder server is ready: ${msg.message}`,
-                object: server,
-              });
-
-              resolve(server);
-            }
-            break;
-          default:
-            messages?.({
-              subject: MessageSubject.server,
-              id,
-              status: state.status,
-              message: `Binder is: ${phase} - ${msg.message}`,
-            });
-        }
-      };
-    });
   }
 }
 

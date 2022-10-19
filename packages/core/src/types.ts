@@ -1,7 +1,10 @@
-import type { KernelSpecAPI } from '@jupyterlab/services';
+import type { KernelSpecAPI, Session } from '@jupyterlab/services';
 import type { ServerStatus } from './messaging';
 
 export type JsonObject = Record<string, any>;
+export type SessionIModel = Session.IModel;
+export type KernelISpecModels = KernelSpecAPI.ISpecModels;
+export type KernelISpecModel = KernelSpecAPI.ISpecModel;
 
 export interface ServerInfo {
   id: string;

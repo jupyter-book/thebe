@@ -9,7 +9,6 @@ export interface thebe {
   mountStatusWidget: () => void;
   mountActivateWidget: () => void;
   bootstrap: (options: Partial<Options>) => Promise<any>;
-  options?: Options;
   notebook?: ThebeNotebook;
   server?: ThebeServer;
   session?: ThebeSession;

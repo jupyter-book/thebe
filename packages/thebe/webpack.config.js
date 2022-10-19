@@ -107,16 +107,6 @@ module.exports = (env, argv) => {
           type: 'javascript/auto',
         },
         {
-          test: /\.js$/,
-          use: {
-            loader: 'istanbul-instrumenter-loader',
-            options: { esModules: true },
-          },
-          enforce: 'post',
-          exclude: /node_modules|\.spec\.js$/,
-          type: 'javascript/auto',
-        },
-        {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
           // type: 'javascript/auto',

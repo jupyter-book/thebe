@@ -10,6 +10,8 @@ export * from './options';
 export * from './messaging';
 export * from './types';
 export * from './thebe/api';
+export * from './utils';
+export * from './manager';
 
 export function setupThebeCore() {
   window.thebeCore = {

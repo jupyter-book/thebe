@@ -53,6 +53,6 @@ export function getRenderers(mathjax: MathjaxOptions) {
   };
 }
 
-export function getRenderMimeRegistry(mathjax: MathjaxOptions) {
-  return new RenderMimeRegistry(getRenderers(mathjax));
+export function getRenderMimeRegistry(mathjax?: MathjaxOptions) {
+  return new RenderMimeRegistry(getRenderers(mathjax ?? {}));
 }
