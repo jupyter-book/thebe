@@ -200,7 +200,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         status: ServerStatus.launching,
         message: `Checking server url`,
       });
-      await ThebeServer.status(serverSettings, true);
+      await ThebeServer.status(serverSettings);
       this.messages({
         status: ServerStatus.launching,
         message: `Server responds to pings`,
@@ -334,7 +334,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         // ping the server to check it is alive before trying to
         // hook up services
         try {
-          await ThebeServer.status(serverSettings, true);
+          await ThebeServer.status(serverSettings);
           this.messages({
             status: ServerStatus.launching,
             message: `Server responds to pings`,
@@ -486,18 +486,12 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     return url;
   }
 
-  static async status(serverSettings: Required<ServerSettings>, throwOnError = true) {
-    try {
-      const status = await ServerConnection.makeRequest(
-        `${serverSettings.baseUrl}api/status`,
-        {},
-        ServerConnection.makeSettings(serverSettings),
-      );
-      return status;
-    } catch (err: any) {
-      console.debug('thebe:api:connectToJupyterServer:', 'server unreachable');
-      if (throwOnError) throw Error(`Jupyter server unreachable ${err?.message}`);
-    }
+  static status(serverSettings: Required<ServerSettings>): Promise<void | Response> {
+    return ServerConnection.makeRequest(
+      `${serverSettings.baseUrl}api/status`,
+      {},
+      ServerConnection.makeSettings(serverSettings),
+    ).catch((err) => console.debug('thebe:api:connectToJupyterServer:', 'server unreachable'));
   }
 
   async getKernelSpecs() {
