@@ -18,7 +18,7 @@ describe('server', () => {
       await server.connectToJupyterServer();
     } catch (err: any) {
       expect(err).toBeDefined();
-      expect(err).toEqual('Server not reachable (http://localhost:9999/)');
+      expect(err).toContain('Server not reachable (http://localhost:9999/)');
     }
 
     expect(messageSpy).toBeCalledTimes(2);

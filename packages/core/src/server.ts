@@ -491,7 +491,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       `${serverSettings.baseUrl}api/status`,
       {},
       ServerConnection.makeSettings(serverSettings),
-    ).catch((err) => console.debug('thebe:api:connectToJupyterServer:', 'server unreachable'));
+    );
   }
 
   async getKernelSpecs() {
