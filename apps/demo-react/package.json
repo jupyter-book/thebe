@@ -19,7 +19,6 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-app-rewired start",
     "demo": "GENERATE_SOURCEMAP=false react-app-rewired build",
-    "test": "GENERATE_SOURCEMAP=false react-app-rewired test",
     "eject": "GENERATE_SOURCEMAP=false react-app-rewired eject"
   },
   "eslintConfig": {
