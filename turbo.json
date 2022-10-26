@@ -27,12 +27,14 @@
     },
     "docs#py:deps": {},
     "test": {
-      "outputs": ["build:thebe"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+      "outputs": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"],
+      "cache": false
     },
     "test:e2e": {
       "outputs": [],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "e2e/**/*.ts", "e2e/**/*.tsx"]
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "e2e/**/*.ts", "e2e/**/*.tsx"],
+      "cache": false
     },
     "lint": {
       "outputs": []
