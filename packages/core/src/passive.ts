@@ -35,9 +35,17 @@ class PassiveCellRenderer implements IPassiveCell {
   }
 
   attachToDOM(el?: HTMLElement) {
-    if (!this._area || !el) return;
-    if (this._area.isAttached) return;
-    console.debug(`thebe:renderer:attach ${this._id}`);
+    if (!this._area || !el) {
+      console.error(
+        `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this._area}, el: ${el}`,
+      );
+      return;
+    }
+    if (this._area.isAttached) {
+      console.warn(`thebe:renderer:attachToDOM - already attached, returning`);
+      return;
+    }
+    console.debug(`thebe:renderer:attachToDOM ${this.id}`);
 
     // if the target element has contents, preserve it but wrap it in our output area
     if (el.innerHTML) {
