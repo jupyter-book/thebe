@@ -13,6 +13,7 @@ export * from './thebe/api';
 export * from './utils';
 export * from './manager';
 export * from './rendermime';
+export * from './config';
 
 export function setupThebeCore() {
   window.thebeCore = {

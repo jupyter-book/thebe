@@ -5,10 +5,7 @@ import ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
 import { makeConfiguration } from '..';
 
-export async function connect(
-  options: CoreOptions,
-  messages?: MessageCallback,
-): Promise<ThebeServer> {
+export function connect(options: CoreOptions, messages?: MessageCallback): ThebeServer {
   // turn any options into a configuraiton object, applies
   // defaults for any ommited options
   const config = makeConfiguration(options);

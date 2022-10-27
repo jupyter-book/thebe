@@ -1,5 +1,5 @@
 import { KernelAPI, ServerConnection } from '@jupyterlab/services';
-import type { SavedSessionInfo, SavedSessionOptions, ServerInfo, ServerSettings } from './types';
+import type { SavedSessionInfo, SavedSessionOptions, ServerSettings } from './types';
 
 export function makeStorageKey(storagePrefix: string, url: string) {
   return storagePrefix + url;
@@ -54,7 +54,7 @@ export async function getExistingServer(
     return null;
   }
 
-  console.debug('thebe:getExistingServer Saved binder session detected');
+  console.debug('thebe:getExistingServer Saved binder session found');
   const existingSettings = JSON.parse(storedInfoJSON ?? '') as SavedSessionInfo;
   const lastUsed = new Date(existingSettings.lastUsed);
   const now = new Date();
@@ -81,7 +81,7 @@ export async function getExistingServer(
   // refresh lastUsed timestamp in stored info
   updateLastUsedTimestamp(savedSessionOptions, existingSettings.baseUrl);
   console.debug(
-    `thebe:getExistingServer Saved binder session is valid, reusing connection to ${existingSettings.baseUrl}`,
+    `thebe:getExistingServer Saved binder session is valid and will be reused ${existingSettings.baseUrl}`,
   );
 
   return existingSettings;

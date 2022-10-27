@@ -4,7 +4,6 @@ import { findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
 import { ActivateWidget } from './activate';
-import PromiseMap from 'p-props';
 
 // Exposing @jupyter-widgets/base and @jupyter-widgets/controls as amd
 // modules for custom widget bundles that depend on it.
@@ -84,23 +83,26 @@ export async function bootstrap(opts: Partial<Options> = {}) {
 
   // starting to talk to binder / server is deferred until here so that any page
   // errors cause failure first
-  const serverPromise = connect(options, messageCallback);
-
-  if (!opts.requestKernel) {
-    serverPromise.then((s) => (window.thebe = { ...window.thebe, server: s }));
-    return PromiseMap({ server: serverPromise, notebook });
-  }
-
-  const server = await serverPromise;
+  const server = connect(options, messageCallback);
   window.thebe = { ...window.thebe, server };
 
-  const sessionPromise = server.startNewSession();
+  if (!opts.requestKernel) {
+    return { server, notebook };
+  }
 
-  sessionPromise.then((s) => (window.thebe = { ...window.thebe, session: s ?? undefined }));
+  // try {
+  //   await server.ready;
+  // } catch (err) {
+  //   console.log('Caught');
+  // }
 
-  return PromiseMap({
+  // const session = await server.startNewSession();
+
+  // window.thebe = { ...window.thebe, session: session ?? undefined };
+
+  return {
     server,
-    session: sessionPromise,
+    // session,
     notebook,
-  });
+  };
 }

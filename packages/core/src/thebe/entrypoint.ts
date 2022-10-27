@@ -4,7 +4,6 @@
  * and adding to the window object.
  */
 import type ThebeServer from '../server';
-import type ThebeSession from '../session';
 import type { CodeBlock } from '../notebook';
 import type ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
@@ -16,7 +15,7 @@ import { connect, setupNotebook } from './api';
  */
 
 export interface JsApi {
-  connect: (options: Partial<CoreOptions>) => Promise<ThebeServer>;
+  connect: (options: Partial<CoreOptions>) => ThebeServer;
   setupNotebook: (blocks: CodeBlock[], options: Partial<CoreOptions>) => ThebeNotebook;
 }
 

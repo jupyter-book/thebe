@@ -17,7 +17,7 @@ import type { Config } from './config';
 import { shortId } from './utils';
 
 interface ServerRuntime {
-  ready: Promise<void>;
+  ready: Promise<ThebeServer>;
   isReady: boolean;
   settings: ServerConnection.ISettings | undefined;
   shutdownSession: (id: string) => Promise<void>;
@@ -73,9 +73,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   id: string;
   sessionManager?: SessionManager;
   serviceManager?: ServiceManager; // jlite only
-  private _resolveReadyFn?: (value: void | PromiseLike<void>) => void;
-  private _rejectReadyFn?: (reason?: any) => void;
-  private _ready: Promise<void>;
+  private _resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
+  private _ready: Promise<ThebeServer>;
   private _messages?: MessageCallback;
   private _isDisposed: boolean;
 
@@ -83,14 +82,14 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     this.config = config;
     this.id = id ?? shortId();
     this._messages = messages;
-    this._ready = new Promise((resolve, reject) => {
+    this._ready = new Promise((resolve) => {
       this._resolveReadyFn = resolve;
-      this._rejectReadyFn = reject;
     });
     this._isDisposed = false;
   }
 
   messages({ status, message }: { status: ServerStatus; message: string }) {
+    console.debug(`${status} ${message}`);
     this._messages?.({
       subject: MessageSubject.server,
       id: this.id,
@@ -139,6 +138,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     if (!this.sessionManager?.isReady) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
+
+    // TODO can we defer connection setup, return the session immediately and then have a ready signal?
     const connection = await this.sessionManager?.startNew({
       name: kernelOptions?.name ?? this.config.kernels.name,
       path: kernelOptions?.path ?? this.config.kernels.path,
@@ -168,7 +169,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     return this.listRunningSessions();
   }
 
-  async connectTo(model: SessionIModel) {
+  async connectToExistingSession(model: SessionIModel) {
     await this.ready;
     if (!this.sessionManager?.isReady) {
       throw Error('Requesting session from a server, with no SessionManager available');
@@ -211,8 +212,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         status: ServerStatus.failed,
         message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
       });
-      this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
-      return this._ready;
+      return;
     }
 
     const kernelManager = new KernelManager({ serverSettings });
@@ -232,15 +232,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
 
     // Resolve the ready promise
-    this.sessionManager.ready.then(() => {
+    return this.sessionManager.ready.then(() => {
       this.messages({
         status: ServerStatus.ready,
         message: `Server connection ready`,
       });
-      this._resolveReadyFn?.();
+      this._resolveReadyFn?.(this);
     });
-
-    return this._ready;
   }
 
   /**
@@ -271,33 +269,16 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    this.sessionManager.ready.then(() => {
+    return this.sessionManager.ready.then(() => {
       this.messages({
         status: ServerStatus.ready,
         message: `Server connection established`,
       });
-      this._resolveReadyFn?.();
+      this._resolveReadyFn?.(this);
     });
-
-    return this._ready;
   }
 
-  /**
-   * Connect to a Binder instance in order to
-   * access a Jupyter server that can provide kernels
-   *
-   * @param ctx
-   * @param opts
-   * @returns
-   */
-  async connectToServerViaBinder(): Promise<void> {
-    // request new server
-    console.debug('thebe:server:connectToServerViaBinder binderUrl:', this.config.binder.binderUrl);
-    this.messages({
-      status: ServerStatus.launching,
-      message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
-    });
-
+  _makeBinderUrl() {
     let url: string;
     switch (this.config.binder.repoProvider) {
       case RepoProvider.git:
@@ -311,7 +292,31 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         url = makeGitHubUrl(this.config.binder);
         break;
     }
-    console.debug('thebe:server:connectToServerViaBinder Binder build URL:', url);
+    return url;
+  }
+
+  async checkForSavedBinderSession() {
+    const url = this._makeBinderUrl();
+    return getExistingServer(this.config.savedSessions, url);
+  }
+
+  /**
+   * Connect to a Binder instance in order to
+   * access a Jupyter server that can provide kernels
+   *
+   * @param ctx
+   * @param opts
+   * @returns
+   */
+  async connectToServerViaBinder(): Promise<void> {
+    // request new server
+    this.messages({
+      status: ServerStatus.launching,
+      message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
+    });
+
+    const url = this._makeBinderUrl();
+
     this.messages({
       status: ServerStatus.launching,
       message: `Binder build url is ${url}`,
@@ -324,31 +329,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       // the connection calls below, work.
       const existingSettings = await getExistingServer(this.config.savedSessions, url);
       if (existingSettings) {
-        this.messages({
-          status: ServerStatus.launching,
-          message: 'Found existing binder session, attempting to connect...',
-        });
-
+        // Connect to the existing session
         const serverSettings = ServerConnection.makeSettings(existingSettings);
-
-        // ping the server to check it is alive before trying to
-        // hook up services
-        try {
-          await ThebeServer.status(serverSettings);
-          this.messages({
-            status: ServerStatus.launching,
-            message: `Server responds to pings`,
-          });
-          // eslint-disable-next-line no-empty
-        } catch (err: any) {
-          this.messages?.({
-            status: ServerStatus.failed,
-            message: `Server not reachable (${serverSettings.baseUrl})`,
-          });
-          this._rejectReadyFn?.(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
-          return this._ready;
-        }
-
         const kernelManager = new KernelManager({ serverSettings });
 
         this.messages({
@@ -371,7 +353,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             status: ServerStatus.ready,
             message: `Re-connected to binder server`,
           });
+          this._resolveReadyFn?.(this);
         });
+        // else drop out of this block and request a new session
       }
     }
 
@@ -463,15 +447,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       };
     });
 
-    requestPromise
-      .then(() => {
-        this._resolveReadyFn?.();
-      })
-      .catch(() => {
-        this._rejectReadyFn?.();
-      });
-
-    return this._ready;
+    return requestPromise.then(() => {
+      this._resolveReadyFn?.(this);
+    });
   }
 
   //
@@ -480,7 +458,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   getFetchUrl(relativeUrl: string) {
     // TODO use ServerConnection.makeRequest - this willadd the token
     // and use any internal fetch overrides
-    const settings = this.config.serverSettings;
+    // TODO BUG this is the wrong serverSetting, they should be for the active connection
+    if (!this.sessionManager)
+      throw new Error('Must connect to a server before requesting KernelSpecs');
+    const settings = this.sessionManager?.serverSettings;
     const url = new URL(relativeUrl, settings.baseUrl);
     url.searchParams.append('token', settings.token);
     return url;
@@ -495,7 +476,11 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   }
 
   async getKernelSpecs() {
-    return KernelSpecAPI.getSpecs(ServerConnection.makeSettings(this.config.serverSettings));
+    if (!this.sessionManager)
+      throw new Error('Must connect to a server before requesting KernelSpecs');
+    return KernelSpecAPI.getSpecs(
+      ServerConnection.makeSettings(this.sessionManager?.serverSettings),
+    );
   }
 
   async getContents(opts: {

@@ -26,10 +26,10 @@
     "dev": "npm run build:watch",
     "develop": "concurrently \"yarn run build:watch\" \"yarn run serve\"",
     "develop:local": "concurrently \"yarn run build:watch\" \"yarn run serve:local\"",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "test:e2e": "jest --config=./jest.e2e.config.js",
-    "test:e2e:watch": "jest --config=./jest.e2e.config.js  --watchAll",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watchAll --detectOpenHandles",
+    "test:e2e": "jest --detectOpenHandles --config=./jest.e2e.config.js",
+    "test:e2e:watch": "jest --detectOpenHandles --config=./jest.e2e.config.js  --watchAll",
     "lint": "eslint src/**/*.ts*",
     "lint:format": "prettier --check \"src/**/*.{ts,tsx}\"",
     "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
@@ -109,7 +109,6 @@
   },
   "dependencies": {
     "json5": "^2.2.1",
-    "p-props": "^5.0.0",
     "thebe-core": "^0.0.13"
   }
 }
