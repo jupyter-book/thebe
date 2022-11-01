@@ -1,6 +1,6 @@
 import ThebeCell from './cell';
 import type ThebeSession from './session';
-import type { MathjaxOptions } from './types';
+import type { IThebeCell, MathjaxOptions } from './types';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { MessageSubject, NotebookStatus } from './messaging';
 import { shortId } from './utils';
@@ -22,7 +22,7 @@ export interface CodeBlock {
 class ThebeNotebook {
   _id: string;
   _rendermime: IRenderMimeRegistry;
-  _cells: ThebeCell[];
+  _cells: IThebeCell[];
   _session?: ThebeSession;
   _messages?: MessageCallback;
 
@@ -31,6 +31,10 @@ class ThebeNotebook {
     this._cells = [];
     this._rendermime = getRenderMimeRegistry();
     this._messages = messages;
+  }
+
+  get id() {
+    return this._id;
   }
 
   get rendermime() {
@@ -88,7 +92,7 @@ class ThebeNotebook {
   }
 
   getCellById(id: string) {
-    const cell = this._cells?.find((c: ThebeCell) => c.id === id);
+    const cell = this._cells?.find((c) => c.id === id);
     return cell;
   }
 
@@ -125,6 +129,10 @@ class ThebeNotebook {
       status: NotebookStatus.changed,
       message: 'Detached from session',
     });
+  }
+
+  clear() {
+    this._cells.forEach((cell) => cell.clear());
   }
 
   async executeUpTo(

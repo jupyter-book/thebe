@@ -3,16 +3,16 @@ import { getRenderMimeRegistry } from './rendermime';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { Widget } from '@lumino/widgets';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import type { MathjaxOptions } from './types';
+import type { IPassiveCell, MathjaxOptions } from './types';
 
-class PassiveCellRenderer {
-  id: string;
+class PassiveCellRenderer implements IPassiveCell {
+  _id: string;
   _rendermime: IRenderMimeRegistry;
   _model: OutputAreaModel;
   _area: OutputArea;
 
   constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
-    this.id = id;
+    this._id = id;
 
     this._rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? {});
     this._model = new OutputAreaModel({ trusted: true });
@@ -20,6 +20,10 @@ class PassiveCellRenderer {
       model: this._model,
       rendermime: this._rendermime,
     });
+  }
+
+  get id() {
+    return this._id;
   }
 
   get rendermime() {
@@ -33,7 +37,7 @@ class PassiveCellRenderer {
   attachToDOM(el?: HTMLElement) {
     if (!this._area || !el) return;
     if (this._area.isAttached) return;
-    console.debug(`thebe:renderer:attach ${this.id}`);
+    console.debug(`thebe:renderer:attach ${this._id}`);
 
     // if the target element has contents, preserve it but wrap it in our output area
     if (el.innerHTML) {
@@ -62,6 +66,16 @@ class PassiveCellRenderer {
       name: 'stdout',
       text,
     });
+  }
+
+  /**
+   * Clears the output area model
+   *
+   * @returns
+   */
+  clear() {
+    if (!this._area) return;
+    this._area.model.clear();
   }
 
   /**

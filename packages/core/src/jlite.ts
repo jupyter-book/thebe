@@ -1,3 +1,4 @@
+import type { ServiceManager } from '@jupyterlab/services';
 import { JupyterLiteServer } from '@jupyterlite/server';
 
 const serverExtensions = [
@@ -5,7 +6,7 @@ const serverExtensions = [
   import('@jupyterlite/server-extension'),
 ];
 
-export async function startJupyterLiteServer() {
+export async function startJupyterLiteServer(): Promise<ServiceManager> {
   const litePluginsToRegister: JupyterLiteServer.IPluginModule[] = [];
 
   /**
@@ -14,7 +15,7 @@ export async function startJupyterLiteServer() {
   function* activePlugins(extension: any) {
     // Handle commonjs or es2015 modules
     let exports;
-    if (extension.hasOwnProperty('__esModule')) {
+    if (Object.prototype.hasOwnProperty.call(extension, '__esModule')) {
       exports = extension.default;
     } else {
       // CommonJS exports.
@@ -44,5 +45,6 @@ export async function startJupyterLiteServer() {
   const { serviceManager } = jupyterLiteServer;
   await serviceManager.ready;
 
-  return serviceManager;
+  // TODO
+  return serviceManager as unknown as ServiceManager;
 }

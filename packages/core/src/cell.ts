@@ -1,4 +1,4 @@
-import type { MathjaxOptions } from './types';
+import type { IThebeCell, MathjaxOptions } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
@@ -6,11 +6,11 @@ import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { CellStatus, MessageSubject } from './messaging';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
-class ThebeCell extends PassiveCellRenderer {
+class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   notebookId: string;
   source: string;
   busy: boolean;
-  _session?: ThebeSession;
+  session?: ThebeSession;
   _messages?: MessageCallback;
 
   constructor(
@@ -22,7 +22,7 @@ class ThebeCell extends PassiveCellRenderer {
     messages?: MessageCallback,
   ) {
     super(id, rendermime, mathjaxOptions);
-    this.id = id;
+    this._id = id;
     this.notebookId = notebookId;
     this.source = source;
     this.busy = false;
@@ -34,21 +34,13 @@ class ThebeCell extends PassiveCellRenderer {
   }
 
   get isAttached() {
-    return this._session !== undefined;
-  }
-
-  get session() {
-    return this._session;
-  }
-
-  set session(s: ThebeSession | undefined) {
-    this._session = s;
+    return this.session !== undefined;
   }
 
   message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
     this._messages?.({
       ...data,
-      id: this.id,
+      id: this._id,
       subject: MessageSubject.cell,
       object: this,
     });
@@ -62,7 +54,7 @@ class ThebeCell extends PassiveCellRenderer {
    */
   attachSession(session: ThebeSession) {
     session.manager.addWidgetFactories(this.rendermime);
-    this._session = session;
+    this.session = session;
     this.message({
       status: CellStatus.changed,
       message: 'Attached to session',
@@ -75,8 +67,8 @@ class ThebeCell extends PassiveCellRenderer {
    *
    */
   detachSession() {
-    this._session?.manager.removeWidgetFactories(this.rendermime);
-    this._session = undefined;
+    this.session?.manager.removeWidgetFactories(this.rendermime);
+    this.session = undefined;
     this.message({
       status: CellStatus.changed,
       message: 'Detached from session',
@@ -84,7 +76,7 @@ class ThebeCell extends PassiveCellRenderer {
   }
 
   messageBusy() {
-    console.debug(`thebe:renderer:message:busy ${this.id}`);
+    console.debug(`thebe:renderer:message:busy ${this._id}`);
     this.busy = true;
     this.message({
       status: CellStatus.executing,
@@ -93,7 +85,7 @@ class ThebeCell extends PassiveCellRenderer {
   }
 
   messageCompleted() {
-    console.debug(`thebe:renderer:message:completed ${this.id}`);
+    console.debug(`thebe:renderer:message:completed ${this._id}`);
     this.busy = false;
     this.message({
       status: CellStatus.completed,
@@ -102,7 +94,7 @@ class ThebeCell extends PassiveCellRenderer {
   }
 
   messageError(message: string) {
-    console.debug(`thebe:renderer:message:error ${this.id}`);
+    console.debug(`thebe:renderer:message:error ${this._id}`);
     this.busy = false;
     this.message({
       status: CellStatus.completed,
@@ -118,7 +110,7 @@ class ThebeCell extends PassiveCellRenderer {
    * @returns
    */
   async execute(source?: string): Promise<{ id: string; height: number; width: number } | null> {
-    if (!this._session || !this._session.kernel) {
+    if (!this.session || !this.session.kernel) {
       console.warn('Attempting to execute on a cell without an attached kernel');
       return null;
     }
@@ -126,7 +118,7 @@ class ThebeCell extends PassiveCellRenderer {
     const code = source ?? this.source;
 
     try {
-      console.debug(`thebe:renderer:execute ${this.id}`);
+      console.debug(`thebe:renderer:execute ${this._id}`);
       if (!this.isBusy) this.messageBusy();
 
       const useShadow = true;
@@ -139,20 +131,20 @@ class ThebeCell extends PassiveCellRenderer {
           rendermime: this.rendermime,
         });
 
-        area.future = this._session.kernel?.requestExecute({ code });
+        area.future = this.session.kernel?.requestExecute({ code });
         await area.future.done;
 
         // trigger an update via the model associated with the OutputArea
         // that is attached to the DOM
         this._model.fromJSON(model.toJSON());
       } else {
-        this._area.future = this._session.kernel.requestExecute({ code });
+        this._area.future = this.session.kernel.requestExecute({ code });
         await this._area.future.done;
       }
 
       this.messageCompleted();
       return {
-        id: this.id,
+        id: this._id,
         height: this._area.node.offsetHeight,
         width: this._area.node.offsetWidth,
       };

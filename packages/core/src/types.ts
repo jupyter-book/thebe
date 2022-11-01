@@ -1,5 +1,8 @@
 import type { KernelSpecAPI, Session } from '@jupyterlab/services';
 import type { ServerStatus } from './messaging';
+import type ThebeSession from './session';
+import type { IOutput } from '@jupyterlab/nbformat';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
@@ -71,4 +74,30 @@ export interface KernelOptions {
   name?: string;
   kernelName?: string;
   path?: string;
+}
+
+export interface IPassiveCell {
+  readonly id: string;
+  readonly rendermime: IRenderMimeRegistry;
+  readonly isAttachedToDOM: boolean;
+
+  attachToDOM(el?: HTMLElement): void;
+  setOutputText(text: string): void;
+  clear(): void;
+  clearOnError(error?: any): void;
+  render(outputs: IOutput[]): void;
+}
+
+export interface IThebeCell extends IPassiveCell {
+  readonly notebookId: string;
+  readonly busy: boolean;
+  source: string;
+  session?: ThebeSession;
+
+  attachSession(session: ThebeSession): void;
+  detachSession(): void;
+  execute(source?: string): Promise<{ id: string; height: number; width: number } | null>;
+  messageBusy(): void;
+  messageCompleted(): void;
+  messageError(message: string): void;
 }
