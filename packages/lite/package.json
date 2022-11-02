@@ -1,0 +1,38 @@
+{
+  "name": "thebe-lite",
+  "version": "0.0.1",
+  "description": "Thebe comnponents for JupyterLite support",
+  "main": "dist/lib/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build:bundle": "webpack --config webpack.config.cjs",
+    "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
+    "build": "npm-run-all -l clean -p build:bundle declarations",
+    "build:watch": "npm run build:bundle -- -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/executablebooks/thebe.git"
+  },
+  "keywords": [
+    "jupyter",
+    "thebe",
+    "executablebooks"
+  ],
+  "author": "Steve Purves <stevejpurves@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/executablebooks/thebe/issues"
+  },
+  "homepage": "https://github.com/executablebooks/thebe#readme",
+  "dependencies": {
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
+    "@jupyterlite/server": "0.1.0-beta.10",
+    "@jupyterlite/server-extension": "0.1.0-beta.10"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "webpack": "^5.74.0"
+  }
+}

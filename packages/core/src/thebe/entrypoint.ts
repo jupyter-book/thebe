@@ -8,6 +8,7 @@ import type { CodeBlock } from '../notebook';
 import type ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
 import { connect, setupNotebook } from './api';
+import * as coreModule from '../index';
 
 /**
  * This file is the main entrypoint for the cjs bundle
@@ -23,16 +24,24 @@ declare global {
   interface Window {
     define: any;
     requirejs: any;
-    thebeCore: {
-      api: JsApi;
+    thebe: {
+      lite?: any;
+      core: {
+        module: typeof coreModule;
+        api: JsApi;
+      };
     };
   }
 }
 
-window.thebeCore = {
-  ...window.thebeCore,
-  api: {
-    connect,
-    setupNotebook,
-  },
-};
+export function setupThebeCore() {
+  const core = {
+    module: coreModule,
+    api: { connect, setupNotebook },
+  };
+
+  if (window.thebe) window.thebe.core = core;
+  else window.thebe = { core };
+}
+
+setupThebeCore();

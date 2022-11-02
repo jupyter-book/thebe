@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 
@@ -7,36 +8,41 @@ function shim(regExp) {
 }
 
 module.exports = {
+  mode: 'production',
+  devtool: 'source-map',
   optimization: {
     usedExports: true,
   },
   entry: {
-    app: './src/thebe/entrypoint.ts',
+    app: './src/index.ts',
   },
-  plugins: [shim(/\.(svg|ttf|eot|woff2|woff)/), new DefinePlugin({ 'process.env': {} })],
+  plugins: [
+    // shim(/\.(svg|ttf|eot|woff2|woff)/),
+    new DefinePlugin({ 'process.env': {} }),
+  ],
   output: {
-    filename: 'thebe-core.min.js',
+    filename: 'thebe-lite.min.js',
     path: path.resolve(__dirname, 'dist', 'lib'),
     publicPath: '/',
   },
   module: {
     rules: [
       {
+        test: /pypi\/.*/,
+        type: 'asset/source',
+      },
+      {
         resourceQuery: /raw/,
         type: 'asset/source',
       },
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        loader: 'ignore-loader',
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
   },
 };

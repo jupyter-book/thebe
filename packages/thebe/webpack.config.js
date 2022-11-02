@@ -26,6 +26,9 @@ module.exports = (env, argv) => {
       publicPath,
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        currentScript: 'current-script-polyfill',
+      }),
       // Not using moment
       shim(/moment/),
       // Don't need vim keymap
@@ -73,10 +76,6 @@ module.exports = (env, argv) => {
     optimization: {},
     module: {
       rules: [
-        {
-          test: /pypi\/.*/,
-          type: 'asset/source',
-        },
         {
           test: /\.tsx?$/,
           use: 'ts-loader',

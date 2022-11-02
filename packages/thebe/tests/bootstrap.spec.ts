@@ -1,4 +1,4 @@
-import { ThebeNotebook } from 'thebe-core';
+import type { ThebeNotebook } from 'thebe-core';
 import * as thebe from '../src/thebe';
 jest.mock('../src/utils');
 

@@ -1,4 +1,11 @@
-import type { KernelOptions, ServerSettings, SessionIModel } from './types';
+import type {
+  KernelOptions,
+  RestAPIContentsResponse,
+  ServerRestAPI,
+  ServerRuntime,
+  ServerSettings,
+  SessionIModel,
+} from './types';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
@@ -12,55 +19,8 @@ import {
 import ThebeSession from './session';
 import type { MessageCallback } from './messaging';
 import { MessageSubject, ServerStatus } from './messaging';
-import { startJupyterLiteServer } from './jlite';
 import type { Config } from './config';
 import { shortId } from './utils';
-
-interface ServerRuntime {
-  ready: Promise<ThebeServer>;
-  isReady: boolean;
-  settings: ServerConnection.ISettings | undefined;
-  shutdownSession: (id: string) => Promise<void>;
-  shutdownAllSessions: () => Promise<void>;
-}
-
-interface RestAPIContentsResponse {
-  content: string | null;
-  created: string;
-  format: string;
-  last_modified: string;
-  mimetype: string;
-  name: string;
-  path: string;
-  size: number;
-  type: string;
-  writable: boolean;
-}
-
-// https://jupyter-server.readthedocs.io/en/latest/developers/rest-api.html#get--api-contents-path
-interface ServerRestAPI {
-  getContents: (opts: {
-    path: string;
-    type?: 'notebook' | 'file' | 'directory';
-    format?: 'text' | 'base64';
-    returnContent?: boolean;
-  }) => Promise<RestAPIContentsResponse>;
-  duplicateFile: (opts: {
-    path: string;
-    copy_from: string;
-    ext?: string;
-    type?: 'notebook' | 'file';
-  }) => Promise<RestAPIContentsResponse>;
-  renameContents: (opts: { path: string; newPath: string }) => Promise<RestAPIContentsResponse>;
-  uploadFile: (opts: {
-    path: string;
-    content: string;
-    format?: 'json' | 'text' | 'base64';
-    type?: 'notebook' | 'file';
-  }) => Promise<RestAPIContentsResponse>;
-  createDirectory: (opts: { path: string }) => Promise<RestAPIContentsResponse>;
-  getKernelSpecs: () => Promise<KernelSpecAPI.ISpecModels>;
-}
 
 async function responseToJson(res: Response) {
   if (!res.ok) throw Error(`${res.status} - ${res.statusText}`);
@@ -250,7 +210,12 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Connecting to JupyterLite`,
     });
 
-    const serviceManager = await startJupyterLiteServer();
+    if (!window.thebe.lite)
+      throw new Error(
+        `thebe-lite is not available at window.thebe.lite - load this onto your page before loading thebe or thebe-core.`,
+      );
+
+    const serviceManager = await window.thebe.lite.startJupyterLiteServer();
 
     this.messages({
       status: ServerStatus.launching,
@@ -269,7 +234,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    return this.sessionManager.ready.then(() => {
+    return this.sessionManager?.ready.then(() => {
       this.messages({
         status: ServerStatus.ready,
         message: `Server connection established`,
