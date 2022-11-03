@@ -38,8 +38,8 @@ export function mountStatusWidget() {
   window.thebe.kernelStatus.mount();
 }
 
-export function mountActivateWidget() {
-  window.thebe.activateButton = new ActivateWidget();
+export function mountActivateWidget(options: Options = {}) {
+  window.thebe.activateButton = new ActivateWidget(options);
   window.thebe.activateButton.mount();
 }
 
@@ -77,32 +77,28 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   });
 
   const notebook = setupNotebook(codeWithIds, options, messageCallback);
-  window.thebe = { ...window.thebe, notebook };
+  window.thebe.notebook = notebook;
 
   renderAllCells(options, notebook, items);
 
   // starting to talk to binder / server is deferred until here so that any page
   // errors cause failure first
   const server = connect(options, messageCallback);
-  window.thebe = { ...window.thebe, server };
+  window.thebe.server = server;
 
   if (!opts.requestKernel) {
     return { server, notebook };
   }
 
-  // try {
-  //   await server.ready;
-  // } catch (err) {
-  //   console.log('Caught');
-  // }
+  await server.ready;
 
-  // const session = await server.startNewSession();
+  const session = await server.startNewSession();
 
-  // window.thebe = { ...window.thebe, session: session ?? undefined };
+  window.thebe.session = session ?? undefined;
 
   return {
     server,
-    // session,
+    session,
     notebook,
   };
 }

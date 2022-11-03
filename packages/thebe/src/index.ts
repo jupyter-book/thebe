@@ -13,7 +13,7 @@ if ((window as any) !== undefined) {
       thebe.mountStatusWidget();
     }
     if (options.mountActivateWidget) {
-      thebe.mountActivateWidget();
+      thebe.mountActivateWidget(options);
     }
     if (options['bootstrap']) {
       thebe.bootstrap(options);
