@@ -79,7 +79,7 @@ function buildButtonBusySpinner(parent: Element) {
 }
 
 function getButtonsBusy(id: string) {
-  const cell = document.getElementById(id);
+  const cell = document.querySelector(`[data-thebe-id=${id}]`);
   const busy = cell?.getElementsByClassName('thebe-busy').item(0);
   if (!busy) return;
   return busy as HTMLElement;

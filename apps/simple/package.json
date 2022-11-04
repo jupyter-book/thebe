@@ -1,0 +1,28 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Minimal demo for thebe",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "copy:static": "copyfiles -u 1 static/* dist",
+    "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
+    "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
+    "build:demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
+    "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build:demo -s'",
+    "start:simple": "http-server ./dist"
+  },
+  "private": true,
+  "author": "Steve Purves",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "copyfiles": "^2.4.1",
+    "http-server": "^14.1.1"
+  }
+}

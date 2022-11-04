@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const webpack = require('webpack');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
-
-const shimJS = path.resolve(__dirname, 'src', 'empty.js');
-function shim(regExp) {
-  return new NormalModuleReplacementPlugin(regExp, shimJS);
-}
+const NoEmitPlugin = require('no-emit-webpack-plugin');
+const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -17,23 +15,26 @@ module.exports = {
     app: './src/index.ts',
   },
   plugins: [
-    // shim(/\.(svg|ttf|eot|woff2|woff)/),
     new DefinePlugin({ 'process.env': {} }),
+    new webpack.ProvidePlugin({
+      currentScript: 'current-script-polyfill',
+    }),
+    new IgnoreEmitPlugin([/^pypi\/.*\.(whl|json)$/]),
   ],
   output: {
     filename: 'thebe-lite.min.js',
     path: path.resolve(__dirname, 'dist', 'lib'),
-    publicPath: '/',
+    publicPath: 'auto',
+    clean: true,
   },
   module: {
     rules: [
       {
         test: /pypi\/.*/,
-        type: 'asset/source',
-      },
-      {
-        resourceQuery: /raw/,
-        type: 'asset/source',
+        type: 'asset/resource',
+        generator: {
+          filename: 'build/pypi/[name][ext][query]',
+        },
       },
       {
         test: /\.ts$/,

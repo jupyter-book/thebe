@@ -4,7 +4,7 @@ export * from './types';
 export * from './thebe';
 
 if ((window as any) !== undefined) {
-  window.thebe = { ...thebe };
+  window.thebe = { ...window.thebe, ...thebe };
   window.thebelab = window.thebe;
 
   document.addEventListener('DOMContentLoaded', () => {

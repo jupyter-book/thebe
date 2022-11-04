@@ -5,7 +5,8 @@
 @import './status.css';
 
 .thebelab-cell,
-.thebe-cell {
+.thebe-cell,
+.thebe-cell > div {
   margin-top: 8px;
   margin-bottom: 8px;
 }
@@ -14,6 +15,10 @@
   border-color: green;
 }
 
+/* 
+  we see this decoration used effectivelly in jupyterbooks
+  but should it be applied in sphinx-thebe?
+*/
 .jp-OutputArea > :first-child {
   padding-top: 0.5em;
   border-top: 1px solid #aaa;
@@ -27,12 +32,8 @@
   height: auto;
 }
 
-.CodeMirror {
-  background-color: transparent;
-}
-
 .CodeMirror.CodeMirror-focused {
-  /* background-color: white; */
+  background-color: white;
 }
 
 /* no prompts */

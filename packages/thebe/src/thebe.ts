@@ -93,6 +93,7 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   await server.ready;
 
   const session = await server.startNewSession();
+  if (session != null) notebook.attachSession(session);
 
   window.thebe.session = session ?? undefined;
 

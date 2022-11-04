@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Binder - Thebe Demo</title>
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: true,
+        binderOptions: {
+          repo: 'binder-examples/requirements',
+          ref: 'master',
+          binderUrl: 'https://mybinder.org',
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="_static/lib/thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="_static/lib/index.js"></script>
+  </head>
+  <body>
+    <p>
+      Activating this page will connect to the public my binder service at
+      <code>https://mybinder.org</code>, launch a server and connect to a `python3` kernel.
+    </p>
+    <div class="thebe-activate"></div>
+    <div class="thebe-status"></div>
+    <pre data-executable="true" data-language="python">
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+fig, ax = plt.subplots()
+ax.scatter(*np.random.randn(2, 100), c=np.random.randn(100))
+ax.set(title="Wow, a pyhton plot on my webpage!")
+    </pre>
+  </body>
+</html>
