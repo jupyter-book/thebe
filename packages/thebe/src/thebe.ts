@@ -58,6 +58,8 @@ function messageCallback({ id, subject, status, message }: MessageCallbackArgs) 
  * @returns {Promise} Promise for connected Kernel object
  */
 export async function bootstrap(opts: Partial<Options> = {}) {
+  if (!window.thebe) window.thebe = {} as any;
+
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
   const options = mergeOptions({ useBinder: true, requestKernel: true, ...opts });
