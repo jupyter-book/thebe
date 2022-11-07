@@ -5,6 +5,7 @@ import type {
   KernelOptions,
   CoreOptions,
   SavedSessionOptions,
+  MathjaxOptions,
 } from './types';
 import { RepoProvider } from './types';
 
@@ -42,6 +43,14 @@ export function makeServerSettings(settings: ServerSettings) {
     token: 'test-secret',
     appendToken: true,
     ...settings,
+  };
+}
+
+export function makeMathjaxOptions(opts?: MathjaxOptions) {
+  return {
+    mathjaxUrl: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js',
+    mathjaxConfig: 'TeX-AMS_CHTML-full,Safe',
+    ...opts,
   };
 }
 

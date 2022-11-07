@@ -44,8 +44,8 @@ export class Config {
 
   get mathjax(): MathjaxOptions {
     return {
-      url: this._options.mathjaxUrl,
-      config: this._options.mathjaxConfig,
+      mathjaxUrl: this._options.mathjaxUrl,
+      mathjaxConfig: this._options.mathjaxConfig,
     };
   }
 

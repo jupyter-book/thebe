@@ -1,11 +1,12 @@
 import ThebeCell from './cell';
 import type ThebeSession from './session';
-import type { IThebeCell, MathjaxOptions } from './types';
+import type { IThebeCell } from './types';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { MessageSubject, NotebookStatus } from './messaging';
 import { shortId } from './utils';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { getRenderMimeRegistry } from './rendermime';
+import type { Config } from './config';
 
 interface ExecuteReturn {
   id: string;
@@ -21,15 +22,17 @@ export interface CodeBlock {
 
 class ThebeNotebook {
   _id: string;
+  _config: Config;
   _rendermime: IRenderMimeRegistry;
   _cells: IThebeCell[];
   _session?: ThebeSession;
   _messages?: MessageCallback;
 
-  constructor(id: string, messages?: MessageCallback) {
+  constructor(id: string, config: Config, messages?: MessageCallback) {
     this._id = id;
+    this._config = config;
     this._cells = [];
-    this._rendermime = getRenderMimeRegistry();
+    this._rendermime = getRenderMimeRegistry(config.mathjax);
     this._messages = messages;
   }
 
@@ -49,16 +52,11 @@ class ThebeNotebook {
     return this._cells;
   }
 
-  static fromCodeBlocks(
-    blocks: CodeBlock[],
-    mathjaxOptions: MathjaxOptions,
-    messages?: MessageCallback,
-    externalId?: string,
-  ) {
-    const id = externalId ?? shortId();
-    const notebook = new ThebeNotebook(id, messages);
+  static fromCodeBlocks(blocks: CodeBlock[], config: Config, messages?: MessageCallback) {
+    const id = shortId();
+    const notebook = new ThebeNotebook(id, config, messages);
     notebook._cells = blocks.map((c) => {
-      const cell = new ThebeCell(c.id, id, c.source, notebook.rendermime, mathjaxOptions);
+      const cell = new ThebeCell(c.id, id, c.source, config, notebook.rendermime);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });

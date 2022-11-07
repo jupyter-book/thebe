@@ -1,15 +1,17 @@
-import type { IThebeCell, MathjaxOptions } from './types';
+import type { IThebeCell } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { MessageCallback, MessageCallbackArgs } from './messaging';
 import { CellStatus, MessageSubject } from './messaging';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import type { Config } from './config';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   notebookId: string;
   source: string;
   busy: boolean;
+  _config: Config;
   session?: ThebeSession;
   _messages?: MessageCallback;
 
@@ -17,12 +19,12 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     id: string,
     notebookId: string,
     source: string,
+    config: Config,
     rendermime?: IRenderMimeRegistry,
-    mathjaxOptions?: MathjaxOptions,
     messages?: MessageCallback,
   ) {
-    super(id, rendermime, mathjaxOptions);
-    this._id = id;
+    super(id, rendermime);
+    this._config = config;
     this.notebookId = notebookId;
     this.source = source;
     this.busy = false;

@@ -46,10 +46,7 @@ export enum RepoProvider {
   'gist' = 'gist',
 }
 
-export interface MathjaxOptions {
-  url?: string;
-  config?: string;
-}
+export type MathjaxOptions = Pick<CoreOptions, 'mathjaxConfig' | 'mathjaxUrl'>;
 
 export interface SavedSessionOptions {
   enabled?: boolean;

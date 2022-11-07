@@ -4,6 +4,7 @@ import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { Widget } from '@lumino/widgets';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { IPassiveCell, MathjaxOptions } from './types';
+import { makeMathjaxOptions } from './options';
 
 class PassiveCellRenderer implements IPassiveCell {
   _id: string;
@@ -14,7 +15,7 @@ class PassiveCellRenderer implements IPassiveCell {
   constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
     this._id = id;
 
-    this._rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? {});
+    this._rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this._model = new OutputAreaModel({ trusted: true });
     this._area = new OutputArea({
       model: this._model,

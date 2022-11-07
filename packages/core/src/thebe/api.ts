@@ -33,6 +33,5 @@ export function setupNotebook(
   messages?: MessageCallback,
 ) {
   const config = makeConfiguration(options);
-  const { mathjaxUrl, mathjaxConfig } = config.base;
-  return ThebeNotebook.fromCodeBlocks(blocks, { url: mathjaxUrl, config: mathjaxConfig }, messages);
+  return ThebeNotebook.fromCodeBlocks(blocks, config, messages);
 }
