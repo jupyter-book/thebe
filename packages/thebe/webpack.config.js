@@ -8,14 +8,6 @@ function shim(regExp) {
 const pkg = require('./package.json');
 
 module.exports = (env, argv) => {
-  let publicPath = '_static/lib/';
-  if (process.env.NODE_PREPUBLISH) {
-    publicPath = 'https://unpkg.com/thebe@' + pkg.version + '/lib/';
-  } else if (argv.mode === 'development') {
-    publicPath = '../lib/';
-  }
-  console.log('Public Path set to', publicPath);
-
   return {
     mode: 'production',
     devtool: 'source-map',
