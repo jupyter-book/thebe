@@ -154,10 +154,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {
-      this.events.triggerStatus?.({
-        status: ErrorStatusEvent.error,
-        message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
-      });
+      this.events.triggerError(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
       return;
     }
 

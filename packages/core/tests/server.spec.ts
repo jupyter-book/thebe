@@ -1,16 +1,20 @@
 import { Config } from '../src/config';
-import { MessageSubject, ServerStatus } from '../src/messaging';
+import { ErrorStatusEvent, EventSubject, ThebeEvents } from '../src/events';
 import ThebeServer from '../src/server';
 
 describe('server', () => {
   test('server unavailable', async () => {
-    const messageSpy = jest.fn();
-    const config = new Config({
-      serverSettings: {
-        baseUrl: 'http://localhost:9999',
+    const events = new ThebeEvents();
+    events.trigger = jest.fn();
+    const config = new Config(
+      {
+        serverSettings: {
+          baseUrl: 'http://localhost:9999',
+        },
       },
-    });
-    const server = new ThebeServer(config, 'test-server', messageSpy);
+      events,
+    );
+    const server = new ThebeServer(config);
     expect(server).toBeDefined();
     expect(server.id).toBeDefined();
 
@@ -21,8 +25,9 @@ describe('server', () => {
       expect(err).toContain('Server not reachable (http://localhost:9999/)');
     }
 
-    expect(messageSpy).toBeCalledTimes(2);
-    expect(messageSpy.mock.calls[1][0].subject).toEqual(MessageSubject.server);
-    expect(messageSpy.mock.calls[1][0].status).toEqual(ServerStatus.failed);
+    expect(events.trigger).toBeCalledTimes(2);
+    expect((events.trigger as jest.Mock).mock.calls[1][0]).toEqual(ErrorStatusEvent.error);
+    expect((events.trigger as jest.Mock).mock.calls[1][1].subject).toEqual(EventSubject.server);
+    expect((events.trigger as jest.Mock).mock.calls[1][1].status).toEqual(ErrorStatusEvent.error);
   });
 });
