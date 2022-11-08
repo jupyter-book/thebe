@@ -154,7 +154,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {
-      this.events.triggerError(`Server not reachable (${serverSettings.baseUrl}) - ${err}`);
+      this.events.triggerError({
+        status: ErrorStatusEvent.error,
+        message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
+      });
       return;
     }
 
@@ -341,7 +344,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
           case 'failed':
             es?.close();
             state.status = ErrorStatusEvent.error;
-            this.events.triggerError(`Binder: failed to build - ${url} - ${msg.message}`);
+            this.events.triggerError({
+              status: ErrorStatusEvent.error,
+              message: `Binder: failed to build - ${url} - ${msg.message}`,
+            });
             rejectRequest(msg);
             break;
           case 'ready':

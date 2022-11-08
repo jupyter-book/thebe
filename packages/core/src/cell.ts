@@ -1,11 +1,12 @@
-import type { IThebeCell } from './types';
+import type { IThebeCell, IThebeCellExecuteReturn } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Config } from './config';
-import { CellStatusEvent, EventSubject } from './events';
+import { CellStatusEvent, ErrorStatusEvent, errorToMessage, EventSubject } from './events';
 import { EventEmitter } from './emitter';
+import type { IError } from '@jupyterlab/nbformat';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   source: string;
@@ -66,7 +67,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   }
 
   setAsBusy() {
-    console.debug(`thebe:renderer:message:busy ${this._id}`);
+    console.debug(`thebe:renderer:message:busy ${this.id}`);
     this.busy = true;
     this.events.triggerStatus({
       status: CellStatusEvent.executing,
@@ -75,7 +76,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   }
 
   setAsIdle() {
-    console.debug(`thebe:renderer:message:completed ${this._id}`);
+    console.debug(`thebe:renderer:message:completed ${this.id}`);
     this.busy = false;
     this.events.triggerStatus({
       status: CellStatusEvent.idle,
@@ -90,7 +91,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
    * @param source?
    * @returns
    */
-  async execute(source?: string): Promise<{ id: string; height: number; width: number } | null> {
+  async execute(source?: string): Promise<IThebeCellExecuteReturn | null> {
     if (!this.session || !this.session.kernel) {
       console.warn('Attempting to execute on a cell without an attached kernel');
       return null;
@@ -99,7 +100,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     const code = source ?? this.source;
 
     try {
-      console.debug(`thebe:renderer:execute ${this._id}`);
+      console.debug(`thebe:renderer:execute ${this.id}`);
       if (!this.isBusy) this.setAsBusy();
 
       const useShadow = true;
@@ -117,17 +118,38 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
 
         // trigger an update via the model associated with the OutputArea
         // that is attached to the DOM
-        this._model.fromJSON(model.toJSON());
+        this.model.fromJSON(model.toJSON());
       } else {
-        this._area.future = this.session.kernel.requestExecute({ code });
-        await this._area.future.done;
+        this.area.future = this.session.kernel.requestExecute({ code });
+        await this.area.future.done;
+      }
+
+      let hasExecuteErrors = false;
+      for (let i = 0; i < this.model.length; i++) {
+        const out = this.model.get(i);
+        if (out.type === 'error') {
+          const json = out.toJSON() as IError;
+          if (json.ename === 'stderr') {
+            this.events.triggerError({
+              status: ErrorStatusEvent.warning,
+              message: errorToMessage(json),
+            });
+          } else {
+            hasExecuteErrors = true;
+            this.events.triggerError({
+              status: ErrorStatusEvent.executeError,
+              message: errorToMessage(json),
+            });
+          }
+        }
       }
 
       this.setAsIdle();
       return {
-        id: this._id,
-        height: this._area.node.offsetHeight,
-        width: this._area.node.offsetWidth,
+        id: this.id,
+        height: this.area.node.offsetHeight,
+        width: this.area.node.offsetWidth,
+        error: hasExecuteErrors,
       };
     } catch (err: any) {
       console.error('thebe:renderer:execute Error:', err);

@@ -26,14 +26,14 @@ export class EventEmitter {
     });
   }
 
-  triggerError(message: string) {
+  triggerError({ status, message }: { status: ErrorStatusEvent; message: string }) {
     console.debug(`Error ${message}`);
 
     this._config.events.trigger(ThebeEventType.error, {
       subject: this._subject,
       id: this._id,
       object: this._object,
-      status: ErrorStatusEvent.error,
+      status,
       message,
     });
   }

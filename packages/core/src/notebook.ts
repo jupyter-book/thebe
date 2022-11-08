@@ -1,6 +1,6 @@
 import ThebeCell from './cell';
 import type ThebeSession from './session';
-import type { IThebeCell } from './types';
+import type { IThebeCell, IThebeCellExecuteReturn } from './types';
 import { shortId } from './utils';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { getRenderMimeRegistry } from './rendermime';
@@ -103,6 +103,7 @@ class ThebeNotebook {
 
   async executeUpTo(
     cellId: string,
+    stopOnError = false,
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
     if (!this.cells) return [];
@@ -116,6 +117,7 @@ class ThebeNotebook {
     cellsToExecute.map((cell) => cell.setAsBusy());
     const result = await this.executeCells(
       cellsToExecute.map((c) => c.id),
+      stopOnError,
       preprocessor,
     );
     // TODO intercept errors here
@@ -136,8 +138,7 @@ class ThebeNotebook {
       status: NotebookStatusEvent.executing,
       message: `executeOnly ${cellId}`,
     });
-    const result = await this.executeCells([cellId], preprocessor);
-    // TODO flag errors
+    const result = await this.executeCells([cellId], false, preprocessor);
     this.events.triggerStatus({
       status: NotebookStatusEvent.idle,
       message: `executeUpTo ${cellId}`,
@@ -148,6 +149,7 @@ class ThebeNotebook {
 
   async executeCells(
     cellIds: string[],
+    stopOnError = false,
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
     if (!this.cells) return [];
@@ -163,10 +165,24 @@ class ThebeNotebook {
       return Boolean(found);
     });
 
-    const result = Promise.all(
+    let result: (IThebeCellExecuteReturn | null)[] = [];
+
+    if (stopOnError) {
+      let skipRemaining = false;
+      for (const cell of cells) {
+        if (skipRemaining) continue;
+        const cellReturn = await cell.execute(
+          preprocessor ? preprocessor(cell.source) : cell.source,
+        );
+        if (cellReturn == null || cellReturn.error) skipRemaining = true;
+        result.push(cellReturn);
+      }
+    }
+
+    result = await Promise.all(
       cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
     );
-    // TODO flag errors
+
     this.events.triggerStatus({
       status: NotebookStatusEvent.idle,
       message: `executeCells ${cellIds.length} cells`,
@@ -174,7 +190,10 @@ class ThebeNotebook {
     return result;
   }
 
-  async executeAll(preprocessor?: (s: string) => string): Promise<(ExecuteReturn | null)[]> {
+  async executeAll(
+    stopOnError = false,
+    preprocessor?: (s: string) => string,
+  ): Promise<(ExecuteReturn | null)[]> {
     if (!this.cells) return [];
 
     this.events.triggerStatus({
@@ -186,6 +205,7 @@ class ThebeNotebook {
 
     const result = this.executeCells(
       this.cells.map((c) => c.id),
+      stopOnError,
       preprocessor,
     );
 

@@ -95,9 +95,16 @@ export interface IThebeCell extends IPassiveCell {
 
   attachSession(session: ThebeSession): void;
   detachSession(): void;
-  execute(source?: string): Promise<{ id: string; height: number; width: number } | null>;
+  execute(source?: string): Promise<IThebeCellExecuteReturn | null>;
   setAsBusy(): void;
   setAsIdle(): void;
+}
+
+export interface IThebeCellExecuteReturn {
+  id: string;
+  height: number;
+  width: number;
+  error: boolean;
 }
 
 export interface ServerRuntime {

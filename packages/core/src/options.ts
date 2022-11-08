@@ -1,5 +1,5 @@
 import { Config } from './config';
-import { ThebeEvents } from './events';
+import type { ThebeEvents } from './events';
 import type {
   ServerSettings,
   BinderOptions,
