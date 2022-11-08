@@ -1,12 +1,12 @@
 import ThebeCell from './cell';
 import type ThebeSession from './session';
 import type { IThebeCell } from './types';
-import type { MessageCallback, MessageCallbackArgs } from './messaging';
-import { MessageSubject, NotebookStatus } from './messaging';
 import { shortId } from './utils';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { getRenderMimeRegistry } from './rendermime';
 import type { Config } from './config';
+import { EventSubject, NotebookStatusEvent } from './events';
+import { EventEmitter } from './emitter';
 
 interface ExecuteReturn {
   id: string;
@@ -21,82 +21,50 @@ export interface CodeBlock {
 }
 
 class ThebeNotebook {
-  _id: string;
-  _config: Config;
-  _rendermime: IRenderMimeRegistry;
-  _cells: IThebeCell[];
-  _session?: ThebeSession;
-  _messages?: MessageCallback;
+  readonly id: string;
+  readonly rendermime: IRenderMimeRegistry;
+  cells: IThebeCell[];
+  session?: ThebeSession;
+  protected events: EventEmitter;
 
-  constructor(id: string, config: Config, messages?: MessageCallback) {
-    this._id = id;
-    this._config = config;
-    this._cells = [];
-    this._rendermime = getRenderMimeRegistry(config.mathjax);
-    this._messages = messages;
+  constructor(id: string, config: Config) {
+    this.id = id;
+    this.events = new EventEmitter(id, config, EventSubject.notebook, this);
+    this.cells = [];
+    this.rendermime = getRenderMimeRegistry(config.mathjax);
   }
 
-  get id() {
-    return this._id;
-  }
-
-  get rendermime() {
-    return this._rendermime;
-  }
-
-  get session() {
-    return this._session;
-  }
-
-  get cells() {
-    return this._cells;
-  }
-
-  static fromCodeBlocks(blocks: CodeBlock[], config: Config, messages?: MessageCallback) {
+  static fromCodeBlocks(blocks: CodeBlock[], config: Config) {
     const id = shortId();
-    const notebook = new ThebeNotebook(id, config, messages);
-    notebook._cells = blocks.map((c) => {
+    const notebook = new ThebeNotebook(id, config);
+    notebook.cells = blocks.map((c) => {
       const cell = new ThebeCell(c.id, id, c.source, config, notebook.rendermime);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
 
-    notebook.message({
-      status: NotebookStatus.changed,
-      message: `Created notebook with ${notebook._cells.length} cells`,
-    });
-
     return notebook;
   }
 
-  message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
-    this._messages?.({
-      ...data,
-      id: this._id,
-      subject: MessageSubject.notebook,
-      object: this,
-    });
-  }
-
   numCells() {
-    return this._cells?.length ?? 0;
+    return this.cells?.length ?? 0;
   }
 
   getCell(idx: number) {
-    if (!this._cells) throw Error('Dag not initialized');
-    if (idx >= this._cells.length)
-      throw Error(`Notebook.cells index out of range: ${idx}:${this._cells.length}`);
-    return this._cells[idx];
+    if (!this.cells) throw Error('Dag not initialized');
+    if (idx >= this.cells.length)
+      throw Error(`Notebook.cells index out of range: ${idx}:${this.cells.length}`);
+    return this.cells[idx];
   }
 
   getCellById(id: string) {
-    const cell = this._cells?.find((c) => c.id === id);
+    const cell = this.cells?.find((c) => c.id === id);
     return cell;
   }
 
   lastCell() {
-    if (!this._cells) throw Error('Notebook not initialized');
-    return this._cells[this._cells.length - 1];
+    if (!this.cells) throw Error('Notebook not initialized');
+    return this.cells[this.cells.length - 1];
   }
 
   async waitForKernel(kernel: Promise<ThebeSession>) {
@@ -110,47 +78,52 @@ class ThebeNotebook {
     if (!session.kernel) throw Error('ThebeNotebook - cannot connect to session, no kernel');
     // note all cells in a notebook share the rendermime registry
     // we only need to add the widgets factory once
-    this._session = session;
-    session.manager.addWidgetFactories(this._rendermime);
-    this._cells?.forEach((cell) => (cell.session = session));
-    this.message({
-      status: NotebookStatus.changed,
+    this.session = session;
+    session.manager.addWidgetFactories(this.rendermime);
+    this.cells?.forEach((cell) => (cell.session = session));
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.attached,
       message: 'Attached to session',
     });
   }
 
   detachSession() {
-    this._session?.manager.removeWidgetFactories(this._rendermime);
-    this._cells?.map((cell) => (cell.session = undefined));
-    this._session = undefined;
-    this.message({
-      status: NotebookStatus.changed,
+    this.session?.manager.removeWidgetFactories(this.rendermime);
+    this.cells?.map((cell) => (cell.session = undefined));
+    this.session = undefined;
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.detached,
       message: 'Detached from session',
     });
   }
 
   clear() {
-    this._cells.forEach((cell) => cell.clear());
+    this.cells.forEach((cell) => cell.clear());
   }
 
   async executeUpTo(
     cellId: string,
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
-    if (!this._cells) return [];
-    this.message({
-      status: NotebookStatus.executing,
-      message: `executeUpTo ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
-    });
-    const idx = this._cells.findIndex((c) => c.id === cellId);
-    if (idx === -1) return [];
-    const cellsToExecute = this._cells.slice(0, idx + 1);
-    cellsToExecute.map((cell) => cell.messageBusy());
-    const result = this.executeCells(cellsToExecute.map((c) => c.id));
-    this.message({
-      status: NotebookStatus.completed,
+    if (!this.cells) return [];
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.executing,
       message: `executeUpTo ${cellId}`,
     });
+    const idx = this.cells.findIndex((c) => c.id === cellId);
+    if (idx === -1) return [];
+    const cellsToExecute = this.cells.slice(0, idx + 1);
+    cellsToExecute.map((cell) => cell.setAsBusy());
+    const result = await this.executeCells(
+      cellsToExecute.map((c) => c.id),
+      preprocessor,
+    );
+    // TODO intercept errors here
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.idle,
+      message: `executeUpTo ${cellId}`,
+    });
+
     return result;
   }
 
@@ -158,31 +131,31 @@ class ThebeNotebook {
     cellId: string,
     preprocessor?: (s: string) => string,
   ): Promise<ExecuteReturn | null> {
-    if (!this._cells) return null;
-    this.message({
-      status: NotebookStatus.executing,
-      message: `executeOnly ${cellId}${preprocessor ? ' with preprocessor' : ''}`,
-    });
-
-    const retval = await this.executeCells([cellId], preprocessor);
-
-    this.message({
-      status: NotebookStatus.completed,
+    if (!this.cells) return null;
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.executing,
       message: `executeOnly ${cellId}`,
     });
-    return retval[0];
+    const result = await this.executeCells([cellId], preprocessor);
+    // TODO flag errors
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.idle,
+      message: `executeUpTo ${cellId}`,
+    });
+
+    return result[0];
   }
 
   async executeCells(
     cellIds: string[],
     preprocessor?: (s: string) => string,
   ): Promise<(ExecuteReturn | null)[]> {
-    if (!this._cells) return [];
-    this.message({
-      status: NotebookStatus.executing,
-      message: `executeCells ${cellIds.length} cells${preprocessor ? ' with preprocessor' : ''}`,
+    if (!this.cells) return [];
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.executing,
+      message: `executeCells ${cellIds.length} cells`,
     });
-    const cells = this._cells.filter((c) => {
+    const cells = this.cells.filter((c) => {
       const found = cellIds.find((id) => id === c.id);
       if (!found) {
         console.warn(`Cell ${c.id} not found in notebook`);
@@ -193,28 +166,31 @@ class ThebeNotebook {
     const result = Promise.all(
       cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
     );
-
-    this.message({
-      status: NotebookStatus.completed,
+    // TODO flag errors
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.idle,
       message: `executeCells ${cellIds.length} cells`,
     });
     return result;
   }
 
   async executeAll(preprocessor?: (s: string) => string): Promise<(ExecuteReturn | null)[]> {
-    if (!this._cells) return [];
+    if (!this.cells) return [];
 
-    this.message({
-      status: NotebookStatus.executing,
-      message: `executeAll${preprocessor ? ' with preprocessor' : ''}`,
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.executing,
+      message: `executeAll`,
     });
 
-    this._cells.map((cell) => cell.messageBusy());
+    this.cells.map((cell) => cell.setAsBusy());
 
-    const result = this.executeCells(this._cells.map((c) => c.id));
+    const result = this.executeCells(
+      this.cells.map((c) => c.id),
+      preprocessor,
+    );
 
-    this.message({
-      status: NotebookStatus.completed,
+    this.events.triggerStatus({
+      status: NotebookStatusEvent.idle,
       message: `executeAll`,
     });
 

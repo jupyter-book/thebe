@@ -1,88 +1,74 @@
 import type { ISessionConnection } from '@jupyterlab/services/lib/session/session';
+import { EventSubject, SessionStatusEvent } from './events';
 import { ThebeManager } from './manager';
-import type { MessageCallback } from './messaging';
-import { MessageSubject, SessionStatus } from './messaging';
 import type ThebeServer from './server';
+import { EventEmitter } from './emitter';
 
 class ThebeSession {
-  server: ThebeServer;
+  readonly server: ThebeServer;
+  readonly manager: ThebeManager;
   // see https://github.dev/jupyterlab/jupyterlab/blob/d48e0c04efb786561137fb20773fc15788507f0a/packages/logconsole/src/widget.ts line 43
-  private _connection: ISessionConnection;
-  private _messages?: MessageCallback;
-  private _manager: ThebeManager;
+  private connection: ISessionConnection;
+  private events: EventEmitter;
 
-  constructor(server: ThebeServer, connection: ISessionConnection, messages?: MessageCallback) {
+  constructor(server: ThebeServer, connection: ISessionConnection) {
     this.server = server;
-    this._connection = connection;
-    this._messages = messages;
+    this.connection = connection;
+    this.events = new EventEmitter(this.connection.id, server.config, EventSubject.session, this);
 
-    if (this._connection.kernel == null) throw Error('ThebeSession - kernel is null');
-    this._manager = new ThebeManager(this._connection.kernel);
+    if (this.connection.kernel == null) throw Error('ThebeSession - kernel is null');
+    this.manager = new ThebeManager(this.connection.kernel);
 
-    this.messages({
-      status: SessionStatus.ready,
-      message: `New session started, kernel '${this._connection.kernel?.name}' available`,
+    this.events.triggerStatus({
+      status: SessionStatusEvent.ready,
+      message: `New session started, kernel '${this.connection.kernel?.name}' available`,
     });
   }
 
   get id() {
-    return this._connection.id;
+    return this.connection.id;
   }
 
   get kernel() {
-    return this._connection?.kernel;
-  }
-
-  get manager() {
-    return this._manager;
+    return this.connection?.kernel;
   }
 
   get path() {
-    return this._connection.path;
+    return this.connection.path;
   }
 
   get name() {
-    return this._connection.name;
-  }
-
-  messages({ status, message }: { status: SessionStatus; message: string }) {
-    this._messages?.({
-      id: this.id,
-      subject: MessageSubject.session,
-      status,
-      message,
-      object: this,
-    });
+    return this.connection.name;
   }
 
   async restart() {
     console.debug(`requesting restart for kernel ${this.id}`);
-    const p = this._connection.kernel?.restart();
+    const p = this.connection.kernel?.restart();
 
-    this.messages({
-      status: SessionStatus.starting,
+    this.events.triggerStatus({
+      status: SessionStatusEvent.starting,
       message: `Kernel restart requested`,
     });
 
     await p;
 
-    this.messages({
-      status: SessionStatus.ready,
-      message: `New session started, kernel '${this._connection.kernel?.name}' available`,
+    this.events.triggerStatus({
+      status: SessionStatusEvent.ready,
+      message: `New session started, kernel '${this.connection.kernel?.name}' available`,
     });
   }
 
   async shutdown() {
-    await this._connection.shutdown();
-    this.messages({
-      status: SessionStatus.shutdown,
+    await this.connection.shutdown();
+    this.events.triggerStatus({
+      status: SessionStatusEvent.shutdown,
       message: `Session shutdown`,
     });
-    return this._connection.dispose();
+    return this.connection.dispose();
   }
 
   dispose() {
-    this._connection.dispose();
+    this.connection.dispose();
   }
 }
 

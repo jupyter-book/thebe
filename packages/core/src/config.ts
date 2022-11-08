@@ -4,6 +4,7 @@ import {
   makeSavedSessionOptions,
   makeServerSettings,
 } from './options';
+import { ThebeEvents } from './events';
 import type {
   BinderOptions,
   KernelOptions,
@@ -21,8 +22,11 @@ export class Config {
   private _savedSessions: Required<SavedSessionOptions>;
   private _kernelOptions: Required<KernelOptions>;
   private _serverSettings: Required<Omit<ServerSettings, 'wsUrl'>> & { wsUrl?: string };
+  private _events: ThebeEvents;
 
-  constructor(opts: CoreOptions = {}) {
+  constructor(opts: CoreOptions = {}, events?: ThebeEvents) {
+    this._events = events ?? new ThebeEvents();
+
     this._options = {
       mathjaxUrl:
         opts.mathjaxUrl ?? 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js',
@@ -36,6 +40,10 @@ export class Config {
     this._savedSessions = makeSavedSessionOptions(opts.savedSessionOptions ?? {});
     this._kernelOptions = makeKernelOptions(opts.kernelOptions ?? {});
     this._serverSettings = makeServerSettings(opts.serverSettings ?? {});
+  }
+
+  get events() {
+    return this._events;
   }
 
   get base() {

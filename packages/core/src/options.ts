@@ -1,4 +1,5 @@
 import { Config } from './config';
+import { ThebeEvents } from './events';
 import type {
   ServerSettings,
   BinderOptions,
@@ -54,14 +55,18 @@ export function makeMathjaxOptions(opts?: MathjaxOptions) {
   };
 }
 
-export function makeConfiguration(options: CoreOptions & { [k: string]: any }) {
-  return new Config(options);
+export function makeConfiguration(
+  options: CoreOptions & { [k: string]: any },
+  events?: ThebeEvents,
+) {
+  return new Config(options, events);
 }
 
 export function ensureCoreOptions(
   options: CoreOptions & { [k: string]: any },
+  events?: ThebeEvents,
 ): Required<CoreOptions> {
-  const config = new Config(options);
+  const config = new Config(options, events);
 
   return {
     ...config.base,

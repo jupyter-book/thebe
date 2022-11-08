@@ -9,6 +9,7 @@ import type ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
 import { connect, setupNotebook } from './api';
 import * as coreModule from '../index';
+import type { ThebeEvents } from '../index';
 
 /**
  * This file is the main entrypoint for the cjs bundle
@@ -16,8 +17,12 @@ import * as coreModule from '../index';
  */
 
 export interface JsApi {
-  connect: (options: Partial<CoreOptions>) => ThebeServer;
-  setupNotebook: (blocks: CodeBlock[], options: Partial<CoreOptions>) => ThebeNotebook;
+  connect: (options: Partial<CoreOptions>, events: ThebeEvents) => ThebeServer;
+  setupNotebook: (
+    blocks: CodeBlock[],
+    options: Partial<CoreOptions>,
+    events: ThebeEvents,
+  ) => ThebeNotebook;
 }
 
 declare global {

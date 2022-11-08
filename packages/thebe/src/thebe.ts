@@ -13,8 +13,6 @@ import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
 import { connect, setupNotebook } from 'thebe-core';
-import * as events from './events';
-import type { MessageCallbackArgs } from 'thebe-core/dist/types/messaging';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -30,7 +28,6 @@ export {
   getPageConfigValue,
   ensurePageConfigLoaded,
 } from './options';
-export * from './events';
 export * from './utils';
 
 export function mountStatusWidget() {
@@ -41,10 +38,6 @@ export function mountStatusWidget() {
 export function mountActivateWidget(options: Options = {}) {
   window.thebe.activateButton = new ActivateWidget(options);
   window.thebe.activateButton.mount();
-}
-
-function messageCallback({ id, subject, status, message }: MessageCallbackArgs) {
-  events.trigger('status', { id, subject, status, message });
 }
 
 /**
@@ -58,8 +51,6 @@ function messageCallback({ id, subject, status, message }: MessageCallbackArgs) 
  * @returns {Promise} Promise for connected Kernel object
  */
 export async function bootstrap(opts: Partial<Options> = {}) {
-  if (!window.thebe) window.thebe = {} as any;
-
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
   const options = mergeOptions({ useBinder: true, requestKernel: true, ...opts });
@@ -78,14 +69,14 @@ export async function bootstrap(opts: Partial<Options> = {}) {
     return { id, source: el.textContent?.trim() ?? '' };
   });
 
-  const notebook = setupNotebook(codeWithIds, options, messageCallback);
+  const notebook = setupNotebook(codeWithIds, options, window.thebe.events);
   window.thebe.notebook = notebook;
 
   renderAllCells(options, notebook, items);
 
   // starting to talk to binder / server is deferred until here so that any page
   // errors cause failure first
-  const server = connect(options, messageCallback);
+  const server = connect(options, window.thebe.events);
   window.thebe.server = server;
 
   if (!opts.requestKernel) {

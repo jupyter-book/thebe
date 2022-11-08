@@ -5,7 +5,7 @@ export { default as ThebeCell } from './cell';
 export { default as PassiveCellRenderer } from './passive';
 
 export * from './options';
-export * from './messaging';
+export * from './events';
 export * from './thebe/api';
 export * from './utils';
 export * from './manager';

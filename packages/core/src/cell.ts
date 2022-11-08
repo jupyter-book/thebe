@@ -2,18 +2,17 @@ import type { IThebeCell } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
-import type { MessageCallback, MessageCallbackArgs } from './messaging';
-import { CellStatus, MessageSubject } from './messaging';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Config } from './config';
+import { CellStatusEvent, EventSubject } from './events';
+import { EventEmitter } from './emitter';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
-  notebookId: string;
   source: string;
-  busy: boolean;
-  _config: Config;
   session?: ThebeSession;
-  _messages?: MessageCallback;
+  readonly notebookId: string;
+  protected busy: boolean;
+  protected events: EventEmitter;
 
   constructor(
     id: string,
@@ -21,14 +20,12 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     source: string,
     config: Config,
     rendermime?: IRenderMimeRegistry,
-    messages?: MessageCallback,
   ) {
     super(id, rendermime);
-    this._config = config;
+    this.events = new EventEmitter(id, config, EventSubject.cell, this);
     this.notebookId = notebookId;
     this.source = source;
     this.busy = false;
-    this._messages = messages;
   }
 
   get isBusy() {
@@ -37,15 +34,6 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
 
   get isAttached() {
     return this.session !== undefined;
-  }
-
-  message(data: Omit<MessageCallbackArgs, 'id' | 'subject' | 'object'>) {
-    this._messages?.({
-      ...data,
-      id: this._id,
-      subject: MessageSubject.cell,
-      object: this,
-    });
   }
 
   /**
@@ -57,8 +45,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   attachSession(session: ThebeSession) {
     session.manager.addWidgetFactories(this.rendermime);
     this.session = session;
-    this.message({
-      status: CellStatus.changed,
+    this.events.triggerStatus({
+      status: CellStatusEvent.attached,
       message: 'Attached to session',
     });
   }
@@ -71,36 +59,27 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   detachSession() {
     this.session?.manager.removeWidgetFactories(this.rendermime);
     this.session = undefined;
-    this.message({
-      status: CellStatus.changed,
+    this.events.triggerStatus({
+      status: CellStatusEvent.detached,
       message: 'Detached from session',
     });
   }
 
-  messageBusy() {
+  setAsBusy() {
     console.debug(`thebe:renderer:message:busy ${this._id}`);
     this.busy = true;
-    this.message({
-      status: CellStatus.executing,
+    this.events.triggerStatus({
+      status: CellStatusEvent.executing,
       message: 'Executing...',
     });
   }
 
-  messageCompleted() {
+  setAsIdle() {
     console.debug(`thebe:renderer:message:completed ${this._id}`);
     this.busy = false;
-    this.message({
-      status: CellStatus.completed,
+    this.events.triggerStatus({
+      status: CellStatusEvent.idle,
       message: 'Completed',
-    });
-  }
-
-  messageError(message: string) {
-    console.debug(`thebe:renderer:message:error ${this._id}`);
-    this.busy = false;
-    this.message({
-      status: CellStatus.completed,
-      message: `Error... ${message}`,
     });
   }
 
@@ -121,7 +100,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
 
     try {
       console.debug(`thebe:renderer:execute ${this._id}`);
-      if (!this.isBusy) this.messageBusy();
+      if (!this.isBusy) this.setAsBusy();
 
       const useShadow = true;
       if (useShadow) {
@@ -144,7 +123,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
         await this._area.future.done;
       }
 
-      this.messageCompleted();
+      this.setAsIdle();
       return {
         id: this._id,
         height: this._area.node.offsetHeight,
@@ -153,7 +132,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     } catch (err: any) {
       console.error('thebe:renderer:execute Error:', err);
       this.clearOnError(err);
-      this.messageError(err.message);
+      this.events.triggerError(err.message);
       return null;
     }
   }

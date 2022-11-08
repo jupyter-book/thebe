@@ -1,11 +1,28 @@
+import { ThebeEvents } from 'thebe-core';
 import * as thebe from './thebe';
 
 export * from './types';
 export * from './thebe';
 
+export function setupGlobals() {
+  if (!window.thebe) {
+    const events = new ThebeEvents();
+
+    window.thebe = {
+      ...thebe,
+      events,
+      trigger: events.trigger.bind(events),
+      on: events.on.bind(events),
+      one: events.one.bind(events),
+      off: events.off.bind(events),
+    } as any;
+
+    window.thebelab = window.thebe;
+  }
+}
+
 if ((window as any) !== undefined) {
-  window.thebe = { ...window.thebe, ...thebe };
-  window.thebelab = window.thebe;
+  setupGlobals();
 
   document.addEventListener('DOMContentLoaded', () => {
     const options = thebe.getPageConfig();
