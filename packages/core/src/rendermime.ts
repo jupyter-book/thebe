@@ -29,7 +29,7 @@ export function getRenderers(mathjax: MathjaxOptions) {
     RENDERERS = EXTENDED_FACTORIES.filter((f) => {
       // filter out latex renderer if mathjax is unavailable
       if (f.mimeTypes.indexOf('text/latex') >= 0) {
-        if (mathjax.url) {
+        if (mathjax.mathjaxUrl) {
           return true;
         } else {
           console.debug('thebe:getRenderers MathJax unavailable');
@@ -41,10 +41,10 @@ export function getRenderers(mathjax: MathjaxOptions) {
     });
   }
   let latexTypesetter;
-  if (mathjax.url && mathjax.config) {
+  if (mathjax.mathjaxUrl && mathjax.mathjaxConfig) {
     latexTypesetter = new MathJaxTypesetter({
-      url: mathjax.url,
-      config: mathjax.config,
+      url: mathjax.mathjaxUrl,
+      config: mathjax.mathjaxConfig,
     });
   }
   return {

@@ -1,11 +1,15 @@
-import { ThebeNotebook } from 'thebe-core';
+import type { ThebeNotebook } from 'thebe-core';
 import * as thebe from '../src/thebe';
+import { setupGlobals } from '../src/index';
+
+setupGlobals();
+
 jest.mock('../src/utils');
 
 /**
  * Test the bootstrapping process
  */
-describe.only('bootstrap', () => {
+describe('bootstrap', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });

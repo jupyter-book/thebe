@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ipywidgets - Thebe Demo</title>
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
+    ></script>
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: true,
+        binderOptions: {
+            repo: "stevejpurves/ipympl-binder-base",
+            ref: "main",
+            binderUrl: 'https://mybinder.org',
+        }
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    />
+    <link rel="stylesheet" href="thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <p>
+      As with the <a href="binder.html">binder example</a> activating this page will connect to the
+      public my binder service at <code>https://mybinder.org</code> service.
+    </p>
+    <p>
+      Although, here we launch from a different repo and create an <code>ipywidgets</code> based
+      plot using <code>ipympl</code>
+    </p>
+    <p>
+      Using <code>ipywidgets</code> requires that an additional dependency <code>requirejs</code> is
+      loaded on page <em>before</em> <code>thebe</code> is loaded.
+    </p>
+    <p>
+      In addition, <code>ipympl</code> in turn requires <code>font-awesome</code> fonts to be loaded
+      on the page. Other <code>ipywidgets</code> based libraries and custom widgets may also require
+      additional fonts, css or libraries to be side loaded.
+    </p>
+    <p><code>ipywidgets</code></p>
+    <div class="thebe-activate"></div>
+    <div class="thebe-status"></div>
+    <pre data-executable="true" data-language="python">
+%matplotlib widget
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0,10)
+
+def sine_func(x, w, amp):
+  return amp*np.sin(w*x)
+
+@widgets.interact(w=(0, 4, 0.25), amp=(0, 4, .1))
+def update(w = 1, amp = 1):
+  plt.clf()
+  plt.ylim(-4, 4)
+  plt.plot(x, sine_func(x, w, amp))
+    </pre>
+  </body>
+</html>

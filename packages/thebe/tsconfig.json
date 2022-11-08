@@ -1,26 +1,4 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "noImplicitAny": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "strictNullChecks": true,
-    "sourceMap": false,
-    "outDir": "lib",
-    "baseUrl": ".",
-    "paths": {
-      "*/": ["node_modules/*"],
-      "~/": ["./src/*"]
-    },
-    "declaration": false,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "checkJs": false,
-    "types": ["puppeteer", "jest-environment-puppeteer", "expect-puppeteer"]
-  },
-  "include": ["src", "types"]
+  "extends": "../build-config/tsconfig.json",
+  "include": ["src/**/*.ts", "types/*.d.ts"]
 }

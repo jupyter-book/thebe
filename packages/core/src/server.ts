@@ -1,4 +1,11 @@
-import type { KernelOptions, ServerSettings, SessionIModel } from './types';
+import type {
+  KernelOptions,
+  RestAPIContentsResponse,
+  ServerRestAPI,
+  ServerRuntime,
+  ServerSettings,
+  SessionIModel,
+} from './types';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
@@ -10,57 +17,11 @@ import {
   SessionManager,
 } from '@jupyterlab/services';
 import ThebeSession from './session';
-import type { MessageCallback } from './messaging';
-import { MessageSubject, ServerStatus } from './messaging';
-import { startJupyterLiteServer } from './jlite';
 import type { Config } from './config';
 import { shortId } from './utils';
-
-interface ServerRuntime {
-  ready: Promise<ThebeServer>;
-  isReady: boolean;
-  settings: ServerConnection.ISettings | undefined;
-  shutdownSession: (id: string) => Promise<void>;
-  shutdownAllSessions: () => Promise<void>;
-}
-
-interface RestAPIContentsResponse {
-  content: string | null;
-  created: string;
-  format: string;
-  last_modified: string;
-  mimetype: string;
-  name: string;
-  path: string;
-  size: number;
-  type: string;
-  writable: boolean;
-}
-
-// https://jupyter-server.readthedocs.io/en/latest/developers/rest-api.html#get--api-contents-path
-interface ServerRestAPI {
-  getContents: (opts: {
-    path: string;
-    type?: 'notebook' | 'file' | 'directory';
-    format?: 'text' | 'base64';
-    returnContent?: boolean;
-  }) => Promise<RestAPIContentsResponse>;
-  duplicateFile: (opts: {
-    path: string;
-    copy_from: string;
-    ext?: string;
-    type?: 'notebook' | 'file';
-  }) => Promise<RestAPIContentsResponse>;
-  renameContents: (opts: { path: string; newPath: string }) => Promise<RestAPIContentsResponse>;
-  uploadFile: (opts: {
-    path: string;
-    content: string;
-    format?: 'json' | 'text' | 'base64';
-    type?: 'notebook' | 'file';
-  }) => Promise<RestAPIContentsResponse>;
-  createDirectory: (opts: { path: string }) => Promise<RestAPIContentsResponse>;
-  getKernelSpecs: () => Promise<KernelSpecAPI.ISpecModels>;
-}
+import type { StatusEvent } from './events';
+import { ServerStatusEvent, EventSubject, ErrorStatusEvent } from './events';
+import { EventEmitter } from './emitter';
 
 async function responseToJson(res: Response) {
   if (!res.ok) throw Error(`${res.status} - ${res.statusText}`);
@@ -69,38 +30,23 @@ async function responseToJson(res: Response) {
 }
 
 class ThebeServer implements ServerRuntime, ServerRestAPI {
-  config: Config;
-  id: string;
+  readonly id: string;
+  readonly config: Config;
+  readonly ready: Promise<ThebeServer>;
   sessionManager?: SessionManager;
   serviceManager?: ServiceManager; // jlite only
-  private _resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
-  private _ready: Promise<ThebeServer>;
-  private _messages?: MessageCallback;
+  private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
   private _isDisposed: boolean;
+  private events: EventEmitter;
 
-  constructor(config: Config, id?: string, messages?: MessageCallback) {
+  constructor(config: Config) {
+    this.id = shortId();
     this.config = config;
-    this.id = id ?? shortId();
-    this._messages = messages;
-    this._ready = new Promise((resolve) => {
-      this._resolveReadyFn = resolve;
+    this.events = new EventEmitter(this.id, config, EventSubject.server, this);
+    this.ready = new Promise((resolve) => {
+      this.resolveReadyFn = resolve;
     });
     this._isDisposed = false;
-  }
-
-  messages({ status, message }: { status: ServerStatus; message: string }) {
-    console.debug(`${status} ${message}`);
-    this._messages?.({
-      subject: MessageSubject.server,
-      id: this.id,
-      object: this,
-      status,
-      message,
-    });
-  }
-
-  get ready() {
-    return this._ready;
   }
 
   get isReady(): boolean {
@@ -149,7 +95,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       },
     });
 
-    return new ThebeSession(this, connection, this._messages);
+    return new ThebeSession(this, connection);
   }
 
   async listRunningSessions(): Promise<SessionIModel[]> {
@@ -177,7 +123,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     const connection = this.sessionManager?.connectTo({ model });
 
-    return new ThebeSession(this, connection, this._messages);
+    return new ThebeSession(this, connection);
   }
 
   async clearSavedBinderSessions() {
@@ -197,27 +143,27 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // ping the server to check it is alive before trying to
     // hook up services
     try {
-      this.messages({
-        status: ServerStatus.launching,
+      this.events.triggerStatus({
+        status: ServerStatusEvent.launching,
         message: `Checking server url`,
       });
       await ThebeServer.status(serverSettings);
-      this.messages({
-        status: ServerStatus.launching,
+      this.events.triggerStatus({
+        status: ServerStatusEvent.launching,
         message: `Server responds to pings`,
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {
-      this.messages?.({
-        status: ServerStatus.failed,
+      this.events.triggerError({
+        status: ErrorStatusEvent.error,
         message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
       });
       return;
     }
 
     const kernelManager = new KernelManager({ serverSettings });
-    this.messages({
-      status: ServerStatus.launching,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Created KernelManager`,
     });
 
@@ -226,18 +172,18 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       serverSettings,
     });
 
-    this.messages({
-      status: ServerStatus.ready,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.ready,
       message: `Created SessionManager`,
     });
 
     // Resolve the ready promise
     return this.sessionManager.ready.then(() => {
-      this.messages({
-        status: ServerStatus.ready,
+      this.events.triggerStatus({
+        status: ServerStatusEvent.ready,
         message: `Server connection ready`,
       });
-      this._resolveReadyFn?.(this);
+      this.resolveReadyFn?.(this);
     });
   }
 
@@ -245,15 +191,20 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
    * Connect to Jupyterlite Server
    */
   async connectToJupyterLiteServer(): Promise<void> {
-    this.messages({
-      status: ServerStatus.launching,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Connecting to JupyterLite`,
     });
 
-    const serviceManager = await startJupyterLiteServer();
+    if (!window.thebe.lite)
+      throw new Error(
+        `thebe-lite is not available at window.thebe.lite - load this onto your page before loading thebe or thebe-core.`,
+      );
 
-    this.messages({
-      status: ServerStatus.launching,
+    const serviceManager = await window.thebe.lite.startJupyterLiteServer();
+
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Started JupyterLite server`,
     });
 
@@ -264,17 +215,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     this.sessionManager = serviceManager.sessions;
 
-    this.messages({
-      status: ServerStatus.launching,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    return this.sessionManager.ready.then(() => {
-      this.messages({
-        status: ServerStatus.ready,
+    return this.sessionManager?.ready.then(() => {
+      this.events.triggerStatus({
+        status: ServerStatusEvent.ready,
         message: `Server connection established`,
       });
-      this._resolveReadyFn?.(this);
+      this.resolveReadyFn?.(this);
     });
   }
 
@@ -310,15 +261,15 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
    */
   async connectToServerViaBinder(): Promise<void> {
     // request new server
-    this.messages({
-      status: ServerStatus.launching,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
     });
 
     const url = this._makeBinderUrl();
 
-    this.messages({
-      status: ServerStatus.launching,
+    this.events.triggerStatus({
+      status: ServerStatusEvent.launching,
       message: `Binder build url is ${url}`,
     });
 
@@ -333,8 +284,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         const serverSettings = ServerConnection.makeSettings(existingSettings);
         const kernelManager = new KernelManager({ serverSettings });
 
-        this.messages({
-          status: ServerStatus.launching,
+        this.events.triggerStatus({
+          status: ServerStatusEvent.launching,
           message: `Created KernelManager`,
         });
 
@@ -343,17 +294,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
           serverSettings,
         });
 
-        this.messages({
-          status: ServerStatus.launching,
+        this.events.triggerStatus({
+          status: ServerStatusEvent.launching,
           message: `Created KernelManager`,
         });
 
         return this.sessionManager.ready.then(() => {
-          this.messages?.({
-            status: ServerStatus.ready,
+          this.events.triggerStatus({
+            status: ServerStatusEvent.ready,
             message: `Re-connected to binder server`,
           });
-          this._resolveReadyFn?.(this);
+          this.resolveReadyFn?.(this);
         });
         // else drop out of this block and request a new session
       }
@@ -361,9 +312,11 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     const requestPromise: Promise<void> = new Promise((resolveRequest, rejectRequest) => {
       // Talk to the binder server
-      const state = { status: ServerStatus.launching };
+      const state: { status: StatusEvent } = {
+        status: ServerStatusEvent.launching,
+      };
       const es = new EventSource(url);
-      this.messages({
+      this.events.triggerStatus({
         status: state.status,
         message: `Opened connection to binder: ${url}`,
       });
@@ -372,11 +325,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       es.onerror = (evt: Event) => {
         console.error(`Lost connection to binder: ${url}`, evt);
         es?.close();
-        state.status = ServerStatus.failed;
-        this.messages({
-          status: state.status,
-          message: (evt as MessageEvent)?.data,
-        });
+        state.status = ErrorStatusEvent.error;
+        this.events.triggerError((evt as MessageEvent)?.data);
         rejectRequest(evt);
       };
 
@@ -393,9 +343,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         switch (phase) {
           case 'failed':
             es?.close();
-            state.status = ServerStatus.failed;
-            this.messages({
-              status: state.status,
+            state.status = ErrorStatusEvent.error;
+            this.events.triggerError({
+              status: ErrorStatusEvent.error,
               message: `Binder: failed to build - ${url} - ${msg.message}`,
             });
             rejectRequest(msg);
@@ -429,8 +379,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
               // so we can await here
               await this.sessionManager.ready;
 
-              state.status = ServerStatus.ready;
-              this.messages({
+              state.status = ServerStatusEvent.ready;
+              this.events.triggerStatus({
                 status: state.status,
                 message: `Binder server is ready: ${msg.message}`,
               });
@@ -439,7 +389,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             }
             break;
           default:
-            this.messages({
+            this.events.triggerStatus({
               status: state.status,
               message: `Binder is: ${phase} - ${msg.message}`,
             });
@@ -448,7 +398,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
 
     return requestPromise.then(() => {
-      this._resolveReadyFn?.(this);
+      this.resolveReadyFn?.(this);
     });
   }
 

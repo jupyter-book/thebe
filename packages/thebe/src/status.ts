@@ -1,5 +1,5 @@
-import type { MessageCallbackArgs } from 'thebe-core';
-import { MessageSubject, ServerStatus, SessionStatus } from 'thebe-core';
+import type { ThebeEventData } from 'thebe-core';
+import { ErrorStatusEvent, EventSubject, ServerStatusEvent, SessionStatusEvent } from 'thebe-core';
 
 // Functions for the thebe activate button and status field
 export class KernelStatus {
@@ -10,41 +10,41 @@ export class KernelStatus {
   }
 
   _registerHandlers() {
-    window.thebe.on('status', (name: string, { subject, status, message }: MessageCallbackArgs) => {
+    window.thebe.on('status', (name: string, { subject, status, message }: ThebeEventData) => {
       if (
-        subject !== MessageSubject.server &&
-        subject !== MessageSubject.session &&
-        subject !== MessageSubject.kernel
+        subject !== EventSubject.server &&
+        subject !== EventSubject.session &&
+        subject !== EventSubject.kernel
       )
         return;
       const field = this._fieldElement();
       if (field) {
         switch (status) {
-          case ServerStatus.launching:
+          case ServerStatusEvent.launching:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Launching...';
             break;
-          case ServerStatus.failed:
+          case ErrorStatusEvent.error:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Failed to connect to server';
             break;
-          case ServerStatus.closed:
+          case ServerStatusEvent.closed:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Server connection closed';
             break;
-          case SessionStatus.shutdown:
+          case SessionStatusEvent.shutdown:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Session is dead';
             break;
-          case SessionStatus.starting:
+          case SessionStatusEvent.starting:
             field.className = `thebe-status-field thebe-status-${status}`;
             field.textContent = 'Starting session';
             break;
-          case SessionStatus.ready:
+          case SessionStatusEvent.ready:
             field.className = `thebe-status-field thebe-status-ready`;
             field.textContent = 'Kernel Connected';
             break;
-          case ServerStatus.ready:
+          case ServerStatusEvent.ready:
             field.className = `thebe-status-field thebe-status-ready`;
             field.textContent = 'Conected to Server';
             break;

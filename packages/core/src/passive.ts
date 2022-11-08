@@ -4,44 +4,37 @@ import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import { Widget } from '@lumino/widgets';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { IPassiveCell, MathjaxOptions } from './types';
+import { makeMathjaxOptions } from './options';
 
 class PassiveCellRenderer implements IPassiveCell {
-  _id: string;
-  _rendermime: IRenderMimeRegistry;
-  _model: OutputAreaModel;
-  _area: OutputArea;
+  readonly id: string;
+  readonly rendermime: IRenderMimeRegistry;
+  protected model: OutputAreaModel;
+  protected area: OutputArea;
 
   constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
-    this._id = id;
+    this.id = id;
 
-    this._rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? {});
-    this._model = new OutputAreaModel({ trusted: true });
-    this._area = new OutputArea({
-      model: this._model,
-      rendermime: this._rendermime,
+    this.rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
+    this.model = new OutputAreaModel({ trusted: true });
+    this.area = new OutputArea({
+      model: this.model,
+      rendermime: this.rendermime,
     });
   }
 
-  get id() {
-    return this._id;
-  }
-
-  get rendermime() {
-    return this._rendermime;
-  }
-
   get isAttachedToDOM() {
-    return this._area.isAttached;
+    return this.area.isAttached;
   }
 
   attachToDOM(el?: HTMLElement) {
-    if (!this._area || !el) {
+    if (!this.area || !el) {
       console.error(
-        `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this._area}, el: ${el}`,
+        `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this.area}, el: ${el}`,
       );
       return;
     }
-    if (this._area.isAttached) {
+    if (this.area.isAttached) {
       console.warn(`thebe:renderer:attachToDOM - already attached, returning`);
       return;
     }
@@ -49,7 +42,7 @@ class PassiveCellRenderer implements IPassiveCell {
 
     // if the target element has contents, preserve it but wrap it in our output area
     if (el.innerHTML) {
-      this._area.model.add({
+      this.area.model.add({
         output_type: 'display_data',
         data: {
           'text/html': el.innerHTML,
@@ -63,13 +56,13 @@ class PassiveCellRenderer implements IPassiveCell {
     div.className = 'thebe-output';
     el.append(div);
 
-    Widget.attach(this._area, div);
+    Widget.attach(this.area, div);
   }
 
   setOutputText(text: string) {
-    if (!this._area) return;
-    this._area.model.clear(true);
-    this._area.model.add({
+    if (!this.area) return;
+    this.area.model.clear(true);
+    this.area.model.add({
       output_type: 'stream',
       name: 'stdout',
       text,
@@ -82,8 +75,8 @@ class PassiveCellRenderer implements IPassiveCell {
    * @returns
    */
   clear() {
-    if (!this._area) return;
-    this._area.model.clear();
+    if (!this.area) return;
+    this.area.model.clear();
   }
 
   /**
@@ -93,9 +86,9 @@ class PassiveCellRenderer implements IPassiveCell {
    * @returns
    */
   clearOnError(error?: any) {
-    if (!this._area) return;
-    this._area.model.clear();
-    this._area.model.add({
+    if (!this.area) return;
+    this.area.model.clear();
+    this.area.model.add({
       output_type: 'stream',
       name: 'stderr',
       text: `Failed to execute. ${error ?? ''} Please refresh the page.`,
@@ -109,7 +102,7 @@ class PassiveCellRenderer implements IPassiveCell {
    * @returns
    */
   render(outputs: nbformat.IOutput[]) {
-    this._model.fromJSON(outputs);
+    this.model.fromJSON(outputs);
   }
 }
 

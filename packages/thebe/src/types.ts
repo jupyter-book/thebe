@@ -1,7 +1,12 @@
 import type { CodeMirrorEditor } from '@jupyterlab/codemirror';
-import type { ThebeNotebook, ThebeServer, ThebeSession } from 'thebe-core';
+import type {
+  ThebeEventCb,
+  ThebeEvents,
+  ThebeNotebook,
+  ThebeServer,
+  ThebeSession,
+} from 'thebe-core';
 import type { ActivateWidget } from './activate';
-import type { ThebeEventCb, ThebeEvents } from './events';
 import type { Options } from './options';
 import type { KernelStatus } from './status';
 

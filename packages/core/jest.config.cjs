@@ -1,27 +1,2 @@
-const func = require('@jupyterlab/testutils/lib/jest-config');
-module.exports = {
-  ...func(__dirname),
-  roots: ['<rootDir>'],
-  preset: 'ts-jest/presets/default-esm', // or other ESM presets
-  testRegex: ['tests/.*.spec.ts'],
-  moduleNameMapper: {
-    '\\.(gif|ttf|eot|svg|css)$': '@jupyterlab/testutils/lib/jest-file-mock.js',
-  },
-  transform: {
-    '^.+\\.svg$': '<rootDir>/jest.svg.transform.js',
-    '^.+\\.(js|ts|tsx)$': 'ts-jest',
-  },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(@jupyterlab|nanoid|@jupyterlite|@jupyter-widgets|d3-format|d3-color)/)',
-  ],
-  globals: {
-    'ts-jest': {
-      tsconfig: './tsconfig.json',
-    },
-  },
-  verbose: true,
-  testEnvironment: 'jsdom',
-  testPathIgnorePatterns: ['/node_modules/', '/.yalc/', '/dist/'],
-  setupFiles: ['./jest.setup.js'],
-  setupFilesAfterEnv: ['@jupyterlab/testutils/lib/jest-shim.js'],
-};
+const makeConfig = require('../build-config/jest.config.cjs');
+module.exports = { ...makeConfig(__dirname, 'tsconfig.test.json') };

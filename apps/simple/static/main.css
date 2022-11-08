@@ -1,0 +1,17 @@
+pre[data-executable='true'] {
+  border: 1px solid black;
+  background-color: gainsboro;
+  padding: 6px;
+}
+
+.CodeMirror {
+  border: 1px solid black;
+  font-size: 13px;
+  margin-bottom: 3px;
+  max-width: 600px;
+}
+
+.thebe-activate,
+.thebe-status {
+  margin-bottom: 8px;
+}

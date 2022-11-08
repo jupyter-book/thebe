@@ -1,7 +1,7 @@
 import CodeMirror from 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/hint/show-hint';
-import type { ThebeCell, ThebeNotebook } from 'thebe-core';
+import type { IThebeCell, ThebeNotebook } from 'thebe-core';
 import type { Options } from './options';
 import { randomId } from './utils';
 import { Mode } from '@jupyterlab/codemirror';
@@ -79,7 +79,7 @@ function buildButtonBusySpinner(parent: Element) {
 }
 
 function getButtonsBusy(id: string) {
-  const cell = document.getElementById(id);
+  const cell = document.querySelector(`[data-thebe-id=${id}]`);
   const busy = cell?.getElementsByClassName('thebe-busy').item(0);
   if (!busy) return;
   return busy as HTMLElement;
@@ -112,17 +112,13 @@ interface ExtendedCodemirrorConfig {
 function setupCodemirror(
   options: Options,
   item: CellDOMPlaceholder,
-  cell: ThebeCell,
+  cell: IThebeCell,
   cellEl: HTMLElement,
   editorEl: HTMLElement,
 ) {
   const { source: sourceEl } = item.placeholders;
   const mode = sourceEl.getAttribute('data-language') || 'python';
   const isReadOnly = sourceEl.getAttribute('data-readonly');
-  // console.debug(
-  //   `thebe:setupCodemirror source: ${cell.source.slice(0, 50) ?? 'no source code found'}...`,
-  // );
-  // console.debug(`thebe:setupCodemirror mode: ${mode}`);
   console.debug(`thebe:setupCodemirror isReadOnly: ${isReadOnly}`);
 
   async function execute() {
@@ -212,7 +208,7 @@ function buildCellUI(
   options: Options,
   item: CellDOMPlaceholder,
   notebook: ThebeNotebook,
-  cell: ThebeCell,
+  cell: IThebeCell,
 ): CellDOMItem {
   console.debug(`thebe:buildCellUI CellId:${item.id}`);
   const box = document.createElement('div');

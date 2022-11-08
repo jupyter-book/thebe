@@ -8,24 +8,19 @@ function shim(regExp) {
 const pkg = require('./package.json');
 
 module.exports = (env, argv) => {
-  let publicPath = '_static/lib/';
-  if (process.env.NODE_PREPUBLISH) {
-    publicPath = 'https://unpkg.com/thebe@' + pkg.version + '/lib/';
-  } else if (argv.mode === 'development') {
-    publicPath = '../lib/';
-  }
-  console.log('Public Path set to', publicPath);
-
   return {
-    mode: 'development',
+    mode: 'production',
     devtool: 'source-map',
     entry: './src/index.ts',
     output: {
       filename: 'index.js',
       path: path.resolve(__dirname, 'lib'),
-      publicPath,
+      publicPath: 'auto',
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        currentScript: 'current-script-polyfill',
+      }),
       // Not using moment
       shim(/moment/),
       // Don't need vim keymap
@@ -73,10 +68,6 @@ module.exports = (env, argv) => {
     optimization: {},
     module: {
       rules: [
-        {
-          test: /pypi\/.*/,
-          type: 'asset/source',
-        },
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
@@ -151,6 +142,15 @@ module.exports = (env, argv) => {
             mimetype: 'image/svg+xml',
           },
           type: 'javascript/auto',
+        },
+        {
+          test: /\.js$/,
+          enforce: 'pre',
+          use: ['source-map-loader'],
+          include: function (modulePath) {
+            const m = modulePath.match(/thebe\/packages\/core\/dist/);
+            return m != null;
+          },
         },
       ],
     },

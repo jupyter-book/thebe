@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jupyter - Thebe Demo</title>
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: false,
+        serverSettings: {
+          baseUrl: 'http://localhost:8888',
+          token: 'test-secret'
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <p>
+      To use this demo you to to have a juptyer server available and able to receive connections
+      from <code>localhost</code>. To start a local server, use the following command:
+    </p>
+    <p>
+      <code>jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</code>
+    </p>
+    <div class="thebe-activate"></div>
+    <div class="thebe-status"></div>
+    <pre data-executable="true" data-language="python">print("Hello Thebe World!")</pre>
+  </body>
+</html>

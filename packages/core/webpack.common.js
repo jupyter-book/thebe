@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 
 const shimJS = path.resolve(__dirname, 'src', 'empty.js');
@@ -22,10 +21,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /pypi\/.*/,
-        type: 'asset/source',
-      },
       {
         resourceQuery: /raw/,
         type: 'asset/source',
