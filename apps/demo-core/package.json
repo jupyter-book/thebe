@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "null-loader": "^4.0.1",
-    "thebe-core": "^0.0.13"
+    "thebe-core": "^0.0.15"
   }
 }

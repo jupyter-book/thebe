@@ -14,13 +14,19 @@ class PassiveCellRenderer implements IPassiveCell {
 
   constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
     this.id = id;
-
     this.rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this.model = new OutputAreaModel({ trusted: true });
     this.area = new OutputArea({
       model: this.model,
       rendermime: this.rendermime,
     });
+  }
+
+  /**
+   * Serialize the model state to JSON
+   */
+  get outputs(): nbformat.IOutput[] {
+    return this.model.toJSON();
   }
 
   get isAttachedToDOM() {

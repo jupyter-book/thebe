@@ -11,3 +11,4 @@ export * from './utils';
 export * from './manager';
 export * from './rendermime';
 export * from './types';
+export * from './config';

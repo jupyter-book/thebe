@@ -27,11 +27,11 @@ class ThebeNotebook {
   session?: ThebeSession;
   protected events: EventEmitter;
 
-  constructor(id: string, config: Config) {
+  constructor(id: string, config: Config, rendermime?: IRenderMimeRegistry) {
     this.id = id;
     this.events = new EventEmitter(id, config, EventSubject.notebook, this);
     this.cells = [];
-    this.rendermime = getRenderMimeRegistry(config.mathjax);
+    this.rendermime = rendermime ?? getRenderMimeRegistry(config.mathjax);
   }
 
   static fromCodeBlocks(blocks: CodeBlock[], config: Config) {

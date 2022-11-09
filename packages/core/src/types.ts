@@ -78,6 +78,7 @@ export interface IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
   readonly isAttachedToDOM: boolean;
+  readonly outputs: IOutput[];
 
   attachToDOM(el?: HTMLElement): void;
   setOutputText(text: string): void;
