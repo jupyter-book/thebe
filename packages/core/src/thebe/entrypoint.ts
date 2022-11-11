@@ -48,5 +48,3 @@ export function setupThebeCore() {
   if (window.thebe) window.thebe.core = core;
   else window.thebe = { core };
 }
-
-setupThebeCore();
