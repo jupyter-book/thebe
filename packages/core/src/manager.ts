@@ -5,11 +5,8 @@ import type { INotebookModel } from '@jupyterlab/notebook';
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
 
-import {
-  IRenderMimeRegistry,
-  RenderMimeRegistry,
-  standardRendererFactories,
-} from '@jupyterlab/rendermime';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
 
 import {
   WidgetManager as JupyterLabManager,
