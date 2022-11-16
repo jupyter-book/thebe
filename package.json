@@ -13,10 +13,9 @@
     "build": "turbo run build",
     "build:core": "turbo run build --filter=thebe-core",
     "build:thebe": "turbo run build --filter=thebe",
-    "build:demo": "turbo run build --filter=demo",
+    "build:demo": "turbo run build --filter=demo-simple",
     "build:dev": "turbo run build:dev",
     "docs": "turbo run docs",
-    "demo": "turbo run demo",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
@@ -24,9 +23,8 @@
     "lint:format:fix": "turbo run lint:format:fix",
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
-    "start:thebe": "turbo run start --filter=demo",
-    "start:core": "turbo run start --filter=demo-core",
-    "start:react": "turbo run start --filter=demo-react"
+    "start:simple": "turbo run start --filter=demo-simple",
+    "start:demo:core": "turbo run start --filter=demo-core"
   },
   "repository": {
     "type": "git",

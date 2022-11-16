@@ -7,6 +7,7 @@ export { default as PassiveCellRenderer } from './passive';
 export * from './options';
 export * from './events';
 export * from './thebe/api';
+export * from './thebe/entrypoint';
 export * from './utils';
 export * from './manager';
 export * from './rendermime';

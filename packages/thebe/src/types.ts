@@ -5,12 +5,14 @@ import type {
   ThebeNotebook,
   ThebeServer,
   ThebeSession,
+  ThebeCoreGlobal,
 } from 'thebe-core';
 import type { ActivateWidget } from './activate';
 import type { Options } from './options';
 import type { KernelStatus } from './status';
+import type { ThebeLiteGlobal } from 'thebe-lite';
 
-export interface thebe {
+export interface ThebeGlobal {
   mountStatusWidget: () => void;
   mountActivateWidget: () => void;
   bootstrap: (options: Partial<Options>) => Promise<any>;
@@ -30,8 +32,10 @@ declare global {
   interface Window {
     define: any;
     requirejs: any;
-    thebe: thebe;
-    thebelab: thebe;
+    thebeLite?: ThebeLiteGlobal;
+    thebeCore?: ThebeCoreGlobal;
+    thebe: ThebeGlobal;
+    thebelab: ThebeGlobal;
     CodeMirror: CodeMirrorEditor;
   }
 }

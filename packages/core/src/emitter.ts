@@ -1,6 +1,6 @@
 import type { Config } from './config';
-import type { EventObject, EventSubject, StatusEvent } from './events';
-import { ErrorStatusEvent, ThebeEventType } from './events';
+import type { EventObject, EventSubject, StatusEvent, ErrorStatusEvent } from './events';
+import { ThebeEventType } from './events';
 
 export class EventEmitter {
   private _id: string;

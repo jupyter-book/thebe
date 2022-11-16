@@ -1,21 +1,15 @@
 import { startJupyterLiteServer } from './jlite';
-import type { ThebeLiteBundle } from './types';
+import type { ThebeLiteGlobal } from './types';
 
 declare global {
   interface Window {
-    thebe: {
-      lite: ThebeLiteBundle;
-    };
+    thebeLite?: ThebeLiteGlobal;
   }
 }
 
-if (window.thebe) window.thebe.lite = { startJupyterLiteServer };
-else
-  window.thebe = {
-    lite: {
-      startJupyterLiteServer,
-    },
-  };
+function setupThebeLite() {
+  window.thebeLite = Object.assign(window.thebeLite ?? {}, { startJupyterLiteServer });
+}
 
 export * from './types';
-export { startJupyterLiteServer };
+export { startJupyterLiteServer, setupThebeLite };

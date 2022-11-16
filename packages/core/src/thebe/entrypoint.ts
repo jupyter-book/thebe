@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /**
  * thebe/index.js is the entrypoint for the webpack build and will
  * be invoked on module load, seting up context with an independent store
@@ -7,9 +8,9 @@ import type ThebeServer from '../server';
 import type { CodeBlock } from '../notebook';
 import type ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
-import { connect, setupNotebook } from './api';
-import * as coreModule from '../index';
 import type { ThebeEvents } from '../index';
+import type { ThebeLiteGlobal } from 'thebe-lite';
+import type * as coreModule from '../index';
 
 /**
  * This file is the main entrypoint for the cjs bundle
@@ -25,26 +26,18 @@ export interface JsApi {
   ) => ThebeNotebook;
 }
 
+export type ThebeCore = typeof coreModule;
+
+export interface ThebeCoreGlobal {
+  module: ThebeCore;
+  api: JsApi;
+}
+
 declare global {
   interface Window {
     define: any;
     requirejs: any;
-    thebe: {
-      lite?: any;
-      core: {
-        module: typeof coreModule;
-        api: JsApi;
-      };
-    };
+    thebeLite?: ThebeLiteGlobal;
+    thebeCore?: ThebeCoreGlobal;
   }
-}
-
-export function setupThebeCore() {
-  const core = {
-    module: coreModule,
-    api: { connect, setupNotebook },
-  };
-
-  if (window.thebe) window.thebe.core = core;
-  else window.thebe = { core };
 }

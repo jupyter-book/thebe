@@ -23,6 +23,7 @@ export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
+import { RequireJsLoader } from './requireJsLoader';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -31,8 +32,8 @@ if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
 }
 
 export class ThebeManager extends JupyterLabManager {
-  loader: typeof requireLoader;
   id: string;
+  _loader: RequireJsLoader;
 
   constructor(kernel: IKernelConnection) {
     const context = createContext(kernel);
@@ -43,7 +44,7 @@ export class ThebeManager extends JupyterLabManager {
 
     this.id = shortId();
     this._registerWidgets();
-    this.loader = (n: string, v: string) => requireLoader(n, v, true);
+    this._loader = new RequireJsLoader();
   }
 
   addWidgetFactories(rendermime: IRenderMimeRegistry) {
@@ -102,7 +103,7 @@ export class ThebeManager extends JupyterLabManager {
     }
     if (view.el) {
       view.el.setAttribute('thebe-jupyter-widget', '');
-      view.el.addEventListener('jupyterWidgetResize', (e: Event) => {
+      view.el.addEventListener('jupyterWidgetResize', () => {
         MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
       });
     }
@@ -114,32 +115,34 @@ export class ThebeManager extends JupyterLabManager {
     moduleName: string,
     moduleVersion: string,
   ): Promise<typeof base.WidgetModel | typeof base.WidgetView> {
-    console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
-    if (
-      moduleName === '@jupyter-widgets/base' ||
-      moduleName === '@jupyter-widgets/controls' ||
-      moduleName === '@jupyter-widgets/output'
-    ) {
-      return super.loadClass(className, moduleName, moduleVersion);
-    } else {
-      // TODO: code duplicate from HTMLWidgetManager, consider a refactor
-      console.debug(`thebe:manager:loadClass using loader`);
-      let module;
-      try {
-        module = await this.loader(moduleName, moduleVersion);
-      } catch (err) {
-        console.error(`thebe:manager:loadClass loader error`, err);
-        throw err;
-      }
-      if (module[className]) {
-        return module[className];
-      } else {
-        console.error(
-          `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`,
-        );
-        throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
-      }
+    if (!this._loader.requested) {
+      console.debug(`thebe:manager:loadClass initial requirejs load ${this.id}`);
+      this._loader.load((require, define) => {
+        define('@jupyter-widgets/base', base as any);
+        define('@jupyter-widgets/controls', controls as any);
+        define('@jupyter-widgets/output', output as any);
+      });
     }
+
+    console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
+    const rjs = await this._loader.ready;
+
+    let mod;
+    try {
+      mod = await requireLoader(rjs, moduleName, moduleVersion);
+    } catch (err) {
+      console.error(`thebe:manager:loadClass loader error`, err);
+      throw err;
+    }
+    if (mod[className]) {
+      return mod[className];
+    } else {
+      console.error(
+        `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`,
+      );
+      throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
+    }
+    // }
   }
 
   private _registerWidgets() {

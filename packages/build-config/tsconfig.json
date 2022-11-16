@@ -17,6 +17,7 @@
     },
     "declaration": false,
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
+    "importHelpers": true
   }
 }

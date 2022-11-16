@@ -1,14 +1,17 @@
+import type { IRequireJS } from './requireJsLoader';
+
 const cdn = 'https://cdn.jsdelivr.net/npm/';
 
 /**
  * Load a package using requirejs and return a promise
- *
- * @param pkg Package name or names to load
  */
-function requirePromise(moduleName: string) {
-  return new Promise((resolve, reject) => window.requirejs([`${moduleName}`], resolve, reject));
+function requirePromise(requirejs: IRequireJS, moduleName: string) {
+  return new Promise((resolve, reject) => requirejs.require([`${moduleName}`], resolve, reject));
 }
 
+/**
+ * The URL structure is /npm/package@version/file.js
+ */
 function moduleNameToCDNUrl(moduleName: string, moduleVersion: string) {
   let packageName = moduleName;
   let fileName = 'index'; // default filename
@@ -28,15 +31,16 @@ function moduleNameToCDNUrl(moduleName: string, moduleVersion: string) {
   return `${cdn}${packageName}@${moduleVersion}/dist/${fileName}`;
 }
 
-async function requireFromCDN(moduleName: string, moduleVersion: string) {
+async function requireFromCDN(requirejs: IRequireJS, moduleName: string, moduleVersion: string) {
   const url = moduleNameToCDNUrl(moduleName, moduleVersion);
+  console.warn(url);
   const conf: { paths: { [key: string]: string } } = { paths: {} };
-  conf.paths[moduleName] = moduleNameToCDNUrl(moduleName, moduleVersion);
-  window.requirejs.config(conf);
+  conf.paths[moduleName] = url;
+  requirejs.require.config(conf);
 
   try {
     // note: await needed here for try/catch behaviour
-    const module = requirePromise(moduleName);
+    const module = await requirePromise(requirejs, moduleName);
     return module;
   } catch (err: any) {
     console.error(`thebe:loader requirejs error on cdn require`, err);
@@ -57,35 +61,19 @@ async function requireFromCDN(moduleName: string, moduleVersion: string) {
  * The semver range is only used with the CDN.
  */
 export async function requireLoader(
+  requirejs: IRequireJS,
   moduleName: string,
   moduleVersion: string,
-  useCDNOnly: boolean = false,
+  useCDNOnly = false,
 ): Promise<any> {
-  if (window.requirejs === undefined) {
-    console.error(`thebe:loader requirejs is undefined`);
-    throw new Error('Requirejs is needed, please ensure it is loaded on the page.');
-  }
   console.log(`thebe:loader loading ${moduleName}@${moduleVersion}`);
   if (useCDNOnly) {
-    return requireFromCDN(moduleName, moduleVersion);
+    return requireFromCDN(requirejs, moduleName, moduleVersion);
   } else {
-    try {
-      // Try to load the module locally
-      // note: await needed here for try/catch behaviour
-      const module = await requirePromise(moduleName);
-      return module;
-    } catch (err: any) {
-      const failedId = err.requireModules && err.requireModules[0];
-      window.requirejs.undef(failedId);
-      if (!failedId) {
-        console.error(`thebe:loader requirejs error on local require`, err);
-        throw err;
-      } else {
-        // If it fails, try to load it from the CDN
-        console.debug(`thebe:loader falling back to ${cdn} for ${moduleName}@${moduleVersion}`);
-        window.requirejs.undef(failedId);
-        return requireFromCDN(moduleName, moduleVersion);
-      }
+    if (requirejs.require.defined(moduleName)) {
+      return requirePromise(requirejs, moduleName);
     }
+    console.debug(`thebe:loader falling back to ${cdn} for ${moduleName}@${moduleVersion}`);
+    return requireFromCDN(requirejs, moduleName, moduleVersion);
   }
 }

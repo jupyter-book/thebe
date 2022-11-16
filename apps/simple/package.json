@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "demo-simple",
   "version": "1.0.0",
   "description": "Minimal demo for thebe",
   "main": "dist/cjs/index.js",
@@ -14,7 +14,7 @@
     "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
     "build:demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
     "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build:demo -s'",
-    "start:simple": "http-server ./dist"
+    "start": "npm run build:demo; http-server ./dist"
   },
   "private": true,
   "author": "Steve Purves",

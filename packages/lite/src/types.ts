@@ -1,5 +1,5 @@
 import type { ServiceManager } from '@jupyterlab/services';
 
-export interface ThebeLiteBundle {
+export interface ThebeLiteGlobal {
   startJupyterLiteServer: () => Promise<ServiceManager>;
 }

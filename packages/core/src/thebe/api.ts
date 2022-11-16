@@ -4,6 +4,7 @@ import ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
 import type { ThebeEvents } from '..';
 import { makeConfiguration } from '..';
+import * as coreModule from '../index';
 
 export function connect(options: CoreOptions, events: ThebeEvents): ThebeServer {
   // turn any options into a configuraiton object, applies
@@ -30,4 +31,11 @@ export function connect(options: CoreOptions, events: ThebeEvents): ThebeServer 
 export function setupNotebook(blocks: CodeBlock[], options: CoreOptions, events: ThebeEvents) {
   const config = makeConfiguration(options, events);
   return ThebeNotebook.fromCodeBlocks(blocks, config);
+}
+
+export function setupThebeCore() {
+  window.thebeCore = Object.assign(window.thebeCore ?? {}, {
+    module: coreModule,
+    api: { connect, setupNotebook },
+  });
 }
