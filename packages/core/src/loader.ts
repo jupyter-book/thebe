@@ -65,7 +65,7 @@ export async function requireLoader(
   moduleVersion: string,
   useCDNOnly = false,
 ): Promise<any> {
-  console.log(`thebe:loader loading ${moduleName}@${moduleVersion}`);
+  console.debug(`thebe:loader loading ${moduleName}@${moduleVersion}`);
   if (useCDNOnly) {
     return requireFromCDN(requirejs, moduleName, moduleVersion);
   } else {
