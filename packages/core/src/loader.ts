@@ -33,7 +33,6 @@ function moduleNameToCDNUrl(moduleName: string, moduleVersion: string) {
 
 async function requireFromCDN(requirejs: IRequireJS, moduleName: string, moduleVersion: string) {
   const url = moduleNameToCDNUrl(moduleName, moduleVersion);
-  console.warn(url);
   const conf: { paths: { [key: string]: string } } = { paths: {} };
   conf.paths[moduleName] = url;
   requirejs.require.config(conf);
