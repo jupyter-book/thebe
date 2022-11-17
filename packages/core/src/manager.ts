@@ -127,22 +127,29 @@ export class ThebeManager extends JupyterLabManager {
     console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
     const rjs = await this._loader.ready;
 
-    let mod;
-    try {
-      mod = await requireLoader(rjs, moduleName, moduleVersion);
-    } catch (err) {
-      console.error(`thebe:manager:loadClass loader error`, err);
-      throw err;
-    }
-    if (mod[className]) {
-      return mod[className];
+    if (
+      moduleName === '@jupyter-widgets/base' ||
+      moduleName === '@jupyter-widgets/controls' ||
+      moduleName === '@jupyter-widgets/output'
+    ) {
+      return super.loadClass(className, moduleName, moduleVersion);
     } else {
-      console.error(
-        `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`,
-      );
-      throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
+      let mod;
+      try {
+        mod = await requireLoader(rjs, moduleName, moduleVersion);
+      } catch (err) {
+        console.error(`thebe:manager:loadClass loader error`, err);
+        throw err;
+      }
+      if (mod[className]) {
+        return mod[className];
+      } else {
+        console.error(
+          `thebe:manager:loadClass ${className} not found in module ${moduleName}@${moduleVersion}`,
+        );
+        throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
+      }
     }
-    // }
   }
 
   private _registerWidgets() {
