@@ -1,4 +1,4 @@
-import type { IThebeCell, IThebeCellExecuteReturn } from './types';
+import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
@@ -6,10 +6,12 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Config } from './config';
 import { CellStatusEvent, ErrorStatusEvent, errorToMessage, EventSubject } from './events';
 import { EventEmitter } from './emitter';
-import type { IError } from '@jupyterlab/nbformat';
+import type { ICodeCell, IError } from '@jupyterlab/nbformat';
+import { ensureString, shortId } from './utils';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   source: string;
+  metadata: JsonObject;
   session?: ThebeSession;
   readonly notebookId: string;
   protected busy: boolean;
@@ -20,13 +22,34 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     notebookId: string,
     source: string,
     config: Config,
+    metadata: JsonObject = {},
     rendermime?: IRenderMimeRegistry,
   ) {
     super(id, rendermime);
     this.events = new EventEmitter(id, config, EventSubject.cell, this);
     this.notebookId = notebookId;
     this.source = source;
+    this.metadata = metadata;
     this.busy = false;
+  }
+
+  static fromICodeCell(
+    icc: ICodeCell,
+    notebookId: string,
+    config: Config,
+    rendermime?: IRenderMimeRegistry,
+  ) {
+    const cell = new ThebeCell(
+      icc.id ?? shortId(),
+      notebookId,
+      ensureString(icc.source),
+      config,
+      icc.metadata,
+      rendermime,
+    );
+    Object.assign(cell.metadata, icc.metadata);
+
+    return cell;
   }
 
   get isBusy() {
@@ -35,6 +58,10 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
 
   get isAttached() {
     return this.session !== undefined;
+  }
+
+  get tags(): string[] {
+    return this.metadata.tags ?? [];
   }
 
   /**

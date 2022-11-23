@@ -7,6 +7,8 @@ import { getRenderMimeRegistry } from './rendermime';
 import type { Config } from './config';
 import { EventSubject, NotebookStatusEvent } from './events';
 import { EventEmitter } from './emitter';
+import type { ICodeCell, INotebookContent, INotebookMetadata } from '@jupyterlab/nbformat';
+import NonExecutableCell from './cell_noexec';
 
 interface ExecuteReturn {
   id: string;
@@ -24,6 +26,7 @@ class ThebeNotebook {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
   cells: IThebeCell[];
+  metadata: INotebookMetadata;
   session?: ThebeSession;
   protected events: EventEmitter;
 
@@ -31,6 +34,7 @@ class ThebeNotebook {
     this.id = id;
     this.events = new EventEmitter(id, config, EventSubject.notebook, this);
     this.cells = [];
+    this.metadata = {};
     this.rendermime = rendermime ?? getRenderMimeRegistry(config.mathjax);
   }
 
@@ -46,8 +50,43 @@ class ThebeNotebook {
     return notebook;
   }
 
+  static fromIpynb(ipynb: INotebookContent, config: Config, rendermime?: IRenderMimeRegistry) {
+    const notebook = new ThebeNotebook(shortId(), config, rendermime);
+
+    Object.assign(notebook.metadata, ipynb.metadata);
+
+    notebook.cells = ipynb.cells.map((c) => {
+      if ((c as ICodeCell).cell_type === 'code')
+        return ThebeCell.fromICodeCell(c as ICodeCell, notebook.id, config, notebook.rendermime);
+      return NonExecutableCell.fromICell(c, notebook.id, notebook.rendermime);
+    });
+
+    return notebook;
+  }
+
+  get parameters(): ThebeCell | NonExecutableCell | undefined {
+    const p = this.findCells('parameters');
+    if (!p || p?.length === 0) return undefined;
+    if (p.length > 1) console.warn(`Mulitple parameter cells found in notebook ${this.id}`);
+    return p[0] as ThebeCell | NonExecutableCell;
+  }
+
+  get widgets(): ThebeCell[] | NonExecutableCell[] | undefined {
+    return this.findCells('widget') as ThebeCell[] | NonExecutableCell[];
+  }
+
+  get last(): ThebeCell | NonExecutableCell {
+    if (this.cells.length === 0) throw new Error('empty notebook');
+    return this.cells[this.cells.length - 1] as ThebeCell | NonExecutableCell;
+  }
+
   numCells() {
     return this.cells?.length ?? 0;
+  }
+
+  findCells(tag: string) {
+    const found = this.cells.filter((c) => (c as ThebeCell | NonExecutableCell).tags.includes(tag));
+    return found.length > 0 ? found : undefined;
   }
 
   getCell(idx: number) {
@@ -65,6 +104,11 @@ class ThebeNotebook {
   lastCell() {
     if (!this.cells) throw Error('Notebook not initialized');
     return this.cells[this.cells.length - 1];
+  }
+
+  updateParameters(newSource: string, interpolate = false) {
+    if (interpolate) throw new Error('Not implemented yet');
+    if (this.parameters) this.parameters.source = newSource;
   }
 
   async waitForKernel(kernel: Promise<ThebeSession>) {

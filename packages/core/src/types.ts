@@ -90,9 +90,11 @@ export interface IPassiveCell {
 export interface IThebeCell extends IPassiveCell {
   source: string;
   session?: ThebeSession;
+  metadata: JsonObject;
   readonly notebookId: string;
   readonly isBusy: boolean;
   readonly isAttached: boolean;
+  readonly tags: string[];
 
   attachSession(session: ThebeSession): void;
   detachSession(): void;
