@@ -64,20 +64,20 @@ class ThebeNotebook {
     return notebook;
   }
 
-  get parameters(): ThebeCell | NonExecutableCell | undefined {
+  get parameters() {
     const p = this.findCells('parameters');
     if (!p || p?.length === 0) return undefined;
     if (p.length > 1) console.warn(`Mulitple parameter cells found in notebook ${this.id}`);
-    return p[0] as ThebeCell | NonExecutableCell;
+    return p;
   }
 
-  get widgets(): ThebeCell[] | NonExecutableCell[] | undefined {
-    return this.findCells('widget') as ThebeCell[] | NonExecutableCell[];
+  get widgets() {
+    return this.findCells('widget') ?? [];
   }
 
-  get last(): ThebeCell | NonExecutableCell {
+  get last() {
     if (this.cells.length === 0) throw new Error('empty notebook');
-    return this.cells[this.cells.length - 1] as ThebeCell | NonExecutableCell;
+    return this.cells[this.cells.length - 1];
   }
 
   numCells() {
@@ -85,7 +85,7 @@ class ThebeNotebook {
   }
 
   findCells(tag: string) {
-    const found = this.cells.filter((c) => (c as ThebeCell | NonExecutableCell).tags.includes(tag));
+    const found = this.cells.filter((c) => c.tags.includes(tag));
     return found.length > 0 ? found : undefined;
   }
 
@@ -108,7 +108,7 @@ class ThebeNotebook {
 
   updateParameters(newSource: string, interpolate = false) {
     if (interpolate) throw new Error('Not implemented yet');
-    if (this.parameters) this.parameters.source = newSource;
+    if (this.parameters) this.parameters[0].source = newSource;
   }
 
   async waitForKernel(kernel: Promise<ThebeSession>) {
