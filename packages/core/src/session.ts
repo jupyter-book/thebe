@@ -62,7 +62,7 @@ class ThebeSession {
     await this.connection.shutdown();
     this.events.triggerStatus({
       status: SessionStatusEvent.shutdown,
-      message: `Session shutdown`,
+      message: `session ${this.name}`,
     });
     return this.connection.dispose();
   }
