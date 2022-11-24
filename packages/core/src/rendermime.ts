@@ -11,6 +11,7 @@ import {
 import type { MathjaxOptions } from './types';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
 import { rendererFactory as javascriptRendererFactory } from '@jupyterlab/javascript-extension';
+import { rendererFactory as jsonRendererFactory } from '@jupyterlab/json-extension';
 import { makeMathjaxOptions } from './options';
 
 const EXTENDED_FACTORIES = [
@@ -55,5 +56,7 @@ export function getRenderers(mathjax: MathjaxOptions) {
 }
 
 export function getRenderMimeRegistry(mathjax?: MathjaxOptions) {
-  return new RenderMimeRegistry(getRenderers(mathjax ?? makeMathjaxOptions()));
+  const rendermime = new RenderMimeRegistry(getRenderers(mathjax ?? makeMathjaxOptions()));
+  rendermime.addFactory(jsonRendererFactory, 10);
+  return rendermime;
 }
