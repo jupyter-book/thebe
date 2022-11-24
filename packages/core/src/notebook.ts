@@ -229,7 +229,7 @@ class ThebeNotebook {
 
     this.events.triggerStatus({
       status: NotebookStatusEvent.idle,
-      message: `executeCells ${cellIds.length} cells`,
+      message: `executeCells executed ${cellIds.length} cells`,
     });
     return result;
   }
@@ -247,7 +247,7 @@ class ThebeNotebook {
 
     this.cells.map((cell) => cell.setAsBusy());
 
-    const result = this.executeCells(
+    const result = await this.executeCells(
       this.cells.map((c) => c.id),
       stopOnError,
       preprocessor,
