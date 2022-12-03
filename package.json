@@ -13,8 +13,8 @@
     "build": "turbo run build",
     "build:core": "turbo run build --filter=thebe-core",
     "build:thebe": "turbo run build --filter=thebe",
-    "build:demo": "turbo run build --filter=demo-simple",
     "build:dev": "turbo run build:dev",
+    "demo": "turbo run demo",
     "docs": "turbo run docs",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
@@ -24,7 +24,7 @@
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
     "start:simple": "turbo run start --filter=demo-simple",
-    "start:demo:core": "turbo run start --filter=demo-core"
+    "start:core": "turbo run start --filter=demo-core"
   },
   "repository": {
     "type": "git",

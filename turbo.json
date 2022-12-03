@@ -22,8 +22,8 @@
       "dependsOn": ["build"]
     },
     "demo": {
-      "dependsOn": ["thebe#build", "thebe-core#build"],
-      "outputs": ["dist/**"]
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "outputs": ["dist/**", "lib/**"]
     },
     "docs": {
       "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],

@@ -157,7 +157,11 @@ Also include the css bundle on your page:
 
 ## Contribute to `thebe`
 
-To contribute to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute.html).
+For the latest information on setting up a local development environment see [CONTRIBUTING.md](./CONTRIBUTING.md) in this repository.
+
+### Legacy information on `thebe` builds is here
+
+For more information on contributing to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute.html) although note that
 
 ## Acknowledgements
 

@@ -12,9 +12,9 @@
     "copy:static": "copyfiles -u 1 static/* dist",
     "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
     "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
-    "build:demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
+    "demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
     "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build:demo -s'",
-    "start": "npm run build:demo; http-server ./dist"
+    "start": "http-server ./dist"
   },
   "private": true,
   "author": "Steve Purves",
