@@ -94,19 +94,24 @@ async function demoBasic(code, options) {
   const last = notebook.lastCell();
   last.attachToDOM(document.querySelector('[data-output]'));
 
-  const loggingCallback = ({ id, subject, status, message }) => {
-    console.log(`[${subject}][${status}][${id}]: ${message}`);
+  const demoEvents = thebeCore.api.makeEvents();
+
+  const loggingCallback = (eventType, { subject, status, id, message }) => {
+    console.log(`${eventType}: [${subject}][${status}][${id}]: ${message}`);
   };
 
-  const { server, session } = await thebeCore.api.connect(
-    options,
-    statusCallback ?? loggingCallback,
-  );
+  demoEvents.on('status', loggingCallback);
+  demoEvents.on('error', loggingCallback);
+
+  const server = await thebeCore.api.connect(options, demoEvents);
 
   await server.ready;
+
+  const session = await server.startNewSession();
+
   await session.kernel.ready;
 
-  notebook.attachSession(session);
+  if (session != null) notebook.attachSession(session);
 
   const runAllButton = document.getElementById('run-all');
   runAllButton.onclick = (ev) => {

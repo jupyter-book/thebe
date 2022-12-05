@@ -7,8 +7,9 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "demo": "npx ts-node ./bin/buildLiteDemo.ts; webpack --config webpack.dev.js",
-    "start": "webpack serve --open --config webpack.dev.js"
+    "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
+    "demo": "npm run copy:lite; webpack --config webpack.dev.js",
+    "start": "npm run copy:lite; webpack serve --open --config webpack.dev.js"
   },
   "keywords": [
     "jupyter",
@@ -26,9 +27,6 @@
   "author": "Steve Purves",
   "license": "MIT",
   "devDependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
-    "@jupyterlite/server": "0.1.0-beta.10",
-    "@jupyterlite/server-extension": "0.1.0-beta.10",
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.6.0",
     "express": "^4.17.2",
@@ -46,13 +44,8 @@
     "webpack-dev-server": "^4.7.4",
     "webpack-merge": "^5.8.0"
   },
-  "peerDependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.10",
-    "@jupyterlite/server": "0.1.0-beta.10",
-    "@jupyterlite/server-extension": "0.1.0-beta.10"
-  },
   "dependencies": {
     "null-loader": "^4.0.1",
-    "thebe-core": "^0.0.15"
+    "thebe-core": "^0.0.16"
   }
 }

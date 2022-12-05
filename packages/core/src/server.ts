@@ -198,7 +198,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     if (!window.thebeLite)
       throw new Error(
-        `thebe-lite is not available at window.thebe.lite - load this onto your page before loading thebe or thebe-core.`,
+        `thebe-lite is not available at window.thebeLite - load this onto your page before loading thebe or thebe-core.`,
       );
 
     const serviceManager = await window.thebeLite.startJupyterLiteServer();

@@ -11,6 +11,7 @@ import type { CoreOptions } from '../types';
 import type { ThebeEvents } from '../index';
 import type { ThebeLiteGlobal } from 'thebe-lite';
 import type * as coreModule from '../index';
+import { setupThebeCore } from './api';
 
 /**
  * This file is the main entrypoint for the cjs bundle
@@ -24,6 +25,7 @@ export interface JsApi {
     options: Partial<CoreOptions>,
     events: ThebeEvents,
   ) => ThebeNotebook;
+  makeEvents: () => ThebeEvents;
 }
 
 export type ThebeCore = typeof coreModule;
@@ -41,3 +43,5 @@ declare global {
     thebeCore?: ThebeCoreGlobal;
   }
 }
+
+if (typeof window !== 'undefined') setupThebeCore();

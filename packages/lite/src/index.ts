@@ -11,5 +11,11 @@ function setupThebeLite() {
   window.thebeLite = Object.assign(window.thebeLite ?? {}, { startJupyterLiteServer });
 }
 
+if (typeof window !== 'undefined') {
+  console.debug('window is defined, setting up thebe-lite');
+  setupThebeLite();
+  console.log('window.thebeLite', window.thebeLite);
+}
+
 export * from './types';
 export { startJupyterLiteServer, setupThebeLite };
