@@ -1,0 +1,21 @@
+version: 1
+project:
+  title: Thebe[core]
+  subject: Thebe[core]
+  github: https://github.com/executablebooks/thebe
+  license:
+    content: CC0-1.0
+    code: BSD-3-Clause
+site:
+  title: Thebe[core]
+  projects:
+    - slug: docs-core
+      path: .
+  nav: []
+  actions:
+    - title: Executable Books
+      url: https://executablebooks.org/
+  domains:
+    - thebe-core.curve.space
+  logo: public/logo_light.svg
+  logo_text: Thebe[core]

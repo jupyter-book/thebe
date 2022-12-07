@@ -1,0 +1,17 @@
+{
+  "name": "docs-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:typedoc2": "typedoc ../../packages/core/src/ --tsconfig ../../packages/core/tsconfig.json --plugin typedoc-plugin-markdown --out reference --name thebe-core --readme none",
+    "build:typedoc": "typedoc --options ./typedoc.ts",
+    "start": "curvenote start"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "typedoc": "^0.23.21",
+    "typedoc-plugin-markdown": "^3.14.0"
+  }
+}

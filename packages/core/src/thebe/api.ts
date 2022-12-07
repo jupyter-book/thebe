@@ -5,6 +5,13 @@ import type { CoreOptions } from '../types';
 import { makeConfiguration, ThebeEvents } from '..';
 import * as coreModule from '../index';
 
+/**
+ *
+ * @category JS Bundle API
+ * @param options any options supplied will override the default configuration, this can be minimal
+ * @param events ThebeEvents
+ * @returns ThebeServer
+ */
 export function connect(options: CoreOptions, events?: ThebeEvents): ThebeServer {
   // turn any options into a configuraiton object, applies
   // defaults for any ommited options
