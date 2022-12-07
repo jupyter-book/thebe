@@ -15,6 +15,8 @@ Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a 
 
 See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more information. See also this [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
 
+> For the latest `thebe-core` documentation, see [https://thebe-core.curve.space/](https://thebe-core.curve.space/)
+
 **Deprecation Notice**
 
 > `thebe` has been added as an alias for `thebelab` and all css classes beginning with `thebelab-` duplicated as `thebe-` (as of 0.8.3).
