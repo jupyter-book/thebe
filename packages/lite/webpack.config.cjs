@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
+const HookShellScriptPlugin = require('hook-shell-script-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -16,6 +17,9 @@ module.exports = {
     new DefinePlugin({ 'process.env': {} }),
     new webpack.ProvidePlugin({
       currentScript: 'current-script-polyfill',
+    }),
+    new HookShellScriptPlugin({
+      afterEmit: ['npm run build:post-copy'],
     }),
   ],
   output: {
