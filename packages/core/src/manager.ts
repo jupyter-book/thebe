@@ -93,6 +93,7 @@ export class ThebeManager extends JupyterLabManager {
         //
         // This workaround may not be necessary anymore with templates that make use
         // of progressive rendering.
+        console.error(error);
       }
     });
   }
