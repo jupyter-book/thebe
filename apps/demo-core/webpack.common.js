@@ -27,14 +27,14 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /pypi\/.*/,
-        type: 'asset/source',
-      },
-      {
-        resourceQuery: /raw/,
-        type: 'asset/source',
-      },
+      // {
+      //   test: /pypi\/.*/,
+      //   type: 'asset/source',
+      // },
+      // {
+      //   resourceQuery: /raw/,
+      //   type: 'asset/source',
+      // },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',

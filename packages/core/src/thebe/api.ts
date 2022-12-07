@@ -2,11 +2,17 @@ import ThebeServer from '../server';
 import type { CodeBlock } from '../notebook';
 import ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
-import type { ThebeEvents } from '..';
-import { makeConfiguration } from '..';
+import { makeConfiguration, ThebeEvents } from '..';
 import * as coreModule from '../index';
 
-export function connect(options: CoreOptions, events: ThebeEvents): ThebeServer {
+/**
+ *
+ * @category JS Bundle API
+ * @param options any options supplied will override the default configuration, this can be minimal
+ * @param events ThebeEvents
+ * @returns ThebeServer
+ */
+export function connect(options: CoreOptions, events?: ThebeEvents): ThebeServer {
   // turn any options into a configuraiton object, applies
   // defaults for any ommited options
   const config = makeConfiguration(options, events);
@@ -33,9 +39,17 @@ export function setupNotebook(blocks: CodeBlock[], options: CoreOptions, events:
   return ThebeNotebook.fromCodeBlocks(blocks, config);
 }
 
+function makeEvents() {
+  return new ThebeEvents();
+}
+
 export function setupThebeCore() {
   window.thebeCore = Object.assign(window.thebeCore ?? {}, {
     module: coreModule,
-    api: { connect, setupNotebook },
+    api: {
+      connect,
+      setupNotebook,
+      makeEvents,
+    },
   });
 }
