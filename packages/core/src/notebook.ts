@@ -42,7 +42,8 @@ class ThebeNotebook {
     const id = shortId();
     const notebook = new ThebeNotebook(id, config);
     notebook.cells = blocks.map((c) => {
-      const cell = new ThebeCell(c.id, id, c.source, config, notebook.rendermime);
+      const metadata = {};
+      const cell = new ThebeCell(c.id, id, c.source, config, metadata, notebook.rendermime);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
