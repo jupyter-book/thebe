@@ -2,8 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
-const NoEmitPlugin = require('no-emit-webpack-plugin');
-const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -19,7 +17,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       currentScript: 'current-script-polyfill',
     }),
-    new IgnoreEmitPlugin([/^pypi\/.*\.(whl|json)$/]),
   ],
   output: {
     filename: 'thebe-lite.min.js',
@@ -32,9 +29,6 @@ module.exports = {
       {
         test: /pypi\/.*/,
         type: 'asset/resource',
-        generator: {
-          filename: 'build/pypi/[name][ext][query]',
-        },
       },
       {
         test: /\.ts$/,
