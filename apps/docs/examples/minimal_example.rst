@@ -89,7 +89,7 @@ The following UI widgets are then mounted on the page.
    <div class="thebe-activate"></div>
    <div class="thebe-status"></div>
 
-These widgets are minimally styled, but can be modified by overrriding or extending the following classes; `thebe-status`, `thebe-status-mounted`, `thebe-status-stub`, `thebe-status-field`, `thebe-status-message`, `thebe-status-building`, `thebe-status-launching`, `thebe-status-starting`, `thebe-status-ready`, `thebe-status-failed`, `thebe-status-busy`.
+These widgets are minimally styled, but can be modified by overrriding or extending the following classes; `thebe-status`, `thebe-status-mounted`, `thebe-status-stub`, `thebe-status-field`, `thebe-status-message`, `thebe-status-building`, `thebe-status-launching`, `thebe-status-starting`, `thebe-status-server-ready`, `thebe-status-session-ready`, `thebe-status-failed`, `thebe-status-busy`.
 
 Adding code cells
 =================

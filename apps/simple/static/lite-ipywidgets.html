@@ -16,9 +16,9 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="thebe.css" />
-    <script src="thebe-lite.min.js"></script>
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.2/css/mpl_widget.css" />
+    <script src="thebe-lite.min.js"></script>    
     <script src="index.js"></script>
   </head>
   <body>
@@ -36,6 +36,26 @@
     </p>
     <div class="thebe-activate"></div>
     <div class="thebe-status"></div>
-    <pre data-executable="true" data-language="python">print("Hello!")</pre>
+    <pre data-executable="true" data-language="python">
+import piplite
+await piplite.install('ipympl')
+    </pre>
+    <pre data-executable="true" data-language="python">
+%matplotlib widget
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0,10)
+
+def sine_func(x, w, amp):
+  return amp*np.sin(w*x)
+
+@widgets.interact(w=(0, 4, 0.25), amp=(0, 4, .1))
+def update(w = 1, amp = 1):
+  plt.clf()
+  plt.ylim(-4, 4)
+  plt.plot(x, sine_func(x, w, amp))
+    </pre>
   </body>
 </html>

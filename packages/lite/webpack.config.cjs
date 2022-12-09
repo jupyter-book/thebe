@@ -19,7 +19,11 @@ module.exports = {
       currentScript: 'current-script-polyfill',
     }),
     new HookShellScriptPlugin({
-      afterEmit: ['npm run build:post-copy'],
+      afterEmit: [
+        'npm run build:post:shuffle',
+        'npm run build:post:service',
+        'node bin/stubContentsApi.js',
+      ],
     }),
   ],
   output: {

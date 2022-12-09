@@ -7,7 +7,8 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build:bundle": "webpack --config webpack.config.cjs",
-    "build:post-copy": "copyfiles -f dist/lib/pypi/* dist/lib/build/pypi; rm -rf dist/lib/pypi; rm dist/lib/*.whl; rm dist/lib/*.json",
+    "build:post:shuffle": "./bin/shufflePyolitePaths.sh",
+    "build:post:service": "./bin/fetchServiceWorker.sh",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
     "build": "npm-run-all -l clean -p build:bundle declarations",
     "build:watch": "npm run build:bundle -- -w"
