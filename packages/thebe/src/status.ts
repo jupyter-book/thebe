@@ -41,11 +41,11 @@ export class KernelStatus {
             field.textContent = 'Starting session';
             break;
           case SessionStatusEvent.ready:
-            field.className = `thebe-status-field thebe-status-ready`;
+            field.className = `thebe-status-field thebe-status-server-ready`;
             field.textContent = 'Kernel Connected';
             break;
           case ServerStatusEvent.ready:
-            field.className = `thebe-status-field thebe-status-ready`;
+            field.className = `thebe-status-field thebe-status-session-ready`;
             field.textContent = 'Conected to Server';
             break;
         }

@@ -46,7 +46,12 @@
   background-color: yellow;
 }
 
-.thebe-status-field.thebe-status-ready {
+.thebe-status-field.thebe-status-server-ready {
+  /* The kernel is connected and ready */
+  background-color: cyan;
+}
+
+.thebe-status-field.thebe-status-session-ready {
   /* The kernel is connected and ready */
   background-color: lightgreen;
 }
