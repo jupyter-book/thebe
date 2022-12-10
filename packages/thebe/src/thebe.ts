@@ -12,7 +12,7 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
-import { connect, setupNotebook } from 'thebe-core';
+import { connect, makeConfiguration, setupNotebook } from 'thebe-core';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -74,9 +74,10 @@ export async function bootstrap(opts: Partial<Options> = {}) {
 
   renderAllCells(options, notebook, items);
 
+  const config = makeConfiguration(options, window.thebe.events);
   // starting to talk to binder / server is deferred until here so that any page
   // errors cause failure first
-  const server = connect(options, window.thebe.events);
+  const server = connect(config);
   window.thebe.server = server;
 
   if (!opts.requestKernel) {

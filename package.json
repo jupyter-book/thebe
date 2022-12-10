@@ -24,7 +24,8 @@
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
     "start:simple": "turbo run start --filter=demo-simple",
-    "start:core": "turbo run start --filter=demo-core"
+    "start:core": "turbo run start --filter=demo-core",
+    "start:docs-core": "turbo run start --filter=docs-core"
   },
   "repository": {
     "type": "git",

@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:typedoc2": "typedoc ../../packages/core/src/ --tsconfig ../../packages/core/tsconfig.json --plugin typedoc-plugin-markdown --out reference --name thebe-core --readme none",
-    "build:typedoc": "typedoc --options ./typedoc.ts",
+    "docs": "typedoc --options ./typedoc.ts",
     "start": "curvenote start"
   },
   "author": "",

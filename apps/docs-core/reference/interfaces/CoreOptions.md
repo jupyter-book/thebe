@@ -24,9 +24,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:36](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L36)
+[packages/core/src/types.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L36)
 
----
+___
 
 ### kernelOptions
 
@@ -34,9 +34,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:38](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L38)
+[packages/core/src/types.ts:38](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L38)
 
----
+___
 
 ### mathjaxConfig
 
@@ -44,9 +44,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:32](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L32)
+[packages/core/src/types.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L32)
 
----
+___
 
 ### mathjaxUrl
 
@@ -54,9 +54,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:31](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L31)
+[packages/core/src/types.ts:31](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L31)
 
----
+___
 
 ### requestKernel
 
@@ -64,9 +64,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:35](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L35)
+[packages/core/src/types.ts:35](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L35)
 
----
+___
 
 ### savedSessionOptions
 
@@ -74,9 +74,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:37](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L37)
+[packages/core/src/types.ts:37](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L37)
 
----
+___
 
 ### serverSettings
 
@@ -84,9 +84,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:39](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L39)
+[packages/core/src/types.ts:39](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L39)
 
----
+___
 
 ### useBinder
 
@@ -94,9 +94,9 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:33](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L33)
+[packages/core/src/types.ts:33](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L33)
 
----
+___
 
 ### useJupyterLite
 
@@ -104,4 +104,4 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:34](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L34)
+[packages/core/src/types.ts:34](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L34)

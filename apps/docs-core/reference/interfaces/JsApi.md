@@ -10,6 +10,7 @@ For the TS module, use setupThebeCore()
 ### Properties
 
 - [connect](JsApi.md#connect)
+- [makeConfiguration](JsApi.md#makeconfiguration)
 - [makeEvents](JsApi.md#makeevents)
 - [setupNotebook](JsApi.md#setupnotebook)
 
@@ -17,18 +18,17 @@ For the TS module, use setupThebeCore()
 
 ### connect
 
-• **connect**: (`options`: `Partial`<[`CoreOptions`](CoreOptions.md)\>, `events`: [`ThebeEvents`](../classes/ThebeEvents.md)) => [`ThebeServer`](../classes/ThebeServer.md)
+• **connect**: (`config`: [`Config`](../classes/Config.md)) => [`ThebeServer`](../classes/ThebeServer.md)
 
 #### Type declaration
 
-▸ (`options`, `events`): [`ThebeServer`](../classes/ThebeServer.md)
+▸ (`config`): [`ThebeServer`](../classes/ThebeServer.md)
 
 ##### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `options` | `Partial`<[`CoreOptions`](CoreOptions.md)\> |
-| `events` | [`ThebeEvents`](../classes/ThebeEvents.md) |
+| `config` | [`Config`](../classes/Config.md) |
 
 ##### Returns
 
@@ -36,7 +36,32 @@ For the TS module, use setupThebeCore()
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:22](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/entrypoint.ts#L22)
+[packages/core/src/thebe/entrypoint.ts:24](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L24)
+
+___
+
+### makeConfiguration
+
+• **makeConfiguration**: (`options`: `Partial`<[`CoreOptions`](CoreOptions.md)\>, `events?`: [`ThebeEvents`](../classes/ThebeEvents.md)) => [`Config`](../classes/Config.md)
+
+#### Type declaration
+
+▸ (`options`, `events?`): [`Config`](../classes/Config.md)
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `options` | `Partial`<[`CoreOptions`](CoreOptions.md)\> |
+| `events?` | [`ThebeEvents`](../classes/ThebeEvents.md) |
+
+##### Returns
+
+[`Config`](../classes/Config.md)
+
+#### Defined in
+
+[packages/core/src/thebe/entrypoint.ts:23](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L23)
 
 ___
 
@@ -54,7 +79,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:28](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/entrypoint.ts#L28)
+[packages/core/src/thebe/entrypoint.ts:30](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L30)
 
 ___
 
@@ -80,4 +105,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:23](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/entrypoint.ts#L23)
+[packages/core/src/thebe/entrypoint.ts:25](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L25)

@@ -21,7 +21,7 @@ module.exports = {
     new HookShellScriptPlugin({
       afterEmit: [
         'npm run build:post:shuffle',
-        'npm run build:post:service',
+        // 'npm run build:post:service',
         'node bin/stubContentsApi.js',
       ],
     }),

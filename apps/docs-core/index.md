@@ -1,38 +1,23 @@
-# Thebe[core]
+# `thebe-core`
 
-![Thebe[core] Logo](public/logo.svg)
+![Thebe[core] Logo](public/core_logo_wide.svg)
 
 A typescript library for web based interactive computing with Jupyter backends.
 
-## Quickstart
-
-```bash
-    npm i thebe-core
+```{tip}
+TL;DR? see [Quick Start](1-quickstart.md).
 ```
 
-```typescript
-    ...
-    const config = makeConfiguration({}); // use default options
-    config.events.on('status',
-        (evt, {status, message}) => console.log(status, message))
+## When to use `thebe-core`
 
-    const notebook = ThebeNotebook.fromIPynb(ipynb)
+If you are looking to make code on your website interavctive and executable quickly and easily you probably should be using [`thebe`](https://thebe.readthedocs.org).
 
-    // attach last cell to the DOM
-    notebook.last().attachToDOM(myHTMLDivElement)
+Consider using `thebe-core` if:
 
-    const server = new ThebeServer(config);
-
-    await server.connectToServerViaBinder();
-
-    const session = await server.startNewSession();
-    if (session != null) notebook.attachSession(session);
-
-    await notebook.executeAll();
-    ...
-```
-
-For more see `apps/demos-simple` and `apps/demo-core`
+- You are adding jupyter based computation into a typescript application
+- You want Jupyter outputs on your webpage but you don't want to show all the code
+- You want `thebe`-like behaviour, but want to ontrol the UI yourself
+- You want more control over the servers and sessions you're connecting to
 
 ## Background
 
@@ -64,4 +49,4 @@ The repository is contins a `monorepo` for building the following packages:
 - `thebe` typescript version of the original `thebe` library, making webpages with code interactive
 - `thebe-lite` a drop in component that provides the Jupyterlite server and pyolite kernel
 
-See [/development](development) for more details on building these packages locally.
+See [architecture]() for more details on building these packages locally.

@@ -8,7 +8,8 @@ import type ThebeServer from '../server';
 import type { CodeBlock } from '../notebook';
 import type ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
-import type { ThebeEvents } from '../index';
+import type { Config } from '../config';
+import type { ThebeEvents } from '../events';
 import type { ThebeLiteGlobal } from 'thebe-lite';
 import type * as coreModule from '../index';
 import { setupThebeCore } from './api';
@@ -19,7 +20,8 @@ import { setupThebeCore } from './api';
  */
 
 export interface JsApi {
-  connect: (options: Partial<CoreOptions>, events: ThebeEvents) => ThebeServer;
+  makeConfiguration: (options: Partial<CoreOptions>, events?: ThebeEvents) => Config;
+  connect: (config: Config) => ThebeServer;
   setupNotebook: (
     blocks: CodeBlock[],
     options: Partial<CoreOptions>,

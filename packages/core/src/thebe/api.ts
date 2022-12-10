@@ -2,6 +2,7 @@ import ThebeServer from '../server';
 import type { CodeBlock } from '../notebook';
 import ThebeNotebook from '../notebook';
 import type { CoreOptions } from '../types';
+import type { Config } from '..';
 import { makeConfiguration, ThebeEvents } from '..';
 import * as coreModule from '../index';
 
@@ -12,20 +13,16 @@ import * as coreModule from '../index';
  * @param events ThebeEvents
  * @returns ThebeServer
  */
-export function connect(options: CoreOptions, events?: ThebeEvents): ThebeServer {
-  // turn any options into a configuraiton object, applies
-  // defaults for any ommited options
-  const config = makeConfiguration(options, events);
-
+export function connect(config: Config): ThebeServer {
   // create a new server object
   const server: ThebeServer = new ThebeServer(config);
 
   // connect to a resource
-  if (options.useBinder) {
-    console.debug(`thebe:api:connect useBinder`, options);
+  if (config.base.useBinder) {
+    console.debug(`thebe:api:connect useBinder`, config.base, config.binder);
     server.connectToServerViaBinder();
-  } else if (options.useJupyterLite) {
-    console.debug(`thebe:api:connect JupyterLite`, options);
+  } else if (config.base.useJupyterLite) {
+    console.debug(`thebe:api:connect JupyterLite`, config.base);
     server.connectToJupyterLiteServer();
   } else {
     server.connectToJupyterServer();
@@ -47,6 +44,7 @@ export function setupThebeCore() {
   window.thebeCore = Object.assign(window.thebeCore ?? {}, {
     module: coreModule,
     api: {
+      makeConfiguration,
       connect,
       setupNotebook,
       makeEvents,
