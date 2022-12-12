@@ -10,7 +10,7 @@ To use JupyterLite with `thebe`, load this module on your page using a script ta
 
 ```html
 <script src="thebe-lite.min.js"></script>
-<script src="https://unpkg.com/thebe-core@latest/dist/lib/index.js"></script>
+<script src="https://unpkg.com/thebe@latest/dist/lib/index.js"></script>
 ```
 
 `thebe` will then feature detect the library and use the module when appropriate option is set.
