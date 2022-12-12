@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
-const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const HookShellScriptPlugin = require('hook-shell-script-webpack-plugin');
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
     new HookShellScriptPlugin({
       afterEmit: [
         'npm run build:post:shuffle',
-        // 'npm run build:post:service',
+        'npm run build:post:service',
         'node bin/stubContentsApi.js',
       ],
     }),

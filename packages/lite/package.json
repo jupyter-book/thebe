@@ -1,7 +1,7 @@
 {
   "name": "thebe-lite",
-  "version": "0.0.1",
-  "description": "Thebe comnponents for JupyterLite support",
+  "version": "0.1.0",
+  "description": "Thebe extension library for WASM kernels via JupyterLite",
   "main": "dist/lib/thebe-lite.min.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -18,11 +18,22 @@
     "url": "git+https://github.com/executablebooks/thebe.git"
   },
   "keywords": [
-    "jupyter",
+    "executablebooks",
     "thebe",
-    "executablebooks"
+    "jupyter",
+    "interactivity",
+    "jupyter-book",
+    "jupyterlite",
+    "pyodide",
+    "WASM"
   ],
-  "author": "Steve Purves <stevejpurves@gmail.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Executable Book Project",
+    "email": "executablebooks@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/executablebooks/thebe/issues"
