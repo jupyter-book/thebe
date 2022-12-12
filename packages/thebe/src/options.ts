@@ -8,6 +8,9 @@ import JSON5 from 'json5';
 
 export interface ThebeOptions {
   bootstrap?: boolean;
+  useBinder?: boolean;
+  useJupyterLite?: boolean;
+  requestKernel?: boolean;
   // UI related options
   selector?: string;
   outputSelector?: string;
@@ -39,6 +42,9 @@ export const defaultOutputSelector = '[data-output]';
 // options
 export const defaultOptions: ThebeOptions = {
   bootstrap: false,
+  useBinder: true,
+  useJupyterLite: false,
+  requestKernel: true,
   preRenderHook: null,
   predefinedOutput: true,
   mountStatusWidget: true,

@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:70](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L70)
+[packages/core/src/events.ts:70](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L70)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:69](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L69)
+[packages/core/src/events.ts:69](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L69)

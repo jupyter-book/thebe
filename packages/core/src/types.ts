@@ -30,9 +30,6 @@ export interface SavedSessionInfo {
 export interface CoreOptions {
   mathjaxUrl?: string;
   mathjaxConfig?: string;
-  useBinder?: boolean;
-  useJupyterLite?: boolean;
-  requestKernel?: boolean;
   binderOptions?: BinderOptions;
   savedSessionOptions?: SavedSessionOptions;
   kernelOptions?: KernelOptions;

@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:96](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L96)
+[packages/core/src/events.ts:96](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L96)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:94](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L94)
+[packages/core/src/events.ts:94](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L94)
 
 ## Methods
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:100](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L100)
+[packages/core/src/events.ts:100](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L100)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:124](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L124)
+[packages/core/src/events.ts:124](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L124)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:112](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L112)
+[packages/core/src/events.ts:112](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L112)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:118](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L118)
+[packages/core/src/events.ts:118](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L118)
 
 ___
 
@@ -154,4 +154,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:104](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L104)
+[packages/core/src/events.ts:104](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L104)

@@ -93,7 +93,7 @@ JupyterLabManager.constructor
 
 #### Defined in
 
-[packages/core/src/manager.ts:38](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L38)
+[packages/core/src/manager.ts:38](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L38)
 
 ## Properties
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:36](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L36)
+[packages/core/src/manager.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L36)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:35](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L35)
+[packages/core/src/manager.ts:35](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L35)
 
 ## Accessors
 
@@ -570,7 +570,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:155](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L155)
+[packages/core/src/manager.ts:156](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L156)
 
 ___
 
@@ -590,7 +590,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:50](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L50)
+[packages/core/src/manager.ts:50](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L50)
 
 ___
 
@@ -604,7 +604,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:65](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L65)
+[packages/core/src/manager.ts:65](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L65)
 
 ___
 
@@ -761,7 +761,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:100](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L100)
+[packages/core/src/manager.ts:101](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L101)
 
 ___
 
@@ -1008,7 +1008,7 @@ JupyterLabManager.loadClass
 
 #### Defined in
 
-[packages/core/src/manager.ts:113](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L113)
+[packages/core/src/manager.ts:114](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L114)
 
 ___
 
@@ -1197,7 +1197,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:61](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L61)
+[packages/core/src/manager.ts:61](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L61)
 
 ___
 

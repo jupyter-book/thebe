@@ -1,7 +1,7 @@
 version: 1
 project:
-  title: Thebe[core]
-  subject: Thebe[core]
+  title: thebe-core
+  subject: thebe-core
   github: https://github.com/executablebooks/thebe
   license:
     content: CC0-1.0
@@ -17,5 +17,5 @@ site:
       url: https://executablebooks.org/
   domains:
     - thebe-core.curve.space
-  logo: public/logo_light.svg
-  logo_text: Thebe[core]
+  logo: public/core_logo.svg
+  logo_text: thebe-core

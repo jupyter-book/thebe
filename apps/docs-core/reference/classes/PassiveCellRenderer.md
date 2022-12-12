@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[packages/core/src/passive.ts:15](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L15)
+[packages/core/src/passive.ts:15](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L15)
 
 ## Properties
 
@@ -64,7 +64,7 @@
 
 #### Defined in
 
-[packages/core/src/passive.ts:13](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L13)
+[packages/core/src/passive.ts:13](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:10](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L10)
+[packages/core/src/passive.ts:10](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L10)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:12](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L12)
+[packages/core/src/passive.ts:12](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L12)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:11](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L11)
+[packages/core/src/passive.ts:11](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L11)
 
 ## Accessors
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:32](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L32)
+[packages/core/src/passive.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L32)
 
 ___
 
@@ -140,7 +140,7 @@ Serialize the model state to JSON
 
 #### Defined in
 
-[packages/core/src/passive.ts:28](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L28)
+[packages/core/src/passive.ts:28](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L28)
 
 ## Methods
 
@@ -164,7 +164,7 @@ Serialize the model state to JSON
 
 #### Defined in
 
-[packages/core/src/passive.ts:36](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L36)
+[packages/core/src/passive.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L36)
 
 ___
 
@@ -184,7 +184,7 @@ Clears the output area model
 
 #### Defined in
 
-[packages/core/src/passive.ts:83](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L83)
+[packages/core/src/passive.ts:83](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L83)
 
 ___
 
@@ -210,7 +210,7 @@ Will trigger the output to render an error with text taken from the optional arg
 
 #### Defined in
 
-[packages/core/src/passive.ts:94](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L94)
+[packages/core/src/passive.ts:94](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L94)
 
 ___
 
@@ -236,7 +236,7 @@ Render output data directly from json
 
 #### Defined in
 
-[packages/core/src/passive.ts:110](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L110)
+[packages/core/src/passive.ts:110](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L110)
 
 ___
 
@@ -260,4 +260,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:68](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/passive.ts#L68)
+[packages/core/src/passive.ts:68](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L68)

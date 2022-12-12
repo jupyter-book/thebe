@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[packages/core/src/notebook.ts:33](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L33)
+[packages/core/src/notebook.ts:33](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L33)
 
 ## Properties
 
@@ -68,7 +68,7 @@
 
 #### Defined in
 
-[packages/core/src/notebook.ts:28](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L28)
+[packages/core/src/notebook.ts:28](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L28)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:31](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L31)
+[packages/core/src/notebook.ts:31](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L31)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:26](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L26)
+[packages/core/src/notebook.ts:26](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L26)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:29](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L29)
+[packages/core/src/notebook.ts:29](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L29)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:27](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L27)
+[packages/core/src/notebook.ts:27](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L27)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:30](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L30)
+[packages/core/src/notebook.ts:30](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L30)
 
 ## Accessors
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:78](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L78)
+[packages/core/src/notebook.ts:79](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L79)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:67](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L67)
+[packages/core/src/notebook.ts:68](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L68)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:74](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L74)
+[packages/core/src/notebook.ts:75](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L75)
 
 ## Methods
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:121](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L121)
+[packages/core/src/notebook.ts:122](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L122)
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:144](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L144)
+[packages/core/src/notebook.ts:145](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L145)
 
 ___
 
@@ -208,7 +208,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:134](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L134)
+[packages/core/src/notebook.ts:135](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L135)
 
 ___
 
@@ -229,7 +229,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:237](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L237)
+[packages/core/src/notebook.ts:238](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L238)
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:194](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L194)
+[packages/core/src/notebook.ts:195](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L195)
 
 ___
 
@@ -272,7 +272,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:176](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L176)
+[packages/core/src/notebook.ts:177](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L177)
 
 ___
 
@@ -294,7 +294,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:148](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L148)
+[packages/core/src/notebook.ts:149](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L149)
 
 ___
 
@@ -314,7 +314,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:87](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L87)
+[packages/core/src/notebook.ts:88](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L88)
 
 ___
 
@@ -334,7 +334,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:92](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L92)
+[packages/core/src/notebook.ts:93](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L93)
 
 ___
 
@@ -354,7 +354,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:99](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L99)
+[packages/core/src/notebook.ts:100](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L100)
 
 ___
 
@@ -368,7 +368,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:104](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L104)
+[packages/core/src/notebook.ts:105](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L105)
 
 ___
 
@@ -382,7 +382,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:83](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L83)
+[packages/core/src/notebook.ts:84](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L84)
 
 ___
 
@@ -403,7 +403,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:109](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L109)
+[packages/core/src/notebook.ts:110](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L110)
 
 ___
 
@@ -423,7 +423,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:114](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L114)
+[packages/core/src/notebook.ts:115](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L115)
 
 ___
 
@@ -444,7 +444,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:41](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L41)
+[packages/core/src/notebook.ts:41](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L41)
 
 ___
 
@@ -466,4 +466,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:53](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L53)
+[packages/core/src/notebook.ts:54](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L54)

@@ -31,9 +31,6 @@ export class Config {
       mathjaxUrl:
         opts.mathjaxUrl ?? 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js',
       mathjaxConfig: opts.mathjaxConfig ?? 'TeX-AMS_CHTML-full,Safe',
-      useBinder: opts.useBinder ?? false,
-      useJupyterLite: opts.useJupyterLite ?? false,
-      requestKernel: opts.requestKernel ?? true,
     };
 
     this._binderOptions = makeBinderOptions(opts.binderOptions ?? {});

@@ -92,7 +92,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:73](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L73)
+[packages/core/src/events.ts:73](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L73)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:8](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L8)
+[packages/core/src/types.ts:8](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L8)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:11](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L11)
+[packages/core/src/types.ts:11](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L11)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:10](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L10)
+[packages/core/src/types.ts:10](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L10)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:49](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L49)
+[packages/core/src/types.ts:49](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L49)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:9](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/types.ts#L9)
+[packages/core/src/types.ts:9](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L9)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:75](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L75)
+[packages/core/src/events.ts:75](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L75)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:31](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/entrypoint.ts#L31)
+[packages/core/src/thebe/entrypoint.ts:33](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L33)
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:91](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L91)
+[packages/core/src/events.ts:91](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L91)
 
 ## Variables
 
@@ -197,20 +197,19 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:21](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/manager.ts#L21)
+[packages/core/src/manager.ts:21](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L21)
 
 ## JS Bundle API Functions
 
 ### connect
 
-▸ **connect**(`options`, `events?`): [`ThebeServer`](classes/ThebeServer.md)
+▸ **connect**(`config`): [`ThebeServer`](classes/ThebeServer.md)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `options` | [`CoreOptions`](interfaces/CoreOptions.md) | any options supplied will override the default configuration, this can be minimal |
-| `events?` | [`ThebeEvents`](classes/ThebeEvents.md) | ThebeEvents |
+| Name | Type |
+| :------ | :------ |
+| `config` | [`Config`](classes/Config.md) |
 
 #### Returns
 
@@ -220,7 +219,7 @@ ThebeServer
 
 #### Defined in
 
-[packages/core/src/thebe/api.ts:15](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/api.ts#L15)
+[packages/core/src/thebe/api.ts:16](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/api.ts#L16)
 
 ___
 
@@ -243,7 +242,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:65](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L65)
+[packages/core/src/options.ts:65](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L65)
 
 ___
 
@@ -263,7 +262,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/utils.ts:14](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/utils.ts#L14)
+[packages/core/src/utils.ts:14](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/utils.ts#L14)
 
 ___
 
@@ -283,7 +282,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:58](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/events.ts#L58)
+[packages/core/src/events.ts:58](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L58)
 
 ___
 
@@ -303,7 +302,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/rendermime.ts:58](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/rendermime.ts#L58)
+[packages/core/src/rendermime.ts:58](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/rendermime.ts#L58)
 
 ___
 
@@ -328,7 +327,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/rendermime.ts:29](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/rendermime.ts#L29)
+[packages/core/src/rendermime.ts:29](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/rendermime.ts#L29)
 
 ___
 
@@ -355,7 +354,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:13](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L13)
+[packages/core/src/options.ts:13](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L13)
 
 ___
 
@@ -376,7 +375,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:58](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L58)
+[packages/core/src/options.ts:58](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L58)
 
 ___
 
@@ -402,7 +401,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:32](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L32)
+[packages/core/src/options.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L32)
 
 ___
 
@@ -427,7 +426,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:50](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L50)
+[packages/core/src/options.ts:50](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L50)
 
 ___
 
@@ -453,7 +452,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:23](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L23)
+[packages/core/src/options.ts:23](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L23)
 
 ___
 
@@ -480,7 +479,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/options.ts:41](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/options.ts#L41)
+[packages/core/src/options.ts:41](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/options.ts#L41)
 
 ___
 
@@ -502,7 +501,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/api.ts:37](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/api.ts#L37)
+[packages/core/src/thebe/api.ts:34](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/api.ts#L34)
 
 ___
 
@@ -516,7 +515,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/api.ts:46](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/thebe/api.ts#L46)
+[packages/core/src/thebe/api.ts:43](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/api.ts#L43)
 
 ___
 
@@ -534,4 +533,4 @@ string
 
 #### Defined in
 
-[packages/core/src/utils.ts:10](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/utils.ts#L10)
+[packages/core/src/utils.ts:10](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/utils.ts#L10)

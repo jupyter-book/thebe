@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[packages/core/src/notebook.ts:20](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L20)
+[packages/core/src/notebook.ts:20](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L20)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/notebook.ts:21](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/notebook.ts#L21)
+[packages/core/src/notebook.ts:21](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/notebook.ts#L21)

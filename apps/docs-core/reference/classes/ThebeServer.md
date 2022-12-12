@@ -68,7 +68,7 @@
 
 #### Defined in
 
-[packages/core/src/server.ts:42](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L42)
+[packages/core/src/server.ts:42](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L42)
 
 ## Properties
 
@@ -78,7 +78,7 @@
 
 #### Defined in
 
-[packages/core/src/server.ts:39](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L39)
+[packages/core/src/server.ts:39](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L39)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:34](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L34)
+[packages/core/src/server.ts:34](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L34)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:40](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L40)
+[packages/core/src/server.ts:40](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L40)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:33](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L33)
+[packages/core/src/server.ts:33](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L33)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:35](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L35)
+[packages/core/src/server.ts:35](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L35)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:38](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L38)
+[packages/core/src/server.ts:38](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L38)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:37](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L37)
+[packages/core/src/server.ts:37](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L37)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:36](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L36)
+[packages/core/src/server.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L36)
 
 ## Accessors
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:56](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L56)
+[packages/core/src/server.ts:56](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L56)
 
 ___
 
@@ -198,7 +198,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:52](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L52)
+[packages/core/src/server.ts:52](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L52)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:60](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L60)
+[packages/core/src/server.ts:60](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L60)
 
 ## Methods
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:232](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L232)
+[packages/core/src/server.ts:232](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L232)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:249](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L249)
+[packages/core/src/server.ts:249](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L249)
 
 ___
 
@@ -258,7 +258,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:129](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L129)
+[packages/core/src/server.ts:129](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L129)
 
 ___
 
@@ -278,7 +278,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:118](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L118)
+[packages/core/src/server.ts:118](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L118)
 
 ___
 
@@ -294,7 +294,7 @@ Connect to Jupyterlite Server
 
 #### Defined in
 
-[packages/core/src/server.ts:193](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L193)
+[packages/core/src/server.ts:193](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L193)
 
 ___
 
@@ -310,7 +310,7 @@ Connect to a Jupyter server directly
 
 #### Defined in
 
-[packages/core/src/server.ts:139](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L139)
+[packages/core/src/server.ts:139](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L139)
 
 ___
 
@@ -327,7 +327,7 @@ access a Jupyter server that can provide kernels
 
 #### Defined in
 
-[packages/core/src/server.ts:262](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L262)
+[packages/core/src/server.ts:262](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L262)
 
 ___
 
@@ -352,7 +352,7 @@ ServerRestAPI.createDirectory
 
 #### Defined in
 
-[packages/core/src/server.ts:466](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L466)
+[packages/core/src/server.ts:466](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L466)
 
 ___
 
@@ -366,7 +366,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:72](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L72)
+[packages/core/src/server.ts:72](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L72)
 
 ___
 
@@ -394,7 +394,7 @@ ServerRestAPI.duplicateFile
 
 #### Defined in
 
-[packages/core/src/server.ts:449](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L449)
+[packages/core/src/server.ts:449](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L449)
 
 ___
 
@@ -422,7 +422,7 @@ ServerRestAPI.getContents
 
 #### Defined in
 
-[packages/core/src/server.ts:436](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L436)
+[packages/core/src/server.ts:436](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L436)
 
 ___
 
@@ -442,7 +442,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:408](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L408)
+[packages/core/src/server.ts:408](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L408)
 
 ___
 
@@ -460,7 +460,7 @@ ServerRestAPI.getKernelSpecs
 
 #### Defined in
 
-[packages/core/src/server.ts:428](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L428)
+[packages/core/src/server.ts:428](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L428)
 
 ___
 
@@ -474,7 +474,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:101](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L101)
+[packages/core/src/server.ts:101](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L101)
 
 ___
 
@@ -488,7 +488,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:112](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L112)
+[packages/core/src/server.ts:112](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L112)
 
 ___
 
@@ -514,7 +514,7 @@ ServerRestAPI.renameContents
 
 #### Defined in
 
-[packages/core/src/server.ts:477](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L477)
+[packages/core/src/server.ts:477](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L477)
 
 ___
 
@@ -532,7 +532,7 @@ ServerRuntime.shutdownAllSessions
 
 #### Defined in
 
-[packages/core/src/server.ts:68](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L68)
+[packages/core/src/server.ts:68](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L68)
 
 ___
 
@@ -556,7 +556,7 @@ ServerRuntime.shutdownSession
 
 #### Defined in
 
-[packages/core/src/server.ts:64](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L64)
+[packages/core/src/server.ts:64](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L64)
 
 ___
 
@@ -576,7 +576,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:81](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L81)
+[packages/core/src/server.ts:81](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L81)
 
 ___
 
@@ -604,7 +604,7 @@ ServerRestAPI.uploadFile
 
 #### Defined in
 
-[packages/core/src/server.ts:489](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L489)
+[packages/core/src/server.ts:489](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L489)
 
 ___
 
@@ -624,4 +624,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/server.ts:420](https://github.com/executablebooks/thebe/blob/807ffe4/packages/core/src/server.ts#L420)
+[packages/core/src/server.ts:420](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/server.ts#L420)
