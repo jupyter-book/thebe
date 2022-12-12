@@ -30,9 +30,6 @@ export interface SavedSessionInfo {
 export interface CoreOptions {
   mathjaxUrl?: string;
   mathjaxConfig?: string;
-  useBinder?: boolean; // TODO move to thebe?
-  useJupyterLite?: boolean; //  TODO move to thebe?
-  requestKernel?: boolean; // TODO move to thebe? not used in core, or jsapi
   binderOptions?: BinderOptions;
   savedSessionOptions?: SavedSessionOptions;
   kernelOptions?: KernelOptions;

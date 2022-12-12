@@ -12,6 +12,7 @@ import type { Config } from '../config';
 import type { ThebeEvents } from '../events';
 import type { ThebeLiteGlobal } from 'thebe-lite';
 import type * as coreModule from '../index';
+import type { INotebookContent } from '@jupyterlab/nbformat';
 import { setupThebeCore } from './api';
 
 /**
@@ -20,14 +21,14 @@ import { setupThebeCore } from './api';
  */
 
 export interface JsApi {
-  makeConfiguration: (options: Partial<CoreOptions>, events?: ThebeEvents) => Config;
-  connect: (config: Config) => ThebeServer;
-  setupNotebook: (
-    blocks: CodeBlock[],
-    options: Partial<CoreOptions>,
-    events: ThebeEvents,
-  ) => ThebeNotebook;
   makeEvents: () => ThebeEvents;
+  makeConfiguration: (options: Partial<CoreOptions>, events?: ThebeEvents) => Config;
+  makeServer: (config: Config) => ThebeServer;
+  connectToBinder: (config: Config) => ThebeServer;
+  connectToJupyter: (config: Config) => ThebeServer;
+  connectToJupyterLite: (config: Config) => ThebeServer;
+  setupNotebookFromBlocks: (blocks: CodeBlock[], config: Config) => ThebeNotebook;
+  setupNotebookFromIpynb: (ipynb: INotebookContent, config: Config) => ThebeNotebook;
 }
 
 export type ThebeCore = typeof coreModule;

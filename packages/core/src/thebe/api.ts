@@ -1,43 +1,46 @@
 import ThebeServer from '../server';
 import type { CodeBlock } from '../notebook';
 import ThebeNotebook from '../notebook';
-import type { CoreOptions } from '../types';
+import type { INotebookContent } from '@jupyterlab/nbformat';
 import type { Config } from '..';
 import { makeConfiguration, ThebeEvents } from '..';
 import * as coreModule from '../index';
 
-/**
- *
- * @category JS Bundle API
- * @param options any options supplied will override the default configuration, this can be minimal
- * @param events ThebeEvents
- * @returns ThebeServer
- */
-export function connect(config: Config): ThebeServer {
-  // create a new server object
+export function connectToBinder(config: Config): ThebeServer {
   const server: ThebeServer = new ThebeServer(config);
-
-  // connect to a resource
-  if (config.base.useBinder) {
-    console.debug(`thebe:api:connect useBinder`, config.base, config.binder);
-    server.connectToServerViaBinder();
-  } else if (config.base.useJupyterLite) {
-    console.debug(`thebe:api:connect JupyterLite`, config.base);
-    server.connectToJupyterLiteServer();
-  } else {
-    server.connectToJupyterServer();
-  }
-
+  console.debug(`thebe:api:connect binder 📡`, config.binder);
+  server.connectToServerViaBinder();
   return server;
 }
 
-export function setupNotebook(blocks: CodeBlock[], options: CoreOptions, events: ThebeEvents) {
-  const config = makeConfiguration(options, events);
+export function connectToJupyter(config: Config): ThebeServer {
+  const server: ThebeServer = new ThebeServer(config);
+  console.debug(`thebe:api:connect direct 🔌`, config.serverSettings);
+  server.connectToJupyterServer();
+  return server;
+}
+
+export function connectToJupyterLite(config: Config): ThebeServer {
+  const server: ThebeServer = new ThebeServer(config);
+  console.debug(`thebe:api:connect JupyterLite 🤘`);
+  server.connectToJupyterLiteServer();
+  return server;
+}
+
+export function makeEvents() {
+  return new ThebeEvents();
+}
+
+export function makeServer(config: Config) {
+  return new ThebeServer(config);
+}
+
+export function setupNotebookFromBlocks(blocks: CodeBlock[], config: Config) {
   return ThebeNotebook.fromCodeBlocks(blocks, config);
 }
 
-function makeEvents() {
-  return new ThebeEvents();
+export function setupNotebookFromIpynb(ipynb: INotebookContent, config: Config) {
+  return ThebeNotebook.fromIpynb(ipynb, config);
 }
 
 export function setupThebeCore() {
@@ -45,9 +48,13 @@ export function setupThebeCore() {
     module: coreModule,
     api: {
       makeConfiguration,
-      connect,
-      setupNotebook,
       makeEvents,
+      makeServer,
+      connectToBinder,
+      connectToJupyter,
+      connectToJupyterLite,
+      setupNotebookFromBlocks,
+      setupNotebookFromIpynb,
     },
   });
 }

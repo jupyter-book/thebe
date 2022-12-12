@@ -12,7 +12,7 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
-import { connect, makeConfiguration, setupNotebook } from 'thebe-core';
+import { makeConfiguration, setupNotebookFromBlocks, ThebeServer } from 'thebe-core';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);
@@ -69,15 +69,29 @@ export async function bootstrap(opts: Partial<Options> = {}) {
     return { id, source: el.textContent?.trim() ?? '' };
   });
 
-  const notebook = setupNotebook(codeWithIds, options, window.thebe.events);
+  const config = makeConfiguration(options, window.thebe.events);
+
+  const notebook = setupNotebookFromBlocks(codeWithIds, config);
   window.thebe.notebook = notebook;
 
   renderAllCells(options, notebook, items);
 
-  const config = makeConfiguration(options, window.thebe.events);
   // starting to talk to binder / server is deferred until here so that any page
   // errors cause failure first
-  const server = connect(config);
+
+  const server = new ThebeServer(config);
+
+  // connect to a resource
+  if (options.useBinder) {
+    console.debug(`thebe:api:connect useBinder`, config.base, config.binder);
+    server.connectToServerViaBinder();
+  } else if (options.useJupyterLite) {
+    console.debug(`thebe:api:connect JupyterLite`, config.base);
+    server.connectToJupyterLiteServer();
+  } else {
+    server.connectToJupyterServer();
+  }
+
   window.thebe.server = server;
 
   if (!opts.requestKernel) {
