@@ -32,9 +32,11 @@
     "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "keywords": [
+    "executablebooks",
+    "thebe",
     "jupyter",
-    "interactivity",
-    "jupyter-book"
+    "jupyter-book",
+    "interactivity"
   ],
   "publishConfig": {
     "access": "public"
@@ -46,7 +48,10 @@
   "bugs": {
     "url": "https://github.com/executablebooks/thebe-core/issues"
   },
-  "author": "Steve Purves",
+  "author": {
+    "name": "Executable Book Project",
+    "email": "executablebooks@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.2.1",
