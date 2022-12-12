@@ -4,7 +4,7 @@ venue: Guides
 
 # Options & Configuration
 
-A [CoreOptions](reference/interfaces/CoreOptions.md)) object is used to create a [`Config`](reference/classes/Config.md) object, where any options supplied will be automatically patched with [default values](4_defaultOptions.md).
+A [CoreOptions](reference/interfaces/CoreOptions.md) object is used to create a [`Config`](reference/classes/Config.md) object, where any options supplied will be automatically patched with [default values](4_defaultOptions.md).
 
 This makes it easy to start using `thebe-core` with minimal knowledge of the various options available, while also overriding specific defaults as needed.
 

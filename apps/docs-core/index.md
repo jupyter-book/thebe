@@ -39,7 +39,7 @@ However, it was `jquery` centric and focussed on making a web page containing st
 
 The purpose of `thebe-core` is to isolate and expand the core functionality in `thebe` so that it could be used in different ways in a wider range of web contexts, from simple html pages through to web applications using frameworks like `React` or `Next.js`, whilst still being used internally in `thebe` providing a **like-for-like** behaviour there.
 
-Refactoring the `thebe` like this, allows interesting enhancements to be made including connecting to a `juptyerlite` kernel and providing a simplified runtime interfave for interacting with Jupyter servers and sessions.
+Refactoring the `thebe` like this, allows interesting enhancements to be made including connecting to a `juptyerlite` kernel and providing a simplified runtime interface for interacting with Jupyter servers and sessions.
 
 ## Packages
 
@@ -49,4 +49,4 @@ The repository is contins a `monorepo` for building the following packages:
 - `thebe` typescript version of the original `thebe` library, making webpages with code interactive
 - `thebe-lite` a drop in component that provides the Jupyterlite server and pyolite kernel
 
-See [architecture]() for more details on building these packages locally.
+See [architecture](6-architecture.md) for more details on building these packages locally.

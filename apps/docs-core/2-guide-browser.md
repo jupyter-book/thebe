@@ -24,7 +24,7 @@ Read more in [Options & Configuration](3a-configuration.md), then come back here
 
 ## Listening to events
 
-`thebe-core` objects use promised during async interactions with the Jupyter backend which allows you to build a UI that responds to async changes. However, an event syatem is also available allowing you to receive finer grained status messages as well as react to events that originate from the server.
+`thebe-core` objects use promises during async interactions with the Jupyter backend which allows you to build a UI that responds to async changes. However, an event system is also available allowing you to receive finer grained status messages as well as react to events that originate from the server.
 
 To listen to all events withing the scope of a particular Config object register your event handlers below.
 
