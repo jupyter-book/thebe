@@ -222,11 +222,11 @@ class ThebeNotebook {
         if (cellReturn == null || cellReturn.error) skipRemaining = true;
         result.push(cellReturn);
       }
+    } else {
+      result = await Promise.all(
+        cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
+      );
     }
-
-    result = await Promise.all(
-      cells.map((cell) => cell.execute(preprocessor ? preprocessor(cell.source) : cell.source)),
-    );
 
     this.events.triggerStatus({
       status: NotebookStatusEvent.idle,
