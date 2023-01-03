@@ -89,12 +89,13 @@ async function demoBasic(code, options) {
   }));
   statusCallback;
 
+  const demoEvents = thebeCore.api.makeEvents();
+  const config = thebeCore.api.makeConfiguration(options, demoEvents);
+
   // TODO move notebook creation out to where code is selected
-  const notebook = thebeCore.api.setupNotebook(codeWithIds, options);
+  const notebook = thebeCore.api.setupNotebookFromBlocks(codeWithIds, config);
   const last = notebook.lastCell();
   last.attachToDOM(document.querySelector('[data-output]'));
-
-  const demoEvents = thebeCore.api.makeEvents();
 
   const loggingCallback = (eventType, { subject, status, id, message }) => {
     console.log(`${eventType}: [${subject}][${status}][${id}]: ${message}`);
@@ -103,7 +104,15 @@ async function demoBasic(code, options) {
   demoEvents.on('status', loggingCallback);
   demoEvents.on('error', loggingCallback);
 
-  const server = await thebeCore.api.connect(options, demoEvents);
+  const server = thebeCore.api.makeServer(config);
+
+  if (options.useBinder) {
+    server.connectToServerViaBinder();
+  } else if (options.useJupyterLite) {
+    server.connectToJupyterLiteServer();
+  } else {
+    server.connectToJupyterServer();
+  }
 
   await server.ready;
 

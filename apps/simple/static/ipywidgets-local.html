@@ -35,10 +35,6 @@
       plot using <code>ipympl</code>
     </p>
     <p>
-      Using <code>ipywidgets</code> requires that an additional dependency <code>requirejs</code> is
-      loaded on page <em>before</em> <code>thebe</code> is loaded.
-    </p>
-    <p>
       In addition, <code>ipympl</code> in turn requires <code>font-awesome</code> fonts to be loaded
       on the page. Other <code>ipywidgets</code> based libraries and custom widgets may also require
       additional fonts, css or libraries to be side loaded.
@@ -64,8 +60,12 @@ def update(w = 1, amp = 1):
   plt.plot(x, sine_func(x, w, amp))
     </pre>
 
-    <pre data-executable="true" data-language="python" width="300">
-      from ipywidgets import Output, FloatSlider, Layout
+    <pre data-executable="true" data-language="python">
+%matplotlib widget
+import ipywidgets as widgets
+import matplotlib.pyplot as plt
+import numpy as np      
+from ipywidgets import Output, FloatSlider, Layout
 from IPython.display import clear_output
 w_output = Output(layout=Layout(border="1px solid blue"))
 
@@ -82,22 +82,24 @@ props = dict(
 )
 
 
-plt.ioff()
+#plt.ioff()
 fig_two, ax_two = plt.subplots(1,1)
-plt.ion()
+#plt.ion()
 
 
 with w_output:
     display(fig_two.canvas)
     
 def on_pick(evt):
-    with w_debug:
-        print(evt)
-        props["linewidth"] = props["linewidth"] + 1
-        redraw_plot({})
+    print(evt)
+    props["linewidth"] = props["linewidth"] + 1
+    redraw_plot({})
     
 cid = fig_two.canvas.mpl_connect('pick_event', on_pick)
     
+def sine_func(x, w, amp):
+  return amp*np.sin(w*x)
+
 def redraw_plot(evt):
     with w_output:
         ax_two.cla()
