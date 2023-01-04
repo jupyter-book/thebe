@@ -9,11 +9,10 @@
         mountActivateWidget: true,
         mountStatusWidget: true,
         useJupyterLite: false,
-        useBinder: true,
-        binderOptions: {
-            repo: "stevejpurves/ipympl-binder-base",
-            ref: "main",
-            binderUrl: 'https://mybinder.org',
+        useBinder: false,
+        serverSettings: {
+          baseUrl: 'http://localhost:8888',
+          token: 'test-secret'
         }
       }
     </script>
@@ -54,7 +53,7 @@ import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = np.linspace(0,10)
+x = np.linspace(0,10, 100)
 
 def sine_func(x, w, amp):
   return amp*np.sin(w*x)
@@ -65,6 +64,7 @@ def update(w = 1, amp = 1):
   plt.ylim(-4, 4)
   plt.plot(x, sine_func(x, w, amp))
     </pre>
+
     <pre data-executable="true" data-language="python">
 %matplotlib widget
 import ipywidgets as widgets

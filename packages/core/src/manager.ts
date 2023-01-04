@@ -1,22 +1,12 @@
-import { requireLoader } from './loader';
-import type { DocumentRegistry } from '@jupyterlab/docregistry';
-import type { INotebookModel } from '@jupyterlab/notebook';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
+import type { Widget } from '@lumino/widgets';
 
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
-
-import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
 
-import {
-  WidgetManager as JupyterLabManager,
-  WidgetRenderer,
-  output,
-} from '@jupyter-widgets/jupyterlab-manager';
-
-import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
-import type { ISessionConnection } from '@jupyterlab/services/lib/session/session';
-import type { Widget } from '@lumino/widgets';
+import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
 
 export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
 
@@ -24,23 +14,27 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
+import { OutputModel } from './output';
+import { requireLoader } from './loader';
 
-if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
-  window.define('@jupyter-widgets/base', base);
-  window.define('@jupyter-widgets/controls', controls);
-  window.define('@jupyter-widgets/output', output);
-}
-
-export class ThebeManager extends JupyterLabManager {
+/**
+ * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
+ * the JupyterLab  Manager and inspierd by the implementation in Voila here:
+ * https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
+ *
+ */
+export class ThebeManager extends KernelWidgetManager {
   id: string;
   _loader: RequireJsLoader;
 
-  constructor(kernel: IKernelConnection) {
-    const context = createContext(kernel);
-    const renderMime = new RenderMimeRegistry({
-      initialFactories: standardRendererFactories,
-    });
-    super(context, renderMime, { saveState: false });
+  constructor(kernel: IKernelConnection, rendermime?: IRenderMimeRegistry) {
+    super(
+      kernel,
+      rendermime ??
+        new RenderMimeRegistry({
+          initialFactories: standardRendererFactories,
+        }),
+    );
 
     this.id = shortId();
     this._registerWidgets();
@@ -52,7 +46,7 @@ export class ThebeManager extends JupyterLabManager {
       {
         safe: false,
         mimeTypes: [WIDGET_MIMETYPE],
-        createRenderer: (options) => new WidgetRenderer(options, this),
+        createRenderer: (options) => new WidgetRenderer(options, this as any),
       },
       1,
     );
@@ -62,40 +56,13 @@ export class ThebeManager extends JupyterLabManager {
     rendermime.removeMimeType(WIDGET_MIMETYPE);
   }
 
+  /**
+   * TODO implement a reasonable method for thebe-core that can load serialized widget state
+   * see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
+   *
+   */
   async build_widgets(): Promise<void> {
-    await this._loadFromKernel();
-    const tags = document.body.querySelectorAll(
-      'script[type="application/vnd.jupyter.widget-view+json"]',
-    );
-
-    tags.forEach(async (viewtag) => {
-      if (!viewtag?.parentElement) {
-        return;
-      }
-      try {
-        const widgetViewObject = JSON.parse(viewtag.innerHTML);
-        const { model_id } = widgetViewObject;
-        const model = await this.get_model(model_id);
-        const widgetel = document.createElement('div');
-        viewtag.parentElement.insertBefore(widgetel, viewtag);
-        const view = await this.create_view(model);
-        // TODO: fix typing
-        await this.display_view(undefined as any, view, {
-          el: widgetel,
-        });
-      } catch (error) {
-        // Each widget view tag rendering is wrapped with a try-catch statement.
-        //
-        // This fixes issues with widget models that are explicitly "closed"
-        // but are still referred to in a previous cell output.
-        // Without the try-catch statement, this error interrupts the loop and
-        // prevents the rendering of further cells.
-        //
-        // This workaround may not be necessary anymore with templates that make use
-        // of progressive rendering.
-        console.error(error);
-      }
-    });
+    throw new Error('ThebeManager:build_widgets not implmented');
   }
 
   async display_view(msg: any, view: any, options: any): Promise<Widget> {
@@ -167,40 +134,10 @@ export class ThebeManager extends JupyterLabManager {
     this.register({
       name: '@jupyter-widgets/output',
       version: output.OUTPUT_WIDGET_VERSION,
-      exports: output as unknown as base.ExportData, // TODO improve typing
+      exports: {
+        ...(output as any),
+        OutputModel,
+      },
     });
   }
-}
-
-// TODO this could be a real context or at least some of these stubbed methods could be
-// made real with appropeaite implementations for thebe
-function createContext(kernel: IKernelConnection): DocumentRegistry.IContext<INotebookModel> {
-  return {
-    sessionContext: {
-      session: {
-        kernel,
-        kernelChanged: {
-          connect: () => {},
-          disconnect: () => {},
-        } as any, // TODO improve typing
-      } as ISessionConnection,
-      kernelChanged: {
-        connect: () => {},
-      } as any,
-      statusChanged: {
-        connect: () => {},
-      } as any,
-      connectionStatusChanged: {
-        connect: () => {},
-      } as any,
-    },
-    saveState: {
-      connect: () => {},
-    } as any,
-    model: {
-      metadata: {
-        get: () => {},
-      },
-    } as any,
-  } as DocumentRegistry.IContext<INotebookModel>;
 }
