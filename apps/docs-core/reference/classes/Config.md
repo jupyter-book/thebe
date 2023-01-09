@@ -42,7 +42,7 @@
 
 #### Defined in
 
-[packages/core/src/config.ts:27](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L27)
+[packages/core/src/config.ts:27](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L27)
 
 ## Properties
 
@@ -52,7 +52,7 @@
 
 #### Defined in
 
-[packages/core/src/config.ts:21](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L21)
+[packages/core/src/config.ts:21](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L21)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:25](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L25)
+[packages/core/src/config.ts:25](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L25)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:23](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L23)
+[packages/core/src/config.ts:23](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L23)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:18](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L18)
+[packages/core/src/config.ts:18](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L18)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:22](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L22)
+[packages/core/src/config.ts:22](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L22)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:24](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L24)
+[packages/core/src/config.ts:24](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L24)
 
 ## Accessors
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:49](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L49)
+[packages/core/src/config.ts:46](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L46)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:60](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L60)
+[packages/core/src/config.ts:57](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L57)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:45](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L45)
+[packages/core/src/config.ts:42](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L42)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:68](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L68)
+[packages/core/src/config.ts:65](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L65)
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:53](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L53)
+[packages/core/src/config.ts:50](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L50)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:64](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L64)
+[packages/core/src/config.ts:61](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L61)
 
 ___
 
@@ -200,4 +200,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/config.ts:72](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/config.ts#L72)
+[packages/core/src/config.ts:69](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/config.ts#L69)

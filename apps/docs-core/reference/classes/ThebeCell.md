@@ -76,7 +76,7 @@
 
 #### Defined in
 
-[packages/core/src/cell.ts:20](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L20)
+[packages/core/src/cell.ts:20](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L20)
 
 ## Properties
 
@@ -90,7 +90,7 @@
 
 #### Defined in
 
-[packages/core/src/passive.ts:13](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L13)
+[packages/core/src/passive.ts:13](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L13)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:17](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L17)
+[packages/core/src/cell.ts:17](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L17)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:18](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L18)
+[packages/core/src/cell.ts:18](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L18)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:10](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L10)
+[packages/core/src/passive.ts:10](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L10)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:14](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L14)
+[packages/core/src/cell.ts:14](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L14)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:12](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L12)
+[packages/core/src/passive.ts:12](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L12)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:16](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L16)
+[packages/core/src/cell.ts:16](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L16)
 
 ___
 
@@ -188,7 +188,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:11](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L11)
+[packages/core/src/passive.ts:11](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L11)
 
 ___
 
@@ -202,7 +202,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:15](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L15)
+[packages/core/src/cell.ts:15](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L15)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:13](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L13)
+[packages/core/src/cell.ts:13](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L13)
 
 ## Accessors
 
@@ -234,7 +234,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:59](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L59)
+[packages/core/src/cell.ts:59](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L59)
 
 ___
 
@@ -256,7 +256,7 @@ PassiveCellRenderer.isAttachedToDOM
 
 #### Defined in
 
-[packages/core/src/passive.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L32)
+[packages/core/src/passive.ts:32](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L32)
 
 ___
 
@@ -274,7 +274,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:55](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L55)
+[packages/core/src/cell.ts:55](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L55)
 
 ___
 
@@ -298,7 +298,7 @@ PassiveCellRenderer.outputs
 
 #### Defined in
 
-[packages/core/src/passive.ts:28](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L28)
+[packages/core/src/passive.ts:28](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L28)
 
 ___
 
@@ -316,7 +316,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:63](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L63)
+[packages/core/src/cell.ts:63](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L63)
 
 ## Methods
 
@@ -343,7 +343,7 @@ call this version if using ThebeCell in isolation, otherwise call ThebeNotebook:
 
 #### Defined in
 
-[packages/core/src/cell.ts:73](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L73)
+[packages/core/src/cell.ts:73](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L73)
 
 ___
 
@@ -371,7 +371,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L36)
+[packages/core/src/passive.ts:36](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L36)
 
 ___
 
@@ -395,7 +395,7 @@ Clears the output area model
 
 #### Defined in
 
-[packages/core/src/passive.ts:83](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L83)
+[packages/core/src/passive.ts:83](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L83)
 
 ___
 
@@ -425,7 +425,7 @@ Will trigger the output to render an error with text taken from the optional arg
 
 #### Defined in
 
-[packages/core/src/passive.ts:94](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L94)
+[packages/core/src/passive.ts:94](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L94)
 
 ___
 
@@ -446,7 +446,7 @@ call this version if using ThebeCell in isolation, otherwise call ThebeNotebook:
 
 #### Defined in
 
-[packages/core/src/cell.ts:87](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L87)
+[packages/core/src/cell.ts:87](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L87)
 
 ___
 
@@ -473,7 +473,7 @@ TODO
 
 #### Defined in
 
-[packages/core/src/cell.ts:121](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L121)
+[packages/core/src/cell.ts:121](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L121)
 
 ___
 
@@ -503,7 +503,7 @@ Render output data directly from json
 
 #### Defined in
 
-[packages/core/src/passive.ts:110](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L110)
+[packages/core/src/passive.ts:110](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L110)
 
 ___
 
@@ -521,7 +521,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:96](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L96)
+[packages/core/src/cell.ts:96](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L96)
 
 ___
 
@@ -539,7 +539,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:105](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L105)
+[packages/core/src/cell.ts:105](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L105)
 
 ___
 
@@ -567,7 +567,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/passive.ts:68](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/passive.ts#L68)
+[packages/core/src/passive.ts:68](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/passive.ts#L68)
 
 ___
 
@@ -590,4 +590,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/cell.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/cell.ts#L36)
+[packages/core/src/cell.ts:36](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/cell.ts#L36)

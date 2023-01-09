@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:25](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L25)
+[packages/core/src/events.ts:25](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L25)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:26](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L26)
+[packages/core/src/events.ts:26](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L26)
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:24](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L24)
+[packages/core/src/events.ts:24](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L24)

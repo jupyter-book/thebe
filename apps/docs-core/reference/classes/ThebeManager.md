@@ -2,9 +2,13 @@
 
 # Class: ThebeManager
 
+A Widget Manager class for Thebe using the context-free KernelWidgetManager from
+the JupyterLab  Manager and inspierd by the implementation in Voila here:
+https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
+
 ## Hierarchy
 
-- `WidgetManager`
+- `KernelWidgetManager`
 
   ↳ **`ThebeManager`**
 
@@ -26,7 +30,6 @@
 
 ### Accessors
 
-- [context](ThebeManager.md#context)
 - [isDisposed](ThebeManager.md#isdisposed)
 - [kernel](ThebeManager.md#kernel)
 - [onUnhandledIOPubMessage](ThebeManager.md#onunhandlediopubmessage)
@@ -43,7 +46,6 @@
 - [\_handleKernelStatusChange](ThebeManager.md#_handlekernelstatuschange)
 - [\_loadFromKernel](ThebeManager.md#_loadfromkernel)
 - [\_loadFromKernelModels](ThebeManager.md#_loadfromkernelmodels)
-- [\_loadFromNotebook](ThebeManager.md#_loadfromnotebook)
 - [\_make\_model](ThebeManager.md#_make_model)
 - [\_registerWidgets](ThebeManager.md#_registerwidgets)
 - [addWidgetFactories](ThebeManager.md#addwidgetfactories)
@@ -71,7 +73,6 @@
 - [removeWidgetFactories](ThebeManager.md#removewidgetfactories)
 - [resolveUrl](ThebeManager.md#resolveurl)
 - [restoreWidgets](ThebeManager.md#restorewidgets)
-- [setDirty](ThebeManager.md#setdirty)
 - [setViewOptions](ThebeManager.md#setviewoptions)
 - [set\_state](ThebeManager.md#set_state)
 
@@ -79,21 +80,22 @@
 
 ### constructor
 
-• **new ThebeManager**(`kernel`)
+• **new ThebeManager**(`kernel`, `rendermime?`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `kernel` | `IKernelConnection` |
+| `rendermime?` | `IRenderMimeRegistry` |
 
 #### Overrides
 
-JupyterLabManager.constructor
+KernelWidgetManager.constructor
 
 #### Defined in
 
-[packages/core/src/manager.ts:38](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L38)
+[packages/core/src/manager.ts:30](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L30)
 
 ## Properties
 
@@ -118,7 +120,7 @@ JupyterLabManager.constructor
 
 #### Inherited from
 
-JupyterLabManager.\_handleCommOpen
+KernelWidgetManager.\_handleCommOpen
 
 #### Defined in
 
@@ -132,7 +134,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_kernelRestoreInProgress
+KernelWidgetManager.\_kernelRestoreInProgress
 
 #### Defined in
 
@@ -146,7 +148,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L36)
+[packages/core/src/manager.ts:28](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L28)
 
 ___
 
@@ -156,7 +158,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_restored
+KernelWidgetManager.\_restored
 
 #### Defined in
 
@@ -170,7 +172,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_restoredStatus
+KernelWidgetManager.\_restoredStatus
 
 #### Defined in
 
@@ -186,7 +188,7 @@ The comm target name to register
 
 #### Inherited from
 
-JupyterLabManager.comm\_target\_name
+KernelWidgetManager.comm\_target\_name
 
 #### Defined in
 
@@ -200,27 +202,9 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:35](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L35)
+[packages/core/src/manager.ts:27](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L27)
 
 ## Accessors
-
-### context
-
-• `get` **context**(): `IContext`<`INotebookModel`\>
-
-#### Returns
-
-`IContext`<`INotebookModel`\>
-
-#### Inherited from
-
-JupyterLabManager.context
-
-#### Defined in
-
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:161
-
-___
 
 ### isDisposed
 
@@ -237,7 +221,7 @@ This is a read-only property.
 
 #### Inherited from
 
-JupyterLabManager.isDisposed
+KernelWidgetManager.isDisposed
 
 #### Defined in
 
@@ -247,19 +231,19 @@ ___
 
 ### kernel
 
-• `get` **kernel**(): ``null`` \| `IKernelConnection`
+• `get` **kernel**(): `IKernelConnection`
 
 #### Returns
 
-``null`` \| `IKernelConnection`
+`IKernelConnection`
 
 #### Inherited from
 
-JupyterLabManager.kernel
+KernelWidgetManager.kernel
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:162
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:128
 
 ___
 
@@ -275,7 +259,7 @@ A signal emitted for unhandled iopub kernel messages.
 
 #### Inherited from
 
-JupyterLabManager.onUnhandledIOPubMessage
+KernelWidgetManager.onUnhandledIOPubMessage
 
 #### Defined in
 
@@ -293,7 +277,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.rendermime
+KernelWidgetManager.rendermime
 
 #### Defined in
 
@@ -316,7 +300,7 @@ This indicates that previously-unavailable widget models might be available now.
 
 #### Inherited from
 
-JupyterLabManager.restored
+KernelWidgetManager.restored
 
 #### Defined in
 
@@ -336,7 +320,7 @@ Whether the state has been restored yet or not.
 
 #### Inherited from
 
-JupyterLabManager.restoredStatus
+KernelWidgetManager.restoredStatus
 
 #### Defined in
 
@@ -366,7 +350,7 @@ Create a comm.
 
 #### Inherited from
 
-JupyterLabManager.\_create\_comm
+KernelWidgetManager.\_create\_comm
 
 #### Defined in
 
@@ -386,7 +370,7 @@ Get the currently-registered comms.
 
 #### Inherited from
 
-JupyterLabManager.\_get\_comm\_info
+KernelWidgetManager.\_get\_comm\_info
 
 #### Defined in
 
@@ -412,7 +396,7 @@ Register a new kernel
 
 #### Inherited from
 
-JupyterLabManager.\_handleKernelChanged
+KernelWidgetManager.\_handleKernelChanged
 
 #### Defined in
 
@@ -436,11 +420,11 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_handleKernelConnectionStatusChange
+KernelWidgetManager.\_handleKernelConnectionStatusChange
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:140
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:118
 
 ___
 
@@ -460,11 +444,11 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_handleKernelStatusChange
+KernelWidgetManager.\_handleKernelStatusChange
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:141
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:119
 
 ___
 
@@ -478,7 +462,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_loadFromKernel
+KernelWidgetManager.\_loadFromKernel
 
 #### Defined in
 
@@ -501,37 +485,11 @@ This is a utility function that can be used in subclasses.
 
 #### Inherited from
 
-JupyterLabManager.\_loadFromKernelModels
+KernelWidgetManager.\_loadFromKernelModels
 
 #### Defined in
 
 node_modules/@jupyter-widgets/base-manager/lib/manager-base.d.ts:129
-
-___
-
-### \_loadFromNotebook
-
-▸ **_loadFromNotebook**(`notebook`): `Promise`<`void`\>
-
-Load widget state from notebook metadata
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `notebook` | `INotebookModel` |
-
-#### Returns
-
-`Promise`<`void`\>
-
-#### Inherited from
-
-JupyterLabManager.\_loadFromNotebook
-
-#### Defined in
-
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:152
 
 ___
 
@@ -552,7 +510,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.\_make\_model
+KernelWidgetManager.\_make\_model
 
 #### Defined in
 
@@ -570,7 +528,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:156](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L156)
+[packages/core/src/manager.ts:123](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L123)
 
 ___
 
@@ -590,7 +548,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:50](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L50)
+[packages/core/src/manager.ts:44](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L44)
 
 ___
 
@@ -598,13 +556,16 @@ ___
 
 ▸ **build_widgets**(): `Promise`<`void`\>
 
+TODO implement a reasonable method for thebe-core that can load serialized widget state
+see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
+
 #### Returns
 
 `Promise`<`void`\>
 
 #### Defined in
 
-[packages/core/src/manager.ts:65](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L65)
+[packages/core/src/manager.ts:64](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L64)
 
 ___
 
@@ -626,7 +587,7 @@ Default callback handler to emit unhandled kernel messages.
 
 #### Inherited from
 
-JupyterLabManager.callbacks
+KernelWidgetManager.callbacks
 
 #### Defined in
 
@@ -648,11 +609,11 @@ Promise that resolves when the widget state is cleared.
 
 #### Inherited from
 
-JupyterLabManager.clear\_state
+KernelWidgetManager.clear\_state
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:171
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:91
 
 ___
 
@@ -687,7 +648,7 @@ any state updates.
 
 #### Inherited from
 
-JupyterLabManager.create\_view
+KernelWidgetManager.create\_view
 
 #### Defined in
 
@@ -714,7 +675,7 @@ node_modules/@jupyter-widgets/base-manager/lib/manager-base.d.ts:64
 
 #### Inherited from
 
-JupyterLabManager.create\_view
+KernelWidgetManager.create\_view
 
 #### Defined in
 
@@ -735,7 +696,7 @@ as dead.
 
 #### Inherited from
 
-JupyterLabManager.disconnect
+KernelWidgetManager.disconnect
 
 #### Defined in
 
@@ -761,7 +722,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:101](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L101)
+[packages/core/src/manager.ts:68](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L68)
 
 ___
 
@@ -777,11 +738,11 @@ Dispose the resources held by the manager.
 
 #### Inherited from
 
-JupyterLabManager.dispose
+KernelWidgetManager.dispose
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:156
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:127
 
 ___
 
@@ -805,7 +766,7 @@ A copy of the state, with its 'state' attribute filtered
 
 #### Inherited from
 
-JupyterLabManager.filterExistingModelState
+KernelWidgetManager.filterExistingModelState
 
 #### Defined in
 
@@ -836,7 +797,7 @@ If you would like to synchronously test if a model exists, use .has_model().
 
 #### Inherited from
 
-JupyterLabManager.get\_model
+KernelWidgetManager.get\_model
 
 #### Defined in
 
@@ -867,7 +828,7 @@ Promise for a state dictionary
 
 #### Inherited from
 
-JupyterLabManager.get\_state
+KernelWidgetManager.get\_state
 
 #### Defined in
 
@@ -898,7 +859,7 @@ A state dictionary
 
 #### Inherited from
 
-JupyterLabManager.get\_state\_sync
+KernelWidgetManager.get\_state\_sync
 
 #### Defined in
 
@@ -925,7 +886,7 @@ Handle when a comm is opened.
 
 #### Inherited from
 
-JupyterLabManager.handle\_comm\_open
+KernelWidgetManager.handle\_comm\_open
 
 #### Defined in
 
@@ -954,7 +915,7 @@ This is a synchronous way to check if a model is registered.
 
 #### Inherited from
 
-JupyterLabManager.has\_model
+KernelWidgetManager.has\_model
 
 #### Defined in
 
@@ -978,7 +939,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.inline\_sanitize
+KernelWidgetManager.inline\_sanitize
 
 #### Defined in
 
@@ -1004,11 +965,11 @@ ___
 
 #### Overrides
 
-JupyterLabManager.loadClass
+KernelWidgetManager.loadClass
 
 #### Defined in
 
-[packages/core/src/manager.ts:114](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L114)
+[packages/core/src/manager.ts:81](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L81)
 
 ___
 
@@ -1030,7 +991,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.loadModelClass
+KernelWidgetManager.loadModelClass
 
 #### Defined in
 
@@ -1056,7 +1017,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.loadViewClass
+KernelWidgetManager.loadViewClass
 
 #### Defined in
 
@@ -1095,7 +1056,7 @@ widget_manager.new_model({
 
 #### Inherited from
 
-JupyterLabManager.new\_model
+KernelWidgetManager.new\_model
 
 #### Defined in
 
@@ -1122,7 +1083,7 @@ Create a comm and new widget model.
 
 #### Inherited from
 
-JupyterLabManager.new\_widget
+KernelWidgetManager.new\_widget
 
 #### Defined in
 
@@ -1146,7 +1107,7 @@ ___
 
 #### Inherited from
 
-JupyterLabManager.register
+KernelWidgetManager.register
 
 #### Defined in
 
@@ -1173,11 +1134,11 @@ Register a widget model.
 
 #### Inherited from
 
-JupyterLabManager.register\_model
+KernelWidgetManager.register\_model
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:166
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:86
 
 ___
 
@@ -1197,7 +1158,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/manager.ts:61](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/manager.ts#L61)
+[packages/core/src/manager.ts:55](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/manager.ts#L55)
 
 ___
 
@@ -1219,28 +1180,19 @@ Resolve a URL relative to the current notebook location.
 
 #### Inherited from
 
-JupyterLabManager.resolveUrl
+KernelWidgetManager.resolveUrl
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:160
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:59
 
 ___
 
 ### restoreWidgets
 
-▸ **restoreWidgets**(`notebook`, `«destructured»?`): `Promise`<`void`\>
+▸ **restoreWidgets**(): `Promise`<`void`\>
 
 Restore widgets from kernel and saved state.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `notebook` | `INotebookModel` |
-| `«destructured»` | `Object` |
-| › `loadKernel` | `boolean` |
-| › `loadNotebook` | `boolean` |
 
 #### Returns
 
@@ -1248,33 +1200,11 @@ Restore widgets from kernel and saved state.
 
 #### Inherited from
 
-JupyterLabManager.restoreWidgets
+KernelWidgetManager.restoreWidgets
 
 #### Defined in
 
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:145
-
-___
-
-### setDirty
-
-▸ **setDirty**(): `void`
-
-Set the dirty state of the notebook model if applicable.
-
-TODO: perhaps should also set dirty when any model changes any data
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-JupyterLabManager.setDirty
-
-#### Defined in
-
-node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:177
+node_modules/@jupyter-widgets/jupyterlab-manager/lib/manager.d.ts:123
 
 ___
 
@@ -1297,7 +1227,7 @@ implementations.
 
 #### Inherited from
 
-JupyterLabManager.setViewOptions
+KernelWidgetManager.setViewOptions
 
 #### Defined in
 
@@ -1323,7 +1253,7 @@ Set the widget manager state.
 
 #### Inherited from
 
-JupyterLabManager.set\_state
+KernelWidgetManager.set\_state
 
 #### Defined in
 

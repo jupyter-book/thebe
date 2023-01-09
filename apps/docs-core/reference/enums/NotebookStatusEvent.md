@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[packages/core/src/events.ts:30](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L30)
+[packages/core/src/events.ts:30](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L30)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:31](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L31)
+[packages/core/src/events.ts:31](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L31)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L32)
+[packages/core/src/events.ts:32](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L32)
 
 ___
 
@@ -49,4 +49,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/events.ts:33](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/events.ts#L33)
+[packages/core/src/events.ts:33](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/events.ts#L33)

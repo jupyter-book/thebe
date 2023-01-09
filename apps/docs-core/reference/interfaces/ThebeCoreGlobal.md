@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:37](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L37)
+[packages/core/src/thebe/entrypoint.ts:38](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/thebe/entrypoint.ts#L38)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/thebe/entrypoint.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/thebe/entrypoint.ts#L36)
+[packages/core/src/thebe/entrypoint.ts:37](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/thebe/entrypoint.ts#L37)

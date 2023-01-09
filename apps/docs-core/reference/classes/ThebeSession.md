@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[packages/core/src/session.ts:14](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L14)
+[packages/core/src/session.ts:14](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L14)
 
 ## Properties
 
@@ -53,7 +53,7 @@
 
 #### Defined in
 
-[packages/core/src/session.ts:11](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L11)
+[packages/core/src/session.ts:11](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L11)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:12](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L12)
+[packages/core/src/session.ts:12](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L12)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:9](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L9)
+[packages/core/src/session.ts:9](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L9)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:8](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L8)
+[packages/core/src/session.ts:8](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L8)
 
 ## Accessors
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:28](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L28)
+[packages/core/src/session.ts:28](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L28)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:32](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L32)
+[packages/core/src/session.ts:32](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L32)
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:40](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L40)
+[packages/core/src/session.ts:40](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L40)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:36](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L36)
+[packages/core/src/session.ts:36](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L36)
 
 ## Methods
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:70](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L70)
+[packages/core/src/session.ts:70](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L70)
 
 ___
 
@@ -167,7 +167,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:44](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L44)
+[packages/core/src/session.ts:44](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L44)
 
 ___
 
@@ -181,4 +181,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/session.ts:61](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/session.ts#L61)
+[packages/core/src/session.ts:61](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/session.ts#L61)

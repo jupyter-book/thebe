@@ -53,7 +53,7 @@
 
 #### Defined in
 
-[packages/core/src/types.ts:78](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L78)
+[packages/core/src/types.ts:75](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L75)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:96](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L96)
+[packages/core/src/types.ts:93](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L93)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:80](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L80)
+[packages/core/src/types.ts:77](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L77)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:95](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L95)
+[packages/core/src/types.ts:92](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L92)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:93](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L93)
+[packages/core/src/types.ts:90](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L90)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:94](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L94)
+[packages/core/src/types.ts:91](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L91)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:81](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L81)
+[packages/core/src/types.ts:78](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L78)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:79](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L79)
+[packages/core/src/types.ts:76](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L76)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:92](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L92)
+[packages/core/src/types.ts:89](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L89)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:91](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L91)
+[packages/core/src/types.ts:88](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L88)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:97](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L97)
+[packages/core/src/types.ts:94](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L94)
 
 ## Methods
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:99](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L99)
+[packages/core/src/types.ts:96](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L96)
 
 ___
 
@@ -209,7 +209,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:83](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L83)
+[packages/core/src/types.ts:80](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L80)
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:85](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L85)
+[packages/core/src/types.ts:82](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L82)
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:86](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L86)
+[packages/core/src/types.ts:83](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L83)
 
 ___
 
@@ -265,7 +265,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:100](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L100)
+[packages/core/src/types.ts:97](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L97)
 
 ___
 
@@ -285,7 +285,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:101](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L101)
+[packages/core/src/types.ts:98](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L98)
 
 ___
 
@@ -309,7 +309,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:87](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L87)
+[packages/core/src/types.ts:84](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L84)
 
 ___
 
@@ -323,7 +323,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:102](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L102)
+[packages/core/src/types.ts:99](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L99)
 
 ___
 
@@ -337,7 +337,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:103](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L103)
+[packages/core/src/types.ts:100](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L100)
 
 ___
 
@@ -361,4 +361,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/types.ts:84](https://github.com/executablebooks/thebe/blob/3f03d48/packages/core/src/types.ts#L84)
+[packages/core/src/types.ts:81](https://github.com/executablebooks/thebe/blob/280bb7d/packages/core/src/types.ts#L81)
