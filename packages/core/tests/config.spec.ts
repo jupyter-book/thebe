@@ -11,9 +11,6 @@ describe('config', () => {
       expect(config.base).toEqual({
         mathjaxUrl: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js',
         mathjaxConfig: 'TeX-AMS_CHTML-full,Safe',
-        useBinder: false,
-        useJupyterLite: false,
-        requestKernel: true,
       });
     });
     test('binder', () => {
