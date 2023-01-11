@@ -69,4 +69,8 @@ export class Config {
   get serverSettings() {
     return this._serverSettings;
   }
+
+  set serverSettings(newSettings: Required<Omit<ServerSettings, 'wsUrl'>> & { wsUrl?: string }) {
+    this._serverSettings = newSettings;
+  }
 }
