@@ -412,7 +412,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     if (!this.sessionManager)
       throw new Error('Must connect to a server before requesting KernelSpecs');
     const settings = this.sessionManager?.serverSettings;
-    const url = new URL(relativeUrl, settings.baseUrl);
+    const baseUrl = new URL(settings.baseUrl);
+    const url = new URL(`${baseUrl.pathname}${relativeUrl}`.replace('//', '/'), baseUrl.origin);
     url.searchParams.append('token', settings.token);
     return url;
   }
@@ -494,6 +495,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   }) {
     const { path, content, format, type } = opts;
     const url = this.getFetchUrl(`/api/contents/${path}`);
+    console.debug('thebe:api:server:uploadFile', url);
     return responseToJson(
       await fetch(url, {
         method: 'PUT',
