@@ -10,7 +10,7 @@ import { EventEmitter } from './emitter';
 import type { ICodeCell, INotebookContent, INotebookMetadata } from '@jupyterlab/nbformat';
 import NonExecutableCell from './cell_noexec';
 
-interface ExecuteReturn {
+export interface ExecuteReturn {
   id: string;
   height: number;
   width: number;

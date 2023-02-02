@@ -43,14 +43,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe-core.git"
+    "url": "git+https://github.com/executablebooks/thebe.git"
   },
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe-core/issues"
+    "url": "https://github.com/executablebooks/thebe/issues"
   },
   "author": {
-    "name": "Executable Book Project",
-    "email": "executablebooks@gmail.com"
+    "name": "Steve Purves",
+    "email": "steve@curvneote.com"
   },
   "license": "MIT",
   "devDependencies": {
