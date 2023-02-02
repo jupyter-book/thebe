@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "copy:static": "copyfiles -u 1 static/* dist",
+    "copy:static": "mkdir -p dist; cp -R static/* dist",
     "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
     "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
     "demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
