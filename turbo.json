@@ -1,0 +1,63 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/main",
+  "pipeline": {
+    "start": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "start:simple": {
+      "dependsOn": ["thebe#build", "thebe-core#build"],
+      "outputs": ["dist/**"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "lib/**"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev"],
+      "outputs": ["dist/**", "lib/**"]
+    },
+    "build:publish": {
+      "dependsOn": ["build"]
+    },
+    "demo": {
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "outputs": ["dist/**", "lib/**"]
+    },
+    "docs": {
+      "dependsOn": ["thebe#build", "thebe-core#build", "docs#py:deps"],
+      "outputs": ["_build/**"]
+    },
+    "docs#py:deps": {},
+    "test": {
+      "outputs": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"],
+      "cache": false
+    },
+    "test:e2e": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "e2e/**/*.ts", "e2e/**/*.tsx"],
+      "cache": false
+    },
+    "lint": {
+      "outputs": []
+    },
+    "lint:format": {
+      "outputs": []
+    },
+    "lint:format:fix": {
+      "outputs": []
+    },
+    "deploy": {
+      "dependsOn": ["build", "test", "lint"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    }
+  }
+}

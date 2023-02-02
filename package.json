@@ -3,33 +3,38 @@
   "version": "0.8.2",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
-  "scripts": {
-    "build": "webpack --mode development --progress",
-    "build:prod": "webpack --mode production",
-    "build:watch": "webpack --mode development --progress --color --watch",
-    "build:publish": "NODE_PREPUBLISH=true yarn run build:prod",
-    "fmt": "prettier --trailing-comma=es5 --write *.js src/*.js test/*.js",
-    "serve": "http-server -c-1 -a 127.0.0.1 -o development/binder.html",
-    "serve:local": "http-server -c-1 -a 127.0.0.1 -o development/local.html",
-    "serve:examples": "http-server -c-1 -a 127.0.0.1 -o docs/_static/html_examples/index.html",
-    "develop": "concurrently \"yarn run build:watch\" \"yarn run serve\"",
-    "develop:local": "concurrently \"yarn run build:watch\" \"yarn run serve:local\"",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "test:e2e": "jest test.js --config=./jest.e2e.config.js",
-    "test:e2e:watch": "jest test.js --config=./jest.e2e.config.js  --watchAll"
-  },
-  "files": [
-    "lib/**",
-    "src/*"
+  "workspaces": [
+    "apps/*",
+    "packages/*"
   ],
+  "scripts": {
+    "nuke": "npm run clean; npx npkill",
+    "clean": "turbo run clean",
+    "build": "turbo run build",
+    "build:core": "turbo run build --filter=thebe-core",
+    "build:thebe": "turbo run build --filter=thebe",
+    "build:dev": "turbo run build:dev",
+    "demo": "turbo run demo",
+    "docs": "turbo run docs",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "lint:format": "turbo run lint:format",
+    "lint:format:fix": "turbo run lint:format:fix",
+    "watch:core": "turbo run dev --filter=thebe-core",
+    "watch:thebe": "turbo run dev --filter=thebe",
+    "start:simple": "turbo run start --filter=demo-simple",
+    "start:core": "turbo run start --filter=demo-core",
+    "start:docs-core": "turbo run start --filter=docs-core"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/executablebooks/thebe.git"
   },
   "keywords": [
     "jupyter",
-    "notebook"
+    "notebook",
+    "website"
   ],
   "author": "Executable Books Project",
   "license": "BSD-3-Clause",
@@ -43,45 +48,9 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@jupyter-widgets/base": "^4.0.0",
-    "@jupyter-widgets/controls": "^3.0.0",
-    "@jupyter-widgets/html-manager": "^0.20.0",
-    "@jupyter-widgets/jupyterlab-manager": "^3.0.0",
-    "@jupyter-widgets/output": "^4.0.0",
-    "@jupyterlab/codemirror": "^3.0.0",
-    "@jupyterlab/mathjax2": "^3.0.0",
-    "@jupyterlab/outputarea": "^3.0.0",
-    "@jupyterlab/services": "^6.0.0",
-    "@jupyterlab/testutils": "^3.2.4",
-    "@jupyterlab/theme-light-extension": "^3.0.0",
-    "babel-jest": "^26.6.1",
-    "babel-loader": "^8.1.0",
-    "codecov": "^3.8.0",
-    "concurrently": "^6.2.1",
-    "core-js": "^3.6.5",
-    "css-loader": "^5.0.0",
-    "file-loader": "^6.1.1",
-    "html-loader-jest": "^0.2.1",
-    "htmlparser2": "^6.1.0",
-    "http-server": "^0.12.3",
-    "identity-obj-proxy": "^3.0.0",
-    "istanbul-instrumenter-loader": "^3.0.1",
-    "jest": "^26.6.3",
-    "jest-puppeteer": "^5.0.0",
-    "jquery": "^3.5.1",
-    "jquery-ui-bundle": "^1.12.1-migrate",
-    "ncp": "^2.0.0",
-    "node-fetch": "^2.6.1",
-    "prettier": "^2.1.2",
-    "puppeteer": ">=1.5.0",
-    "style-loader": "^2.0.0",
-    "ts-jest": "^27.0.4",
-    "url-loader": "^4.1.1",
-    "webpack": "^4.0",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.1.0"
+    "turbo": "^1.4.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

@@ -9,11 +9,13 @@ Have a static HTML page with code snippets? Your readers can edit and execute th
 - The Thebe javascript library (which can be fetched from the web)
 - A computing backend (typically [binder](https://mybinder.org))
 
-![Demo](docs/_static/demo.png)
+![Demo](apps/docs/_static/demo.png)
 
 Thebe is a based on the [Jupyter](jupyter.org) technology, and thus supports [a wealth of programming languages](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels). The original implementation, called [Thebe](https://github.com/oreillymedia/thebe) was a fork of the Jupyter code base.
 
 See [the Thebe Documentation](https://thebe.readthedocs.io/en/latest/) for more information. See also this [blog post](https://blog.ouseful.info/2017/12/18/run-python-code-embedded-in-html-via-a-jupyter-kernel/).
+
+> For the latest `thebe-core` documentation, see [https://thebe-core.curve.space/](https://thebe-core.curve.space/)
 
 **Deprecation Notice**
 
@@ -149,9 +151,19 @@ Alternatively,you can also check the HTML based examples included in the in `doc
 <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
 ```
 
+Also include the css bundle on your page:
+
+```
+<link rel="stylesheet" href="https://unpkg.com/thebe@latest/lib/thebe.css">
+```
+
 ## Contribute to `thebe`
 
-To contribute to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute.html).
+For the latest information on setting up a local development environment see [CONTRIBUTING.md](./CONTRIBUTING.md) in this repository.
+
+### Legacy information on `thebe` builds is here
+
+For more information on contributing to `thebe`, see [the `thebe` contributing documentation](https://thebe.readthedocs.io/en/latest/contribute.html) although note that
 
 ## Acknowledgements
 

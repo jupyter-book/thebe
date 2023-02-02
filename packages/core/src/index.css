@@ -1,0 +1,59 @@
+@import '@jupyterlab/theme-light-extension/style/theme.css';
+@import '@jupyter-widgets/controls/css/widgets-base.css';
+@import '@lumino/widgets/style/index.css';
+@import '@jupyterlab/apputils/style/base.css';
+@import '@jupyterlab/rendermime/style/base.css';
+
+.thebe-output-busy-spinner-alt {
+  border: 2px solid #f3f3f3; /* Light grey */
+  border-top: 2px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: thebeoutputspin 2s linear infinite;
+  animation: thebeoutputspin 1s linear infinite;
+}
+
+.thebe-output-busy-spinner {
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  background-color: rgba(250, 250, 250, 0.9);
+  z-index: 9999;
+  display: block;
+}
+
+.thebe-output-busy-spinner::after {
+  content: '';
+  display: block;
+  position: relative;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-style: solid;
+  border-color: #3498db;
+  border-top-color: transparent;
+  border-width: 2px;
+  border-radius: 50%;
+  -webkit-animation: thebeoutputspin 0.8s linear infinite;
+  animation: thebeoutputspin 0.8s linear infinite;
+}
+
+@-webkit-keyframes thebeoutputspin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes thebeoutputspin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "thebe-lite",
+  "version": "0.1.0",
+  "description": "Thebe extension library for WASM kernels via JupyterLite",
+  "main": "dist/lib/thebe-lite.min.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build:bundle": "webpack --config webpack.config.cjs",
+    "build:post:shuffle": "./bin/shufflePyolitePaths.sh",
+    "build:post:service": "./bin/fetchServiceWorker.sh",
+    "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
+    "build": "npm-run-all -l clean -p build:bundle declarations",
+    "build:watch": "npm run build:bundle -- -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/executablebooks/thebe.git"
+  },
+  "keywords": [
+    "executablebooks",
+    "thebe",
+    "jupyter",
+    "interactivity",
+    "jupyter-book",
+    "jupyterlite",
+    "pyodide",
+    "WASM"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Executable Book Project",
+    "email": "executablebooks@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/executablebooks/thebe/issues"
+  },
+  "homepage": "https://github.com/executablebooks/thebe#readme",
+  "dependencies": {
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.14",
+    "@jupyterlite/server": "0.1.0-beta.14",
+    "@jupyterlite/server-extension": "0.1.0-beta.14",
+    "hook-shell-script-webpack-plugin": "^0.1.4"
+  },
+  "devDependencies": {
+    "current-script-polyfill": "^1.0.0",
+    "ignore-emit-webpack-plugin": "^2.0.6",
+    "no-emit-webpack-plugin": "^4.0.1",
+    "npm-run-all": "^4.1.5",
+    "webpack": "^5.74.0"
+  }
+}

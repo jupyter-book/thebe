@@ -1,0 +1,87 @@
+name: ci
+on:
+  - pull_request
+jobs:
+  lint:
+    runs-on: ubuntu-18.04
+    steps:
+      # Action Repo: https://github.com/actions/checkout
+      - name: 'Checkout repo'
+        uses: actions/checkout@v2
+
+      # Action Repo: https://github.com/actions/setup-node
+      - name: 'Setup Node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      # Action Repo: https://github.com/actions/cache
+      - name: 'Cache node_modules'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+
+      - name: 'Install'
+        run: npm ci
+
+      - name:
+        run: npm run lint
+  test:
+    runs-on: ubuntu-18.04
+    needs: lint
+    steps:
+      - name: 'Checkout repo'
+        uses: actions/checkout@v2
+
+      # Action Repo: https://github.com/actions/setup-node
+      - name: 'Setup Node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      # Action Repo: https://github.com/actions/cache
+      - name: 'Cache node_modules'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+
+      - name: 'Install dependencies'
+        run: |
+          npm ci
+
+      - name: 'Build the library'
+        run: |
+          npm run build
+
+      - name: Cache conda
+        uses: actions/cache@v3
+        env:
+          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+            hashFiles('environment.test.yml') }}
+
+      - name: Install conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: jupyter-server
+          environment-file: environment.test.yml
+          python-version: 3.9
+
+      - name: 'Run tests'
+        shell: bash -l {0}
+        run: |
+          npm run test
+
+      # - name: 'Run e2e tests'
+      #   shell: bash -l {0}
+      #   run: |
+      #     npm run test:e2e
+
+      # Action Repo: https://github.com/codecov/codecov-action
+      - name: 'Upload coverage to codecov'
+        uses: codecov/codecov-action@v1

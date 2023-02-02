@@ -1,0 +1,6 @@
+name: jupyter-server
+channels:
+  - conda-forge
+dependencies:
+  - jupyter
+  - jupyterlab=3.4.4

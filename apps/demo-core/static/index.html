@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    />
+    <script type="text/x-mathjax-config" src="mathjax.js"></script>
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML"
+    ></script>
+    <script src="thebe-lite.min.js" type="text/javascript"></script>
+    <script src="demo.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="demo.css" />
+    <link rel="stylesheet" href="thebe-core.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.2/css/mpl_widget.css" />    
+  </head>
+  <body>
+    <div>
+      <h1>Demo: thebe-core</h1>
+      <p>
+        This is a demonstration of <em>thebe-core</em> starting up and connecting to a Jupyter
+        server, then executing 3 cell via the notebook interface
+      </p>
+      <h3>Set Server Type</h3>
+      <p>thebe-code can connect to the following server types</p>
+      <p>
+        <input type="radio" id="local" name="server_type" value="LOCAL" checked />
+        <label for="local">Local Jupyter Server</label><br />
+        <input type="radio" id="lite" name="server_type" value="LITE" />
+        <label for="lite">JupyterLite Server</label><br />
+        <input type="radio" id="binder" name="server_type" value="BINDER" />
+        <label for="binder">Public MyBinder Service</label>
+      </p>
+      <div id="local-message">
+        <p>You'll need to start your local jupyter server on port 8888 and like this:</p>
+        <div style="padding: 0 20px">
+          <code
+            >jupyter notebook --NotebookApp.token=test-secret --NotebookApp.allow_origin="*"</code
+          >
+        </div>
+      </div>
+      <h3>Set Example Code</h3>
+      <p>
+        <input type="radio" id="basic_code" name="example_code" value="BASIC" checked />
+        <label for="basic_code">a basic matplotlib plot</label><br />
+        <input type="radio" id="ipywidgets_code" name="example_code" value="IPYWIDGETS" />
+        <label for="ipywidgets_code">an interactive ipywidgets plot</label><br />
+        <input type="radio" id="ipyleaflet_code" name="example_code" value="IPYLEAFLET" />
+        <label for="ipyleaflet_code">a ipyleaflet map</label><br />
+      </p>
+      <div id="code_area"></div>
+      <p>
+        The page immediately requests a kernel and the kernel status can be monitored via simple
+        messaging callbacks
+      </p>
+    </div>
+    <div class="controls">
+      <p>
+        Current server status is
+        <span id="server-status" class="status">none</span> and session/kernel status is
+        <span id="session-status" class="status">none</span>
+      </p>
+      <button id="connect" style="margin-bottom: 4px; display: block">Connect to Jupyter</button>
+      <button id="run-all" disabled>run all</button>
+      <button id="run-last" disabled>run last</button>
+      <button id="restart" disabled>restart</button>
+      <p />
+      <div id="data-output" data-output="true">
+        <img src="output.png" />
+      </div>
+    </div>
+    <script>
+      const LITE_OPTIONS = {
+        useBinder: false,
+        useJupyterLite: true,
+        requestKernel: true,
+        kernelOptions: {
+          name: 'python',
+          kernelName: 'python',
+        },
+      };
+
+      const LOCAL_OPTIONS = {
+        useBinder: false,
+        requestKernel: true,
+        kernelOptions: {
+          name: 'python3',
+          serverSettings: {
+            appendToken: true,
+            baseUrl: 'http://localhost:8888',
+            token: 'test-secret',
+          },
+        },
+      };
+
+      const BINDER_OPTIONS = {
+        useBinder: true,
+        requestKernel: true,
+        binderOptions: {
+          repo: 'matplotlib/ipympl',
+          ref: '0.6.1',
+          repoProvider: 'github',
+        },
+      };
+
+      const options = { current: LOCAL_OPTIONS };
+      const code = { current: BASIC_CODE };
+
+      function resetUI() {
+        document.getElementById('connect').removeAttribute('disabled');
+        document.getElementById('data-output').innerHTML = '<img src="output.png" />';
+        document.getElementById('run-all').setAttribute('disabled', true);
+        document.getElementById('run-last').setAttribute('disabled', true);
+        document.getElementById('restart').setAttribute('disabled', true);
+        document.getElementById('server-status').innerHTML = 'unknown';
+        document.getElementById('session-status').innerHTML = 'unknown';
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        const attachButton = document.getElementById('connect');
+        attachButton.onclick = (ev) => {
+          attachButton.setAttribute('disabled', true);
+          demoBasic(code.current, options.current);
+        };
+
+        const serverTypeHandler = (ev) => {
+          if (ev.srcElement.id === 'local') {
+            document.getElementById('local-message').style.visibility = 'visible';
+            document.getElementById('local-message').style.height = 'auto';
+            options.current = LOCAL_OPTIONS;
+            // TODO dispaose of session / connection
+            resetUI();
+          } else if (ev.srcElement.id === 'lite') {
+            document.getElementById('local-message').style.visibility = 'hidden';
+            document.getElementById('local-message').style.height = '0px';
+            options.current = LITE_OPTIONS;
+            // TODO dispaose of session / connection
+            resetUI();
+          } else if (ev.srcElement.id === 'binder') {
+            document.getElementById('local-message').style.visibility = 'hidden';
+            document.getElementById('local-message').style.height = '0px';
+            options.current = BINDER_OPTIONS;
+            // TODO dispaose of session / connection
+            resetUI();
+          } else {
+            console.error('Bad server type');
+          }
+        };
+        document.getElementById('local').onclick = serverTypeHandler;
+        document.getElementById('lite').onclick = serverTypeHandler;
+        document.getElementById('binder').onclick = serverTypeHandler;
+
+        function writeCode(arrayOfStrings) {
+          const codeArea = document.getElementById('code_area');
+          codeArea.innerHTML = '';
+          arrayOfStrings.forEach((cell) => {
+            const node = document.createElement('pre');
+            node.innerHTML = cell.trim();
+            codeArea.appendChild(node);
+          });
+        }
+
+        const codeTypeHandler = (ev) => {
+          if (ev.srcElement.id === 'basic_code') {
+            resetUI();
+            writeCode(BASIC_CODE);
+            code.current = BASIC_CODE;
+          } else if (ev.srcElement.id === 'ipywidgets_code') {
+            resetUI();
+            writeCode(IPYWIDGETS_CODE);
+            code.current = IPYWIDGETS_CODE;
+          } else if (ev.srcElement.id === 'ipyleaflet_code') {
+            resetUI();
+            writeCode(IPYLEAFLET_CODE);
+            code.current = IPYLEAFLET_CODE;
+          } else {
+            console.error('Bad code type');
+          }
+        };
+        document.getElementById('basic_code').onclick = codeTypeHandler;
+        document.getElementById('ipywidgets_code').onclick = codeTypeHandler;
+        document.getElementById('ipyleaflet_code').onclick = codeTypeHandler;
+
+        writeCode(BASIC_CODE);
+      });
+    </script>
+  </body>
+</html>

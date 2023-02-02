@@ -1,0 +1,77 @@
+.thebe-status {
+  display: inline-block;
+}
+.thebe-status-mounted {
+  display: inline-block;
+  text-align: left;
+  border: 1px black solid;
+  padding: 10px;
+}
+.thebe-status-stub {
+  display: inline-block;
+  vertical-align: middle;
+  text-transform: uppercase;
+  line-height: 1rem;
+}
+
+.thebe-status-field {
+  display: inline-block;
+  background-color: #ccc;
+  text-transform: uppercase;
+  font-family: monospace;
+  margin-left: 4px;
+  padding: 4px 8px;
+  border-radius: 1em;
+  line-height: 1rem;
+}
+
+.thebe-status-message {
+  text-transform: lowercase;
+  font-family: monospace;
+  margin-top: 4px;
+}
+
+.thebe-status-field.thebe-status-building {
+  /* Binder is building the image */
+  background-color: yellow;
+}
+
+.thebe-status-field.thebe-status-launching {
+  /* Binder launching the server */
+  background-color: yellow;
+}
+
+.thebe-status-field.thebe-status-starting {
+  /* Binder starting the server */
+  background-color: yellow;
+}
+
+.thebe-status-field.thebe-status-server-ready {
+  /* The kernel is connected and ready */
+  background-color: cyan;
+}
+
+.thebe-status-field.thebe-status-session-ready {
+  /* The kernel is connected and ready */
+  background-color: lightgreen;
+}
+
+.thebe-status-field.thebe-status-failed {
+  /* Building the image or launching the kernel failed */
+  background-color: red;
+}
+
+.thebe-status-field.thebe-status-closed {
+  /* Building the image or launching the kernel failed */
+  background-color: grey;
+}
+
+.thebe-status-field.thebe-status-dead {
+  /* Building the image or launching the kernel failed */
+  background-color: grey;
+}
+
+.thebe-status-field.thebe-status-busy {
+  /* The kernel is busy (this event is not hooked up yet) */
+  background-color: yellow;
+}

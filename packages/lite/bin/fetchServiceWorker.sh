@@ -1,0 +1,2 @@
+# pinned to the latest service worker script from juptyerlite
+curl -s https://raw.githubusercontent.com/jupyterlite/jupyterlite/004c69cc0612d4bef51c1dc51b3e98ee27dd3a1f/app/services.js --output dist/lib/services.js

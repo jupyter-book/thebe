@@ -1,0 +1,25 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "description": "thebe docs js dependencies",
+  "main": "''",
+  "scripts": {
+    "py:deps": "pip install -r doc-requirements.txt",
+    "build:js": "make js",
+    "build:html": "make html",
+    "docs": "make html"
+  },
+  "author": "",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "jsdoc": "^3.6.7",
+    "typedoc": "^0.23.8"
+  },
+  "workspaces": {
+    "nohoist": [
+      "jsdoc",
+      "typedoc"
+    ]
+  },
+  "dependencies": {}
+}
