@@ -41,3 +41,9 @@ Then start a demo using one of:
 
 - `npm run start:simple`
 - `npm run start:core`
+
+## Changesets
+
+We are now using the `@changesets/cli` to manage package versioning and publishing across the monorepo.
+
+See [`@changesets/cli`](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) for more info.
