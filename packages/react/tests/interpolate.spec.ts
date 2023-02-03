@@ -1,4 +1,4 @@
-import { PYTHON_PARAM, interpolatorFactoryFn } from '../src/react/hooks/interpolate';
+import { PYTHON_PARAM, interpolatorFactoryFn } from '../src/hooks/interpolate';
 
 describe('interpolate', () => {
   test.each([
