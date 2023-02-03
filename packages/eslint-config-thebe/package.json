@@ -2,6 +2,7 @@
   "name": "eslint-config-thebe",
   "version": "0.0.0",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.30.6",

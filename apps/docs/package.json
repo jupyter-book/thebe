@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "thebe docs js dependencies",
   "main": "''",
+  "private": true,
   "scripts": {
     "py:deps": "pip install -r doc-requirements.txt",
     "build:js": "make js",
