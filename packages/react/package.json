@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "sideEffects": false,
   "description": "React providers and components for thebe-core",
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
