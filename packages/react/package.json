@@ -1,0 +1,62 @@
+{
+  "name": "thebe-react",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "description": "React providers and components for thebe-core",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "executablebooks",
+    "thebe",
+    "react",
+    "jupyter",
+    "jupyter-book",
+    "interactivity"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/executablebooks/thebe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/executablebooks/thebe/issues"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "prepublish": "npm run build",
+    "build:cjs": "tsc --project ./tsconfig.json --outDir ./dist",
+    "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist",
+    "build": "npm run declarations; npm run build:cjs",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watchAll --runInBand"
+  },
+  "author": {
+    "name": "Steve Purves",
+    "email": "steve@curvneote.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@jupyterlab/nbformat": "^3.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "thebe-core": "^0.1.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.6",
+    "eslint-config-curvenote": "^0.0.1",
+    "jest": "^29.4.1",
+    "npm-run-all": "latest",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
+  },
+  "nohoist": [
+    "jest",
+    "ts-jest"
+  ]
+}
