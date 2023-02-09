@@ -11,52 +11,13 @@ interface ExecuteOptions {
   preprocessor?: (s: string) => string;
 }
 
-export function useNotebook(
-  name: string,
-  fetchNotebook: (name: string) => Promise<INotebookContent>,
-  opts = { refsForWidgetsOnly: true },
-) {
-  const { core } = useThebeCore();
-  const { config } = useThebeConfig();
+function useNotebookBase(opts = { refsForWidgetsOnly: true }) {
   const { session } = useThebeSession();
-  const [loading, setLoading] = useState<boolean>(false);
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();
   const [refs, setRefs] = useState<((node: HTMLDivElement) => void)[]>([]);
   const [sessionAttached, setSessionAttached] = useState(false);
   const [executing, setExecuting] = useState<boolean>(false);
   const [executed, setExecuted] = useState(false);
-  const [_, setReRender] = useState({});
-
-  /**
-   * - set loading flag
-   * - load the notebook
-   * - setup callback refs, to auto-attach to dom
-   * - set notebook, which triggers
-   * - clear loading flag
-   */
-  useEffect(() => {
-    if (!core || !config) return;
-    setLoading(true);
-    fetchNotebook(name)
-      .then((ipynb) => {
-        return core?.ThebeNotebook.fromIpynb(ipynb, config);
-      })
-      .then((nb: ThebeNotebook) => {
-        const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
-        // set up an array of callback refs to update the DOM elements
-        setRefs(
-          Array(cells.length)
-            .fill(null)
-            .map((_, idx) => (node) => {
-              console.log(`new ref[${idx}] - attaching to dom...`, node);
-              if (node != null) cells[idx].attachToDOM(node);
-            }),
-        );
-
-        setNotebook(nb);
-        setLoading(false);
-      });
-  }, [core, config]);
 
   /**
    * When the notebook and session is avaiable, attach to session
@@ -100,8 +61,84 @@ export function useNotebook(
 
   return {
     ready: !!notebook && sessionAttached,
-    loading,
     attached: sessionAttached,
+    executing,
+    executed,
+    notebook,
+    setNotebook,
+    refs,
+    setRefs,
+    executeAll,
+    executeSome,
+    clear,
+    session,
+  };
+}
+
+/**
+ * @paran name - provided to the fetcher function
+ * @param fetchNotebook - an async function, that given a name, can return a JSON representation of an ipynb file (INotebookContent)
+ * @param opts - options.refsForWidgetsOnly=false allows refs to be generated for all notebook cells, rather than onlythose with widget tags
+ * @returns
+ */
+export function useNotebook(
+  name: string,
+  fetchNotebook: (name: string) => Promise<INotebookContent>,
+  opts = { refsForWidgetsOnly: true },
+) {
+  const { core } = useThebeCore();
+  const { config } = useThebeConfig();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const {
+    ready,
+    attached,
+    executing,
+    executed,
+    notebook,
+    setNotebook,
+    refs,
+    setRefs,
+    executeAll,
+    executeSome,
+    clear,
+    session,
+  } = useNotebookBase(opts);
+
+  /**
+   * - set loading flag
+   * - load the notebook
+   * - setup callback refs, to auto-attach to dom
+   * - set notebook, which triggers
+   * - clear loading flag
+   */
+  useEffect(() => {
+    if (!core || !config) return;
+    setLoading(true);
+    fetchNotebook(name)
+      .then((ipynb) => {
+        return core?.ThebeNotebook.fromIpynb(ipynb, config);
+      })
+      .then((nb: ThebeNotebook) => {
+        const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
+        // set up an array of callback refs to update the DOM elements
+        setRefs(
+          Array(cells.length)
+            .fill(null)
+            .map((_, idx) => (node) => {
+              console.debug(`new ref[${idx}] - attaching to dom...`, node);
+              if (node != null) cells[idx].attachToDOM(node);
+            }),
+        );
+        setNotebook(nb);
+        setLoading(false);
+      });
+  }, [core, config]);
+
+  return {
+    ready,
+    loading,
+    attached,
     executing,
     executed,
     notebook,
@@ -112,12 +149,76 @@ export function useNotebook(
     executeAll,
     executeSome,
     clear,
-    rerender: () => setReRender({}),
     session,
   };
 }
 
-export function useNotebookfromSource(sourceCode: string[]) {
+/**
+ * @param sourceCode - just an array of valid code blocks as single line strings
+ * @param opts - options.refsForWidgetsOnly=false allows refs to be generated for all notebook cells, rather than onlythose with widget tags
+ * @returns
+ */
+export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidgetsOnly: true }) {
+  const { core } = useThebeCore();
+  const { config } = useThebeConfig();
+  const [loading, setLoading] = useState(false);
+  const {
+    ready,
+    attached,
+    executing,
+    executed,
+    notebook,
+    setNotebook,
+    refs,
+    setRefs,
+    executeAll,
+    executeSome,
+    clear,
+    session,
+  } = useNotebookBase(opts);
+
+  useEffect(() => {
+    if (!core || !config) return;
+    setLoading(true);
+    const nb = core.ThebeNotebook.fromCodeBlocks(
+      sourceCode.map((source) => ({ id: core?.shortId(), source })),
+      config,
+    );
+    const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
+    setRefs(
+      Array(cells.length)
+        .fill(null)
+        .map((_, idx) => (node) => {
+          console.debug(`new ref[${idx}] - attaching to dom...`, node);
+          if (node != null) cells[idx].attachToDOM(node);
+        }),
+    );
+    setNotebook(nb);
+    setLoading(false);
+  }, [core, notebook]);
+
+  return {
+    ready,
+    loading,
+    attached,
+    executing,
+    executed,
+    notebook,
+    cellRefs: refs,
+    cellIds: (opts.refsForWidgetsOnly ? notebook?.widgets ?? [] : notebook?.cells ?? []).map(
+      (c) => c.id,
+    ),
+    executeAll,
+    executeSome,
+    clear,
+    session,
+  };
+}
+
+/**
+ * DEPRECATED - migrate to useNotebookFromSource
+ */
+export function useNotebookfromSourceLegacy(sourceCode: string[]) {
   const { core } = useThebeCore();
   const { config } = useThebeConfig();
 
