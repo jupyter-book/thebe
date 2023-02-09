@@ -10,12 +10,6 @@ import { EventEmitter } from './emitter';
 import type { ICodeCell, INotebookContent, INotebookMetadata } from '@jupyterlab/nbformat';
 import NonExecutableCell from './cell_noexec';
 
-export interface ExecuteReturn {
-  id: string;
-  height: number;
-  width: number;
-}
-
 export interface CodeBlock {
   id: string;
   source: string;
@@ -150,7 +144,7 @@ class ThebeNotebook {
     cellId: string,
     stopOnError = false,
     preprocessor?: (s: string) => string,
-  ): Promise<(ExecuteReturn | null)[]> {
+  ): Promise<(IThebeCellExecuteReturn | null)[]> {
     if (!this.cells) return [];
     this.events.triggerStatus({
       status: NotebookStatusEvent.executing,
@@ -177,7 +171,7 @@ class ThebeNotebook {
   async executeOnly(
     cellId: string,
     preprocessor?: (s: string) => string,
-  ): Promise<ExecuteReturn | null> {
+  ): Promise<IThebeCellExecuteReturn | null> {
     if (!this.cells) return null;
     this.events.triggerStatus({
       status: NotebookStatusEvent.executing,
@@ -196,7 +190,7 @@ class ThebeNotebook {
     cellIds: string[],
     stopOnError = false,
     preprocessor?: (s: string) => string,
-  ): Promise<(ExecuteReturn | null)[]> {
+  ): Promise<(IThebeCellExecuteReturn | null)[]> {
     if (!this.cells) return [];
     this.events.triggerStatus({
       status: NotebookStatusEvent.executing,
@@ -238,7 +232,7 @@ class ThebeNotebook {
   async executeAll(
     stopOnError = false,
     preprocessor?: (s: string) => string,
-  ): Promise<(ExecuteReturn | null)[]> {
+  ): Promise<(IThebeCellExecuteReturn | null)[]> {
     if (!this.cells) return [];
 
     this.events.triggerStatus({
