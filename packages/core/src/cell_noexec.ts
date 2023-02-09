@@ -110,6 +110,6 @@ export default class NonExecutableCell implements IThebeCell {
 
   async execute(source?: string): Promise<IThebeCellExecuteReturn | null> {
     // could potentially allow for markdown rendering here
-    return { id: this.id, height: 0, width: 0, error: false };
+    return { id: this.id, height: 0, width: 0 };
   }
 }

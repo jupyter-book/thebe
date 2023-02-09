@@ -130,7 +130,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       console.debug(`thebe:renderer:execute ${this.id}`);
       if (!this.isBusy) this.setAsBusy();
 
-      const useShadow = true;
+      const useShadow = true; // TODO expose as option
       if (useShadow) {
         // Use a shadow output area for the execute request
         const model = new OutputAreaModel({ trusted: true });
@@ -151,7 +151,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
         await this.area.future.done;
       }
 
-      let hasExecuteErrors = false;
+      let executeErrors: IError[] | undefined;
       for (let i = 0; i < this.model.length; i++) {
         const out = this.model.get(i);
         if (out.type === 'error') {
@@ -162,7 +162,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
               message: errorToMessage(json),
             });
           } else {
-            hasExecuteErrors = true;
+            if (!executeErrors) executeErrors = [json];
+            else executeErrors?.push(json);
             this.events.triggerError({
               status: ErrorStatusEvent.executeError,
               message: errorToMessage(json),
@@ -176,7 +177,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
         id: this.id,
         height: this.area.node.offsetHeight,
         width: this.area.node.offsetWidth,
-        error: hasExecuteErrors,
+        error: executeErrors,
       };
     } catch (err: any) {
       console.error('thebe:renderer:execute Error:', err);

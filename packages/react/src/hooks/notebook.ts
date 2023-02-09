@@ -1,23 +1,40 @@
 import { createRef, useEffect, useState } from 'react';
-import type { ThebeNotebook, ThebeSession, IThebeCell } from 'thebe-core';
+import type { ThebeNotebook, ThebeSession, IThebeCell, IThebeCellExecuteReturn } from 'thebe-core';
 import { useThebeConfig } from '../ThebeServerProvider';
 import { useThebeCore } from '../ThebeCoreProvider';
 import type { INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
 
-interface ExecuteOptions {
+export interface NotebookExecuteOptions {
+  stopOnError?: boolean;
   before?: () => void;
   after?: () => void;
   preprocessor?: (s: string) => string;
 }
 
-function useNotebookBase(opts = { refsForWidgetsOnly: true }) {
+export type IThebeNotebookError = IThebeCellExecuteReturn & { index: number };
+
+function findErrors(execReturns: (IThebeCellExecuteReturn | null)[]) {
+  return execReturns.reduce<IThebeNotebookError[] | null>(
+    (acc, retval: IThebeCellExecuteReturn | null, index) => {
+      if (retval?.error) {
+        if (acc == null) return [{ ...retval, index }];
+        else return [...acc, { ...retval, index }];
+      }
+      return acc;
+    },
+    null,
+  );
+}
+
+function useNotebookBase() {
   const { session } = useThebeSession();
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();
   const [refs, setRefs] = useState<((node: HTMLDivElement) => void)[]>([]);
   const [sessionAttached, setSessionAttached] = useState(false);
   const [executing, setExecuting] = useState<boolean>(false);
   const [executed, setExecuted] = useState(false);
+  const [errors, setErrors] = useState<IThebeNotebookError[] | null>(null);
 
   /**
    * When the notebook and session is avaiable, attach to session
@@ -28,29 +45,40 @@ function useNotebookBase(opts = { refsForWidgetsOnly: true }) {
     setSessionAttached(true);
   }, [notebook, session]);
 
-  const executeAll = (options?: ExecuteOptions) => {
+  const executeAll = (options?: NotebookExecuteOptions) => {
     if (!notebook) throw new Error('executeAll called before notebook available');
     options?.before?.();
     setExecuting(true);
-    return notebook.executeAll(true, options?.preprocessor).then((exec_return) => {
-      options?.after?.();
-      setExecuted(true);
-      setExecuting(false);
-      return exec_return;
-    });
+    return notebook
+      .executeAll(options?.stopOnError ?? true, options?.preprocessor)
+      .then((execReturns) => {
+        options?.after?.();
+        const errs = findErrors(execReturns);
+        if (errs != null) setErrors(errs);
+        setExecuted(true);
+        setExecuting(false);
+        return execReturns;
+      });
   };
 
-  const executeSome = (predicate: (cell: IThebeCell) => boolean, options?: ExecuteOptions) => {
+  const executeSome = (
+    predicate: (cell: IThebeCell) => boolean,
+    options?: NotebookExecuteOptions,
+  ) => {
     if (!notebook) throw new Error('executeSome called before notebook available');
     options?.before?.();
     setExecuting(true);
     const filteredCells = notebook.cells.filter(predicate).map((c) => c.id);
-    return notebook.executeCells(filteredCells, true, options?.preprocessor).then((exec_return) => {
-      options?.after?.();
-      setExecuted(true);
-      setExecuting(false);
-      return exec_return;
-    });
+    return notebook
+      .executeCells(filteredCells, options?.stopOnError ?? true, options?.preprocessor)
+      .then((execReturns) => {
+        options?.after?.();
+        const errs = findErrors(execReturns);
+        if (errs != null) setErrors(errs);
+        setExecuted(true);
+        setExecuting(false);
+        return execReturns;
+      });
   };
 
   const clear = () => {
@@ -64,6 +92,7 @@ function useNotebookBase(opts = { refsForWidgetsOnly: true }) {
     attached: sessionAttached,
     executing,
     executed,
+    errors,
     notebook,
     setNotebook,
     refs,
@@ -95,6 +124,7 @@ export function useNotebook(
     attached,
     executing,
     executed,
+    errors,
     notebook,
     setNotebook,
     refs,
@@ -103,7 +133,7 @@ export function useNotebook(
     executeSome,
     clear,
     session,
-  } = useNotebookBase(opts);
+  } = useNotebookBase();
 
   /**
    * - set loading flag
@@ -141,6 +171,7 @@ export function useNotebook(
     attached,
     executing,
     executed,
+    errors,
     notebook,
     cellRefs: refs,
     cellIds: (opts.refsForWidgetsOnly ? notebook?.widgets ?? [] : notebook?.cells ?? []).map(
@@ -167,6 +198,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
     attached,
     executing,
     executed,
+    errors,
     notebook,
     setNotebook,
     refs,
@@ -175,7 +207,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
     executeSome,
     clear,
     session,
-  } = useNotebookBase(opts);
+  } = useNotebookBase();
 
   useEffect(() => {
     if (!core || !config) return;
@@ -203,6 +235,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
     attached,
     executing,
     executed,
+    errors,
     notebook,
     cellRefs: refs,
     cellIds: (opts.refsForWidgetsOnly ? notebook?.widgets ?? [] : notebook?.cells ?? []).map(

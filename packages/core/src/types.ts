@@ -1,6 +1,6 @@
 import type { KernelSpecAPI, ServerConnection, Session } from '@jupyterlab/services';
 import type ThebeSession from './session';
-import type { IOutput } from '@jupyterlab/nbformat';
+import type { IOutput, IError } from '@jupyterlab/nbformat';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
@@ -104,7 +104,7 @@ export interface IThebeCellExecuteReturn {
   id: string;
   height: number;
   width: number;
-  error: boolean;
+  error?: IError[];
 }
 
 export interface ServerRuntime {
