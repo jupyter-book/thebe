@@ -14,7 +14,7 @@ export interface NotebookExecuteOptions {
 
 export type IThebeNotebookError = IThebeCellExecuteReturn & { index: number };
 
-function findErrors(execReturns: (IThebeCellExecuteReturn | null)[]) {
+export function findErrors(execReturns: (IThebeCellExecuteReturn | null)[]) {
   return execReturns.reduce<IThebeNotebookError[] | null>(
     (acc, retval: IThebeCellExecuteReturn | null, index) => {
       if (retval?.error) {
