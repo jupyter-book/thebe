@@ -3,7 +3,7 @@ on:
   - pull_request
 jobs:
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       # Action Repo: https://github.com/actions/checkout
       - name: 'Checkout repo'
@@ -28,7 +28,7 @@ jobs:
       - name:
         run: npm run lint
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: lint
     steps:
       - name: 'Checkout repo'
