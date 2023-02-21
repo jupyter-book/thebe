@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "docs": "typedoc --options ./typedoc.ts",
-    "start": "curvenote start"
+    "start": "myst start"
   },
   "author": "",
   "license": "CC0-1.0",
