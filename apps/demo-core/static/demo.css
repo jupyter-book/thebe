@@ -9,7 +9,7 @@ body > div {
 }
 pre {
   border: 1px gray solid;
-  max-width: 500px;
+  width: fit-content;
   padding: 10px;
 }
 button {

@@ -1,5 +1,4 @@
 import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
-import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
@@ -130,26 +129,10 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       console.debug(`thebe:renderer:execute ${this.id}`);
       if (!this.isBusy) this.setAsBusy();
 
-      const useShadow = true; // TODO expose as option
-      if (useShadow) {
-        // Use a shadow output area for the execute request
-        const model = new OutputAreaModel({ trusted: true });
-        console.log(`thebe:renderer:execute:rendermine`, this.rendermime);
-        const area = new OutputArea({
-          model,
-          rendermime: this.rendermime,
-        });
+      this.area.future = this.session.kernel.requestExecute({ code });
 
-        area.future = this.session.kernel?.requestExecute({ code });
-        await area.future.done;
-
-        // trigger an update via the model associated with the OutputArea
-        // that is attached to the DOM
-        this.model.fromJSON(model.toJSON());
-      } else {
-        this.area.future = this.session.kernel.requestExecute({ code });
-        await this.area.future.done;
-      }
+      // TODO consider how to enable execution without the await here
+      await this.area.future.done;
 
       let executeErrors: IError[] | undefined;
       for (let i = 0; i < this.model.length; i++) {
