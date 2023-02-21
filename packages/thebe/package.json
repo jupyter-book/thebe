@@ -1,6 +1,6 @@
 {
   "name": "thebe",
-  "version": "0.9.0-rc.2",
+  "version": "0.9.0-rc.3",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "style": "lib/thebe.css",
@@ -58,7 +58,7 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
-    "thebe-core": "^0.1.2"
+    "thebe-core": "^0.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -98,7 +98,6 @@
     "puppeteer": ">=1.5.0",
     "source-map-loader": "^4.0.1",
     "style-loader": "^2.0.0",
-    "thebe-core": "^0.1.2",
     "ts-jest": "^28.0.5",
     "ts-loader": "^9.3.1",
     "url-loader": "^4.1.1",
