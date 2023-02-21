@@ -75,6 +75,18 @@ describe('options', () => {
         kernelName: 'ijpl1',
       });
     });
+    test('overrides - missing name', () => {
+      expect(
+        makeKernelOptions({
+          path: '/notebooks',
+          kernelName: 'ijpl1',
+        }),
+      ).toEqual({
+        path: '/notebooks',
+        name: 'ijpl1',
+        kernelName: 'ijpl1',
+      });
+    });
   });
   describe('server settings', () => {
     test('defaults', () => {
@@ -82,6 +94,7 @@ describe('options', () => {
         baseUrl: 'http://localhost:8888',
         token: 'test-secret',
         appendToken: true,
+        wsUrl: 'ws://localhost:8888',
       });
     });
     test('overrides', () => {
@@ -90,11 +103,13 @@ describe('options', () => {
           baseUrl: 'any-string',
           token: 'any-token-string',
           appendToken: false,
+          wsUrl: 'any-string',
         }),
       ).toEqual({
         baseUrl: 'any-string',
         token: 'any-token-string',
         appendToken: false,
+        wsUrl: 'any-string',
       });
     });
   });

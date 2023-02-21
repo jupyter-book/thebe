@@ -20,7 +20,7 @@ export function makeBinderOptions(opts: BinderOptions) {
   };
 }
 
-export function makeSavedSessionOptions(opts: SavedSessionOptions) {
+export function makeSavedSessionOptions(opts: SavedSessionOptions): Required<SavedSessionOptions> {
   return {
     enabled: true,
     maxAge: 86400,
@@ -29,20 +29,20 @@ export function makeSavedSessionOptions(opts: SavedSessionOptions) {
   };
 }
 
-export function makeKernelOptions(opts: KernelOptions) {
+export function makeKernelOptions(opts: KernelOptions): Required<KernelOptions> {
   return {
-    path: '/',
-    name: 'python',
-    kernelName: 'python',
-    ...opts,
+    path: opts.path ?? '/',
+    kernelName: opts.kernelName ?? 'python',
+    name: opts.name ?? opts.kernelName ?? 'python',
   };
 }
 
-export function makeServerSettings(settings: ServerSettings) {
+export function makeServerSettings(settings: ServerSettings): Required<ServerSettings> {
   return {
     baseUrl: 'http://localhost:8888',
     token: 'test-secret',
     appendToken: true,
+    wsUrl: 'ws://localhost:8888',
     ...settings,
   };
 }
