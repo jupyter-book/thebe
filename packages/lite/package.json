@@ -40,9 +40,9 @@
   },
   "homepage": "https://github.com/executablebooks/thebe#readme",
   "dependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.14",
-    "@jupyterlite/server": "0.1.0-beta.14",
-    "@jupyterlite/server-extension": "0.1.0-beta.14",
+    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.18",
+    "@jupyterlite/server": "0.1.0-beta.18",
+    "@jupyterlite/server-extension": "0.1.0-beta.18",
     "hook-shell-script-webpack-plugin": "^0.1.4"
   },
   "devDependencies": {
