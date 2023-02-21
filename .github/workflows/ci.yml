@@ -28,7 +28,7 @@ jobs:
       - name:
         run: npm run lint
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: lint
     steps:
       - name: 'Checkout repo'
