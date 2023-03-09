@@ -14,7 +14,6 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
-import { OutputModel } from './output';
 import { requireLoader } from './loader';
 
 /**
@@ -135,10 +134,7 @@ export class ThebeManager extends KernelWidgetManager {
     this.register({
       name: '@jupyter-widgets/output',
       version: output.OUTPUT_WIDGET_VERSION,
-      exports: {
-        ...(output as any),
-        OutputModel,
-      },
+      exports: output as any,
     });
   }
 }
