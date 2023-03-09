@@ -1,12 +1,13 @@
-import { IBackboneModelOptions } from '@jupyter-widgets/base';
-import { LabWidgetManager } from '@jupyter-widgets/jupyterlab-manager';
+import type { IBackboneModelOptions } from '@jupyter-widgets/base';
+import type { LabWidgetManager } from '@jupyter-widgets/jupyterlab-manager';
+import { WidgetManager } from '@jupyter-widgets/jupyterlab-manager';
 import * as outputBase from '@jupyter-widgets/output';
-import * as nbformat from '@jupyterlab/nbformat';
+import type * as nbformat from '@jupyterlab/nbformat';
 import { OutputAreaModel } from '@jupyterlab/outputarea';
-import { KernelMessage } from '@jupyterlab/services';
+import type { KernelMessage, Session } from '@jupyterlab/services';
 
 /**
- * using the saem (temporary) appraoch as Voila to  enable use of an output model with the
+ * using the same (temporary) appraoch as Voila to  enable use of an output model with the
  * KernelWidgetManager
  *
  * see: https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
@@ -21,9 +22,28 @@ export class OutputModel extends outputBase.OutputModel {
     // The output area model is trusted since widgets are only rendered in trusted contexts.
     this._outputs = new OutputAreaModel({ trusted: true });
 
+    // TODO a different waay to get the kernel changed message?
+    // if the context is available, react on kernel changes
+    // if (this.widget_manager instanceof WidgetManager) {
+    //   this.widget_manager.context.sessionContext.kernelChanged.connect((sender, args) => {
+    //     this._handleKernelChanged(args);
+    //   });
+    // }
+
     this.listenTo(this, 'change:msg_id', this.reset_msg_id);
     this.listenTo(this, 'change:outputs', this.setOutputs);
     this.setOutputs();
+  }
+
+  /**
+   * Register a new kernel
+   */
+  _handleKernelChanged({ oldValue }: Session.ISessionConnection.IKernelChangedArgs): void {
+    const msgId = this.get('msg_id');
+    if (msgId && oldValue) {
+      oldValue.removeMessageHook(msgId, this._msgHook);
+      this.set('msg_id', null);
+    }
   }
 
   /**

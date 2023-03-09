@@ -66,11 +66,12 @@ export class ThebeManager extends KernelWidgetManager {
   }
 
   async display_view(msg: any, view: any, options: any): Promise<Widget> {
+    console.log('widget display_view', { view, options });
     if (options.el) {
       LuminoWidget.Widget.attach(view.luminoWidget, options.el);
     }
     if (view.el) {
-      view.el.setAttribute('thebe-jupyter-widget', '');
+      view.el.setAttribute('data-thebe-jupyter-widget', '');
       view.el.addEventListener('jupyterWidgetResize', () => {
         MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
       });
