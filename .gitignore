@@ -21,3 +21,4 @@ apps/docs/_static/lib
 junit.xml
 
 .turbo
+.ipynb_checkpoints
