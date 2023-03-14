@@ -1,6 +1,6 @@
 {
   "name": "thebe",
-  "version": "0.9.0-rc.3",
+  "version": "0.9.0-rc.4",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "style": "lib/thebe.css",
@@ -58,7 +58,7 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
-    "thebe-core": "^0.1.3"
+    "thebe-core": "^0.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

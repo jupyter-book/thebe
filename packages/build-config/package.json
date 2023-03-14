@@ -1,6 +1,6 @@
 {
   "name": "build-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Shared jest configuration files for use in the thebe monorepo",
   "scripts": {},
