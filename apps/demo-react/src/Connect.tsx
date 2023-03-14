@@ -3,12 +3,12 @@ import { useThebeCore, useThebeServer } from 'thebe-react';
 
 export function Connect() {
   const { core, loading, load } = useThebeCore();
-  const { server, ready, connecting, connect } = useThebeServer();
+  const { ready, connecting, connect } = useThebeServer();
 
   useEffect(() => {
     if (core || loading) return;
     load();
-  }, []);
+  }, [core, load, loading]);
 
   const clickConnect = () => {
     if (!core) return;

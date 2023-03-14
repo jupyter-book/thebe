@@ -3,17 +3,16 @@ import JupyterOutputDecoration from './JupyterOutputDecoration';
 
 export function WidgetsPage() {
   const NAME = 'widget-test-3';
-  const { ready, loading, attached, executing, notebook, executeAll, cellRefs, cellIds, clear } =
-    useNotebook(
-      NAME,
-      async (n) => {
-        const url = `/${n}.ipynb`;
-        const resp = await fetch(url);
-        if (!resp.ok) throw Error(`Could not load ${url}`);
-        return resp.json();
-      },
-      { refsForWidgetsOnly: false },
-    );
+  const { ready, executing, executeAll, cellRefs, cellIds } = useNotebook(
+    NAME,
+    async (n) => {
+      const url = `/${n}.ipynb`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw Error(`Could not load ${url}`);
+      return resp.json();
+    },
+    { refsForWidgetsOnly: false },
+  );
 
   const clickExecute = () => {
     executeAll();
