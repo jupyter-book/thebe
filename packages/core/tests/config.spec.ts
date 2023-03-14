@@ -40,6 +40,7 @@ describe('config', () => {
         baseUrl: 'http://localhost:8888',
         token: 'test-secret',
         appendToken: true,
+        wsUrl: 'ws://localhost:8888',
       });
     });
   });

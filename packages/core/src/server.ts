@@ -87,7 +87,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     // TODO can we defer connection setup, return the session immediately and then have a ready signal?
     const connection = await this.sessionManager?.startNew({
-      name: kernelOptions?.name ?? this.config.kernels.name,
+      name: kernelOptions?.name ?? kernelOptions?.kernelName ?? this.config.kernels.name,
       path: kernelOptions?.path ?? this.config.kernels.path,
       type: 'notebook',
       kernel: {
