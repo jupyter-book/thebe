@@ -32,9 +32,9 @@ class ThebeNotebook {
     this.rendermime = rendermime ?? getRenderMimeRegistry(config.mathjax);
   }
 
-  static fromCodeBlocks(blocks: CodeBlock[], config: Config) {
+  static fromCodeBlocks(blocks: CodeBlock[], config: Config, rendermime?: IRenderMimeRegistry) {
     const id = shortId();
-    const notebook = new ThebeNotebook(id, config);
+    const notebook = new ThebeNotebook(id, config, rendermime);
     notebook.cells = blocks.map((c) => {
       const metadata = {};
       const cell = new ThebeCell(c.id, id, c.source, config, metadata, notebook.rendermime);

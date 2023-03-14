@@ -15,7 +15,7 @@ module.exports = function (dirname, tsconfig) {
       '^.+\\.(js|ts|tsx)$': 'ts-jest',
     },
     transformIgnorePatterns: [
-      '/node_modules/(?!(@jupyterlab|@jupyter-widgets|y-protocols|lib0|@jupyterlite|nanoid|@jupyter-widgets|d3-format|d3-color|p-props|p-map|aggregate-error|indent-string|clean-stack|escape-string-regexp)/)',
+      '/node_modules/(?!(@jupyter/ydoc|@jupyterlab|@jupyter-widgets|y-protocols|lib0|@jupyterlite|nanoid|@jupyter-widgets|d3-format|d3-color|p-props|p-map|aggregate-error|indent-string|clean-stack|escape-string-regexp)/)',
     ],
     globals: {
       'ts-jest': {

@@ -28,7 +28,7 @@ export function findErrors(execReturns: (IThebeCellExecuteReturn | null)[]) {
 }
 
 function useNotebookBase() {
-  const { session } = useThebeSession();
+  const { session, ready: sessionReady } = useThebeSession();
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();
   const [refs, setRefs] = useState<((node: HTMLDivElement) => void)[]>([]);
   const [sessionAttached, setSessionAttached] = useState(false);
@@ -40,10 +40,10 @@ function useNotebookBase() {
    * When the notebook and session is avaiable, attach to session
    */
   useEffect(() => {
-    if (!notebook || !session) return;
+    if (!notebook || !session || !sessionReady) return;
     notebook.attachSession(session);
     setSessionAttached(true);
-  }, [notebook, session]);
+  }, [notebook, session, sessionReady]);
 
   const executeAll = (options?: NotebookExecuteOptions) => {
     if (!notebook) throw new Error('executeAll called before notebook available');
@@ -210,7 +210,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
   } = useNotebookBase();
 
   useEffect(() => {
-    if (!core || !config) return;
+    if (!core || !config || loading || notebook) return;
     setLoading(true);
     const nb = core.ThebeNotebook.fromCodeBlocks(
       sourceCode.map((source) => ({ id: core?.shortId(), source })),
@@ -227,7 +227,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
     );
     setNotebook(nb);
     setLoading(false);
-  }, [core, notebook]);
+  }, [core, notebook, loading]);
 
   return {
     ready,

@@ -29,6 +29,7 @@ export function ThebeSessionProvider({
 
   const [doStart, setDoStart] = useState(start);
   const [starting, setStarting] = useState(false);
+  const [sessionName, setSessionName] = useState(name);
   const [session, setSession] = useState<ThebeSession | undefined>();
   const [error, setError] = useState<string | undefined>();
 
@@ -36,15 +37,17 @@ export function ThebeSessionProvider({
   useEffect(() => {
     if (!doStart || !server || !serverReady) return;
     setStarting(true);
-    server.startNewSession({ ...config?.kernels, name, path: name }).then((sesh) => {
-      setStarting(false);
-      if (sesh != null) return setSession(sesh);
-      server.getKernelSpecs().then((specs) => {
-        setError(
-          `Could not start a session - available kernels: ${Object.keys(specs.kernelspecs)}`,
-        );
+    server
+      .startNewSession({ ...config?.kernels, name: sessionName, path: sessionName })
+      .then((sesh) => {
+        setStarting(false);
+        if (sesh != null) return setSession(sesh);
+        server.getKernelSpecs().then((specs) => {
+          setError(
+            `Could not start a session - available kernels: ${Object.keys(specs.kernelspecs)}`,
+          );
+        });
       });
-    });
   }, [doStart, server, serverReady]);
 
   // shutdown session on navigate away
@@ -63,7 +66,11 @@ export function ThebeSessionProvider({
         starting,
         ready,
         session,
-        start: () => setDoStart(true),
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        start: (name?: string) => {
+          if (name) setSessionName(name);
+          setDoStart(true);
+        },
         error,
       }}
     >
@@ -75,7 +82,7 @@ export function ThebeSessionProvider({
 export function useThebeSession(): ThebeSessionContextData {
   const sessionContext = useContext(ThebeSessionContext);
   if (sessionContext === undefined) {
-    throw new Error('useThebeSession must be used inside a ThebeServerProvider');
+    throw new Error('useThebeSession must be used inside a ThebeSessionProvider');
   }
   return sessionContext;
 }

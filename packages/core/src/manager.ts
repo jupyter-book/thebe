@@ -1,10 +1,10 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
 import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
 import type { Widget } from '@lumino/widgets';
 
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
-import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
 
 import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
 
@@ -14,7 +14,6 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
-import { OutputModel } from './output';
 import { requireLoader } from './loader';
 
 /**
@@ -28,13 +27,25 @@ export class ThebeManager extends KernelWidgetManager {
   _loader: RequireJsLoader;
 
   constructor(kernel: IKernelConnection, rendermime?: IRenderMimeRegistry) {
-    super(
-      kernel,
+    const rm =
       rendermime ??
-        new RenderMimeRegistry({
-          initialFactories: standardRendererFactories,
-        }),
+      new RenderMimeRegistry({
+        initialFactories: standardRendererFactories,
+      });
+
+    /** ensure this registry always gets the widget renderer.
+     * This is essential for cases where widgets are rendered heirarchically
+     */
+    rm.addFactory(
+      {
+        safe: false,
+        mimeTypes: [WIDGET_MIMETYPE],
+        createRenderer: (options) => new WidgetRenderer(options, this as any),
+      },
+      1,
     );
+
+    super(kernel, rm);
 
     this.id = shortId();
     this._registerWidgets();
@@ -66,11 +77,12 @@ export class ThebeManager extends KernelWidgetManager {
   }
 
   async display_view(msg: any, view: any, options: any): Promise<Widget> {
+    console.log('widget display_view', { view, options });
     if (options.el) {
       LuminoWidget.Widget.attach(view.luminoWidget, options.el);
     }
     if (view.el) {
-      view.el.setAttribute('thebe-jupyter-widget', '');
+      view.el.setAttribute('data-thebe-jupyter-widget', '');
       view.el.addEventListener('jupyterWidgetResize', () => {
         MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
       });
@@ -134,10 +146,7 @@ export class ThebeManager extends KernelWidgetManager {
     this.register({
       name: '@jupyter-widgets/output',
       version: output.OUTPUT_WIDGET_VERSION,
-      exports: {
-        ...(output as any),
-        OutputModel,
-      },
+      exports: output as any,
     });
   }
 }

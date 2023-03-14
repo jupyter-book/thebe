@@ -137,6 +137,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       let executeErrors: IError[] | undefined;
       for (let i = 0; i < this.model.length; i++) {
         const out = this.model.get(i);
+        console.debug('thebecell:execute:output', { out: out.toJSON() });
         if (out.type === 'error') {
           const json = out.toJSON() as IError;
           if (json.ename === 'stderr') {
