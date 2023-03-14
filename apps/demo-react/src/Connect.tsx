@@ -15,8 +15,6 @@ export function Connect() {
     connect();
   };
 
-  console.log({ server, connecting, connect });
-
   return (
     <div className="my-2">
       {!ready && (

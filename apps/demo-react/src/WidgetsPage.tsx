@@ -2,7 +2,6 @@ import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 
 export function WidgetsPage() {
-  // const NAME = 'concepts_Fourier_transform_1D_v02'; // 'widget-test-3';
   const NAME = 'widget-test-3';
   const { ready, loading, attached, executing, notebook, executeAll, cellRefs, cellIds, clear } =
     useNotebook(
@@ -17,11 +16,8 @@ export function WidgetsPage() {
     );
 
   const clickExecute = () => {
-    console.log('exec');
     executeAll();
   };
-
-  console.log({ rendermime: notebook?.rendermime });
 
   return (
     <div className="mt-4">

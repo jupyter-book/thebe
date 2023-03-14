@@ -74,7 +74,6 @@ class App {
   }
 
   handleServerTypeChange(evt: MouseEvent) {
-    console.log('handleServerTypeChange', this);
     if ((evt.target as Element).id === 'local') {
       this._showLocalMessage();
       this.options = options.local;
