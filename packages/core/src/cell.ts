@@ -30,6 +30,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     this.source = source;
     this.metadata = metadata;
     this.busy = false;
+    console.debug('thebe:cell constructor', this);
   }
 
   static fromICodeCell(

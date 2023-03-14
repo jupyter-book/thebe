@@ -30,6 +30,7 @@ class ThebeNotebook {
     this.cells = [];
     this.metadata = {};
     this.rendermime = rendermime ?? getRenderMimeRegistry(config.mathjax);
+    console.debug('thebe:notebook constructor', this);
   }
 
   static fromCodeBlocks(blocks: CodeBlock[], config: Config, rendermime?: IRenderMimeRegistry) {
