@@ -1,5 +1,12 @@
-import { ThebeEvents, ThebeEventType, ThebeSession } from 'thebe-core';
-import { shortId, ThebeNotebook, makeConfiguration, ThebeServer } from 'thebe-core';
+import type { ThebeSession } from 'thebe-core';
+import {
+  ThebeEvents,
+  ThebeEventType,
+  shortId,
+  ThebeNotebook,
+  makeConfiguration,
+  ThebeServer,
+} from 'thebe-core';
 import { code, options } from './setup';
 
 export type ServerType = 'local' | 'lite' | 'binder';
