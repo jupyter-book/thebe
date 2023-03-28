@@ -4,6 +4,8 @@ import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { IPassiveCell, MathjaxOptions } from './types';
 import { makeMathjaxOptions } from './options';
+import { Widget } from '@lumino/widgets';
+import { MessageLoop } from '@lumino/messaging';
 
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
@@ -61,10 +63,9 @@ class PassiveCellRenderer implements IPassiveCell {
     div.className = 'thebe-output';
     el.append(div);
 
-    // MessageLoop.sendMessage(this.area, Widget.Msg.BeforeAttach);
+    MessageLoop.sendMessage(this.area, Widget.Msg.BeforeAttach);
     el.insertBefore(this.area.node, null);
-    // MessageLoop.sendMessage(this.area, Widget.Msg.AfterAttach);
-    // Widget.attach(this.area, div);
+    MessageLoop.sendMessage(this.area, Widget.Msg.AfterAttach);
   }
 
   setOutputText(text: string) {
