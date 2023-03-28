@@ -21,8 +21,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     notebookId: string,
     source: string,
     config: Config,
-    metadata: JsonObject = {},
-    rendermime?: IRenderMimeRegistry,
+    metadata: JsonObject,
+    rendermime: IRenderMimeRegistry,
   ) {
     super(id, rendermime);
     this.events = new EventEmitter(id, config, EventSubject.cell, this);
@@ -37,7 +37,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     icc: ICodeCell,
     notebookId: string,
     config: Config,
-    rendermime?: IRenderMimeRegistry,
+    rendermime: IRenderMimeRegistry,
   ) {
     const cell = new ThebeCell(
       icc.id ?? shortId(),
