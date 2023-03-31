@@ -6,6 +6,41 @@ import type { IPassiveCell, MathjaxOptions } from './types';
 import { makeMathjaxOptions } from './options';
 import { Widget } from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
+import { WIDGET_MIMETYPE } from './manager';
+import { ensureString } from './utils';
+
+function isMimeBundle({ output_type }: nbformat.IOutput) {
+  return output_type === 'display_data' || output_type === 'execute_result';
+}
+
+function hasTextHtml(mimebundle: nbformat.IMimeBundle) {
+  return 'text/html' in mimebundle;
+}
+
+const placeholder = (plainText?: string) => `
+<div class="thebe-ipywidgets-placeholder">
+  <div class="thebe-ipywidgets-placeholder-image"></div>
+  <div class="thebe-ipywidgets-placeholder-message"><code>ipywidgets</code> - a Jupyter kernel connection is required to display this output.</div>
+  ${plainText && `<pre>${plainText}</pre>`}
+</div>
+`;
+
+function stripWidgets(outputs: nbformat.IOutput[]) {
+  return outputs.map((output: nbformat.IOutput) => {
+    if (!isMimeBundle(output)) return output;
+    const { [WIDGET_MIMETYPE]: widgets, ...others } = output.data as nbformat.IMimeBundle;
+    if (!widgets) return output;
+    const data = { ...others };
+    // if there is not already an html bundle, add a placeholder to hide the plain/text field
+    if (!hasTextHtml(others))
+      data['text/html'] = placeholder(ensureString(data['text/plain'] as string | string[]));
+    const stripped = {
+      ...output,
+      data,
+    };
+    return stripped;
+  });
+}
 
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
@@ -34,7 +69,7 @@ class PassiveCellRenderer implements IPassiveCell {
     return this.area.isAttached;
   }
 
-  attachToDOM(el?: HTMLElement) {
+  attachToDOM(el?: HTMLElement, strict = false) {
     if (!this.area || !el) {
       console.error(
         `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this.area}, el: ${el}`,
@@ -42,8 +77,8 @@ class PassiveCellRenderer implements IPassiveCell {
       return;
     }
     if (this.area.isAttached) {
-      console.warn(`thebe:renderer:attachToDOM - already attached, returning`);
-      return;
+      console.warn(`thebe:renderer:attachToDOM - already attached`);
+      if (strict) return;
     }
     console.debug(`thebe:renderer:attachToDOM ${this.id}`);
 
@@ -64,7 +99,7 @@ class PassiveCellRenderer implements IPassiveCell {
     el.append(div);
 
     MessageLoop.sendMessage(this.area, Widget.Msg.BeforeAttach);
-    el.insertBefore(this.area.node, null);
+    div.appendChild(this.area.node);
     MessageLoop.sendMessage(this.area, Widget.Msg.AfterAttach);
   }
 
@@ -111,7 +146,7 @@ class PassiveCellRenderer implements IPassiveCell {
    * @returns
    */
   render(outputs: nbformat.IOutput[]) {
-    this.model.fromJSON(outputs);
+    this.model.fromJSON(stripWidgets(outputs));
   }
 }
 
