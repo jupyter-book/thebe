@@ -13,27 +13,26 @@ function isMimeBundle({ output_type }: nbformat.IOutput) {
   return output_type === 'display_data' || output_type === 'execute_result';
 }
 
-function hasTextHtml(mimebundle: nbformat.IMimeBundle) {
-  return 'text/html' in mimebundle;
-}
-
 const placeholder = (plainText?: string) => `
 <div class="thebe-ipywidgets-placeholder">
   <div class="thebe-ipywidgets-placeholder-image"></div>
-  <div class="thebe-ipywidgets-placeholder-message"><code>ipywidgets</code> - a Jupyter kernel connection is required to display this output.</div>
+  <div class="thebe-ipywidgets-placeholder-message"><code>ipywidgets</code> - a Jupyter kernel connection is required to fully display this output.</div>
   ${plainText && `<pre>${plainText}</pre>`}
 </div>
 `;
 
-function stripWidgets(outputs: nbformat.IOutput[]) {
+function stripWidgets(outputs: nbformat.IOutput[], hideWidgets?: boolean) {
   return outputs.map((output: nbformat.IOutput) => {
     if (!isMimeBundle(output)) return output;
     const { [WIDGET_MIMETYPE]: widgets, ...others } = output.data as nbformat.IMimeBundle;
     if (!widgets) return output;
     const data = { ...others };
-    // if there is not already an html bundle, add a placeholder to hide the plain/text field
-    if (!hasTextHtml(others))
+    if (!hideWidgets && !('text/html' in data))
+      // if there is not already an html bundle, add a placeholder to hide the plain/text field
       data['text/html'] = placeholder(ensureString(data['text/plain'] as string | string[]));
+    else if (hideWidgets) {
+      delete data['text/plain'];
+    }
     const stripped = {
       ...output,
       data,
@@ -45,10 +44,16 @@ function stripWidgets(outputs: nbformat.IOutput[]) {
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
+  readonly hideWidgets: boolean;
   protected model: OutputAreaModel;
   protected area: OutputArea;
 
-  constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
+  constructor(
+    id: string,
+    rendermime?: IRenderMimeRegistry,
+    mathjax?: MathjaxOptions,
+    hideWidgets = false,
+  ) {
     this.id = id;
     this.rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this.model = new OutputAreaModel({ trusted: true });
@@ -56,6 +61,7 @@ class PassiveCellRenderer implements IPassiveCell {
       model: this.model,
       rendermime: this.rendermime,
     });
+    this.hideWidgets = hideWidgets;
   }
 
   /**
@@ -146,7 +152,7 @@ class PassiveCellRenderer implements IPassiveCell {
    * @returns
    */
   render(outputs: nbformat.IOutput[]) {
-    this.model.fromJSON(stripWidgets(outputs));
+    this.model.fromJSON(stripWidgets(outputs, this.hideWidgets));
   }
 }
 
