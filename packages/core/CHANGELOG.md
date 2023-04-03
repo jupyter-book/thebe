@@ -1,5 +1,11 @@
 # thebe-core
 
+## 0.1.5
+
+### Patch Changes
+
+- 3bd3195: Changed DOM attachement and passive rendering behaviour for integration with the [myst-theme](https://github.com/executablebooks/myst-theme/pull/21)
+
 ## 0.1.4
 
 ### Patch Changes
