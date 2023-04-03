@@ -27,9 +27,10 @@ export function findErrors(execReturns: (IThebeCellExecuteReturn | null)[]) {
   );
 }
 
-function useNotebookBase() {
+export function useNotebookBase() {
   const { session, ready: sessionReady } = useThebeSession();
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();
+  // TODO move the refs to caller hooks as it does so little to maintain them in here.
   const [refs, setRefs] = useState<((node: HTMLDivElement) => void)[]>([]);
   const [sessionAttached, setSessionAttached] = useState(false);
   const [executing, setExecuting] = useState<boolean>(false);
@@ -105,7 +106,7 @@ function useNotebookBase() {
 }
 
 /**
- * @paran name - provided to the fetcher function
+ * @param name - provided to the fetcher function
  * @param fetchNotebook - an async function, that given a name, can return a JSON representation of an ipynb file (INotebookContent)
  * @param opts - options.refsForWidgetsOnly=false allows refs to be generated for all notebook cells, rather than onlythose with widget tags
  * @returns

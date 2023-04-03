@@ -1,43 +1,42 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ICell, IOutput } from '@jupyterlab/nbformat';
-import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import { getRenderMimeRegistry } from './rendermime';
+import type { IRenderMimeRegistry, RenderMimeRegistry } from '@jupyterlab/rendermime';
+import PassiveCellRenderer from './passive';
 import type ThebeSession from './session';
-import type { IThebeCell, IThebeCellExecuteReturn, JsonObject, MathjaxOptions } from './types';
+import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
 import { ensureString, shortId } from './utils';
 
-export default class NonExecutableCell implements IThebeCell {
+export default class NonExecutableCell extends PassiveCellRenderer implements IThebeCell {
   id: string;
   notebookId: string;
   source: string;
   busy: boolean;
   metadata: JsonObject;
 
-  constructor(id: string, notebookId: string, source: string) {
+  constructor(
+    id: string,
+    notebookId: string,
+    source: string,
+    metadata: JsonObject,
+    rendermime: IRenderMimeRegistry,
+  ) {
+    super(id, rendermime);
     this.id = id;
     this.notebookId = notebookId;
     this.source = source;
     this.busy = false;
-    this.metadata = {};
+    this.metadata = metadata;
   }
 
-  static fromICell(
-    ic: ICell,
-    notebookId: string,
-    rendermime?: IRenderMimeRegistry,
-    mathjaxOptions?: MathjaxOptions,
-  ) {
+  static fromICell(ic: ICell, notebookId: string, rendermime: IRenderMimeRegistry) {
     const cell = new NonExecutableCell(
       typeof ic.id === 'string' ? ic.id : shortId(),
       notebookId,
       ensureString(ic.source),
+      ic.metadata,
+      rendermime,
     );
-    Object.assign(cell.metadata, ic.metadata);
     return cell;
-  }
-
-  get rendermime() {
-    return getRenderMimeRegistry();
   }
 
   get isAttachedToDOM() {
