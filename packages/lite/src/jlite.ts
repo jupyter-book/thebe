@@ -40,6 +40,11 @@ type LiteServerConfig = {
 
 export async function startJupyterLiteServer(config?: LiteServerConfig): Promise<ServiceManager> {
   /**
+   * This is sufficent to  initialise the global object?
+   */
+  PageConfig.getOption('');
+
+  /**
    * Do not rely on a configuration being on the document body, accept configuration via arguments
    * and set options on the page config directly
    */
