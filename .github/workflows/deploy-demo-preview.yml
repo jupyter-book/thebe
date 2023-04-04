@@ -6,13 +6,11 @@ on:
     - synchronize
     - closed
 jobs:
- simple:
-  runs-on: ubuntu-20.04
+  simple:
+    runs-on: ubuntu-20.04
     steps:
-      # Action Repo: https://github.com/actions/checkout
       - name: 'Checkout repo'
         uses: actions/checkout@v3
-      # Action Repo: https://github.com/actions/cache
       - name: 'Cache node_modules'
         uses: actions/cache@v3
         with:
