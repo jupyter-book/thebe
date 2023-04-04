@@ -1,12 +1,13 @@
 name: deploy-demo-preview
 on:
   pull_request:
-    - opened
-    - reopened
-    - synchronize
-    - closed
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
 jobs:
-  simple:
+  deploy-preview:
     runs-on: ubuntu-20.04
     steps:
       - name: 'Checkout repo'
