@@ -39,6 +39,9 @@ module.exports = {
       {
         test: /pypi\/.*/,
         type: 'asset/resource',
+        generator: {
+          filename: 'pypi/[name][ext][query]',
+        },
       },
       {
         test: /\.ts$/,

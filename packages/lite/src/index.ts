@@ -14,7 +14,7 @@ function setupThebeLite() {
 if (typeof window !== 'undefined') {
   console.debug('window is defined, setting up thebe-lite');
   setupThebeLite();
-  console.log('window.thebeLite', window.thebeLite);
+  console.debug('window.thebeLite', window.thebeLite);
 }
 
 export * from './types';
