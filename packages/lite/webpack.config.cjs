@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 const HookShellScriptPlugin = require('hook-shell-script-webpack-plugin');
+
+const shimJS = path.resolve(__dirname, 'src', 'empty.js');
+function shim(regExp) {
+  return new NormalModuleReplacementPlugin(regExp, shimJS);
+}
 
 module.exports = {
   mode: 'production',
@@ -14,16 +19,13 @@ module.exports = {
     app: './src/index.ts',
   },
   plugins: [
+    shim(/\.(svg|ttf|eot|woff2|woff)/),
     new DefinePlugin({ 'process.env': {} }),
     new webpack.ProvidePlugin({
       currentScript: 'current-script-polyfill',
     }),
     new HookShellScriptPlugin({
-      afterEmit: [
-        'npm run build:post:shuffle',
-        'npm run build:post:service',
-        'node bin/stubContentsApi.js',
-      ],
+      afterEmit: ['node bin/stubContentsApi.js'],
     }),
   ],
   output: {
