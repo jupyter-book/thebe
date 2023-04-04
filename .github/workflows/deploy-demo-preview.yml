@@ -1,0 +1,30 @@
+name: deploy-demo-preview
+on:
+  pull_request:
+    - opened
+    - reopened
+    - synchronize
+    - closed
+jobs:
+ simple:
+  runs-on: ubuntu-20.04
+    steps:
+      # Action Repo: https://github.com/actions/checkout
+      - name: 'Checkout repo'
+        uses: actions/checkout@v3
+      # Action Repo: https://github.com/actions/cache
+      - name: 'Cache node_modules'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+      - name: 'Install'
+        run: npm ci
+      - name: 'Build libs'
+        run: npm run build
+      - name: 'Build demos'
+        run: npm run demo
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./apps/simple/dist
