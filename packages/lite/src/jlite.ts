@@ -33,8 +33,17 @@ function* activePlugins(extension: any) {
   }
 }
 
+/**
+ * Example litePluginSettings shape
+ * 
+ * '@jupyterlite/pyodide-kernel-extension:kernel': {
+        pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.0.6/pypi/all.json'],
+        piplistWheelUrl: 'https://some-url.com'
+      }
+ * 
+ */
+
 type LiteServerConfig = {
-  federatedExtensions: Record<string, any>;
   litePluginSettings: Record<string, any>;
 };
 
@@ -48,14 +57,9 @@ export async function startJupyterLiteServer(config?: LiteServerConfig): Promise
    * Do not rely on a configuration being on the document body, accept configuration via arguments
    * and set options on the page config directly
    */
-  PageConfig.setOption(
-    'litePluginSettings',
-    JSON.stringify({
-      '@jupyterlite/pyodide-kernel-extension:kernel': {
-        pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.0.6/pypi/all.json'],
-      },
-    }),
-  );
+  if (config?.litePluginSettings) {
+    PageConfig.setOption('litePluginSettings', JSON.stringify(config.litePluginSettings));
+  }
 
   /**
    * Seems like there are 4 different extensions we may want to handle
