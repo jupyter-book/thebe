@@ -8,7 +8,7 @@
     "clean": "rm -rf ./dist",
     "build:bundle": "webpack --config webpack.config.cjs",
     "build:post:shuffle": "./bin/shufflePyolitePaths.sh",
-    "build:post:service": "./bin/fetchServiceWorker.sh",
+    "build:post:contents": "./bin/stubContentsApi.js",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
     "build": "npm-run-all -l clean -p build:bundle declarations",
     "build:watch": "npm run build:bundle -- -w"
@@ -40,9 +40,11 @@
   },
   "homepage": "https://github.com/executablebooks/thebe#readme",
   "dependencies": {
-    "@jupyterlite/pyolite-kernel-extension": "0.1.0-beta.14",
-    "@jupyterlite/server": "0.1.0-beta.14",
-    "@jupyterlite/server-extension": "0.1.0-beta.14",
+    "@jupyterlab/coreutils": "^5.6.3",
+    "@jupyterlite/pyodide-kernel": "0.0.6",
+    "@jupyterlite/pyodide-kernel-extension": "0.0.6",
+    "@jupyterlite/server": "0.1.0-rc.0",
+    "@jupyterlite/server-extension": "0.1.0-rc.0",
     "hook-shell-script-webpack-plugin": "^0.1.4"
   },
   "devDependencies": {
