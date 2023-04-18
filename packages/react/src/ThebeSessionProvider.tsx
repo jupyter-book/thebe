@@ -8,7 +8,8 @@ interface ThebeSessionContextData {
   starting: boolean;
   ready: boolean;
   error?: string;
-  start: () => void;
+  start: () => Promise<void>;
+  shutdown: () => Promise<void>;
 }
 
 export const ThebeSessionContext = React.createContext<ThebeSessionContextData | undefined>(
@@ -21,43 +22,54 @@ export function ThebeSessionProvider({
   shutdownOnUnmount = false,
   children,
 }: React.PropsWithChildren<{
-  start: boolean;
+  start?: boolean;
   name?: string;
   shutdownOnUnmount?: boolean;
 }>) {
   const { config, server, ready: serverReady } = useThebeServer();
 
-  const [doStart, setDoStart] = useState(start);
   const [starting, setStarting] = useState(false);
-  const [sessionName, setSessionName] = useState(name);
   const [session, setSession] = useState<ThebeSession | undefined>();
+  const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
-  /// Once server connection is open, start a session
-  useEffect(() => {
-    if (!doStart || !server || !serverReady) return;
+  const startSession = () => {
     setStarting(true);
     server
-      .startNewSession({ ...config?.kernels, name: sessionName, path: sessionName })
-      .then((sesh) => {
+      ?.startNewSession({ ...config?.kernels, name, path: name })
+      .then((sesh: ThebeSession | null) => {
         setStarting(false);
-        if (sesh != null) return setSession(sesh);
-        server.getKernelSpecs().then((specs) => {
-          setError(
-            `Could not start a session - available kernels: ${Object.keys(specs.kernelspecs)}`,
-          );
-        });
+        if (sesh == null) {
+          server?.getKernelSpecs().then((specs) => {
+            setError(
+              `Could not start a session - available kernels: ${Object.keys(specs.kernelspecs)}`,
+            );
+          });
+          return;
+        }
+        setSession(sesh);
+        setReady(true); // not this could use the thebe event mechanism
       });
-  }, [doStart, server, serverReady]);
+  };
+
+  /// Once server connection is open, auto start a session if start prop is true
+  useEffect(() => {
+    if (!server || !serverReady || !starting || !start) return;
+    startSession();
+  }, [start, starting, server, serverReady]);
 
   // shutdown session on navigate away
   useEffect(() => {
     return () => {
-      if (shutdownOnUnmount) session?.shutdown();
+      if (shutdownOnUnmount) {
+        session?.shutdown().then(() => {
+          setReady(false);
+        });
+      }
     };
   }, [session]);
 
-  const ready = !!session && session.kernel != null;
+  // const ready = !!session && session.kernel != null;
 
   return (
     <ThebeSessionContext.Provider
@@ -67,9 +79,18 @@ export function ThebeSessionProvider({
         ready,
         session,
         // eslint-disable-next-line @typescript-eslint/no-shadow
-        start: (name?: string) => {
-          if (name) setSessionName(name);
-          setDoStart(true);
+        start: async () => {
+          if (!!session && ready) {
+            await session.shutdown();
+            setReady(false);
+          }
+          startSession();
+        },
+        shutdown: async () => {
+          if (session) {
+            await session.shutdown();
+            setReady(false);
+          }
         },
         error,
       }}
