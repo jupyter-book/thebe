@@ -83,7 +83,7 @@ export function ThebeServerProvider({
         ready: (server?.isReady ?? false) && ready, // TODO server status may change, affecting readiness
         connect: () => setDoConnect(true),
         disconnect: async () => {
-          if (thebeConfig && server) {
+          if (core && thebeConfig && server) {
             server.dispose();
             setServer(new core.ThebeServer(thebeConfig));
           }
