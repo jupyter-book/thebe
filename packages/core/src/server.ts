@@ -71,8 +71,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   dispose() {
     if (this._isDisposed) return;
-    this.serviceManager?.dispose();
-    this.sessionManager?.dispose();
+    if (!this.serviceManager?.isDisposed) this.serviceManager?.dispose();
+    if (!this.sessionManager?.isDisposed) this.sessionManager?.dispose();
 
     // Implementing the flag at this level as
     this._isDisposed = true;
