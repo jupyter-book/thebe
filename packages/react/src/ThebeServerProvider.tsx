@@ -19,6 +19,7 @@ export const ThebeServerContext = React.createContext<
       connecting: boolean;
       ready: boolean;
       connect: () => void;
+      disconnect: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -42,6 +43,7 @@ export function ThebeServerProvider({
   const { core } = useThebeCore();
   const [doConnect, setDoConnect] = useState(connect);
   const [connecting, setConnecting] = useState<boolean>(false);
+  const [server, setServer] = useState<ThebeServer | undefined>();
   const [ready, setReady] = useState<boolean>(false);
 
   // create a valid configuration, either using the one supplied
@@ -52,11 +54,9 @@ export function ThebeServerProvider({
     [core, options],
   );
 
-  // because core is async, server is still maybe undefined, but can be created before
-  // the connection function is kicked off
-  const server = useMemo(() => {
+  useEffect(() => {
     if (!core || !thebeConfig) return;
-    return new core.ThebeServer(thebeConfig);
+    setServer(new core.ThebeServer(thebeConfig));
   }, [core, thebeConfig]);
 
   // Once the core is loaded, connect to a server
@@ -82,6 +82,14 @@ export function ThebeServerProvider({
         connecting,
         ready: (server?.isReady ?? false) && ready, // TODO server status may change, affecting readiness
         connect: () => setDoConnect(true),
+        disconnect: async () => {
+          if (thebeConfig && server) {
+            server.dispose();
+            setServer(new core.ThebeServer(thebeConfig));
+          }
+          setReady(false);
+          setDoConnect(false);
+        },
       }}
     >
       {children}
@@ -124,7 +132,7 @@ export function useThebeServer() {
   if (serverContext === undefined) {
     throw new Error('useThebeServer must be used inside a ThebeServerProvider');
   }
-  const { config, events, server, connecting, ready, connect } = serverContext;
+  const { config, events, server, connecting, ready, connect, disconnect } = serverContext;
 
   const { core } = useThebeCore();
   const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
@@ -168,6 +176,7 @@ export function useThebeServer() {
     ready,
     error,
     connect,
+    disconnect,
     subscribe,
     unsubAll,
   };
