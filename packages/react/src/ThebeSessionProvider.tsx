@@ -69,8 +69,6 @@ export function ThebeSessionProvider({
     };
   }, [session]);
 
-  // const ready = !!session && session.kernel != null;
-
   return (
     <ThebeSessionContext.Provider
       value={{
@@ -81,10 +79,10 @@ export function ThebeSessionProvider({
         // eslint-disable-next-line @typescript-eslint/no-shadow
         start: async () => {
           if (!!session && ready) {
-            await session.shutdown();
-            setReady(false);
+            await session.restart();
+          } else {
+            startSession();
           }
-          startSession();
         },
         shutdown: async () => {
           if (session) {
