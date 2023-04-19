@@ -1,5 +1,13 @@
 # thebe-react
 
+## 0.0.7
+
+### Patch Changes
+
+- better control over session shutdown and disposal
+- Updated dependencies
+  - thebe-core@0.1.6
+
 ## 0.0.6
 
 ### Patch Changes

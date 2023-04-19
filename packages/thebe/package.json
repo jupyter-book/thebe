@@ -58,7 +58,7 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
-    "thebe-core": "^0.1.4"
+    "thebe-core": "^0.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

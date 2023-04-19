@@ -1,5 +1,11 @@
 # thebe-core
 
+## 0.1.6
+
+### Patch Changes
+
+- better control over session shutdown and disposal
+
 ## 0.1.5
 
 ### Patch Changes
