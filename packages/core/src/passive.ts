@@ -44,16 +44,10 @@ function stripWidgets(outputs: nbformat.IOutput[], hideWidgets?: boolean) {
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
-  readonly hideWidgets: boolean;
   protected model: OutputAreaModel;
   protected area: OutputArea;
 
-  constructor(
-    id: string,
-    rendermime?: IRenderMimeRegistry,
-    mathjax?: MathjaxOptions,
-    hideWidgets = false,
-  ) {
+  constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
     this.id = id;
     this.rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this.model = new OutputAreaModel({ trusted: true });
@@ -61,7 +55,6 @@ class PassiveCellRenderer implements IPassiveCell {
       model: this.model,
       rendermime: this.rendermime,
     });
-    this.hideWidgets = hideWidgets;
   }
 
   /**
@@ -151,8 +144,8 @@ class PassiveCellRenderer implements IPassiveCell {
    * @param outputs - serialised jupyter outputs
    * @returns
    */
-  render(outputs: nbformat.IOutput[]) {
-    this.model.fromJSON(stripWidgets(outputs, this.hideWidgets));
+  render(outputs: nbformat.IOutput[], hideWidgets?: boolean) {
+    this.model.fromJSON(stripWidgets(outputs, hideWidgets));
   }
 }
 
