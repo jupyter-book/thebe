@@ -81,7 +81,7 @@ export interface IPassiveCell {
   setOutputText(text: string): void;
   clear(): void;
   clearOnError(error?: any): void;
-  render(outputs: IOutput[]): void;
+  render(outputs: IOutput[], hideWidgets?: boolean): void;
 }
 
 export interface IThebeCell extends IPassiveCell {

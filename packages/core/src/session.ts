@@ -59,16 +59,17 @@ class ThebeSession {
   }
 
   async shutdown() {
+    if (this.connection.isDisposed) return;
     await this.connection.shutdown();
     this.events.triggerStatus({
       status: SessionStatusEvent.shutdown,
       message: `session ${this.name}`,
     });
-    return this.connection.dispose();
+    this.dispose();
   }
 
   dispose() {
-    this.connection.dispose();
+    if (!this.connection.isDisposed) this.connection.dispose();
   }
 }
 
