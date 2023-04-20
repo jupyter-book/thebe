@@ -8,11 +8,13 @@ The main `thebe` packages are located in `packages/` and are:
 
 - `thebe-core` - object based API for connecting to and executing against juptyer servers
 - `thebe-lite` - a side-loaded extension to `thebe-core` enabling use of a `JupyterLiteServer`
+- `thebe-react` - React components for using `thebe-core`
 - `thebe` - top-level library for use directly in html pages
 
 Additional packages in `apps/` are:
 
 - `demo-core` - a plain html/js using the `thebe-core` API
+- `demo-react` - a `create-react-app` application using `thebe-react`
 - `simple` - simplest possible html/js demo of using `thebe`
 - `docs` - the `thebe` documentation build
 
@@ -41,6 +43,7 @@ Then start a demo using one of:
 
 - `npm run start:simple`
 - `npm run start:core`
+- `npm run start:react`
 
 ## Changesets
 
