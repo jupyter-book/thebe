@@ -9,7 +9,8 @@
     "clean": "rm -rf dist",
     "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
     "copy:core-css": "cp ../../packages/core/dist/lib/thebe-core.css static/thebe-core.css",
-    "demo": "npm run copy:lite; webpack --config webpack.dev.js",
+    "build": "npm run copy:lite; webpack --config webpack.dev.js",
+    "demo": "npm run build",
     "start": "npm run copy:lite; npm run copy:core-css; webpack serve --open --config webpack.dev.js"
   },
   "keywords": [

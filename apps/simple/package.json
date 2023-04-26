@@ -12,7 +12,8 @@
     "copy:static": "mkdir -p dist; cp -R static/* dist",
     "copy:lite": "mkdir -p dist; cp -R ../../packages/lite/dist/lib/ dist",
     "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
-    "demo": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
+    "build": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
+    "demo": "npm run build",
     "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build:demo -s'",
     "start": "http-server ./dist"
   },
