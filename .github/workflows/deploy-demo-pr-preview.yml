@@ -1,4 +1,4 @@
-name: deploy-demo-preview
+name: deploy-demo-pr-preview
 on:
   pull_request:
     types:
