@@ -177,13 +177,12 @@ function setupCodemirror(
     requiredSettings.readOnly = isReadOnly == 'false' ? false : true;
   }
 
-  const codeMirrorConfig = Object.assign(options.codeMirrorConfig ?? {}, requiredSettings);
+  const codeMirrorConfig = Object.assign(
+    { theme: 'default' },
+    options.codeMirrorConfig ?? {},
+    requiredSettings,
+  );
   console.debug('thebe:setupCodemirror:codeMirrorConfig', codeMirrorConfig);
-
-  if ('theme' in codeMirrorConfig) {
-    // TODO ship some themes?
-    import(`codemirror/theme/${codeMirrorConfig.theme}.css`);
-  }
 
   ref.cm = new CodeMirror(editorEl as HTMLElement, codeMirrorConfig);
 

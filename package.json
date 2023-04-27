@@ -24,6 +24,7 @@
     "watch:core": "turbo run dev --filter=thebe-core",
     "watch:thebe": "turbo run dev --filter=thebe",
     "start:simple": "turbo run start --filter=demo-simple",
+    "watch:simple": "turbo run watch --filter=demo-simple",
     "start:core": "turbo run start --filter=demo-core",
     "start:react": "turbo run start --filter=demo-react",
     "start:docs-core": "turbo run start --filter=docs-core"

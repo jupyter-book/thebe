@@ -14,7 +14,7 @@
     "copy:thebe": "mkdir -p dist; cp -R ../../packages/thebe/lib/ dist",
     "build": "npm run clean; npm run copy:static; npm run copy:thebe; npm run copy:lite",
     "demo": "npm run build",
-    "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build:demo -s'",
+    "watch": "nodemon --watch static --ext html,js,css --exec 'npm run build'",
     "start": "http-server ./dist"
   },
   "private": true,
