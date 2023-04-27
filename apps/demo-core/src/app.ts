@@ -10,7 +10,13 @@ import {
 import { code, options } from './setup';
 
 export type ServerType = 'local' | 'lite' | 'binder';
-export type ExampleType = 'basic' | 'ipywidgets' | 'ipyleaflet' | 'tqdm';
+export type ExampleType =
+  | 'basic'
+  | 'ipywidgets'
+  | 'ipyleaflet'
+  | 'ipywidgets_lite'
+  | 'ipyleaflet_lite'
+  | 'tqdm';
 
 class App {
   options: Record<string, any>;
@@ -78,16 +84,23 @@ class App {
       this._showLocalMessage();
       this.options = options.local;
       this.serverType = 'local';
+      if (this.exampleType === 'ipywidgets_lite') this.exampleType = 'ipywidgets';
+      if (this.exampleType === 'ipyleaflet_lite') this.exampleType = 'ipyleaflet';
     } else if ((evt.target as Element).id === 'lite') {
       this._hideLocalMessage();
       this.options = options.lite;
       this.serverType = 'lite';
+      if (this.exampleType === 'ipywidgets') this.exampleType = 'ipywidgets_lite';
+      if (this.exampleType === 'ipyleaflet') this.exampleType = 'ipyleaflet_lite';
     } else if ((evt.target as Element).id === 'binder') {
       this._hideLocalMessage();
       this.options = options.binder;
       this.serverType = 'binder';
+      if (this.exampleType === 'ipywidgets_lite') this.exampleType = 'ipywidgets';
+      if (this.exampleType === 'ipyleaflet_lite') this.exampleType = 'ipyleaflet';
     }
     this.resetUI();
+    this._writeCode(code[this.exampleType]);
     this.disconnect();
   }
 
@@ -97,10 +110,12 @@ class App {
       this.exampleType = 'basic';
     } else if ((evt.target as Element).id === 'ipywidgets') {
       this.resetUI();
-      this.exampleType = 'ipywidgets';
+      if (this.serverType === 'lite') this.exampleType = 'ipywidgets_lite';
+      else this.exampleType = 'ipywidgets';
     } else if ((evt.target as Element).id === 'ipyleaflet') {
       this.resetUI();
-      this.exampleType = 'ipyleaflet';
+      if (this.serverType === 'lite') this.exampleType = 'ipyleaflet_lite';
+      else this.exampleType = 'ipyleaflet';
     }
     this._writeCode(code[this.exampleType]);
   }
