@@ -1,10 +1,11 @@
 import CodeMirror from 'codemirror/lib/codemirror';
-import 'codemirror/lib/codemirror.css';
+// import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/python/python.js';
 import 'codemirror/addon/hint/show-hint';
+import 'codemirror/addon/mode/loadMode';
 import type { IThebeCell, ThebeNotebook } from 'thebe-core';
 import type { Options } from './options';
 import { randomId } from './utils';
-import { Mode } from '@jupyterlab/codemirror';
 import type { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
 
 export interface CellDOMPlaceholder {
@@ -178,13 +179,15 @@ function setupCodemirror(
   }
 
   const codeMirrorConfig = Object.assign(
-    { theme: 'default' },
+    { theme: 'default', lineNumbers: true, styleActiveLine: true, matchBrackets: true },
     options.codeMirrorConfig ?? {},
     requiredSettings,
   );
   console.debug('thebe:setupCodemirror:codeMirrorConfig', codeMirrorConfig);
 
   ref.cm = new CodeMirror(editorEl as HTMLElement, codeMirrorConfig);
+  console.debug('thebe:setupCodemirror:autoLoadMode mode for', mode);
+  CodeMirror.autoLoadMode(ref.cm, mode);
 
   // All cells in the notebook automatically update their sources on change
   ref?.cm?.on('change', () => {
@@ -193,7 +196,12 @@ function setupCodemirror(
   });
 
   // TODO can we avoid this?
-  Mode.ensure(mode).then(() => ref.cm?.setOption('mode', 'mode'));
+  // this mode loading is not effective
+  // Mode.ensure(mode).then((spec) => {
+  //   console.debug('thebe:setupCodemirror:ensureModeSpec', spec);
+  //   ref.cm?.setOption('mode', mode);
+  // });
+
   if (codeMirrorConfig.readOnly) {
     ref.cm?.display.lineDiv.setAttribute('data-readonly', 'true');
     editorEl.setAttribute('data-readonly', 'true');

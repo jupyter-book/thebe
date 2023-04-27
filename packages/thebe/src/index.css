@@ -1,5 +1,5 @@
-@import '@jupyterlab/codemirror/style/base.css';
-@import 'codemirror/lib/codemirror.css';
+/* @import '@jupyterlab/codemirror/style/base.css';
+@import 'codemirror/lib/codemirror.css'; */
 @import 'thebe-core/dist/lib/thebe-core.css';
 @import './activate.css';
 @import './status.css';
@@ -23,7 +23,7 @@
   padding-top: 0.5em;
   border-top: 1px solid #aaa;
 }
-
+/* 
 .CodeMirror {
   height: auto;
 }
@@ -34,7 +34,7 @@
 
 .CodeMirror.CodeMirror-focused {
   background-color: white;
-}
+} */
 
 /* no prompts */
 .jp-OutputPrompt {
@@ -76,7 +76,7 @@
     -webkit-transform: rotate(360deg);
   }
 }
-
+/* 
 ul.CodeMirror-hints {
   position: absolute;
   z-index: 10;
@@ -112,4 +112,4 @@ li.CodeMirror-hint {
 li.CodeMirror-hint-active {
   background: #08f;
   color: white;
-}
+} */
