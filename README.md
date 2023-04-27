@@ -1,6 +1,7 @@
 # Thebe: Integrate Jupyter based computation into web apps and static web pages
 
 ![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
+[![launch badge](https://img.shields.io/badge/launch-thebe-orange)](https://executablebooks.github.io/thebe)
 
 > **Note**: This readme has been updated for the 0.9.0 release
 >
