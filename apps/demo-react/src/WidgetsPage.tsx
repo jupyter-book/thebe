@@ -1,17 +1,18 @@
 import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
+import { useParams } from 'react-router-dom';
 
 export function WidgetsPage() {
-  const NAME = 'widget-test-3';
+  const { notebookName } = useParams<{ notebookName: string }>();
   const { ready, executing, executeAll, cellRefs, cellIds } = useNotebook(
-    NAME,
+    notebookName ?? 'widget-test',
     async (n) => {
       const url = `/${n}.ipynb`;
       const resp = await fetch(url);
       if (!resp.ok) throw Error(`Could not load ${url}`);
       return resp.json();
     },
-    { refsForWidgetsOnly: false },
+    { refsForWidgetsOnly: true },
   );
 
   const clickExecute = () => {
@@ -24,7 +25,7 @@ export function WidgetsPage() {
         A notebook to test <code>ipywidgets</code>
       </h2>
       <h4 className="text-sm">
-        notebook: <code>{NAME}.ipynb</code>
+        notebook: <code>{notebookName}.ipynb</code>
       </h4>
       <div className="mt-3 inline-block bg-green-500 text-white text-sm font-bold py-2 px-4 rounded-full">
         {ready ? 'ready' : 'not ready'}

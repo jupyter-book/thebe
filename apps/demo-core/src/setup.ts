@@ -16,62 +16,153 @@ ax.plot(x,yy);
 plt.grid(True)`,
   ],
   ipywidgets: [
-    `%matplotlib widget
-import ipywidgets as widgets
+    `import numpy as np
 import matplotlib.pyplot as plt
-import numpy as np      
-from ipywidgets import Output, FloatSlider, Layout
-from IPython.display import clear_output
-w_output = Output(layout=Layout(border="1px solid blue"))
+%matplotlib inline
 
-x = np.linspace(0,10, 100)
-w = 1.3
-amp = 1.0
+from ipywidgets import interact, interactive
+from IPython.display import clear_output, display, HTML
 
-w_w = FloatSlider(min=0.1, max=5.0, step=0.05, value=0.8, description="W")
-w_a = FloatSlider(min=0.1, max=3.0, step=0.1, value=1.0, description="Amplitude")
+import numpy as np
+from scipy import integrate
 
-props = dict(
-    linewidth=1
-)
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import cnames
+from matplotlib import animation
 
-#plt.ioff()
-fig_two, ax_two = plt.subplots(1,1)
-#plt.ion()
+def solve_lorenz(
+  N=10, angle=0.0, max_time=4.0, 
+  sigma=10.0, beta=8./3, rho=28.0):
 
-with w_output:
-    display(fig_two.canvas)
+    fig = plt.figure()
+    ax = fig.add_axes([0, 0, 1, 1], projection='3d')
+    ax.axis('off')
+
+    # prepare the axes limits
+    ax.set_xlim((-25, 25))
+    ax.set_ylim((-35, 35))
+    ax.set_zlim((5, 55))
     
-def on_pick(evt):
-    print(evt)
-    props["linewidth"] = props["linewidth"] + 1
-    redraw_plot({})
+    def lorenz_deriv(x_y_z, t0, sigma=sigma, beta=beta, rho=rho):
+        """Compute the time-derivative of a Lorenz system."""
+        x, y, z = x_y_z
+        return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z]
+
+    # Choose random starting points, uniformly distributed from -15 to 15
+    np.random.seed(1)
+    x0 = -15 + 30 * np.random.random((N, 3))
+
+    # Solve for the trajectories
+    t = np.linspace(0, max_time, int(250*max_time))
+    x_t = np.asarray([integrate.odeint(lorenz_deriv, x0i, t)
+                      for x0i in x0])
     
-cid = fig_two.canvas.mpl_connect('pick_event', on_pick)
+    # choose a different color for each trajectory
+    colors = plt.cm.viridis(np.linspace(0, 1, N))
+
+    for i in range(N):
+        x, y, z = x_t[i,:,:].T
+        lines = ax.plot(x, y, z, '-', c=colors[i])
+        plt.setp(lines, linewidth=2)
+
+    ax.view_init(30, angle)
+    plt.show()
+
+    return t, x_t
+
+w = interactive(solve_lorenz, angle=(0.,360.), max_time=(0.1, 4.0), 
+                N=(0,50), sigma=(0.0,50.0), rho=(0.0,50.0))
+display(w)`,
+  ],
+  ipywidgets_lite: [
+    `%pip install ipywidgets ipympl
+
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+from ipywidgets import interact, interactive
+from IPython.display import clear_output, display, HTML
+
+import numpy as np
+from scipy import integrate
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import cnames
+from matplotlib import animation
+
+def solve_lorenz(
+  N=10, angle=0.0, max_time=4.0, 
+  sigma=10.0, beta=8./3, rho=28.0):
+
+    fig = plt.figure()
+    ax = fig.add_axes([0, 0, 1, 1], projection='3d')
+    ax.axis('off')
+
+    # prepare the axes limits
+    ax.set_xlim((-25, 25))
+    ax.set_ylim((-35, 35))
+    ax.set_zlim((5, 55))
     
-def sine_func(x, w, amp):
-  return amp*np.sin(w*x)
+    def lorenz_deriv(x_y_z, t0, sigma=sigma, beta=beta, rho=rho):
+        """Compute the time-derivative of a Lorenz system."""
+        x, y, z = x_y_z
+        return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z]
 
-def redraw_plot(evt):
-    with w_output:
-        ax_two.cla()
-        ax_two.set_ylim(-4, 4)
-        ax_two.plot(x, sine_func(x, w_w.value, w_a.value), **props, picker=True)
-        clear_output()
+    # Choose random starting points, uniformly distributed from -15 to 15
+    np.random.seed(1)
+    x0 = -15 + 30 * np.random.random((N, 3))
 
-redraw_plot({})
+    # Solve for the trajectories
+    t = np.linspace(0, max_time, int(250*max_time))
+    x_t = np.asarray([integrate.odeint(lorenz_deriv, x0i, t)
+                      for x0i in x0])
+    
+    # choose a different color for each trajectory
+    colors = plt.cm.viridis(np.linspace(0, 1, N))
 
-w_w.observe(redraw_plot, names=["value"])
-w_a.observe(redraw_plot, names=["value"])
+    for i in range(N):
+        x, y, z = x_t[i,:,:].T
+        lines = ax.plot(x, y, z, '-', c=colors[i])
+        plt.setp(lines, linewidth=2)
 
-print("")
-print("Move the sliders to change the waveform")
-print("Click on the waverform to increase the linewidth.")
-display(w_w)
-display(w_a)`,
+    ax.view_init(30, angle)
+    plt.show()
+
+    return t, x_t
+
+w = interactive(solve_lorenz, angle=(0.,360.), max_time=(0.1, 4.0), 
+                N=(0,50), sigma=(0.0,50.0), rho=(0.0,50.0))
+display(w)`,
   ],
   ipyleaflet: [
     `from ipyleaflet import Map
+from ipywidgets import Layout
+# Collect common parameters
+zoom = 8
+place = None
+
+# Create ipyleaflet tile layer from that server
+
+places = dict(
+    orotava=dict(center=(28.389216, -16.520283), zoom=12),
+    pico_tiede=dict(center=(28.272401, -16.642457), zoom=12),
+    santa_cruz=dict(center=(28.466965, -16.249938), zoom=12)
+)
+
+center = places[place]["center"] if place is not None else (28.586850, -15.648742)
+zoom = places[place]["zoom"] if place is not None else zoom
+
+# Create ipyleaflet map, add layers, add controls, and display
+m = Map(center=center, zoom=zoom, layout=Layout( height='800px'))
+m`,
+  ],
+  ipyleaflet_lite: [
+    `%pip install ipyleaflet
+    
+from ipyleaflet import Map
 from ipywidgets import Layout
 # Collect common parameters
 zoom = 8
@@ -121,9 +212,8 @@ export const options = {
   },
   binder: {
     binderOptions: {
-      repo: 'stevejpurves/ipympl-binder-base',
-      ref: 'main',
-      binderUrl: 'https://mybinder.org',
+      repo: 'executablebooks/thebe-binder-base',
+      ref: 'HEAD',
     },
   },
 };

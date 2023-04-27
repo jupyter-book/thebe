@@ -2,12 +2,17 @@
 <html>
   <head>
     <title><%= htmlWebpackPlugin.options.title %></title>
-
+    <link rel="icon" href="/thebe_core_128x128.svg" type="image/svg+xml" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
     />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
     <script type="text/x-mathjax-config" src="mathjax.js"></script>
     <script
       type="text/javascript"
@@ -18,7 +23,10 @@
     <script src="demo.js" type="text/javascript"></script>
     <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="thebe-core.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.2/css/mpl_widget.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.2/css/mpl_widget.css"
+    />
     <style>
       .leaflet-container {
         height: 100%;
@@ -27,7 +35,8 @@
   </head>
   <body>
     <div>
-      <h1>Demo: thebe-core</h1>
+      <div style="margin: 20px auto"><img src="thebe_core_wide_logo.svg" /></div>
+      <h1>Simple typescript app using thebe-core</h1>
       <p>
         This is a demonstration of <em>thebe-core</em> starting up and connecting to a Jupyter
         server, then executing 3 cell via the notebook interface
@@ -74,10 +83,53 @@
       <div style="margin: 10px 0">
         <span id="thebe-error" style="color: red"></span>
       </div>
-      <button id="connect" style="margin-bottom: 4px; display: block">Connect to Jupyter</button>
-      <button id="run-all" disabled>run all</button>
-      <button id="run-last" disabled>run last</button>
-      <button id="restart" disabled>restart</button>
+      <div style="margin: 8px 0">
+        <button
+          style="
+            font-size: 18px;
+            background-color: lightsalmon;
+            border: 1px solid orange;
+            padding: 4px 8px;
+          "
+          id="connect"
+          style="margin-bottom: 4px; display: block"
+        >
+          Go Compute!
+        </button>
+      </div>
+      <div style="margin: 8px 0">
+        <button
+          style="
+            font-size: 14px;
+            background-color: lightgreen;
+            border: 1px solid green;
+            padding: 4px 8px;
+          "
+          id="run-all"
+          disabled
+        >
+          run all
+        </button>
+        <button
+          style="
+            font-size: 14px;
+            background-color: lightblue;
+            border: 1px solid blue;
+            padding: 4px 8px;
+          "
+          id="run-last"
+          disabled
+        >
+          run last
+        </button>
+        <button
+          style="font-size: 14px; background-color: pink; border: 1px solid red; padding: 4px 8px"
+          id="restart"
+          disabled
+        >
+          restart
+        </button>
+      </div>
       <div id="data-output" data-output="true">
         <img src="output.png" />
       </div>

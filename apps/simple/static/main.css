@@ -1,9 +1,3 @@
-pre[data-executable='true'] {
-  border: 1px solid black;
-  background-color: gainsboro;
-  padding: 6px;
-}
-
 .CodeMirror {
   border: 1px solid black;
   font-size: 13px;

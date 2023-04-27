@@ -16,36 +16,56 @@
         mountActivateWidget: true,
         mountStatusWidget: true,
         useJupyterLite: false,
-        useBinder: true,
-        binderOptions: {
-          repo: 'binder-examples/requirements',
-          ref: 'master',
-          binderUrl: 'https://mybinder.org',
+        useBinder: false,
+        serverSettings: {
+          baseUrl: 'http://localhost:8888',
+          token: 'test-secret'
         }
       }
     </script>
     <link rel="stylesheet" href="thebe.css" />
     <link rel="stylesheet" href="main.css" />
     <script src="index.js"></script>
+    <style>
+      .CodeMirror {
+        max-width: 900px;
+      }
+      pre.code {
+        background-color: #eee;
+        padding: 16px;
+      }
+    </style>
   </head>
   <body>
-    <p>
-      When using thebe you may need to load other assets onto the page in order for certain jupyter
-      outputs to display as expected. <code>thebe</code> loads <code>css</code> and other assets for
-      core <code>@jupyterlab</code> and <code>ipywidgets</code> modules, but leaves the rest to the
-      consumer.
-    </p>
-    <p>
-      In this case, we're using Mathjax as a latex typesetter, so we need to preload that on our
-      page (view html source for details).
-    </p>
-    <div class="thebe-activate"></div>
-    <div class="thebe-status"></div>
-    <pre data-executable="true" data-language="python">
+    <div style="margin: 24px auto; max-width: 900px">
+      <h1>Math Rendering Example</h1>
+      <p>
+        When using thebe you may need to load other assets onto the page in order for certain
+        jupyter outputs to display as expected. <code>thebe</code> loads <code>css</code> and other
+        assets for core <code>@jupyterlab</code> and <code>ipywidgets</code> modules, but leaves the
+        rest to the consumer.
+      </p>
+      <p>
+        In this case, we're using Mathjax as a latex typesetter, so we need to preload that on our
+        page (view html source for details).
+      </p>
+      <p>
+        To use this demo you to to have a juptyer server available and able to receive connections
+        from <code>localhost</code>. To start a local server, use the following command:
+      </p>
+      <p>
+        <code>jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</code>
+      </p>
+      <div class="thebe-activate"></div>
+      <div class="thebe-status"></div>
+      <h2>maths with ipython display</h2>
+      <pre class="code" data-executable="true" data-language="python">
 from IPython.display import Math
 Math(rf'\int_{{t=0}}^1 \frac{{1}}{{1+t^2}}\,\text{{d}}t = ')
-    </pre>
-    <pre data-executable="true" data-language="python">
+    </pre
+      >
+      <h2>maths with LaTeX magic</h2>
+      <pre class="code" style="font-size: 11px" data-executable="true" data-language="python">
 %%latex
 \begin{align}
 \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\
@@ -53,6 +73,8 @@ Math(rf'\int_{{t=0}}^1 \frac{{1}}{{1+t^2}}\,\text{{d}}t = ')
 \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
 \nabla \cdot \vec{\mathbf{B}} & = -42
 \end{align}
-    </pre>
+    </pre
+      >
+    </div>
   </body>
 </html>
