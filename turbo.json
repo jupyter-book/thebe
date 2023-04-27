@@ -21,6 +21,18 @@
     "build:publish": {
       "dependsOn": ["build"]
     },
+    "demo-simple#build": {
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "outputs": ["dist/**"]
+    },
+    "demo-core#build": {
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "outputs": ["dist/**"]
+    },
+    "demo-react#build": {
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "outputs": ["build/**"]
+    },
     "demo": {
       "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
       "outputs": ["dist/**", "lib/**"]
