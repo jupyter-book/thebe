@@ -54,9 +54,9 @@ export function ThebeSessionProvider({
 
   /// Once server connection is open, auto start a session if start prop is true
   useEffect(() => {
-    if (!server || !serverReady || !starting || !start) return;
+    if (!server || !serverReady || !start || starting || ready) return;
     startSession();
-  }, [start, starting, server, serverReady]);
+  }, [ready, start, starting, server, serverReady]);
 
   // shutdown session on navigate away
   useEffect(() => {
