@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { ThebeCoreProvider, ThebeServerProvider } from 'thebe-react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 
