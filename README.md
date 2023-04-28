@@ -1,3 +1,5 @@
+![thebe logo](apps/simple/static/thebe_wide_logo.png)
+
 # Thebe: Integrate Jupyter based computation into web apps and static web pages
 
 ![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
