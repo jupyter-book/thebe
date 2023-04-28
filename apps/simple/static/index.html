@@ -7,24 +7,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="icon" href="/thebe_128x128.svg" type="image/svg+xml" />
     <script src="https://cdn.tailwindcss.com?plugins=typography,aspect-ratio,line-clamp"></script>
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.61.1/theme/darcula.css" />
     <script type="text/x-thebe-config">
       {
         mountActivateWidget: true,
         mountStatusWidget: true,
         useJupyterLite: true,
-        useBinder: false
+        useBinder: false,
+        codeMirrorConfig: {
+          theme: 'darcula',
+        }
       }
     </script>
     <!-- this following is the thebe entrypoint script -->
     <script src="thebe-lite.min.js"></script>
     <script src="index.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css"
-      integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+
     <link rel="stylesheet" href="thebe.css" />
     <link rel="stylesheet" href="main.css" />
     <style>

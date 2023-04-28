@@ -31,6 +31,11 @@ export interface ThebeOptions {
   codeMirrorConfig?: {
     theme?: string;
     readOnly?: boolean;
+    mode?: string;
+    autoRefresh?: boolean;
+    lineNumbers?: boolean;
+    styleActiveLine?: boolean;
+    matchBrackets?: boolean;
   };
 }
 
