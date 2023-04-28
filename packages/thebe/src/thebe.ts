@@ -1,5 +1,4 @@
 import { defaultOutputSelector, defaultSelector, mergeOptions } from './options';
-import type { CellDOMPlaceholder } from './render';
 import { findCells, renderAllCells } from './render';
 import { stripPrompts, stripOutputPrompts } from './utils';
 import { KernelStatus } from './status';
@@ -13,6 +12,7 @@ import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
 import { makeConfiguration, setupNotebookFromBlocks, ThebeServer } from 'thebe-core';
+import type { CellDOMPlaceholder } from './types';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
   window.define('@jupyter-widgets/base', base);

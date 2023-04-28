@@ -1,33 +1,8 @@
-import CodeMirror from 'codemirror/lib/codemirror';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint';
 import type { IThebeCell, ThebeNotebook } from 'thebe-core';
 import type { Options } from './options';
 import { randomId } from './utils';
-import { Mode } from '@jupyterlab/codemirror';
-import type { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
-
-export interface CellDOMPlaceholder {
-  id: string;
-  placeholders: {
-    source: Element;
-    output?: Element;
-  };
-}
-
-export type CellDOMItem = CellDOMPlaceholder & {
-  ui: {
-    cell: Element;
-    editor: Element;
-    output?: Element;
-    buttons: {
-      run?: Element;
-      runAll?: Element;
-      restart?: Element;
-      restartAll?: Element;
-    };
-  };
-};
+import type { CellDOMItem, CellDOMPlaceholder } from './types';
+import { setupCodemirror } from './codemirror';
 
 /**
  * findCells will find cells and outputs, associating outputs with cells
@@ -99,110 +74,6 @@ export function clearButtonsBusy(id: string) {
   }, 200);
 }
 
-interface ExtendedCodemirrorConfig {
-  value: string;
-  mode: string;
-  readOnly?: boolean;
-  extraKeys: {
-    'Shift-Enter': () => void;
-    'Ctrl-Space': () => void;
-  };
-}
-
-function setupCodemirror(
-  options: Options,
-  item: CellDOMPlaceholder,
-  cell: IThebeCell,
-  cellEl: HTMLElement,
-  editorEl: HTMLElement,
-) {
-  const { source: sourceEl } = item.placeholders;
-  const mode = sourceEl.getAttribute('data-language') || 'python';
-  const isReadOnly = sourceEl.getAttribute('data-readonly');
-  console.debug(`thebe:setupCodemirror isReadOnly: ${isReadOnly}`);
-
-  async function execute() {
-    console.debug(`thebe:codemirror:shift-enter execute`);
-    try {
-      setButtonsBusy(cell.id);
-      await cell.execute(cell.source);
-      clearButtonsBusy(cell.id);
-    } catch (error) {
-      cell.clearOnError(error);
-    }
-  }
-
-  const ref: { cm?: any } = { cm: undefined };
-
-  function codeCompletion() {
-    console.debug(`thebe:codemirror:codeCompletion`);
-    const code = ref.cm?.getValue();
-    const cursor = ref.cm?.getDoc().getCursor();
-    if (cell.session?.kernel) {
-      cell.session?.kernel
-        .requestComplete({
-          code,
-          cursor_pos: ref.cm?.getDoc().indexFromPos(cursor),
-        })
-        .then((value: ICompleteReplyMsg) => {
-          if (value.content.status === 'ok') {
-            const from = ref.cm?.getDoc().posFromIndex(value.content.cursor_start);
-            const to = ref.cm?.getDoc().posFromIndex(value.content.cursor_end);
-            ref.cm?.showHint({
-              container: editorEl,
-              hint: () => {
-                return {
-                  from: from,
-                  to: to,
-                  list: (value.content as { matches: string[] }).matches,
-                };
-              },
-            });
-          }
-        });
-    }
-  }
-
-  const requiredSettings: ExtendedCodemirrorConfig = {
-    value: cell.source,
-    mode,
-    extraKeys: {
-      'Shift-Enter': execute,
-      'Ctrl-Space': codeCompletion,
-    },
-  };
-
-  if (isReadOnly != null) {
-    // override settings using the cell attribute
-    requiredSettings.readOnly = isReadOnly == 'false' ? false : true;
-  }
-
-  const codeMirrorConfig = Object.assign(
-    { theme: 'default' },
-    options.codeMirrorConfig ?? {},
-    requiredSettings,
-  );
-  console.debug('thebe:setupCodemirror:codeMirrorConfig', codeMirrorConfig);
-
-  ref.cm = new CodeMirror(editorEl as HTMLElement, codeMirrorConfig);
-
-  // All cells in the notebook automatically update their sources on change
-  ref?.cm?.on('change', () => {
-    const code = ref?.cm?.getValue();
-    cell.source = code;
-  });
-
-  // TODO can we avoid this?
-  Mode.ensure(mode).then(() => ref.cm?.setOption('mode', 'mode'));
-  if (codeMirrorConfig.readOnly) {
-    ref.cm?.display.lineDiv.setAttribute('data-readonly', 'true');
-    editorEl.setAttribute('data-readonly', 'true');
-    cellEl.setAttribute('data-readonly', 'true');
-  }
-
-  return ref.cm;
-}
-
 function buildCellUI(
   options: Options,
   item: CellDOMPlaceholder,
@@ -220,7 +91,7 @@ function buildCellUI(
   box.append(editor);
 
   console.debug(`thebe:buildCellUI setup CodeMirror`);
-  setupCodemirror(options, item, cell, box, editor);
+  setupCodemirror(options, item, cell, box, editor, setButtonsBusy, clearButtonsBusy);
 
   console.debug(`thebe:buildCellUI adding cell controls`);
   let run, runAll, restart, restartAll;

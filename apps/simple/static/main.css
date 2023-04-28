@@ -1,10 +1,3 @@
-.CodeMirror {
-  border: 1px solid black;
-  font-size: 13px;
-  margin-bottom: 3px;
-  max-width: 600px;
-}
-
 .thebe-activate,
 .thebe-status {
   margin-bottom: 8px;
