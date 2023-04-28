@@ -4,6 +4,11 @@
 @import './activate.css';
 @import './status.css';
 
+.CodeMirror {
+  height: auto;
+  border: 1px solid grey;
+}
+
 .thebelab-cell,
 .thebe-cell,
 .thebe-cell > div {
@@ -23,18 +28,6 @@
   padding-top: 0.5em;
   border-top: 1px solid #aaa;
 }
-/* 
-.CodeMirror {
-  height: auto;
-}
-
-.CodeMirror-scroll {
-  height: auto;
-}
-
-.CodeMirror.CodeMirror-focused {
-  background-color: white;
-} */
 
 /* no prompts */
 .jp-OutputPrompt {

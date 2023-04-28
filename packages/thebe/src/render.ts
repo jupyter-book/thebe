@@ -3,6 +3,7 @@ import CodeMirror from 'codemirror/lib/codemirror';
 import 'codemirror/mode/python/python.js';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/mode/loadMode';
+import 'codemirror/addon/display/autorefresh';
 import type { IThebeCell, ThebeNotebook } from 'thebe-core';
 import type { Options } from './options';
 import { randomId } from './utils';
@@ -108,6 +109,7 @@ interface ExtendedCodemirrorConfig {
     'Shift-Enter': () => void;
     'Ctrl-Space': () => void;
   };
+  autoRefresh: boolean;
 }
 
 function setupCodemirror(
@@ -171,6 +173,7 @@ function setupCodemirror(
       'Shift-Enter': execute,
       'Ctrl-Space': codeCompletion,
     },
+    autoRefresh: true,
   };
 
   if (isReadOnly != null) {
@@ -193,20 +196,16 @@ function setupCodemirror(
   ref?.cm?.on('change', () => {
     const code = ref?.cm?.getValue();
     cell.source = code;
+    ref?.cm?.refresh();
   });
-
-  // TODO can we avoid this?
-  // this mode loading is not effective
-  // Mode.ensure(mode).then((spec) => {
-  //   console.debug('thebe:setupCodemirror:ensureModeSpec', spec);
-  //   ref.cm?.setOption('mode', mode);
-  // });
 
   if (codeMirrorConfig.readOnly) {
     ref.cm?.display.lineDiv.setAttribute('data-readonly', 'true');
     editorEl.setAttribute('data-readonly', 'true');
     cellEl.setAttribute('data-readonly', 'true');
   }
+
+  ref.cm.refresh();
 
   return ref.cm;
 }
