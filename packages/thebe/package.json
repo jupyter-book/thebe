@@ -58,13 +58,15 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
-    "thebe-core": "^0.1.6"
+    "@jupyterlab/theme-light-extension": "^3.0.0",
+    "thebe-core": "^0.1.6",
+    "codemirror": "5.61.1",
+    "current-script-polyfill": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@jupyterlab/testutils": "^3.2.4",
-    "@jupyterlab/theme-light-extension": "^3.0.0",
     "@types/codemirror": "^5.60.5",
     "@types/expect-puppeteer": "^5.0.1",
     "@types/jest": "^29.2.1",
@@ -77,7 +79,6 @@
     "concurrently": "^6.2.1",
     "core-js": "^3.6.5",
     "css-loader": "^5.0.0",
-    "current-script-polyfill": "^1.0.0",
     "esbuild": "^0.15.6",
     "eslint-config-thebe": "*",
     "eventsource": "^2.0.2",
