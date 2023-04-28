@@ -1,27 +1,6 @@
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint';
 import type { ThebeNotebook } from 'thebe-core';
 import type { Options } from './options';
-export interface CellDOMPlaceholder {
-    id: string;
-    placeholders: {
-        source: Element;
-        output?: Element;
-    };
-}
-export type CellDOMItem = CellDOMPlaceholder & {
-    ui: {
-        cell: Element;
-        editor: Element;
-        output?: Element;
-        buttons: {
-            run?: Element;
-            runAll?: Element;
-            restart?: Element;
-            restartAll?: Element;
-        };
-    };
-};
+import type { CellDOMPlaceholder } from './types';
 /**
  * findCells will find cells and outputs, associating outputs with cells
  * in fifo priority

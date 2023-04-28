@@ -4,6 +4,26 @@ import type { ActivateWidget } from './activate';
 import type { Options } from './options';
 import type { KernelStatus } from './status';
 import type { ThebeLiteGlobal } from 'thebe-lite';
+export interface CellDOMPlaceholder {
+    id: string;
+    placeholders: {
+        source: Element;
+        output?: Element;
+    };
+}
+export type CellDOMItem = CellDOMPlaceholder & {
+    ui: {
+        cell: Element;
+        editor: Element;
+        output?: Element;
+        buttons: {
+            run?: Element;
+            runAll?: Element;
+            restart?: Element;
+            restartAll?: Element;
+        };
+    };
+};
 export interface ThebeGlobal {
     mountStatusWidget: () => void;
     mountActivateWidget: () => void;

@@ -24,6 +24,11 @@ export interface ThebeOptions {
     codeMirrorConfig?: {
         theme?: string;
         readOnly?: boolean;
+        mode?: string;
+        autoRefresh?: boolean;
+        lineNumbers?: boolean;
+        styleActiveLine?: boolean;
+        matchBrackets?: boolean;
     };
 }
 export type Options = ThebeOptions & CoreOptions;
@@ -41,5 +46,10 @@ export declare function getPageConfigValue(key: keyof Options): string | boolean
 } | {
     theme?: string | undefined;
     readOnly?: boolean | undefined;
+    mode?: string | undefined;
+    autoRefresh?: boolean | undefined;
+    lineNumbers?: boolean | undefined;
+    styleActiveLine?: boolean | undefined;
+    matchBrackets?: boolean | undefined;
 } | import("thebe-core").BinderOptions | import("thebe-core").SavedSessionOptions | import("thebe-core").KernelOptions | import("thebe-core").ServerSettings | null | undefined;
 export declare function ensurePageConfigLoaded(): Options;
