@@ -20,6 +20,10 @@ The following is available in the thebe options object:
 
 `mode` and `readOnly` will also be read from code cells on the page, and the values provided on those cells will **override** those set in the options object
 
+### modes
+
+thebe is preloaded with the python mode and will try to load additional modes on the setting. Should this fail or to preload a mode on your page, load directly to a script tag using CDN e.g. for rust here: https://unpkg.com/browse/codemirror@5.61.1/mode/rust/rust.js
+
 ### preloaded themes
 
 Only a few themes are bundled with thebe:

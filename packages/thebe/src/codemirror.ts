@@ -2,11 +2,12 @@ import CodeMirror from 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python.js';
 import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/mode/loadMode';
 import 'codemirror/addon/display/autorefresh';
 import 'codemirror/theme/abcdef.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/theme/idea.css';
+
+import { Mode } from '@jupyterlab/codemirror';
 
 import type { Options } from './options';
 import type { IThebeCell } from 'thebe-core';
@@ -129,9 +130,9 @@ export function setupCodemirror(
   );
   console.debug('thebe:setupCodemirror:codeMirrorConfig', codeMirrorConfig);
 
+  Mode.ensure(codeMirrorConfig.mode).then(() => ref.cm?.setOption('mode', codeMirrorConfig.mode));
   ref.cm = new CodeMirror(editorEl as HTMLElement, codeMirrorConfig);
-  console.debug('thebe:setupCodemirror:autoLoadMode mode for', modeFromPage);
-  CodeMirror.autoLoadMode(ref.cm, modeFromPage);
+  console.debug('thebe:setupCodemirror:autoLoadMode mode for', codeMirrorConfig.mode);
 
   // All cells in the notebook automatically update their sources on change
   ref?.cm?.on('change', () => {
