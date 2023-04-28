@@ -20,15 +20,6 @@
   border-color: green;
 }
 
-/* 
-  we see this decoration used effectivelly in jupyterbooks
-  but should it be applied in sphinx-thebe?
-*/
-.jp-OutputArea > :first-child {
-  padding-top: 0.5em;
-  border-top: 1px solid #aaa;
-}
-
 /* no prompts */
 .jp-OutputPrompt {
   display: none;
