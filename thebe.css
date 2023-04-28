@@ -3639,10 +3639,6 @@ h6:hover .jp-InternalAnchorLink {
 .thebe:focus-within {
   border-color: green;
 }
-.jp-OutputArea > :first-child {
-  padding-top: 0.5em;
-  border-top: 1px solid #aaa;
-}
 .jp-OutputPrompt {
   display: none;
 }
