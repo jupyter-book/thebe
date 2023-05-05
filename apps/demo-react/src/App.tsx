@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ThebeCoreProvider, ThebeServerProvider } from 'thebe-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
+import { ServerMode, ServerModeType } from './ServerMode';
 
 function App() {
   const options = useMemo(
@@ -17,6 +18,8 @@ function App() {
     }),
     [],
   );
+
+  const [mode, setMode] = useState<ServerModeType>('local');
 
   return (
     <div className="App">
@@ -39,11 +42,29 @@ function App() {
         </div>
       </div>
       <ThebeCoreProvider>
-        <ThebeServerProvider connect={false} options={options}>
+        <ThebeServerProvider
+          connect={false}
+          options={options}
+          useBinder={false}
+          useJupyterLite={true}
+        >
+          <ServerMode mode={mode} setMode={setMode} />
           <Connect />
           <Outlet />
         </ThebeServerProvider>
       </ThebeCoreProvider>
+
+      <div className="fixed top-2 right-1 text-xs">
+        Server icon by Ralf Schmitzer from{' '}
+        <a
+          href="https://thenounproject.com/browse/icons/term/server/"
+          target="_blank"
+          title="Server Icons"
+          rel="noreferrer"
+        >
+          Noun Project
+        </a>
+      </div>
     </div>
   );
 }

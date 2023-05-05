@@ -1,6 +1,7 @@
 import type { ServiceManager } from '@jupyterlab/services';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { JupyterLiteServer } from '@jupyterlite/server';
+import { LiteServerConfig } from './types';
 
 const serverExtensions = [import('@jupyterlite/server-extension')];
 
@@ -32,24 +33,6 @@ function* activePlugins(extension: any) {
     yield plugin;
   }
 }
-
-/**
- * Example litePluginSettings shape
- * 
-  {
-    "litePluginSettings": {
-      "@jupyterlite/pyodide-kernel-extension:kernel": {
-        "pipliteUrls": ["https://unpkg.com/@jupyterlite/pyodide-kernel@0.0.7/pypi/all.json"],
-        "pipliteWheelUrl": "https://unpkg.com/@jupyterlite/pyodide-kernel@0.0.7/pypi/piplite-0.0.7-py3-none-any.whl"
-      }
-    }
-  }
- * 
- */
-
-type LiteServerConfig = {
-  litePluginSettings: Record<string, any>;
-};
 
 export async function startJupyterLiteServer(config?: LiteServerConfig): Promise<ServiceManager> {
   /**
