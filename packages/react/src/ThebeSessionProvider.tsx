@@ -87,6 +87,7 @@ export function ThebeSessionProvider({
         shutdown: async () => {
           if (session) {
             await session.shutdown();
+            setSession(undefined);
             setReady(false);
           }
         },
