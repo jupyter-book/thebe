@@ -1,5 +1,13 @@
 # demo-core
 
+## 2.0.3
+
+### Patch Changes
+
+- Improved all demos and setup autodeply for the simple demo
+- Updated dependencies
+  - thebe-core@1.0.0
+
 ## 2.0.2
 
 ### Patch Changes

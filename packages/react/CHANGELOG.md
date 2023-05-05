@@ -1,5 +1,16 @@
 # thebe-react
 
+## 0.2.0
+
+### Minor Changes
+
+- Linking packages for a minor version bump
+
+### Patch Changes
+
+- Updated dependencies
+  - thebe-core@1.0.0
+
 ## 0.0.7
 
 ### Patch Changes

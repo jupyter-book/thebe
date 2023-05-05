@@ -1,5 +1,14 @@
 # thebe
 
+## 0.9.0-rc.5
+
+### Patch Changes
+
+- Improves styling, fixed codemirroor mode and theme handling
+- Update main readme
+- Updated dependencies
+  - thebe-core@1.0.0
+
 ## 0.9.0-rc.4
 
 ### Patch Changes
