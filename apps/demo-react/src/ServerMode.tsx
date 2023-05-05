@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useThebeCore, useThebeServer } from 'thebe-react';
 import liteIcon from './lite.png';
 import serverIcon from './server.svg';
 
