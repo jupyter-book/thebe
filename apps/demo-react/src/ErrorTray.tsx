@@ -22,6 +22,7 @@ function ErrorTrayMessage({ errors }: { errors: IThebeNotebookError[] }) {
       }),
     );
     setCells(cells);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [core, errors]);
 
   if (!core) return null;
