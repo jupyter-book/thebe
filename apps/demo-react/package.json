@@ -23,9 +23,10 @@
   },
   "scripts": {
     "lint": "eslint src/**/*.ts*",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm run copy:lite; react-scripts start",
+    "build": "npm run copy:lite; react-scripts build",
     "build:ci": "CI=true react-scripts build",
+    "copy:lite": "mkdir -p public/lite; cp -R ../../packages/lite/dist/lib/* public/lite",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -22,6 +22,7 @@ import { shortId } from './utils';
 import type { StatusEvent } from './events';
 import { ServerStatusEvent, EventSubject, ErrorStatusEvent } from './events';
 import { EventEmitter } from './emitter';
+import { LiteServerConfig } from 'thebe-lite';
 
 async function responseToJson(res: Response) {
   if (!res.ok) throw Error(`${res.status} - ${res.statusText}`);
@@ -190,7 +191,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   /**
    * Connect to Jupyterlite Server
    */
-  async connectToJupyterLiteServer(): Promise<void> {
+  async connectToJupyterLiteServer(config?: LiteServerConfig): Promise<void> {
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
       message: `Connecting to JupyterLite`,
@@ -201,7 +202,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         `thebe-lite is not available at window.thebeLite - load this onto your page before loading thebe or thebe-core.`,
       );
 
-    const serviceManager = await window.thebeLite.startJupyterLiteServer();
+    const serviceManager = await window.thebeLite.startJupyterLiteServer(config);
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
