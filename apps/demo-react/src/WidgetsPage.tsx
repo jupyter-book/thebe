@@ -1,10 +1,11 @@
 import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 import { useParams } from 'react-router-dom';
+import { ErrorTray } from './ErrorTray';
 
 export function WidgetsPage() {
   const { notebookName } = useParams<{ notebookName: string }>();
-  const { ready, executing, executeAll, cellRefs, cellIds } = useNotebook(
+  const { ready, executing, executeAll, errors, cellRefs, cellIds } = useNotebook(
     notebookName ?? 'widget-test',
     async (n) => {
       const url = `/${n}.ipynb`;
@@ -39,6 +40,7 @@ export function WidgetsPage() {
         {executing && 'EXECUTING...'}
       </div>
       <div className="m-auto max-w-3xl">
+        {errors && <ErrorTray errors={errors} />}
         {cellRefs.map((ref, idx) => {
           return (
             <JupyterOutputDecoration key={cellIds[idx]}>
