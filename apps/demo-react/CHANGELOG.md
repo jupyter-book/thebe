@@ -1,5 +1,13 @@
 # demo-react
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated interface to allow jupyterlite options to be passed into bundle. React provider updated to access useJuptyerLite prop and react-demo updated to use the new prop.
+- Updated dependencies
+  - thebe-react@0.2.1
+
 ## 0.1.4
 
 ### Patch Changes

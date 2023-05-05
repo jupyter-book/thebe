@@ -1,6 +1,6 @@
 {
   "name": "demo-react",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -17,7 +17,7 @@
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "sort-by": "^1.2.0",
-    "thebe-react": "^0.2.0",
+    "thebe-react": "^0.2.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
