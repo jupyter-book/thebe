@@ -7,7 +7,7 @@
 
 > **Note**: This readme has been updated for the 0.9.0 release
 >
-> The previous README for 0.8.x is now [located here](READMD_0.8.x.md), or alternatively see the [0.8.x branch](https://github.com/executablebooks/thebe/tree/0.8.x).
+> The previous README for 0.8.x is now [located here](README_0.8.x.md), or alternatively see the [0.8.x branch](https://github.com/executablebooks/thebe/tree/0.8.x).
 
 > **Important**
 >
