@@ -24,7 +24,7 @@ Thebe comprises the following packages (located in the `packages/` folder in thi
 
 ## Documentation
 
-The latest thebe documentation is build using [myst-tools](myst-tools.org) and is [hosted here](https://thebe-core.curve.space/).
+The latest thebe documentation is build using [myst-tools](https://myst-tools.org) and is [hosted here](https://thebe-core.curve.space/).
 
 ## Development Setup
 
