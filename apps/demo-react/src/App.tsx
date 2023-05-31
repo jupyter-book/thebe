@@ -6,6 +6,8 @@ import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
 
 function App() {
+  const [mode, setMode] = useState<ServerModeType>('local');
+
   const options = useMemo(
     () => ({
       useBinder: false,
@@ -18,8 +20,6 @@ function App() {
     }),
     [],
   );
-
-  const [mode, setMode] = useState<ServerModeType>('local');
 
   return (
     <div className="App">
@@ -46,7 +46,7 @@ function App() {
           connect={false}
           options={options}
           useBinder={false}
-          useJupyterLite={true}
+          useJupyterLite={mode === 'lite'}
         >
           <ServerMode mode={mode} setMode={setMode} />
           <Connect />

@@ -11,7 +11,7 @@
 
 > **Important**
 >
-> `thebe` 0.9.0 is still under development and documentation is incomplete
+> `thebe` 0.9.0 is still under development and documentation is work in progress (PRs welcome!)
 
 Thebe is a set of libraries allowing web applications and static web pages to provide interactive computation backed by a Juptyer kernel. It is organized in multiple libraries to allow it to be used flexibly in different web contexts.
 
@@ -24,7 +24,11 @@ Thebe comprises the following packages (located in the `packages/` folder in thi
 
 ## Documentation
 
-The latest thebe documentation is build using [myst-tools](https://myst-tools.org) and is [hosted here](https://thebe-core.curve.space/).
+The latest thebe documentation is build using [myst-tools](https://myst-tools.org) and is [hosted here](https://myst-tools.org/docs/thebe).
+
+## Demos
+
+The demo page from `apps/simple` are hosted [here on github pages](https://executablebooks.github.io/thebe) which let's you check out the interactivity that the top level `thebe` library provides along with `thebe-lite` for JuptyerLite based `pyodide` kernel access.
 
 ## Development Setup
 
