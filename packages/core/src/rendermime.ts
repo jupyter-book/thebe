@@ -55,7 +55,7 @@ export function getRenderers(mathjax: MathjaxOptions) {
   };
 }
 
-export function getRenderMimeRegistry(mathjax?: MathjaxOptions) {
+export function makeRenderMimeRegistry(mathjax?: MathjaxOptions) {
   const rendermime = new RenderMimeRegistry(getRenderers(mathjax ?? makeMathjaxOptions()));
   rendermime.addFactory(jsonRendererFactory, 10);
   return rendermime;

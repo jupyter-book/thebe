@@ -1,5 +1,5 @@
 import type * as nbformat from '@jupyterlab/nbformat';
-import { getRenderMimeRegistry } from './rendermime';
+import { makeRenderMimeRegistry } from './rendermime';
 import { OutputArea, OutputAreaModel } from '@jupyterlab/outputarea';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { IPassiveCell, MathjaxOptions } from './types';
@@ -49,7 +49,7 @@ class PassiveCellRenderer implements IPassiveCell {
 
   constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
     this.id = id;
-    this.rendermime = rendermime ?? getRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
+    this.rendermime = rendermime ?? makeRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this.model = new OutputAreaModel({ trusted: true });
     this.area = new OutputArea({
       model: this.model,

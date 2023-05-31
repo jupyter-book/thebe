@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import type { ThebeSession } from 'thebe-core';
 import { useThebeServer } from './ThebeServerProvider';
+import { useRenderMimeRegistry } from './ThebeRenderMimeRegistryProvider';
 
 interface ThebeSessionContextData {
   name: string;
@@ -27,6 +28,7 @@ export function ThebeSessionProvider({
   shutdownOnUnmount?: boolean;
 }>) {
   const { config, server, ready: serverReady } = useThebeServer();
+  const rendermime = useRenderMimeRegistry();
 
   const [starting, setStarting] = useState(false);
   const [session, setSession] = useState<ThebeSession | undefined>();
@@ -36,7 +38,7 @@ export function ThebeSessionProvider({
   const startSession = () => {
     setStarting(true);
     server
-      ?.startNewSession({ ...config?.kernels, name, path: name })
+      ?.startNewSession(rendermime, { ...config?.kernels, name, path: name })
       .then((sesh: ThebeSession | null) => {
         setStarting(false);
         if (sesh == null) {

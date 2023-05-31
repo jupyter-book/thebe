@@ -13,6 +13,7 @@ import type { ThebeEvents } from '../events';
 import type { ThebeLiteGlobal } from 'thebe-lite';
 import type * as coreModule from '../index';
 import type { INotebookContent } from '@jupyterlab/nbformat';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { setupThebeCore } from './api';
 
 /**
@@ -24,11 +25,20 @@ export interface JsApi {
   makeEvents: () => ThebeEvents;
   makeConfiguration: (options: Partial<CoreOptions>, events?: ThebeEvents) => Config;
   makeServer: (config: Config) => ThebeServer;
+  makeRenderMimeRegistry: (mathjax?: coreModule.MathjaxOptions | undefined) => IRenderMimeRegistry;
   connectToBinder: (config: Config) => ThebeServer;
   connectToJupyter: (config: Config) => ThebeServer;
   connectToJupyterLite: (config: Config) => ThebeServer;
-  setupNotebookFromBlocks: (blocks: CodeBlock[], config: Config) => ThebeNotebook;
-  setupNotebookFromIpynb: (ipynb: INotebookContent, config: Config) => ThebeNotebook;
+  setupNotebookFromBlocks: (
+    blocks: CodeBlock[],
+    config: Config,
+    rendermime: IRenderMimeRegistry,
+  ) => ThebeNotebook;
+  setupNotebookFromIpynb: (
+    ipynb: INotebookContent,
+    config: Config,
+    rendermime: IRenderMimeRegistry,
+  ) => ThebeNotebook;
 }
 
 export type ThebeCore = typeof coreModule;

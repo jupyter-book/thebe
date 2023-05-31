@@ -3,7 +3,6 @@ import type ThebeSession from './session';
 import type { IThebeCell, IThebeCellExecuteReturn } from './types';
 import { shortId } from './utils';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import { getRenderMimeRegistry } from './rendermime';
 import type { Config } from './config';
 import { EventSubject, NotebookStatusEvent } from './events';
 import { EventEmitter } from './emitter';
@@ -24,16 +23,16 @@ class ThebeNotebook {
   session?: ThebeSession;
   protected events: EventEmitter;
 
-  constructor(id: string, config: Config, rendermime?: IRenderMimeRegistry) {
+  constructor(id: string, config: Config, rendermime: IRenderMimeRegistry) {
     this.id = id;
     this.events = new EventEmitter(id, config, EventSubject.notebook, this);
     this.cells = [];
     this.metadata = {};
-    this.rendermime = rendermime ?? getRenderMimeRegistry(config.mathjax);
+    this.rendermime = rendermime;
     console.debug('thebe:notebook constructor', this);
   }
 
-  static fromCodeBlocks(blocks: CodeBlock[], config: Config, rendermime?: IRenderMimeRegistry) {
+  static fromCodeBlocks(blocks: CodeBlock[], config: Config, rendermime: IRenderMimeRegistry) {
     const id = shortId();
     const notebook = new ThebeNotebook(id, config, rendermime);
     notebook.cells = blocks.map((c) => {
@@ -46,7 +45,7 @@ class ThebeNotebook {
     return notebook;
   }
 
-  static fromIpynb(ipynb: INotebookContent, config: Config, rendermime?: IRenderMimeRegistry) {
+  static fromIpynb(ipynb: INotebookContent, config: Config, rendermime: IRenderMimeRegistry) {
     const notebook = new ThebeNotebook(shortId(), config, rendermime);
 
     Object.assign(notebook.metadata, ipynb.metadata);
@@ -119,7 +118,6 @@ class ThebeNotebook {
     // note all cells in a notebook share the rendermime registry
     // we only need to add the widgets factory once
     this.session = session;
-    session.manager.addWidgetFactories(this.rendermime);
     this.cells?.forEach((cell) => (cell.session = session));
     this.events.triggerStatus({
       status: NotebookStatusEvent.attached,
@@ -128,7 +126,6 @@ class ThebeNotebook {
   }
 
   detachSession() {
-    this.session?.manager.removeWidgetFactories(this.rendermime);
     this.cells?.map((cell) => (cell.session = undefined));
     this.session = undefined;
     this.events.triggerStatus({

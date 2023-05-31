@@ -4,6 +4,8 @@ import { useThebeConfig } from '../ThebeServerProvider';
 import { useThebeCore } from '../ThebeCoreProvider';
 import type { INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
+import { useRenderMimeRegistry } from '../ThebeRenderMimeRegistryProvider';
+import { render } from 'react-dom';
 
 export interface NotebookExecuteOptions {
   stopOnError?: boolean;
@@ -42,6 +44,7 @@ export function useNotebookBase() {
    */
   useEffect(() => {
     if (!notebook || !session || !sessionReady) return;
+    console.debug(`thebe-react: attaching notebook to session`, { notebook, session });
     notebook.attachSession(session);
     setSessionAttached(true);
   }, [notebook, session, sessionReady]);
@@ -118,6 +121,7 @@ export function useNotebook(
 ) {
   const { core } = useThebeCore();
   const { config } = useThebeConfig();
+  const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
@@ -148,7 +152,7 @@ export function useNotebook(
     setLoading(true);
     fetchNotebook(name)
       .then((ipynb) => {
-        return core?.ThebeNotebook.fromIpynb(ipynb, config);
+        return core?.ThebeNotebook.fromIpynb(ipynb, config, rendermime);
       })
       .then((nb: ThebeNotebook) => {
         const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
@@ -193,6 +197,7 @@ export function useNotebook(
 export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidgetsOnly: true }) {
   const { core } = useThebeCore();
   const { config } = useThebeConfig();
+  const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState(false);
   const {
     ready,
@@ -216,6 +221,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
     const nb = core.ThebeNotebook.fromCodeBlocks(
       sourceCode.map((source) => ({ id: core?.shortId(), source })),
       config,
+      rendermime,
     );
     const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
     setRefs(
@@ -255,6 +261,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
 export function useNotebookfromSourceLegacy(sourceCode: string[]) {
   const { core } = useThebeCore();
   const { config } = useThebeConfig();
+  const rendermime = useRenderMimeRegistry();
 
   const [busy, setBusy] = useState<boolean>(false);
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();
@@ -271,6 +278,7 @@ export function useNotebookfromSourceLegacy(sourceCode: string[]) {
       core.ThebeNotebook.fromCodeBlocks(
         sourceCode.map((source) => ({ id: core?.shortId(), source })),
         config,
+        rendermime,
       ),
     );
   }, [core, notebook]);
