@@ -1,5 +1,4 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import { RenderMimeRegistry, standardRendererFactories } from '@jupyterlab/rendermime';
 import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
 import type { Widget } from '@lumino/widgets';
 
@@ -26,34 +25,21 @@ export class ThebeManager extends KernelWidgetManager {
   id: string;
   _loader: RequireJsLoader;
 
-  constructor(kernel: IKernelConnection, rendermime?: IRenderMimeRegistry) {
-    const rm =
-      rendermime ??
-      new RenderMimeRegistry({
-        initialFactories: standardRendererFactories,
-      });
+  constructor(kernel: IKernelConnection, rendermime: IRenderMimeRegistry) {
+    super(kernel, rendermime);
 
+    this.id = shortId();
     /** ensure this registry always gets the widget renderer.
      * This is essential for cases where widgets are rendered heirarchically
      */
-    rm.addFactory(
-      {
-        safe: false,
-        mimeTypes: [WIDGET_MIMETYPE],
-        createRenderer: (options) => new WidgetRenderer(options, this as any),
-      },
-      1,
-    );
+    this.addWidgetFactories();
 
-    super(kernel, rm);
-
-    this.id = shortId();
     this._registerWidgets();
     this._loader = new RequireJsLoader();
   }
 
-  addWidgetFactories(rendermime: IRenderMimeRegistry) {
-    rendermime.addFactory(
+  addWidgetFactories() {
+    this.rendermime.addFactory(
       {
         safe: false,
         mimeTypes: [WIDGET_MIMETYPE],
@@ -63,8 +49,8 @@ export class ThebeManager extends KernelWidgetManager {
     );
   }
 
-  removeWidgetFactories(rendermime: IRenderMimeRegistry) {
-    rendermime.removeMimeType(WIDGET_MIMETYPE);
+  removeWidgetFactories() {
+    this.rendermime.removeMimeType(WIDGET_MIMETYPE);
   }
 
   /**

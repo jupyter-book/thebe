@@ -3,6 +3,7 @@ import { EventSubject, SessionStatusEvent } from './events';
 import { ThebeManager } from './manager';
 import type ThebeServer from './server';
 import { EventEmitter } from './emitter';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 class ThebeSession {
   readonly server: ThebeServer;
@@ -11,13 +12,17 @@ class ThebeSession {
   private connection: ISessionConnection;
   private events: EventEmitter;
 
-  constructor(server: ThebeServer, connection: ISessionConnection) {
+  constructor(
+    server: ThebeServer,
+    connection: ISessionConnection,
+    rendermime: IRenderMimeRegistry,
+  ) {
     this.server = server;
     this.connection = connection;
     this.events = new EventEmitter(this.connection.id, server.config, EventSubject.session, this);
 
     if (this.connection.kernel == null) throw Error('ThebeSession - kernel is null');
-    this.manager = new ThebeManager(this.connection.kernel);
+    this.manager = new ThebeManager(this.connection.kernel, rendermime);
 
     this.events.triggerStatus({
       status: SessionStatusEvent.ready,

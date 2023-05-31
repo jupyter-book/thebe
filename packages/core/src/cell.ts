@@ -71,7 +71,6 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
    * @param session
    */
   attachSession(session: ThebeSession) {
-    session.manager.addWidgetFactories(this.rendermime);
     this.session = session;
     this.events.triggerStatus({
       status: CellStatusEvent.attached,
@@ -85,7 +84,6 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
    *
    */
   detachSession() {
-    this.session?.manager.removeWidgetFactories(this.rendermime);
     this.session = undefined;
     this.events.triggerStatus({
       status: CellStatusEvent.detached,

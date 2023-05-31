@@ -9,6 +9,7 @@ export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
 export type KernelISpecModels = KernelSpecAPI.ISpecModels;
 export type KernelISpecModel = KernelSpecAPI.ISpecModel;
+export type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 export interface ServerInfo {
   id: string;

@@ -26,11 +26,11 @@
       "outputs": ["dist/**"]
     },
     "demo-core#build": {
-      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "dependsOn": ["thebe-core#build", "thebe-lite#build"],
       "outputs": ["dist/**"]
     },
     "demo-react#build": {
-      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe#build"],
+      "dependsOn": ["thebe-core#build", "thebe-lite#build", "thebe-react#build"],
       "outputs": ["build/**"]
     },
     "demo": {

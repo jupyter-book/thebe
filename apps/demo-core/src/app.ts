@@ -1,5 +1,6 @@
 import type { ThebeSession } from 'thebe-core';
 import {
+  makeRenderMimeRegistry,
   ThebeEvents,
   ThebeEventType,
   shortId,
@@ -216,7 +217,9 @@ class App {
       await this.server?.connectToJupyterServer();
     }
 
-    this.session = await this.server.startNewSession();
+    const rendermime = makeRenderMimeRegistry(this.server.config.mathjax);
+
+    this.session = await this.server.startNewSession(rendermime);
 
     this.notebook = ThebeNotebook.fromCodeBlocks(
       code[this.exampleType].map((source) => ({
@@ -224,6 +227,7 @@ class App {
         source,
       })),
       this.server.config,
+      rendermime,
     );
 
     if (this.session == null) console.error('could not start session');

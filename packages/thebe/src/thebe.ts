@@ -11,7 +11,12 @@ import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { output } from '@jupyter-widgets/jupyterlab-manager';
 import type { Options } from './options';
-import { makeConfiguration, setupNotebookFromBlocks, ThebeServer } from 'thebe-core';
+import {
+  makeConfiguration,
+  makeRenderMimeRegistry,
+  setupNotebookFromBlocks,
+  ThebeServer,
+} from 'thebe-core';
 import type { CellDOMPlaceholder } from './types';
 
 if (typeof window !== 'undefined' && typeof window.define !== 'undefined') {
@@ -70,8 +75,9 @@ export async function bootstrap(opts: Partial<Options> = {}) {
   });
 
   const config = makeConfiguration(options, window.thebe.events);
+  const rendermime = makeRenderMimeRegistry(config.mathjax);
 
-  const notebook = setupNotebookFromBlocks(codeWithIds, config);
+  const notebook = setupNotebookFromBlocks(codeWithIds, config, rendermime);
   window.thebe.notebook = notebook;
 
   renderAllCells(options, notebook, items);
@@ -100,7 +106,7 @@ export async function bootstrap(opts: Partial<Options> = {}) {
 
   await server.ready;
 
-  const session = await server.startNewSession();
+  const session = await server.startNewSession(rendermime);
   if (session != null) notebook.attachSession(session);
 
   window.thebe.session = session ?? undefined;

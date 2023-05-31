@@ -6,10 +6,14 @@ import type {
   ServerSettings,
   SessionIModel,
 } from './types';
+import type { Config } from './config';
+import type { ServiceManager } from '@jupyterlab/services';
+import type { LiteServerConfig } from 'thebe-lite';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import type { StatusEvent } from './events';
 import { RepoProvider } from './types';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
-import type { ServiceManager } from '@jupyterlab/services';
 import {
   KernelManager,
   KernelSpecAPI,
@@ -17,12 +21,9 @@ import {
   SessionManager,
 } from '@jupyterlab/services';
 import ThebeSession from './session';
-import type { Config } from './config';
 import { shortId } from './utils';
-import type { StatusEvent } from './events';
 import { ServerStatusEvent, EventSubject, ErrorStatusEvent } from './events';
 import { EventEmitter } from './emitter';
-import { LiteServerConfig } from 'thebe-lite';
 
 async function responseToJson(res: Response) {
   if (!res.ok) throw Error(`${res.status} - ${res.statusText}`);
@@ -79,7 +80,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     this._isDisposed = true;
   }
 
-  async startNewSession(kernelOptions?: KernelOptions): Promise<ThebeSession | null> {
+  async startNewSession(
+    rendermime: IRenderMimeRegistry,
+    kernelOptions?: KernelOptions,
+  ): Promise<ThebeSession | null> {
     await this.ready;
 
     if (!this.sessionManager?.isReady) {
@@ -96,7 +100,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       },
     });
 
-    return new ThebeSession(this, connection);
+    return new ThebeSession(this, connection, rendermime);
   }
 
   async listRunningSessions(): Promise<SessionIModel[]> {
@@ -116,7 +120,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     return this.listRunningSessions();
   }
 
-  async connectToExistingSession(model: SessionIModel) {
+  async connectToExistingSession(model: SessionIModel, rendermime: IRenderMimeRegistry) {
     await this.ready;
     if (!this.sessionManager?.isReady) {
       throw Error('Requesting session from a server, with no SessionManager available');
@@ -124,7 +128,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     const connection = this.sessionManager?.connectTo({ model });
 
-    return new ThebeSession(this, connection);
+    return new ThebeSession(this, connection, rendermime);
   }
 
   async clearSavedBinderSessions() {
