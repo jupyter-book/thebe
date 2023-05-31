@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
 const HookShellScriptPlugin = require('hook-shell-script-webpack-plugin');
 
@@ -26,6 +27,15 @@ module.exports = {
     }),
     new HookShellScriptPlugin({
       afterEmit: ['node bin/stubContentsApi.js'],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: '../pypi/*.whl',
+          to: 'pypi',
+          context: path.dirname(require.resolve('@jupyterlite/pyodide-kernel')),
+        },
+      ],
     }),
   ],
   output: {
