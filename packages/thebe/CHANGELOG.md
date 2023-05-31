@@ -1,5 +1,13 @@
 # thebe
 
+## 0.9.0-rc.6
+
+### Patch Changes
+
+- 6eea92e: Made changes to the `thebe-core` APIs to make rendermime registries external, the caller now has to manage how registries are used across the other session nd notebook object. Updates the demos, `thebe` and `thebe-react` to reflect this base change. `thebe-react` now has a new provider making it easy to add a rendermine registry in the component tree.
+- Updated dependencies [6eea92e]
+  - thebe-core@0.2.2
+
 ## 0.9.0-rc.5
 
 ### Patch Changes
@@ -7,7 +15,7 @@
 - Improves styling, fixed codemirroor mode and theme handling
 - Update main readme
 - Updated dependencies
-  - thebe-core@1.0.0
+  - thebe-core@0.2.2
 
 ## 0.9.0-rc.4
 

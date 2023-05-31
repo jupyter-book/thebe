@@ -1,5 +1,11 @@
 # thebe-lite
 
+## 0.2.2
+
+### Patch Changes
+
+- 0a62e50: Upgraded default `pyodide-kernel` to `0.0.8`
+
 ## 0.2.1
 
 ### Patch Changes

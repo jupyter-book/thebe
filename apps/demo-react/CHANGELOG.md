@@ -1,5 +1,17 @@
 # demo-react
 
+## 0.2.0
+
+### Minor Changes
+
+- 6eea92e: Made changes to the `thebe-core` APIs to make rendermime registries external, the caller now has to manage how registries are used across the other session nd notebook object. Updates the demos, `thebe` and `thebe-react` to reflect this base change. `thebe-react` now has a new provider making it easy to add a rendermine registry in the component tree.
+
+### Patch Changes
+
+- Updated dependencies [0a62e50]
+- Updated dependencies [6eea92e]
+  - thebe-react@0.2.2
+
 ## 0.1.5
 
 ### Patch Changes
