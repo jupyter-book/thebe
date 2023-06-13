@@ -45,8 +45,9 @@ export function ThebeLoaderProvider({
 export function ThebeBundleLoaderProvider({
   start,
   loadThebeLite,
+  publicPath,
   children,
-}: React.PropsWithChildren<{ start?: boolean; loadThebeLite?: boolean }>) {
+}: React.PropsWithChildren<{ start?: boolean; loadThebeLite?: boolean; publicPath?: string }>) {
   const [startLoad, setStartLoad] = useState(start);
   const [loading, setLoading] = useState(false);
   const [core, setCore] = useState<ThebeCore | undefined>();
@@ -62,20 +63,15 @@ export function ThebeBundleLoaderProvider({
       try {
         if (!window.thebeCore) {
           const script = document.createElement('script');
-          script.setAttribute('src', '/thebe-core.min.js');
+          script.setAttribute('src', `${publicPath ?? ''}/thebe-core.min.js`);
           script.setAttribute('async', 'true');
           script.setAttribute('type', 'text/javascript');
           document.head.appendChild(script);
-
-          const styles = document.createElement('link');
-          styles.setAttribute('rel', 'stylesheet');
-          styles.setAttribute('href', '/thebe-core.css');
-          document.head.appendChild(styles);
         }
 
         if (loadThebeLite) {
           const liteScript = document.createElement('script');
-          liteScript.setAttribute('src', '/thebe-lite.min.js');
+          liteScript.setAttribute('src', `${publicPath ?? ''}/thebe-lite.min.js`);
           liteScript.setAttribute('async', 'true');
           liteScript.setAttribute('type', 'text/javascript');
           document.head.appendChild(liteScript);
