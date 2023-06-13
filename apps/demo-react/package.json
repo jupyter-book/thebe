@@ -1,6 +1,6 @@
 {
   "name": "demo-react",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

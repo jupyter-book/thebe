@@ -1,5 +1,22 @@
 # demo-react
 
+## 0.2.3
+
+### Patch Changes
+
+- b61fa4e: Changed core library loading strategy to load bundled code directly to the page. This is implemented as a new provider for now, so the previous core provider can still be used.
+- Updated dependencies [b61fa4e]
+  - thebe-react@0.2.4
+
+## 0.2.1
+
+### Patch Changes
+
+- 7b3fd21: Changed core library loading strategy to load bundled code directly to the page. This is implemented as a new provider for now, so the previous core provider can still be used.
+- Updated dependencies
+- Updated dependencies [7b3fd21]
+  - thebe-react@0.2.3
+
 ## 0.2.0
 
 ### Minor Changes

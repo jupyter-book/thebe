@@ -10,7 +10,7 @@
 
 # production
 /build
-public/lite
+public/thebe
 
 # misc
 .DS_Store
