@@ -28,9 +28,9 @@ export function ThebeCoreProvider({
         setCore(thebeCore);
         setLoading(false);
       })
-      .catch(({ reason }) => {
-        console.debug(`thebe-core load failed ${reason}`);
-        setError(reason);
+      .catch(({ message }) => {
+        console.debug(`thebe-core load failed ${message}`);
+        setError(message);
         setLoading(false);
       });
   }, [startLoad]);
