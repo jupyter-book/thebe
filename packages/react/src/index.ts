@@ -1,5 +1,5 @@
 export * from './OutputAreaByRef';
-export * from './ThebeCoreProvider';
+export * from './ThebeLoaderProvider';
 export * from './ThebeServerProvider';
 export * from './ThebeSessionProvider';
 export * from './ThebeRenderMimeRegistryProvider';

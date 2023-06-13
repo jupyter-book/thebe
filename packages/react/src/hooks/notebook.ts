@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState } from 'react';
 import type { ThebeNotebook, ThebeSession, IThebeCell, IThebeCellExecuteReturn } from 'thebe-core';
 import { useThebeConfig } from '../ThebeServerProvider';
-import { useThebeCore } from '../ThebeCoreProvider';
+import { useThebeLoader } from '../ThebeLoaderProvider';
 import type { INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
 import { useRenderMimeRegistry } from '../ThebeRenderMimeRegistryProvider';
@@ -119,7 +119,7 @@ export function useNotebook(
   fetchNotebook: (name: string) => Promise<INotebookContent>,
   opts = { refsForWidgetsOnly: true },
 ) {
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
   const { config } = useThebeConfig();
   const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState<boolean>(false);
@@ -195,7 +195,7 @@ export function useNotebook(
  * @returns
  */
 export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidgetsOnly: true }) {
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
   const { config } = useThebeConfig();
   const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState(false);
@@ -259,7 +259,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
  * DEPRECATED - migrate to useNotebookFromSource
  */
 export function useNotebookfromSourceLegacy(sourceCode: string[]) {
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
   const { config } = useThebeConfig();
   const rendermime = useRenderMimeRegistry();
 

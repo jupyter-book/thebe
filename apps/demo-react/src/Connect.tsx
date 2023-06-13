@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useThebeCore, useThebeServer } from 'thebe-react';
+import { useThebeLoader, useThebeServer } from 'thebe-react';
 
 export function Connect() {
-  const { core, loading, load } = useThebeCore();
+  const { core, loading, load } = useThebeLoader();
   const { ready, connecting, connect } = useThebeServer();
 
   useEffect(() => {
