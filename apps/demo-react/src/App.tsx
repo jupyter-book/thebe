@@ -41,7 +41,7 @@ function App() {
           </NavLink>
         </div>
       </div>
-      <ThebeBundleLoaderProvider loadThebeLite>
+      <ThebeBundleLoaderProvider loadThebeLite publicPath="/thebe">
         <ThebeServerProvider
           connect={false}
           options={options}

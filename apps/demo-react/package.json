@@ -1,6 +1,6 @@
 {
   "name": "demo-react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -17,16 +17,16 @@
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "sort-by": "^1.2.0",
-    "thebe-react": "^0.2.2",
+    "thebe-react": "^0.2.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "lint": "eslint src/**/*.ts*",
-    "start": "npm run copy:lite; react-scripts start",
-    "build": "npm run copy:lite; react-scripts build",
+    "start": "npm run copy:thebe; react-scripts start",
+    "build": "npm run copy:thebe; react-scripts build",
     "build:ci": "CI=true react-scripts build",
-    "copy:lite": "mkdir -p public/lite; cp -R ../../packages/lite/dist/lib/* public/lite",
+    "copy:thebe": "mkdir -p public/thebe && cp -R ../../packages/lite/dist/lib/* public/thebe && cp -R ../../packages/core/dist/lib/* public/thebe",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
