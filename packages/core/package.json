@@ -21,7 +21,6 @@
     "build:dev": "npm-run-all -l clean -p declarations build:cjs build:esm build:css build:bundle:dev",
     "build": "npm-run-all -l clean -p declarations build:cjs build:esm build:css build:bundle",
     "build:watch": "concurrently 'npm run build:cjs -- -w' 'npm run copy:css' 'npm run build:bundle -- --watch'",
-    "build:lite:demo": "npx ts-node ./bin/buildLiteDemo.ts",
     "dev": "npm run build:watch",
     "start": "webpack serve --open --config webpack.dev.js",
     "test": "jest --detectOpenHandles --runInBand",
