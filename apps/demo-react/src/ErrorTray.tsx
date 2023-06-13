@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import type { PassiveCellRenderer } from 'thebe-core';
 import type { IThebeNotebookError } from 'thebe-react';
-import { useThebeCore } from 'thebe-react';
+import { useThebeLoader } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 
 function ErrorTrayMessage({ errors }: { errors: IThebeNotebookError[] }) {
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
 
   const [cells, setCells] = useState<PassiveCellRenderer[]>([]);
   const [refs, setRefs] = useState<((node: HTMLDivElement) => void)[]>([]);

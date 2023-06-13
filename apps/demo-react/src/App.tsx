@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ThebeCoreProvider, ThebeServerProvider } from 'thebe-react';
+import { ThebeBundleLoaderProvider, ThebeServerProvider } from 'thebe-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
@@ -41,7 +41,7 @@ function App() {
           </NavLink>
         </div>
       </div>
-      <ThebeCoreProvider>
+      <ThebeBundleLoaderProvider loadThebeLite>
         <ThebeServerProvider
           connect={false}
           options={options}
@@ -52,7 +52,7 @@ function App() {
           <Connect />
           <Outlet />
         </ThebeServerProvider>
-      </ThebeCoreProvider>
+      </ThebeBundleLoaderProvider>
 
       <div className="fixed top-2 right-1 text-xs">
         Server icon by Ralf Schmitzer from{' '}

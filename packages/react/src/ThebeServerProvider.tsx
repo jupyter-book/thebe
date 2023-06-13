@@ -7,7 +7,7 @@ import type {
   ThebeEvents,
   ThebeServer,
 } from 'thebe-core';
-import { useThebeCore } from './ThebeCoreProvider';
+import { useThebeLoader } from './ThebeLoaderProvider';
 
 type ListenerFn = (data: ThebeEventData) => void;
 
@@ -42,7 +42,7 @@ export function ThebeServerProvider({
   events?: ThebeEvents;
   customConnectFn?: (server: ThebeServer) => Promise<void>;
 }>) {
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
   const [doConnect, setDoConnect] = useState(connect);
   const [connecting, setConnecting] = useState<boolean>(false);
   const [server, setServer] = useState<ThebeServer | undefined>();
@@ -146,7 +146,7 @@ export function useThebeServer() {
   }
   const { config, events, server, connecting, ready, connect, disconnect } = serverContext;
 
-  const { core } = useThebeCore();
+  const { core } = useThebeLoader();
   const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
   const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
 
