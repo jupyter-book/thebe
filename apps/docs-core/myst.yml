@@ -14,5 +14,5 @@ site:
       url: https://executablebooks.org/
   domains:
     - mystmd-thebe.curve.space
-  logo: public/core_logo.svg
-  logo_text: thebe-core
+  logo: public/thebe-icon.svg
+  logo_text: thebe
