@@ -4,17 +4,11 @@ venue: architecture
 
 # Architecture
 
-## Packages
-
-- `thebe-core` provides a set of runtime object that re-use and wrap certain components and services provided by `juptyerlab`. The aim is to provide a simplified interface, abstracting away from Jupyter (lab) & lumino internals and types, that can be used in a web application to connect to juptyer services, interact with them and track state.
-- `thebe-lite` provides the means to start a `JupyterLiteServer` and bundles all `Jupyterlite` dependencies in isolation
-- `thebe` uses `thebe-core` with `codemirror` to turn code blocks on a how web page into interactive cells and allow them to be executed.
-
 ## Runtime Objects
 
 The main objects provided are shown below in their default configuration.
 
-![thebe core runtime objects](./thebe-core-runtime-objects.png)
+![thebe core runtime objects](./images/thebe-core-runtime-objects.png)
 
 In each object only some key members / properties are shown, the role of these and their scope is explained below:
 

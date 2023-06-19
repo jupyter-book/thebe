@@ -1,8 +1,7 @@
 ---
-venue: Quickstart
+title: Getting Started
+venue: Core
 ---
-
-# Quickstart
 
 Install with `npm`:
 

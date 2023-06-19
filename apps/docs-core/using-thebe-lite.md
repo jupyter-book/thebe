@@ -1,3 +1,8 @@
+---
+title: Using thebe-lite
+venue: Guides
+---
+
 ## Enabling JupyterLite
 
 In order to access JupyterLite functionality and the pyodide kernel the `thebe-lite` library must be loaded and initialized.

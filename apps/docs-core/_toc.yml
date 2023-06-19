@@ -1,0 +1,57 @@
+# Table of Contents
+#
+# Myst will respect:
+# 1. New pages
+#      - file: relative/path/to/page
+# 2. New sections without an associated page
+#      - title: Folder Title
+#        sections: ...
+# 3. New sections with an associated page
+#      - file: relative/path/to/page
+#        sections: ...
+#
+# Note: Titles defined on pages here are not recognized.
+#
+# This spec is based on the JupyterBook table of contents.
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+parts:
+  - caption: Guides
+    chapters:
+      - file: quickstart-lite
+      - file: quickstart-binder
+  # - caption: How To
+  #   chapters:
+  #     # - file: configure thebe with on page options
+  #     # - file: changing codemirror themes
+  - caption: React
+    chapters:
+      - file: react-intro
+      - file: react-providers
+      - file: react-notebooks
+      - file: react-ui-components
+  - caption: Core
+    chapters:
+      - file: core-intro
+  # - caption: Explanations
+  #   chapters:
+  # - file: using-thebe
+  # - file: using-thebe-lite
+  # - file: using-thebe-react
+  # - file: using-thebe-core
+  # - caption: API
+  #   chapters:
+  # - file: 4-default-options
+  # - file: 3a-configuration/
+  - caption: Reference
+    chapters:
+      - file: options
+      - file: architecture
+      - file: history
+      # - file: thebe-docs
+  - caption: Developers
+    chapters:
+      - file: CHANGELOG
+      - file: 9-building-thebe-core
