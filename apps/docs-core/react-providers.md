@@ -15,7 +15,7 @@ The providers are:
 [`ThebeCoreProvider`](#thebecoreprovider)
 : Provides a load function and top level configuration object.
 
-[`ThebeRenderMimeRegistryProvider`](#theberendermime)
+[`ThebeRenderMimeRegistryProvider`](#theberendermimeregistryprovider)
 : Provides a `RendermimeRegisty` and used to set a logical boundary in your application for the scope of specialized renderers like `ipywidgets`.
 
 [`ThebeServerProvider`](#thebeserverprovider)
