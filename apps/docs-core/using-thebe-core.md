@@ -1,8 +1,7 @@
 ---
+title: Using thebe-core
 venue: Guides
 ---
-
-# Getting started in Typescript
 
 `thebe-core` is available from npm as an `esm` or `commonjs` module and as a bundled package with typescript types.
 
