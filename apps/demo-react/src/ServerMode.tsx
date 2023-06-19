@@ -1,7 +1,7 @@
 import liteIcon from './lite.png';
 import serverIcon from './server.svg';
 
-export type ServerModeType = 'local' | 'lite';
+export type ServerModeType = 'local' | 'lite' | 'binder';
 
 export function ServerMode({
   mode,
@@ -12,33 +12,68 @@ export function ServerMode({
 }) {
   return (
     <div className="flex justify-center mb-6">
-      <div className="flex items-center space-x-2">
-        <div>
-          <img
-            className={`w-[40px] ${mode === 'local' ? 'animate-pulse' : ''}`}
-            src={serverIcon}
-            alt="Local Server"
-          />
-        </div>
-        <div>
-          <label className="relative inline-flex items-center cursor-pointer">
+      <fieldset>
+        <legend>Choose connection type:</legend>
+        <div className="my-2 flex space-x-3">
+          <div className="flex flex-row cursor-pointer">
             <input
-              type="checkbox"
-              checked={mode === 'lite'}
-              className="sr-only peer"
-              onChange={(e) => setMode(e.target.checked ? 'lite' : 'local')}
+              className="cursor-pointer"
+              type="radio"
+              id="local"
+              name="server"
+              value="local"
+              checked={mode === 'local'}
+              onChange={() => setMode('local')}
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          </label>
+            <label htmlFor="local" className="ml-2 cursor-pointer">
+              <img
+                className={`w-[40px] inline ${mode === 'local' ? 'animate-pulse' : ''}`}
+                src={serverIcon}
+                alt="Local Server"
+              />{' '}
+              Local
+            </label>
+          </div>
+          <div className="flex flex-row cursor-pointer">
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="lite"
+              name="server"
+              value="lite"
+              checked={mode === 'lite'}
+              onChange={() => setMode('lite')}
+            />
+            <label htmlFor="lite" className="ml-2 cursor-pointer">
+              <img
+                className={`w-[40px] inline ${mode === 'lite' ? 'animate-pulse' : ''}`}
+                src={liteIcon}
+                alt="Jupyter Lite"
+              />{' '}
+              Lite
+            </label>
+          </div>
+          <div className="flex flex-row cursor-pointer">
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="binder"
+              name="server"
+              value="binder"
+              checked={mode === 'binder'}
+              onChange={() => setMode('binder')}
+            />
+            <label htmlFor="binder" className="ml-2 cursor-pointer">
+              <img
+                className={`w-[40px] inline ${mode === 'local' ? 'animate-pulse' : ''}`}
+                src={serverIcon}
+                alt="Local Server"
+              />{' '}
+              Binder
+            </label>
+          </div>
         </div>
-        <div>
-          <img
-            className={`w-[40px] ${mode === 'lite' ? 'animate-pulse' : ''}`}
-            src={liteIcon}
-            alt="Jupyter Lite"
-          />
-        </div>
-      </div>
+      </fieldset>
     </div>
   );
 }

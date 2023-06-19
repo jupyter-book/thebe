@@ -9,8 +9,6 @@ import { ThebeStatusTray } from './ThebeStatusTray';
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
 
-  const useBinder = false;
-
   const options = useMemo(
     () => ({
       kernelOptions: {
@@ -47,7 +45,7 @@ function App() {
         <ThebeServerProvider
           connect={false}
           options={options}
-          useBinder={useBinder}
+          useBinder={mode === 'binder'}
           useJupyterLite={mode === 'lite'}
         >
           <ServerMode mode={mode} setMode={setMode} />
