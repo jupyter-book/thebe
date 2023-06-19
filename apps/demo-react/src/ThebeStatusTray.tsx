@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ThebeEventData, ThebeEventType } from 'thebe-core';
-import { useThebeLoader, useThebeServer } from 'thebe-react';
+import { useThebeServer } from 'thebe-react';
 
 export function ThebeStatusTray() {
-  const { core } = useThebeLoader();
-  const { connecting, ready, error, events } = useThebeServer();
+  const { connecting, error, events } = useThebeServer();
   const [subscribed, setSubscribed] = useState<boolean>(false);
   const [status, setStatus] = useState<ThebeEventData | null>(null);
 

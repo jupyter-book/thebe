@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ThebeBundleLoaderProvider, ThebeServerProvider } from 'thebe-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
