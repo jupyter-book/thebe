@@ -15,6 +15,9 @@ The providers are:
 [`ThebeCoreProvider`](#thebecoreprovider)
 : Provides a load function and top level configuration object.
 
+[`ThebeRenderMimeRegistryProvider`](#theberendermime)
+: Provides a `RendermimeRegisty` and used to set a logical boundary in your application for the scope of specialized renderers like `ipywidgets`.
+
 [`ThebeServerProvider`](#thebeserverprovider)
 : Provides a connect function. Once connect is initiated created, it holds `ThebeServer` object, signals server connection status and provides access to the server API.
 
@@ -37,16 +40,19 @@ Think about this when deciding how to distribute `ThebeSessions` accross pages/s
 A typical provider cascade is:
 
 ```{code-block} htmlbars
+:linenos:
 :caption: How to structure thebe-react` providers within the component tree
 <App>
   <ThebeCoreProvider options={options}>
     <ThebeServerProvider>
       ...
-      <ThebeSessionProvider name={page.slug}>
-        ...
-        <MyPageComponent slug={page.slug} />
-        ...
-      </ThebeSessionProvider>
+      <ThebeRenderMimeRegistryProvider>
+        <ThebeSessionProvider name={page.slug}>
+          ...
+          <MyPageComponent slug={page.slug} />
+          ...
+        </ThebeSessionProvider>
+      </ThebeRenderMimeRegistryProvider>
       ...
     </ThebeServerProvider>
   </ThebeCoreProvider>
@@ -95,6 +101,28 @@ export declare function useThebeCore(): {
 
 `core?: ThebeCore | undefined`
 : When loaded the code module can be accessed here.
+
+## ThebeRenderMimeRegistryProvider
+
+The `ThebeRenderMimeRegistryProvider` is a very simple provider, providing a single instance of a `RenderMimeRegistry` its child component tree.
+It accepts no additional props:
+
+```typescript
+export declare function ThebeRenderMimeRegistryProvider({
+  children,
+}: React.PropsWithChildren): JSX.Element;
+```
+
+It's purpose is to give you control over how the registry is shared between the `ThebeSession` and `ThebeNotebook` (or `ThebeCell`s), which
+both require access to a shared registry to function as expected, but where we usually want flexbility over the order in which those are created.
+
+### hooks
+
+A single convenience hook is available. This will throw on an `undefined` context but otherwise will return the RednerMimeRegistry object.
+
+```typescript
+export declare function useRenderMimeRegistry(): IRenderMimeRegistry;
+```
 
 ## ThebeServerProvider
 
