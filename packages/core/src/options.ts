@@ -12,8 +12,8 @@ import { RepoProvider } from './types';
 
 export function makeBinderOptions(opts: BinderOptions) {
   return {
-    repo: 'binder-examples/requirements',
-    ref: 'master',
+    repo: 'executablebooks/thebe-binder-base',
+    ref: 'HEAD',
     binderUrl: 'https://mybinder.org',
     repoProvider: RepoProvider.github,
     ...opts,

@@ -15,8 +15,8 @@ describe('config', () => {
     });
     test('binder', () => {
       expect(config.binder).toEqual({
-        repo: 'binder-examples/requirements',
-        ref: 'master',
+        repo: 'executablebooks/thebe-binder-base',
+        ref: 'HEAD',
         binderUrl: 'https://mybinder.org',
         repoProvider: RepoProvider.github,
       });
