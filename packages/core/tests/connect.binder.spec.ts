@@ -8,11 +8,11 @@ describe('connect.binder', () => {
   describe('urls', () => {
     test('git', () => {
       expect(makeGitUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.git }))).toEqual(
-        'https://binder.curvenote.dev/build/git/binder-examples%2Frequirements/master',
+        'https://binder.curvenote.dev/build/git/executablebooks%2Fthebe-binder-base/HEAD',
       );
       expect(
         makeGitUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.git, ref: 'main' })),
-      ).toEqual('https://binder.curvenote.dev/build/git/binder-examples%2Frequirements/main');
+      ).toEqual('https://binder.curvenote.dev/build/git/executablebooks%2Fthebe-binder-base/main');
       expect(() =>
         makeGitUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.github })),
       ).toThrow();
@@ -20,12 +20,12 @@ describe('connect.binder', () => {
     test('github', () => {
       expect(
         makeGitHubUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.github })),
-      ).toEqual('https://binder.curvenote.dev/build/gh/binder-examples/requirements/master');
+      ).toEqual('https://binder.curvenote.dev/build/gh/executablebooks/thebe-binder-base/HEAD');
       expect(
         makeGitHubUrl(
           makeBinderOptions({ binderUrl, repoProvider: RepoProvider.github, ref: 'main' }),
         ),
-      ).toEqual('https://binder.curvenote.dev/build/gh/binder-examples/requirements/main');
+      ).toEqual('https://binder.curvenote.dev/build/gh/executablebooks/thebe-binder-base/main');
       expect(() =>
         makeGitHubUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.git })),
       ).toThrow();
@@ -33,12 +33,12 @@ describe('connect.binder', () => {
     test('gitlab', () => {
       expect(
         makeGitLabUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.gitlab })),
-      ).toEqual('https://binder.curvenote.dev/build/gl/binder-examples%2Frequirements/master');
+      ).toEqual('https://binder.curvenote.dev/build/gl/executablebooks%2Fthebe-binder-base/HEAD');
       expect(
         makeGitLabUrl(
           makeBinderOptions({ binderUrl, repoProvider: RepoProvider.gitlab, ref: 'main' }),
         ),
-      ).toEqual('https://binder.curvenote.dev/build/gl/binder-examples%2Frequirements/main');
+      ).toEqual('https://binder.curvenote.dev/build/gl/executablebooks%2Fthebe-binder-base/main');
       expect(() =>
         makeGitLabUrl(makeBinderOptions({ binderUrl, repoProvider: RepoProvider.git })),
       ).toThrow();

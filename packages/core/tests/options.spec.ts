@@ -11,7 +11,7 @@ describe('options', () => {
     test('defaults', () => {
       expect(makeBinderOptions({})).toEqual({
         repo: 'binder-examples/requirements',
-        ref: 'master',
+        ref: 'HEAD',
         binderUrl: 'https://mybinder.org',
         repoProvider: RepoProvider.github,
       });
