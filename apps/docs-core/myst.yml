@@ -8,14 +8,11 @@ project:
     code: BSD-3-Clause
 site:
   title: Thebe
-  projects:
-    - slug: thebe
-      path: .
   nav: []
   actions:
     - title: Executable Books
       url: https://executablebooks.org/
   domains:
-    - thebe.myst.tools
-  logo: public/thebe-icon.svg
-  logo_text: thebe
+    - mystmd-thebe.curve.space
+  logo: public/core_logo.svg
+  logo_text: thebe-core
