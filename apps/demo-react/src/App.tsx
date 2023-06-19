@@ -1,21 +1,23 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ThebeBundleLoaderProvider, ThebeServerProvider } from 'thebe-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
+import { ThebeStatusTray } from './ThebeStatusTray';
 
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
 
+  const useBinder = false;
+
   const options = useMemo(
     () => ({
-      useBinder: false,
       kernelOptions: {
         name: 'Python 3',
       },
-      savedSessionOptions: {
-        enabled: false,
+      binderOptions: {
+        repo: 'curvenote/binder-base',
       },
     }),
     [],
@@ -45,11 +47,12 @@ function App() {
         <ThebeServerProvider
           connect={false}
           options={options}
-          useBinder={false}
+          useBinder={useBinder}
           useJupyterLite={mode === 'lite'}
         >
           <ServerMode mode={mode} setMode={setMode} />
           <Connect />
+          <ThebeStatusTray />
           <Outlet />
         </ThebeServerProvider>
       </ThebeBundleLoaderProvider>
