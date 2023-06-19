@@ -3,9 +3,14 @@ title: Lite Quick Start
 venue: Guides
 ---
 
-This guide is for people looking to add quickly `thebe` and `thebe-lite` to a static HTML website for in-browser jupyterlite powered WASM computation. It's not just for static HTML, you can also follow this to add `thebe` to any website where you can add script tags to the `<head>` and target code on your page using a stable css selector.
+This guide is for people looking to add quickly `thebe` and `thebe-lite` to a **static HTML website** for in-browser jupyterlite powered WASM computation. It's not just for static HTML, you can also follow this to add `thebe` to any website where you can add script tags to the `<head>` and target code on your page using a stable css selector.
 
 Let's get started! 🚀
+
+```{tip} Using thebe-lite in React
+:class: dropdown
+If you are using the `thebe-react` providers and hooks and want to add `thebe-lite` into your app, see the [`thebe-react` specific docs here](react-lite.md).
+```
 
 ## Loading scripts, styles & configuration
 

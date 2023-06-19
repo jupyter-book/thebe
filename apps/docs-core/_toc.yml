@@ -29,6 +29,7 @@ parts:
   - caption: React
     chapters:
       - file: react-intro
+      - file: react-lite
       - file: react-providers
       - file: react-notebooks
       - file: react-ui-components
