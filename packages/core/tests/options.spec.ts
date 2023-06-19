@@ -10,7 +10,7 @@ describe('options', () => {
   describe('binder', () => {
     test('defaults', () => {
       expect(makeBinderOptions({})).toEqual({
-        repo: 'binder-examples/requirements',
+        repo: 'executablebooks/thebe-binder-base',
         ref: 'HEAD',
         binderUrl: 'https://mybinder.org',
         repoProvider: RepoProvider.github,
