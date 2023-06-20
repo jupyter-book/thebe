@@ -1,7 +1,15 @@
-# Getting Started with Create React App
+# Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The demos are configured to be build and run from the builds within the monorepo.
 
+in order to build and run this demo:
+
+1. `cd`  to the root of the repo
+2. `npm install`
+3. `npm run build`
+4. `npm run start:react`
+
+(if you already installed packages in this directory delete `node_modules` folder and any `package-lock.json` from `apps/demo-react`)
 ## Available Scripts
 
 In the project directory, you can run:
