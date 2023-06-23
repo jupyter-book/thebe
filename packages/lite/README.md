@@ -16,6 +16,16 @@ To use JupyterLite with `thebe`, load this module on your page using a script ta
 `thebe` will then feature detect the library and use the module when appropriate option is set.
 
 **Note:** at the moment, in order for `thebe-lite` to work, the entire package must be available at at the root of the host domain as `pyolite` currently requires wheels to be available at `/build/pypi`.
+## with `npm`
+First install the package:
+
+`npm i thebe-core thebe-lite`
+
+Thebe is loaded asynchronously so you need to copy the build artifacts into your project static directory (e.g. `public` in `react`) you can do that using:
+`npx copy-thebe-assets <output_dir>`
+
+e.g:
+`npx copy-thebe-assets public/thebe`
 
 ## Interface
 

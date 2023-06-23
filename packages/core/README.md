@@ -20,6 +20,13 @@ Install the library from npm:
   npm install thebe-core
 ```
 
+Thebe is loaded asynchronously so you need to copy the build artifacts into your project static directory (e.g. `public` in `react`) you can do that using:
+`npx copy-thebe-assets <output_dir>`
+
+e.g:
+```
+copy-thebe-assets public/thebe
+```
 ## Typescript
 
 Follow the Getting started from Typescript section of the docs

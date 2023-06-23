@@ -27,4 +27,7 @@ In the example above with `publicPath="/thebe"`, the script tags would be pointi
 Your build system should be updated to copy the bundles into place appropraitely.
 
 **Note:** currently `thebe-react` is configured to always load the `pyodide` and other base wheels from CDN, so there is no need to deploy those.
+
+**Note:** There's a utility script for copying the required files named `copy-thebe-assets`
+In the above example you would just need to run `npx copy-thebe-assets public/thebe`
 ```
