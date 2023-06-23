@@ -107,5 +107,8 @@
   },
   "nohoist": [
     "requirejs"
-  ]
+  ],
+  "bin": {
+    "copy-thebe-assets": "./bin/copy-thebe-assets.cjs"
+  }
 }
