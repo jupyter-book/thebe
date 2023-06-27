@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.2.4
+
+### Patch Changes
+
+- Added script to copy thebe assets to the `thebe-core` package distribution (@shaielc)
+  - thebe-lite@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes

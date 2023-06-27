@@ -4,6 +4,14 @@
 
 ### Patch Changes
 
+- Changed the default bundle loading paths to be relative for both `thebe-core` and `thebe-lite` bundles
+- Updated dependencies
+  - thebe-core@0.2.4
+
+## 0.2.4
+
+### Patch Changes
+
 - b61fa4e: Changed core library loading strategy to load bundled code directly to the page. This is implemented as a new provider for now, so the previous core provider can still be used.
   - thebe-core@0.2.3
 - Provide option to set public path for deployed bundles
