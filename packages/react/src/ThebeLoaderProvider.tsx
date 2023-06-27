@@ -42,14 +42,6 @@ export function ThebeLoaderProvider({
   );
 }
 
-export function bundlePathFromPublicPath(publicPath?: string) {
-  let bundlePath = '';
-  if (publicPath && publicPath.length > 0) {
-    bundlePath = publicPath.endsWith('/') ? `${publicPath}` : `${publicPath}/`;
-  }
-  return bundlePath;
-}
-
 export function ThebeBundleLoaderProvider({
   start,
   loadThebeLite,
@@ -68,11 +60,10 @@ export function ThebeBundleLoaderProvider({
     console.debug('importing thebe-core...');
 
     if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-      const bundlePath = bundlePathFromPublicPath(publicPath);
       try {
         if (!window.thebeCore) {
           const script = document.createElement('script');
-          script.setAttribute('src', `${bundlePath}thebe-core.min.js`);
+          script.setAttribute('src', `${publicPath ?? ''}/thebe-core.min.js`);
           script.setAttribute('async', 'true');
           script.setAttribute('type', 'text/javascript');
           document.head.appendChild(script);
@@ -80,7 +71,7 @@ export function ThebeBundleLoaderProvider({
 
         if (loadThebeLite) {
           const liteScript = document.createElement('script');
-          liteScript.setAttribute('src', `${bundlePath}thebe-lite.min.js`);
+          liteScript.setAttribute('src', `${publicPath ?? ''}/thebe-lite.min.js`);
           liteScript.setAttribute('async', 'true');
           liteScript.setAttribute('type', 'text/javascript');
           document.head.appendChild(liteScript);
