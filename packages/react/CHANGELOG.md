@@ -1,5 +1,12 @@
 # thebe-react
 
+## 0.2.5
+
+### Patch Changes
+
+- a3f8e6f: Reverting bad relative url change in bundle loader
+  - thebe-core@0.2.5
+
 ## 0.2.4
 
 ### Patch Changes
