@@ -5,7 +5,7 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Config } from './config';
 import { CellStatusEvent, ErrorStatusEvent, errorToMessage, EventSubject } from './events';
 import { EventEmitter } from './emitter';
-import type { ICodeCell, IError } from '@jupyterlab/nbformat';
+import type { ICodeCell, IError, IOutput } from '@jupyterlab/nbformat';
 import { ensureString, shortId } from './utils';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
@@ -13,6 +13,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   metadata: JsonObject;
   session?: ThebeSession;
   executionCount: number | null;
+  protected initialOutputs: IOutput[];
   readonly notebookId: string;
   protected busy: boolean;
   protected events: EventEmitter;
@@ -32,6 +33,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     this.metadata = metadata;
     this.busy = false;
     this.executionCount = null;
+    this.initialOutputs = [];
     console.debug('thebe:cell constructor', this);
   }
 
@@ -109,6 +111,38 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       status: CellStatusEvent.idle,
       message: 'Completed',
     });
+  }
+
+  /**
+   * reset the DOM representation of the cell to the initial state
+   * along with the execution count
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+    this.initialOutputs = initialOutputs;
+    this.render(initialOutputs, hideWidgets);
+    this.executionCount = null;
+  }
+
+  /**
+   * reset the DOM representation of the cell to the initial state
+   * along with the execution count
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  reset(hideWidgets?: boolean) {
+    this.render(this.initialOutputs, hideWidgets);
+    this.executionCount = null;
+  }
+
+  /**
+   * refresh the DOM representation of the cell with the latest outputs
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  refresh(hideWidgets?: boolean) {
+    this.render(this.outputs, hideWidgets);
   }
 
   /**

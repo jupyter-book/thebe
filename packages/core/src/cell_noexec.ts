@@ -63,6 +63,18 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
     // no-op
   }
 
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+    // no-op
+  }
+
+  reset(hideWidgets?: boolean) {
+    // no-op
+  }
+
+  refresh(hideWidgets?: boolean) {
+    // no-op
+  }
+
   attachToDOM(el?: HTMLElement) {
     // could potentially allow for markdown rendering here
   }

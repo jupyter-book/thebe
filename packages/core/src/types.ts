@@ -100,6 +100,9 @@ export interface IThebeCell extends IPassiveCell {
   execute(source?: string): Promise<IThebeCellExecuteReturn | null>;
   setAsBusy(): void;
   setAsIdle(): void;
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean): void;
+  reset(hideWidgets?: boolean): void;
+  refresh(hideWidgets?: boolean): void;
 }
 
 export interface IThebeCellExecuteReturn {
