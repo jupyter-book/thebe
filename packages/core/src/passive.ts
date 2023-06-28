@@ -76,20 +76,22 @@ class PassiveCellRenderer implements IPassiveCell {
       return;
     }
     if (this.area.isAttached) {
+      // TODO should we detach and reattach?
       console.warn(`thebe:renderer:attachToDOM - already attached`);
       if (strict) return;
+    } else {
+      // if the target element has contents, preserve it but wrap it in our output area
+      console.debug(`thebe:renderer:attachToDOM ${this.id} - appending existing contents`);
+      if (el.innerHTML) {
+        this.area.model.add({
+          output_type: 'display_data',
+          data: {
+            'text/html': el.innerHTML,
+          },
+        });
+      }
     }
-    console.debug(`thebe:renderer:attachToDOM ${this.id}`);
 
-    // if the target element has contents, preserve it but wrap it in our output area
-    if (el.innerHTML) {
-      this.area.model.add({
-        output_type: 'display_data',
-        data: {
-          'text/html': el.innerHTML,
-        },
-      });
-    }
     el.textContent = '';
 
     const div = document.createElement('div');
