@@ -12,6 +12,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   source: string;
   metadata: JsonObject;
   session?: ThebeSession;
+  executionCount: number | null;
   readonly notebookId: string;
   protected busy: boolean;
   protected events: EventEmitter;
@@ -30,6 +31,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     this.source = source;
     this.metadata = metadata;
     this.busy = false;
+    this.executionCount = null;
     console.debug('thebe:cell constructor', this);
   }
 
@@ -131,7 +133,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       this.area.future = this.session.kernel.requestExecute({ code });
 
       // TODO consider how to enable execution without the await here
-      await this.area.future.done;
+      const reply = await this.area.future.done;
+      this.executionCount = reply.content.execution_count;
 
       let executeErrors: IError[] | undefined;
       for (let i = 0; i < this.model.length; i++) {

@@ -93,6 +93,7 @@ export interface IThebeCell extends IPassiveCell {
   readonly isBusy: boolean;
   readonly isAttached: boolean;
   readonly tags: string[];
+  readonly executionCount: number | null;
 
   attachSession(session: ThebeSession): void;
   detachSession(): void;

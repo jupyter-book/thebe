@@ -51,6 +51,10 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
     return false;
   }
 
+  get executionCount(): number | null {
+    return null;
+  }
+
   setAsBusy(): void {
     // no-op
   }
