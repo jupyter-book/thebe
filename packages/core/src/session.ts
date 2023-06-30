@@ -26,7 +26,7 @@ class ThebeSession {
 
     this.events.triggerStatus({
       status: SessionStatusEvent.ready,
-      message: `New session started, kernel '${this.connection.kernel?.name}' available`,
+      message: `ThebeSession created, kernel '${this.connection.kernel?.name}' available`,
     });
   }
 
@@ -59,7 +59,7 @@ class ThebeSession {
 
     this.events.triggerStatus({
       status: SessionStatusEvent.ready,
-      message: `New session started, kernel '${this.connection.kernel?.name}' available`,
+      message: `session restarted, kernel '${this.connection.kernel?.name}' available`,
     });
   }
 
