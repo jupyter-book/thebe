@@ -76,7 +76,7 @@ export class KernelStatus {
   mount() {
     const el = document.querySelector('.thebe-status');
     if (!el) {
-      console.log('KernelStatus mount requested but no .thebe-status element found on page');
+      console.debug('KernelStatus mount requested but no .thebe-status element found on page');
       return;
     }
 

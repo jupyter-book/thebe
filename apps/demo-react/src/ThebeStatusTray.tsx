@@ -11,7 +11,6 @@ export function ThebeStatusTray() {
     if (!events || subscribed) return;
     setSubscribed(true);
     events?.on('status' as ThebeEventType, (event: any, data: ThebeEventData) => {
-      console.log('EVENTS', 'status' as ThebeEventType, event, data);
       setStatus(data);
     });
   }, [events, subscribed]);
@@ -21,7 +20,7 @@ export function ThebeStatusTray() {
       {connecting && <div className="text-orange-500">connecting to server...</div>}
       {error && <div className="text-red-500">connection error: {error}</div>}
       {status && (
-        <details className="mono text-center flex justify-center">
+        <details className="flex justify-center text-center mono">
           <summary>last status: {`[${status.subject}] ${status.status}`}</summary>
           <div className="text-xs whitespace-pre-wrap">{status.message}</div>
         </details>

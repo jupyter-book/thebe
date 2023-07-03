@@ -55,7 +55,7 @@ export function setupNotebookFromIpynb(
 }
 
 export function setupThebeCore() {
-  console.log(`thebe:api:setupThebeCore`, { coreModule });
+  console.debug(`thebe:api:setupThebeCore`, { coreModule });
   window.thebeCore = Object.assign(window.thebeCore ?? {}, {
     module: coreModule,
     api: {
