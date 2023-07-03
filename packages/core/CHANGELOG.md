@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.2.6
+
+### Patch Changes
+
+- 35b3b02: Fix to how initial outputs re read from the DOM, expose executionCount from the kernel, add caching of notebooks and reset functionality on cells and the notebook.
+  - thebe-lite@0.2.6
+
 ## 0.2.5
 
 ### Patch Changes
