@@ -47,7 +47,13 @@ export function ThebeBundleLoaderProvider({
   loadThebeLite,
   publicPath,
   children,
-}: React.PropsWithChildren<{ start?: boolean; loadThebeLite?: boolean; publicPath?: string }>) {
+  options = {},
+}: React.PropsWithChildren<{
+  start?: boolean;
+  loadThebeLite?: boolean;
+  publicPath?: string;
+  options?: { attempts?: number; delay?: number };
+}>) {
   const [startLoad, setStartLoad] = useState(start);
   const [loading, setLoading] = useState(false);
   const [core, setCore] = useState<ThebeCore | undefined>();
@@ -86,7 +92,7 @@ export function ThebeBundleLoaderProvider({
             if (window.thebeLite) console.debug('thebe-lite loaded');
             clearInterval(timer);
           }
-          if (attempts > 15) {
+          if (attempts > (options?.attempts ?? 50)) {
             setError('thebe-core load failed');
             setLoading(false);
             clearInterval(timer);
@@ -95,7 +101,7 @@ export function ThebeBundleLoaderProvider({
             if (!window.thebeLite) console.debug('thebe-lite failed to load');
           }
           attempts += 1;
-        }, 300);
+        }, options?.delay ?? 300);
       } catch (err: any) {
         setError(err);
         setLoading(false);
