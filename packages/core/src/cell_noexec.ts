@@ -51,11 +51,27 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
     return false;
   }
 
+  get executionCount(): number | null {
+    return null;
+  }
+
   setAsBusy(): void {
     // no-op
   }
 
   setAsIdle(): void {
+    // no-op
+  }
+
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+    // no-op
+  }
+
+  reset(hideWidgets?: boolean) {
+    // no-op
+  }
+
+  refresh(hideWidgets?: boolean) {
     // no-op
   }
 

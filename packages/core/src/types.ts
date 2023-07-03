@@ -93,12 +93,16 @@ export interface IThebeCell extends IPassiveCell {
   readonly isBusy: boolean;
   readonly isAttached: boolean;
   readonly tags: string[];
+  readonly executionCount: number | null;
 
   attachSession(session: ThebeSession): void;
   detachSession(): void;
   execute(source?: string): Promise<IThebeCellExecuteReturn | null>;
   setAsBusy(): void;
   setAsIdle(): void;
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean): void;
+  reset(hideWidgets?: boolean): void;
+  refresh(hideWidgets?: boolean): void;
 }
 
 export interface IThebeCellExecuteReturn {

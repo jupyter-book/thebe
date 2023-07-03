@@ -5,13 +5,15 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Config } from './config';
 import { CellStatusEvent, ErrorStatusEvent, errorToMessage, EventSubject } from './events';
 import { EventEmitter } from './emitter';
-import type { ICodeCell, IError } from '@jupyterlab/nbformat';
+import type { ICodeCell, IError, IOutput } from '@jupyterlab/nbformat';
 import { ensureString, shortId } from './utils';
 
 class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   source: string;
   metadata: JsonObject;
   session?: ThebeSession;
+  executionCount: number | null;
+  protected initialOutputs: IOutput[];
   readonly notebookId: string;
   protected busy: boolean;
   protected events: EventEmitter;
@@ -30,6 +32,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     this.source = source;
     this.metadata = metadata;
     this.busy = false;
+    this.executionCount = null;
+    this.initialOutputs = [];
     console.debug('thebe:cell constructor', this);
   }
 
@@ -110,6 +114,38 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   }
 
   /**
+   * reset the DOM representation of the cell to the initial state
+   * along with the execution count
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+    this.initialOutputs = initialOutputs;
+    this.render(initialOutputs, hideWidgets);
+    this.executionCount = null;
+  }
+
+  /**
+   * reset the DOM representation of the cell to the initial state
+   * along with the execution count
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  reset(hideWidgets?: boolean) {
+    this.render(this.initialOutputs, hideWidgets);
+    this.executionCount = null;
+  }
+
+  /**
+   * refresh the DOM representation of the cell with the latest outputs
+   *
+   * @param hideWidgets boolean - if true, hide widgets
+   */
+  refresh(hideWidgets?: boolean) {
+    this.render(this.outputs, hideWidgets);
+  }
+
+  /**
    * TODO
    *  - pass execute_count or timestamp or something back to redux on success/failure?
    *
@@ -131,7 +167,8 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
       this.area.future = this.session.kernel.requestExecute({ code });
 
       // TODO consider how to enable execution without the await here
-      await this.area.future.done;
+      const reply = await this.area.future.done;
+      this.executionCount = reply.content.execution_count;
 
       let executeErrors: IError[] | undefined;
       for (let i = 0; i < this.model.length; i++) {

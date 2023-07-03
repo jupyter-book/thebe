@@ -75,6 +75,15 @@ class ThebeNotebook {
     return this.cells[this.cells.length - 1];
   }
 
+  /**
+   * reset the notebook to its initial state by resetting each cell
+   *
+   * @param hideWidgets boolean
+   */
+  reset(hideWidgets?: boolean) {
+    this.cells.forEach((cell) => cell.reset(hideWidgets));
+  }
+
   numCells() {
     return this.cells?.length ?? 0;
   }
