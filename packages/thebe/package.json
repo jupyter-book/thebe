@@ -32,7 +32,8 @@
     "test:e2e:watch": "jest --detectOpenHandles --config=./jest.e2e.config.js  --watchAll",
     "lint": "eslint src/**/*.ts*",
     "lint:format": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
+    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "publish": "npm publish --tag rc"
   },
   "files": [
     "lib/**",

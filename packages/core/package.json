@@ -28,8 +28,7 @@
     "serve": "http-server .",
     "lint": "eslint src/**/*.ts*",
     "lint:format": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "publish": "echo 'Please use lerna to publish this package' && exit 1"
+    "lint:format:fix": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "keywords": [
     "executablebooks",
