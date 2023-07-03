@@ -1,5 +1,12 @@
 # thebe-react
 
+## 0.2.7
+
+### Patch Changes
+
+- a19ca30: Extend timeout for async loading of the `thebe-core` and `thebe-lite` bundles
+  - thebe-core@0.2.7
+
 ## 0.2.6
 
 ### Patch Changes
