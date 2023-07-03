@@ -1,5 +1,11 @@
 # thebe-core
 
+## 0.2.7
+
+### Patch Changes
+
+- thebe-lite@0.2.7
+
 ## 0.2.6
 
 ### Patch Changes
