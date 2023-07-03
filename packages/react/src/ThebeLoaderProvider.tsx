@@ -52,7 +52,7 @@ export function ThebeBundleLoaderProvider({
   start?: boolean;
   loadThebeLite?: boolean;
   publicPath?: string;
-  options: { attempts: number; delay: number };
+  options?: { attempts?: number; delay?: number };
 }>) {
   const [startLoad, setStartLoad] = useState(start);
   const [loading, setLoading] = useState(false);
