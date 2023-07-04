@@ -80,8 +80,8 @@ class ThebeNotebook {
    *
    * @param hideWidgets boolean
    */
-  reset(hideWidgets?: boolean) {
-    this.cells.forEach((cell) => cell.reset(hideWidgets));
+  reset() {
+    this.cells.forEach((cell) => cell.reset());
   }
 
   numCells() {

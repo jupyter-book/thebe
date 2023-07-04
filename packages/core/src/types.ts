@@ -82,7 +82,7 @@ export interface IPassiveCell {
   setOutputText(text: string): void;
   clear(): void;
   clearOnError(error?: any): void;
-  render(outputs: IOutput[], hideWidgets?: boolean): void;
+  render(outputs: IOutput[]): void;
 }
 
 export interface IThebeCell extends IPassiveCell {
@@ -100,9 +100,8 @@ export interface IThebeCell extends IPassiveCell {
   execute(source?: string): Promise<IThebeCellExecuteReturn | null>;
   setAsBusy(): void;
   setAsIdle(): void;
-  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean): void;
-  reset(hideWidgets?: boolean): void;
-  refresh(hideWidgets?: boolean): void;
+  initOutputs(initialOutputs: IOutput[]): void;
+  reset(): void;
 }
 
 export interface IThebeCellExecuteReturn {
