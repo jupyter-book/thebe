@@ -119,9 +119,9 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
    *
    * @param hideWidgets boolean - if true, hide widgets
    */
-  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+  initOutputs(initialOutputs: IOutput[]) {
     this.initialOutputs = initialOutputs;
-    this.render(initialOutputs, hideWidgets);
+    this.render(initialOutputs);
     this.executionCount = null;
   }
 
@@ -131,18 +131,9 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
    *
    * @param hideWidgets boolean - if true, hide widgets
    */
-  reset(hideWidgets?: boolean) {
-    this.render(this.initialOutputs, hideWidgets);
+  reset() {
+    this.render(this.initialOutputs);
     this.executionCount = null;
-  }
-
-  /**
-   * refresh the DOM representation of the cell with the latest outputs
-   *
-   * @param hideWidgets boolean - if true, hide widgets
-   */
-  refresh(hideWidgets?: boolean) {
-    this.render(this.outputs, hideWidgets);
   }
 
   /**

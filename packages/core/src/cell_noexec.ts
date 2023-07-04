@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ICell, IOutput } from '@jupyterlab/nbformat';
-import type { IRenderMimeRegistry, RenderMimeRegistry } from '@jupyterlab/rendermime';
+import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import PassiveCellRenderer from './passive';
 import type ThebeSession from './session';
 import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
@@ -63,15 +63,11 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
     // no-op
   }
 
-  initOutputs(initialOutputs: IOutput[], hideWidgets?: boolean) {
+  initOutputs(initialOutputs: IOutput[]) {
     // no-op
   }
 
-  reset(hideWidgets?: boolean) {
-    // no-op
-  }
-
-  refresh(hideWidgets?: boolean) {
+  reset() {
     // no-op
   }
 

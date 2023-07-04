@@ -6,40 +6,6 @@ import type { IPassiveCell, MathjaxOptions } from './types';
 import { makeMathjaxOptions } from './options';
 import { Widget } from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
-import { WIDGET_MIMETYPE } from './manager';
-import { ensureString } from './utils';
-
-function isMimeBundle({ output_type }: nbformat.IOutput) {
-  return output_type === 'display_data' || output_type === 'execute_result';
-}
-
-const placeholder = (plainText?: string) => `
-<div class="thebe-ipywidgets-placeholder">
-  <div class="thebe-ipywidgets-placeholder-image"></div>
-  <div class="thebe-ipywidgets-placeholder-message"><code>ipywidgets</code> - a Jupyter kernel connection is required to fully display this output.</div>
-  ${plainText && `<pre>${plainText}</pre>`}
-</div>
-`;
-
-function stripWidgets(outputs: nbformat.IOutput[], hideWidgets?: boolean) {
-  return outputs.map((output: nbformat.IOutput) => {
-    if (!isMimeBundle(output)) return output;
-    const { [WIDGET_MIMETYPE]: widgets, ...others } = output.data as nbformat.IMimeBundle;
-    if (!widgets) return output;
-    const data = { ...others };
-    if (!hideWidgets && !('text/html' in data))
-      // if there is not already an html bundle, add a placeholder to hide the plain/text field
-      data['text/html'] = placeholder(ensureString(data['text/plain'] as string | string[]));
-    else if (hideWidgets) {
-      delete data['text/plain'];
-    }
-    const stripped = {
-      ...output,
-      data,
-    };
-    return stripped;
-  });
-}
 
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
@@ -146,8 +112,8 @@ class PassiveCellRenderer implements IPassiveCell {
    * @param outputs - serialised jupyter outputs
    * @returns
    */
-  render(outputs: nbformat.IOutput[], hideWidgets?: boolean) {
-    this.model.fromJSON(stripWidgets(outputs, hideWidgets));
+  render(outputs: nbformat.IOutput[]) {
+    this.model.fromJSON(outputs);
   }
 }
 
