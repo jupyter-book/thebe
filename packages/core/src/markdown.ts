@@ -3,12 +3,20 @@ import type { ICell, IOutput } from '@jupyterlab/nbformat';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import PassiveCellRenderer from './passive';
 import type ThebeSession from './session';
-import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
+import type { CellKind, IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
 import { ensureString, shortId } from './utils';
 
-export default class NonExecutableCell extends PassiveCellRenderer implements IThebeCell {
+/**
+ * A Thebe cell that is exepected to contain markdown (or raw) source.
+ *
+ * Currently this just separates content cells from code cells and thebe provides no
+ * special handling for markdown cells.
+ *
+ */
+export default class ThebeMarkdownCell extends PassiveCellRenderer implements IThebeCell {
   id: string;
   notebookId: string;
+  kind: CellKind;
   source: string;
   busy: boolean;
   metadata: JsonObject;
@@ -21,6 +29,7 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
     rendermime: IRenderMimeRegistry,
   ) {
     super(id, rendermime);
+    this.kind = 'markdown';
     this.id = id;
     this.notebookId = notebookId;
     this.source = source;
@@ -29,7 +38,7 @@ export default class NonExecutableCell extends PassiveCellRenderer implements IT
   }
 
   static fromICell(ic: ICell, notebookId: string, rendermime: IRenderMimeRegistry) {
-    const cell = new NonExecutableCell(
+    const cell = new ThebeMarkdownCell(
       typeof ic.id === 'string' ? ic.id : shortId(),
       notebookId,
       ensureString(ic.source),

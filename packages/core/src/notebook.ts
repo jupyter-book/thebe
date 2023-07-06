@@ -1,4 +1,4 @@
-import ThebeCell from './cell';
+import ThebeCodeCell from './cell';
 import type ThebeSession from './session';
 import type { IThebeCell, IThebeCellExecuteReturn } from './types';
 import { shortId } from './utils';
@@ -7,7 +7,7 @@ import type { Config } from './config';
 import { EventSubject, NotebookStatusEvent } from './events';
 import { EventEmitter } from './emitter';
 import type { ICodeCell, INotebookContent, INotebookMetadata } from '@jupyterlab/nbformat';
-import NonExecutableCell from './cell_noexec';
+import ThebeMarkdownCell from './markdown';
 
 export interface CodeBlock {
   id: string;
@@ -37,7 +37,7 @@ class ThebeNotebook {
     const notebook = new ThebeNotebook(id, config, rendermime);
     notebook.cells = blocks.map((c) => {
       const metadata = {};
-      const cell = new ThebeCell(c.id, id, c.source, config, metadata, notebook.rendermime);
+      const cell = new ThebeCodeCell(c.id, id, c.source, config, metadata, notebook.rendermime);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
@@ -52,8 +52,13 @@ class ThebeNotebook {
 
     notebook.cells = ipynb.cells.map((c) => {
       if ((c as ICodeCell).cell_type === 'code')
-        return ThebeCell.fromICodeCell(c as ICodeCell, notebook.id, config, notebook.rendermime);
-      return NonExecutableCell.fromICell(c, notebook.id, notebook.rendermime);
+        return ThebeCodeCell.fromICodeCell(
+          c as ICodeCell,
+          notebook.id,
+          config,
+          notebook.rendermime,
+        );
+      return ThebeMarkdownCell.fromICell(c, notebook.id, notebook.rendermime);
     });
 
     return notebook;

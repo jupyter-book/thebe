@@ -1,4 +1,4 @@
-import type { IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
+import type { CellKind, IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
 import type ThebeSession from './session';
 import PassiveCellRenderer from './passive';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
@@ -8,7 +8,8 @@ import { EventEmitter } from './emitter';
 import type { ICodeCell, IError, IOutput } from '@jupyterlab/nbformat';
 import { ensureString, shortId } from './utils';
 
-class ThebeCell extends PassiveCellRenderer implements IThebeCell {
+class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
+  kind: CellKind;
   source: string;
   metadata: JsonObject;
   session?: ThebeSession;
@@ -27,6 +28,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     rendermime: IRenderMimeRegistry,
   ) {
     super(id, rendermime);
+    this.kind = 'code';
     this.events = new EventEmitter(id, config, EventSubject.cell, this);
     this.notebookId = notebookId;
     this.source = source;
@@ -43,7 +45,7 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
     config: Config,
     rendermime: IRenderMimeRegistry,
   ) {
-    const cell = new ThebeCell(
+    const cell = new ThebeCodeCell(
       icc.id ?? shortId(),
       notebookId,
       ensureString(icc.source),
@@ -199,4 +201,4 @@ class ThebeCell extends PassiveCellRenderer implements IThebeCell {
   }
 }
 
-export default ThebeCell;
+export default ThebeCodeCell;
