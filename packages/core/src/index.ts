@@ -2,7 +2,7 @@ export { default as ThebeServer } from './server';
 export { default as ThebeSession } from './session';
 export { default as ThebeNotebook, CodeBlock } from './notebook';
 export { default as ThebeCodeCell } from './cell';
-export { default as ThebeNonExecutableCell } from './markdown';
+export { default as ThebeMarkdownCell } from './markdown';
 export { default as PassiveCellRenderer } from './passive';
 
 export * from './options';
