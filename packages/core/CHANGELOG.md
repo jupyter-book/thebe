@@ -1,5 +1,15 @@
 # thebe-core
 
+## 0.3.0
+
+### Minor Changes
+
+- 600a932: Adds a `kind` (`CellKind`) files to all `IThebeCell`s making it easy for consumers to differentiate between code and content cells. `NonExecutableCell` has also now been renamed to `MarkdownCell` in preparation for additional rendering and inline execution calabilities being introduced in future.
+
+### Patch Changes
+
+- thebe-lite@0.3.0
+
 ## 0.2.9
 
 ### Patch Changes

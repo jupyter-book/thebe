@@ -1,5 +1,11 @@
 # demo-react
 
+## 0.2.4
+
+### Patch Changes
+
+- thebe-react@0.3.0
+
 ## 0.2.3
 
 ### Patch Changes
