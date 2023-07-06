@@ -80,6 +80,14 @@ class ThebeNotebook {
     return this.cells[this.cells.length - 1];
   }
 
+  get markdown() {
+    return this.cells.filter((c) => c.kind === 'markdown');
+  }
+
+  get code() {
+    return this.cells.filter((c) => c.kind === 'code');
+  }
+
   /**
    * reset the notebook to its initial state by resetting each cell
    *
