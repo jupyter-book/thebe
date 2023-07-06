@@ -1,5 +1,12 @@
 # demo-core
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [600a932]
+  - thebe-core@1.0.0
+
 ## 2.1.0
 
 ### Minor Changes

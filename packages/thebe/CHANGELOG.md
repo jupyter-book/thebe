@@ -1,5 +1,12 @@
 # thebe
 
+## 0.9.0
+
+### Patch Changes
+
+- Updated dependencies [600a932]
+  - thebe-core@1.0.0
+
 ## 0.9.0-rc.6
 
 ### Patch Changes

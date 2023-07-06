@@ -1,5 +1,12 @@
 # thebe-react
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [600a932]
+  - thebe-core@1.0.0
+
 ## 0.2.9
 
 ### Patch Changes
