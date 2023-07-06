@@ -1,4 +1,4 @@
-import type ThebeCell from './cell';
+import type ThebeCodeCell from './cell';
 import type ThebeNotebook from './notebook';
 import type ThebeServer from './server';
 import type ThebeSession from './session';
@@ -70,7 +70,7 @@ export enum ThebeEventType {
   'error' = 'error',
 }
 
-export type EventObject = ThebeServer | ThebeSession | ThebeNotebook | ThebeCell;
+export type EventObject = ThebeServer | ThebeSession | ThebeNotebook | ThebeCodeCell;
 
 export type StatusEvent =
   | ServerStatusEvent

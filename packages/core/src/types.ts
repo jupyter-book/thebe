@@ -5,6 +5,8 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
 
+export type CellKind = 'code' | 'markdown';
+
 export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
 export type KernelISpecModels = KernelSpecAPI.ISpecModels;
@@ -86,6 +88,7 @@ export interface IPassiveCell {
 }
 
 export interface IThebeCell extends IPassiveCell {
+  kind: CellKind;
   source: string;
   session?: ThebeSession;
   metadata: JsonObject;
