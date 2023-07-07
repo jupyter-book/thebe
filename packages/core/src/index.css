@@ -70,3 +70,8 @@
   font-family: monospace;
   margin: 8px 16px;
 }
+
+/* Overides for jupyter styles */
+.thebe-output .lm-Widget {
+  overflow: auto;
+}
