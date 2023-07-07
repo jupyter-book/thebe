@@ -72,6 +72,6 @@
 }
 
 /* Overides for jupyter styles */
-.thebe-output .lm-Widget {
+.thebe-output .jp-OutputArea-child > .lm-Widget {
   overflow: auto;
 }
