@@ -77,8 +77,8 @@ Thebe provides some default UI componponents that can be customixed via css. To 
 Add at least the first element to have a way to activate`thebe`.
 
 ```{code-block} xml
-<‍div class="thebe-activate"><‍/div>
-<‍div class="thebe-status"><‍/div>
+<div class="thebe-activate"></div>
+<div class="thebe-status"></div>
 ```
 
 Then extend the configuration script that you added above to enable the widgets, like so:
@@ -119,7 +119,7 @@ You can do so by extending the configuration object with an additional option th
       },
       mountActivateWidget: true,
       mountStatusWidget: true,
-      selector: `pre.source-core, code`
+      selector: "pre.source-core, code"
   }
 </script>
 ```
