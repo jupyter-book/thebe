@@ -3555,6 +3555,9 @@ h6:hover .jp-InternalAnchorLink {
   font-family: monospace;
   margin: 8px 16px;
 }
+.thebe-output .jp-OutputArea-child > .lm-Widget {
+  overflow: auto;
+}
 
 /* src/activate.css */
 .thebe-activate-button {
