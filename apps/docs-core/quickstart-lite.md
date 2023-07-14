@@ -18,23 +18,32 @@ Add the following to the `<head>` section of your HTML:
 
 ```{code-block} xml
 :linenos:
-<script
-  type="text/javascript"
-  src="https://unpkg.com/thebe-lite@latest/dist/lib/thebe-lite.min.js"
-></script>
-<script type="text/javascript" src="https://unpkg.com/thebe@rc/lib/index.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/thebe@thebe@rc/lib/thebe.css" />
+  <script
+    type="text/javascript"
+    src="/thebe-lite.min.js"
+  ></script>
+  <script type="text/javascript" src="/index.js"></script>
+  <link rel="stylesheet" href="/thebe.css" />
 ```
 
-This will:
+This is dependent on you making `thebe` and `thebe-lite` available as part of your deployment, it is not possible to load `thebe-lite` from `unpkg.com`. This code will:
 
 - Load the latest javascipt bundle for `thebe-lite`.
-- Load the javascript bundle for the latest Release Candidate version of `thebe`.
-- Load the styles for the same version, including the styles you'll need for rendering Juptyer outputs and ipywidgets properly.
+- Load the javascript bundle for `thebe`.
+- Load the styles you'll need for rendering Juptyer outputs and ipywidgets properly.
+
+You should include the following files in your deployment:
+
+- `thebe-lite/dist/lib/*.js`
+- `thebe/lib/*.js,*.css`
+
+```{tip}
+The `thebe-core` library currently includes a help script `copy-thebe-assets` that you can include in your build process. See [stevejpurves/lite-quickstart-example](https://github.com/stevejpurves/lite-quickstart-example) for an example of this in use.
+```
 
 ## Configure `thebe` to use JupyterLite
 
-Enable the in-browser JupyterLite server by adding the follow configuration script to the `<head>` of your webpage:
+Enable the JupyterLite server by adding the follow configuration script to the `<head>` of your webpage, **above** the `<script>` tags that load `thebe-lite`:
 
 ```{code-block} xml
 :linenos:
@@ -42,7 +51,7 @@ Enable the in-browser JupyterLite server by adding the follow configuration scri
 <script type="text/x-thebe-config">
   {
       useBinder: false,
-      useJuptyerLite: true,
+      useJupyterLite: true,
   }
 </script>
 ```
@@ -51,7 +60,7 @@ Enable the in-browser JupyterLite server by adding the follow configuration scri
 
 But we can avoid that by overriding some JuptyerLite settings directly, and load the wheels from CDN. This makes inital setup much easier!
 
-Do this by adding an additional `script` to the `<head>` of your page:
+Do this by adding an additional `script` to the `<head>` of your page, **above** the `<script>` tags that load `thebe-lite`:
 
 ```{code-block} xml
 :linenos:
