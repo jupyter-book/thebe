@@ -1,5 +1,11 @@
 # docs-core
 
+## 1.0.4
+
+### Patch Changes
+
+- d700033: Updated lite quickstart
+
 ## 1.0.3
 
 ### Patch Changes

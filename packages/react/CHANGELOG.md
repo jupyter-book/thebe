@@ -1,5 +1,15 @@
 # thebe-react
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [a2ed6b9]
+- Updated dependencies [37ff7a8]
+- Updated dependencies [0500e93]
+- Updated dependencies [0d2ead2]
+  - thebe-core@0.3.1
+
 ## 0.3.0
 
 ### Patch Changes
