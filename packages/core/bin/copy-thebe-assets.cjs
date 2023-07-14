@@ -52,12 +52,16 @@ if (libsToCopy.includes('all')) {
   copyCore = checkForLib('thebe-core');
   copyLite = checkForLib('thebe-lite');
   copyThebe = checkForLib('thebe');
-} else if (libsToCopy.includes('core')) {
-  copyCore = checkForLib('thebe-core');
-} else if (libsToCopy.includes('lite')) {
-  copyLite = checkForLib('thebe-lite');
-} else if (libsToCopy.includes('thebe')) {
-  copyThebe = checkForLib('thebe');
+} else {
+  if (libsToCopy.includes('core')) {
+    copyCore = checkForLib('thebe-core');
+  }
+  if (libsToCopy.includes('lite')) {
+    copyLite = checkForLib('thebe-lite');
+  }
+  if (libsToCopy.includes('thebe')) {
+    copyThebe = checkForLib('thebe');
+  }
 }
 
 if (copyCore) {
