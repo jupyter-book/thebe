@@ -60,6 +60,7 @@
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
     "@jupyterlab/theme-light-extension": "^3.0.0",
+    "@jupyterlab/codemirror": "3.6.5",
     "thebe-core": "^0.3.0",
     "codemirror": "5.61.1",
     "current-script-polyfill": "^1.0.0"

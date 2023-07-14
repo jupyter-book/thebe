@@ -32,6 +32,7 @@
     "build:cjs": "tsc --project ./tsconfig.json --outDir ./dist",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist",
     "build": "npm run declarations; npm run build:cjs",
+    "dev": "concurrently 'npm run declarations -- -w' 'npm run build:cjs -- -w'",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll --runInBand"
   },
