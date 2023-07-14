@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -24,10 +24,10 @@ try {
   process.exit(1);
 }
 
-let usingThebeLite = false
+let usingThebeLite = false;
 try {
   require.resolve('thebe-lite');
-  usingThebeLite = true
+  usingThebeLite = true;
 } catch (err) {
   console.error('thebe-lite not found, please run `npm install` in the theme directory.');
 }
@@ -41,16 +41,13 @@ const pathToThebeCoreLibFolder = path.resolve(
 );
 const thebeCoreFiles = glob.sync(path.join(pathToThebeCoreLibFolder, '*.js'));
 
-assets = [
-  ...thebeCoreFiles,
-  path.join(pathToThebeCoreLibFolder, 'thebe-core.css'),
-];
+assets = [...thebeCoreFiles, path.join(pathToThebeCoreLibFolder, 'thebe-core.css')];
 
 if (usingThebeLite) {
   const pathToThebeLite = path.dirname(require.resolve('thebe-lite'));
   const thebeLiteFiles = glob.sync(path.join(pathToThebeLite, '*.js'));
 
-  assets = [...assets, ...thebeLiteFiles]
+  assets = [...assets, ...thebeLiteFiles];
 }
 
 console.log('Found thebe assets:');
