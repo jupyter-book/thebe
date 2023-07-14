@@ -1,5 +1,15 @@
 # thebe-core
 
+## 0.3.1
+
+### Patch Changes
+
+- a2ed6b9: Override a jupyter style to allow pages to control scroll behaviour on their output areas
+- 37ff7a8: Updating shebang for any node location
+- 0500e93: Updated copy script to handle multiple libraries with options
+- 0d2ead2: Export ThebeMarkdownCell in place of ThebeNonExecutableCell.
+  - thebe-lite@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes
