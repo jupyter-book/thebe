@@ -1,5 +1,11 @@
 # thebe
 
+## 0.9.0-rc.8
+
+### Patch Changes
+
+- Updated to `thebe-core@0.3.2`
+
 ## 0.9.0-rc.6
 
 ### Patch Changes
