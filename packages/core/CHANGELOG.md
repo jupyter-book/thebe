@@ -1,5 +1,13 @@
 # thebe-core
 
+## 0.3.2
+
+### Patch Changes
+
+- 404be08: Updated `@jupyterlite/pyodide-kernel` and other `@jupyterlite` deps to `0.1.0`
+- Updated dependencies [404be08]
+  - thebe-lite@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes
