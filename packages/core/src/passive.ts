@@ -43,7 +43,7 @@ class PassiveCellRenderer implements IPassiveCell {
     }
     if (this.area.isAttached) {
       // TODO should we detach and reattach?
-      console.warn(`thebe:renderer:attachToDOM - already attached`);
+      console.debug(`thebe:renderer:attachToDOM - already attached`);
       if (strict) return;
     } else {
       // if the target element has contents, preserve it but wrap it in our output area
