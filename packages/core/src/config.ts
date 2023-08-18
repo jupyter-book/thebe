@@ -37,6 +37,8 @@ export class Config {
     this._savedSessions = makeSavedSessionOptions(opts.savedSessionOptions ?? {});
     this._kernelOptions = makeKernelOptions(opts.kernelOptions ?? {});
     this._serverSettings = makeServerSettings(opts.serverSettings ?? {});
+
+    console.debug('thebe:config:constructor', this);
   }
 
   get events() {

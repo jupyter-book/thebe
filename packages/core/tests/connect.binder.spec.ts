@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from '../src/url';
 import { RepoProvider } from '../src/types';
 import { makeBinderOptions } from '../src/options';

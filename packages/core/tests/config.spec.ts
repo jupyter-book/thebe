@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach } from 'vitest';
 import { RepoProvider } from '../src/types';
 import { Config } from '../src/config';
 
