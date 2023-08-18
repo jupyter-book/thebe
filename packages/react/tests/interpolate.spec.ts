@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { PYTHON_PARAM, interpolatorFactoryFn } from '../src/hooks/interpolate';
 
 describe('interpolate', () => {
