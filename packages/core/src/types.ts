@@ -69,7 +69,6 @@ export interface ServerSettings {
 }
 
 export interface KernelOptions {
-  name?: string;
   kernelName?: string;
   path?: string;
 }

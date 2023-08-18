@@ -90,10 +90,19 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
 
-    // TODO can we defer connection setup, return the session immediately and then have a ready signal?
+    // name is assumed to be a non empty string but is otherwise note required
+    // if a notebook name has been supplied on the path, use that otherwise use a default
+    // https://jupyterlab.readthedocs.io/en/3.4.x/api/modules/services.session.html#isessionoptions
+    const path = kernelOptions?.path ?? this.config.kernels.path;
+    let name = 'thebe.ipynb';
+    const match = path.match(/\/*([a-zA-Z0-9]+.ipynb)$/);
+    if (match) {
+      name = match[1];
+    }
+
     const connection = await this.sessionManager?.startNew({
-      name: kernelOptions?.name ?? kernelOptions?.kernelName ?? this.config.kernels.name,
-      path: kernelOptions?.path ?? this.config.kernels.path,
+      name,
+      path,
       type: 'notebook',
       kernel: {
         name: kernelOptions?.kernelName ?? this.config.kernels.kernelName,

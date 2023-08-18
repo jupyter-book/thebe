@@ -24,7 +24,6 @@ describe('config', () => {
     test('kernels', () => {
       expect(config.kernels).toEqual({
         path: '/',
-        name: 'python',
         kernelName: 'python',
       });
     });
