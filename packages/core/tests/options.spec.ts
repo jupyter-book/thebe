@@ -60,7 +60,6 @@ describe('options', () => {
     test('defaults', () => {
       expect(makeKernelOptions({})).toEqual({
         path: '/',
-        name: 'python',
         kernelName: 'python',
       });
     });
@@ -68,12 +67,10 @@ describe('options', () => {
       expect(
         makeKernelOptions({
           path: '/notebooks',
-          name: 'julia',
           kernelName: 'ijpl1',
         }),
       ).toEqual({
         path: '/notebooks',
-        name: 'julia',
         kernelName: 'ijpl1',
       });
     });
@@ -85,7 +82,6 @@ describe('options', () => {
         }),
       ).toEqual({
         path: '/notebooks',
-        name: 'ijpl1',
         kernelName: 'ijpl1',
       });
     });

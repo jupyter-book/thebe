@@ -33,7 +33,6 @@ export function makeKernelOptions(opts: KernelOptions): Required<KernelOptions> 
   return {
     path: opts.path ?? '/',
     kernelName: opts.kernelName ?? 'python',
-    name: opts.name ?? opts.kernelName ?? 'python',
   };
 }
 

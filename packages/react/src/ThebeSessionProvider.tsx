@@ -4,7 +4,7 @@ import { useThebeServer } from './ThebeServerProvider';
 import { useRenderMimeRegistry } from './ThebeRenderMimeRegistryProvider';
 
 interface ThebeSessionContextData {
-  name: string;
+  path: string;
   session?: ThebeSession;
   starting: boolean;
   ready: boolean;
@@ -19,12 +19,12 @@ export const ThebeSessionContext = React.createContext<ThebeSessionContextData |
 
 export function ThebeSessionProvider({
   start = true,
-  name = 'default',
+  path = '/thebe.ipynb',
   shutdownOnUnmount = false,
   children,
 }: React.PropsWithChildren<{
   start?: boolean;
-  name?: string;
+  path?: string;
   shutdownOnUnmount?: boolean;
 }>) {
   const { config, server, ready: serverReady } = useThebeServer();
@@ -38,7 +38,7 @@ export function ThebeSessionProvider({
   const startSession = () => {
     setStarting(true);
     server
-      ?.startNewSession(rendermime, { ...config?.kernels, name, path: name })
+      ?.startNewSession(rendermime, { ...config?.kernels, path })
       .then((sesh: ThebeSession | null) => {
         setStarting(false);
         if (sesh == null) {
@@ -74,7 +74,7 @@ export function ThebeSessionProvider({
   return (
     <ThebeSessionContext.Provider
       value={{
-        name,
+        path,
         starting,
         ready,
         session,
