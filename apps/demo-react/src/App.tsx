@@ -22,7 +22,7 @@ function App() {
         repo: 'curvenote/binder-base',
       },
     }),
-    [],
+    [path],
   );
 
   return (
