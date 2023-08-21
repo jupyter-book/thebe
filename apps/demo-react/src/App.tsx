@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ThebeBundleLoaderProvider, ThebeServerProvider } from 'thebe-react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
@@ -8,11 +8,15 @@ import { ThebeStatusTray } from './ThebeStatusTray';
 
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
+  const location = useLocation();
+
+  const path = location.pathname.endsWith('path-test') ? '/notebooks' : '/';
 
   const options = useMemo(
     () => ({
       kernelOptions: {
-        name: 'Python 3',
+        path,
+        kernelName: 'python',
       },
       binderOptions: {
         repo: 'curvenote/binder-base',
@@ -55,7 +59,7 @@ function App() {
         </ThebeServerProvider>
       </ThebeBundleLoaderProvider>
 
-      <div className="fixed top-2 right-1 text-xs">
+      <div className="fixed text-xs top-2 right-1">
         Server icon by Ralf Schmitzer from{' '}
         <a
           href="https://thenounproject.com/browse/icons/term/server/"

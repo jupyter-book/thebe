@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       {
         path: 'nb/:notebookName',
         element: (
-          <NotebookPage name="widgets">
+          <NotebookPage>
             <WidgetsPage />
           </NotebookPage>
         ),
