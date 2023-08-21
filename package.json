@@ -52,7 +52,9 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
-    "turbo": "^1.4.2"
+    "happy-dom": "^10.10.4",
+    "turbo": "^1.4.2",
+    "vitest": "^0.34.2"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
