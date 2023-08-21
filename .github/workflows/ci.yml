@@ -36,16 +36,10 @@ jobs:
 
       # Action Repo: https://github.com/actions/setup-node
       - name: 'Setup Node'
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: '16'
-
-      # Action Repo: https://github.com/actions/cache
-      - name: 'Cache node_modules'
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          cache: 'npm'
 
       - name: 'Install dependencies'
         run: |
@@ -62,8 +56,7 @@ jobs:
           CACHE_NUMBER: 0
         with:
           path: ~/conda_pkgs_dir
-          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-            hashFiles('environment.test.yml') }}
+          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{hashFiles('environment.test.yml') }}
 
       - name: Install conda environment
         uses: conda-incubator/setup-miniconda@v2
@@ -71,6 +64,7 @@ jobs:
           activate-environment: jupyter-server
           environment-file: environment.test.yml
           python-version: 3.9
+          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
       - name: 'Run tests'
         shell: bash -l {0}

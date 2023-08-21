@@ -12,11 +12,12 @@ jobs:
     steps:
       - name: 'Checkout repo'
         uses: actions/checkout@v3
-      - name: 'Cache node_modules'
-        uses: actions/cache@v3
+      # Action Repo: https://github.com/actions/setup-node
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
         with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          node-version: '16'
+          cache: 'npm'
       - name: 'Install'
         run: npm ci
       - name: 'Build libs'
