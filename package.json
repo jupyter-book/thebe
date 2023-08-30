@@ -17,6 +17,7 @@
     "demo": "turbo run demo",
     "docs": "turbo run docs",
     "test": "turbo run test",
+    "test:core:watch": "turbo run test:watch --filter=thebe-core",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
     "lint:format": "turbo run lint:format",
@@ -52,7 +53,7 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
-    "happy-dom": "^10.10.4",
+    "happy-dom": "^10.11.2",
     "turbo": "^1.4.2",
     "vitest": "^0.34.2"
   },

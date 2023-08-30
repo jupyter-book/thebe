@@ -8,14 +8,13 @@ import type {
   SavedSessionOptions,
   MathjaxOptions,
 } from './types';
-import { RepoProvider } from './types';
 
 export function makeBinderOptions(opts: BinderOptions) {
   return {
     repo: 'executablebooks/thebe-binder-base',
     ref: 'HEAD',
     binderUrl: 'https://mybinder.org',
-    repoProvider: RepoProvider.github,
+    repoProvider: 'github',
     ...opts,
   };
 }
@@ -58,14 +57,14 @@ export function makeConfiguration(
   options: CoreOptions & { [k: string]: any },
   events?: ThebeEvents,
 ) {
-  return new Config(options, events);
+  return new Config(options, { events });
 }
 
 export function ensureCoreOptions(
   options: CoreOptions & { [k: string]: any },
   events?: ThebeEvents,
 ): Required<CoreOptions> {
-  const config = new Config(options, events);
+  const config = new Config(options, { events });
 
   return {
     ...config.base,

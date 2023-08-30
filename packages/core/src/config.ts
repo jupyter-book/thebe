@@ -12,6 +12,7 @@ import type {
   SavedSessionOptions,
   ServerSettings,
   MathjaxOptions,
+  CustomRepoProviderSpec,
 } from './types';
 
 export class Config {
@@ -23,9 +24,14 @@ export class Config {
   private _kernelOptions: Required<KernelOptions>;
   private _serverSettings: Required<Omit<ServerSettings, 'wsUrl'>> & { wsUrl?: string };
   private _events: ThebeEvents;
+  private _repoProviders: CustomRepoProviderSpec[];
 
-  constructor(opts: CoreOptions = {}, events?: ThebeEvents) {
-    this._events = events ?? new ThebeEvents();
+  constructor(
+    opts: CoreOptions = {},
+    extraConfig?: { events?: ThebeEvents; repoProviders?: CustomRepoProviderSpec[] },
+  ) {
+    this._events = extraConfig?.events ?? new ThebeEvents();
+    this._repoProviders = extraConfig?.repoProviders ?? [];
 
     this._options = {
       mathjaxUrl:

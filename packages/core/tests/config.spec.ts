@@ -19,7 +19,7 @@ describe('config', () => {
         repo: 'executablebooks/thebe-binder-base',
         ref: 'HEAD',
         binderUrl: 'https://mybinder.org',
-        repoProvider: RepoProvider.github,
+        repoProvider: 'github',
       });
     });
     test('kernels', () => {

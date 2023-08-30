@@ -39,12 +39,12 @@ export interface CoreOptions {
   serverSettings?: ServerSettings;
 }
 
-export enum RepoProvider {
-  'git' = 'git',
-  'github' = 'github',
-  'gitlab' = 'gitlab',
-  'gist' = 'gist',
+export interface CustomRepoProviderSpec {
+  name: string;
+  makeUrl: (opts: BinderOptions) => string;
 }
+
+export type WellKnownRepoProvider = 'git' | 'github' | 'gitlab' | 'gist';
 
 export type MathjaxOptions = Pick<CoreOptions, 'mathjaxConfig' | 'mathjaxUrl'>;
 
@@ -58,7 +58,7 @@ export interface BinderOptions {
   repo?: string;
   ref?: string;
   binderUrl?: string;
-  repoProvider?: RepoProvider;
+  repoProvider?: WellKnownRepoProvider | string;
 }
 
 export interface ServerSettings {

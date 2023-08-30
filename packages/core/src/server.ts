@@ -11,8 +11,8 @@ import type { ServiceManager } from '@jupyterlab/services';
 import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
-import { RepoProvider } from './types';
-import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
+import { WellKnownRepoProvider } from './types';
+import { makeBinderUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
 import {
   KernelManager,
@@ -243,25 +243,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
   }
 
-  _makeBinderUrl() {
-    let url: string;
-    switch (this.config.binder.repoProvider) {
-      case RepoProvider.git:
-        url = makeGitUrl(this.config.binder);
-        break;
-      case RepoProvider.gitlab:
-        url = makeGitLabUrl(this.config.binder);
-        break;
-      case RepoProvider.github:
-      default:
-        url = makeGitHubUrl(this.config.binder);
-        break;
-    }
-    return url;
-  }
-
   async checkForSavedBinderSession() {
-    const url = this._makeBinderUrl();
+    const url = makeBinderUrl(this.config.binder);
     return getExistingServer(this.config.savedSessions, url);
   }
 
@@ -280,7 +263,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
     });
 
-    const url = this._makeBinderUrl();
+    const url = makeBinderUrl(this.config.binder);
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
