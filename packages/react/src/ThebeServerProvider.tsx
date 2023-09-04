@@ -140,13 +140,12 @@ export function useDisposeThebeServer() {
 }
 
 export function useThebeServer() {
-  const serverContext = useContext(ThebeServerContext);
-  if (serverContext === undefined) {
-    throw new Error('useThebeServer must be used inside a ThebeServerProvider');
-  }
-  const { config, events, server, connecting, ready, connect, disconnect } = serverContext;
+  const thebe = useThebeLoader();
+  const { core } = thebe ?? {};
 
-  const { core } = useThebeLoader();
+  const serverContext = useContext(ThebeServerContext);
+  const { config, events, server, connecting, ready, connect, disconnect } = serverContext ?? {};
+
   const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
   const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
 
@@ -180,16 +179,18 @@ export function useThebeServer() {
     setEventCallbacks([]);
   }, [config, server]);
 
-  return {
-    config,
-    events,
-    server,
-    connecting,
-    ready,
-    error,
-    connect,
-    disconnect,
-    subscribe,
-    unsubAll,
-  };
+  return serverContext
+    ? {
+        config,
+        events,
+        server,
+        connecting,
+        ready,
+        error,
+        connect,
+        disconnect,
+        subscribe,
+        unsubAll,
+      }
+    : {};
 }

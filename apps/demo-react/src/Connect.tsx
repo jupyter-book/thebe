@@ -11,7 +11,7 @@ export function Connect() {
   }, [core, load, loading]);
 
   const clickConnect = () => {
-    if (!core) return;
+    if (!core || !connect) return;
     connect();
   };
 
