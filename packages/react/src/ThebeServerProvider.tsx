@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import type {
   Config,
   CoreOptions,
+  RepoProviderSpec,
   ThebeEventCb,
   ThebeEventData,
   ThebeEvents,
@@ -31,6 +32,7 @@ export function ThebeServerProvider({
   useBinder,
   useJupyterLite,
   customConnectFn,
+  customRepoProviders,
   events,
   children,
 }: React.PropsWithChildren<{
@@ -41,6 +43,7 @@ export function ThebeServerProvider({
   useJupyterLite?: boolean;
   events?: ThebeEvents;
   customConnectFn?: (server: ThebeServer) => Promise<void>;
+  customRepoProviders?: RepoProviderSpec[];
 }>) {
   const { core } = useThebeLoader();
   const [doConnect, setDoConnect] = useState(connect);
@@ -67,7 +70,7 @@ export function ThebeServerProvider({
     if (!server || !doConnect) return;
     setConnecting(true);
     if (customConnectFn) customConnectFn(server);
-    else if (useBinder) server.connectToServerViaBinder();
+    else if (useBinder) server.connectToServerViaBinder(customRepoProviders);
     else if (useJupyterLite)
       server.connectToJupyterLiteServer({
         litePluginSettings: {
