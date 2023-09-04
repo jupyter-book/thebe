@@ -40,6 +40,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   serviceManager?: ServiceManager; // jlite only
   repoProviders?: RepoProviderSpec[];
   binderUrls?: BinderUrlSet;
+  userServerUrl?: string;
   private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
   private _isDisposed: boolean;
   private events: EventEmitter;
@@ -200,6 +201,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     // Resolve the ready promise
     return this.sessionManager.ready.then(() => {
+      this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
       this.events.triggerStatus({
         status: ServerStatusEvent.ready,
         message: `Server connection ready`,
@@ -242,6 +244,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
 
     return this.sessionManager?.ready.then(() => {
+      this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
       this.events.triggerStatus({
         status: ServerStatusEvent.ready,
         message: `Server connection established`,
@@ -394,11 +397,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
               // so we can await here
               await this.sessionManager.ready;
 
-              this.binderUrls = {
-                build: urls.build,
-                launch: urls.launch,
-                userServer: `${msg.url}?token=${msg.token}`,
-              };
+              this.userServerUrl = `${msg.url}?token=${msg.token}`;
 
               state.status = ServerStatusEvent.ready;
               this.events.triggerStatus({
