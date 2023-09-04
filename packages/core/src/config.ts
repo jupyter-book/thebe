@@ -24,8 +24,8 @@ export class Config {
   private _serverSettings: Required<Omit<ServerSettings, 'wsUrl'>> & { wsUrl?: string };
   private _events: ThebeEvents;
 
-  constructor(opts: CoreOptions = {}, events?: ThebeEvents) {
-    this._events = events ?? new ThebeEvents();
+  constructor(opts: CoreOptions = {}, extraConfig?: { events?: ThebeEvents }) {
+    this._events = extraConfig?.events ?? new ThebeEvents();
 
     this._options = {
       mathjaxUrl:

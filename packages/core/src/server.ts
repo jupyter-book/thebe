@@ -1,5 +1,6 @@
 import type {
   KernelOptions,
+  RepoProviderSpec,
   RestAPIContentsResponse,
   ServerRestAPI,
   ServerRuntime,
@@ -11,8 +12,8 @@ import type { ServiceManager } from '@jupyterlab/services';
 import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
-import { RepoProvider } from './types';
-import { makeGitHubUrl, makeGitLabUrl, makeGitUrl } from './url';
+import { WellKnownRepoProvider } from './types';
+import { WELL_KNOWN_REPO_PROVIDERS, makeBinderUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
 import {
   KernelManager,
@@ -37,6 +38,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   readonly ready: Promise<ThebeServer>;
   sessionManager?: SessionManager;
   serviceManager?: ServiceManager; // jlite only
+  repoProviders?: RepoProviderSpec[];
   private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
   private _isDisposed: boolean;
   private events: EventEmitter;
@@ -243,25 +245,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
   }
 
-  _makeBinderUrl() {
-    let url: string;
-    switch (this.config.binder.repoProvider) {
-      case RepoProvider.git:
-        url = makeGitUrl(this.config.binder);
-        break;
-      case RepoProvider.gitlab:
-        url = makeGitLabUrl(this.config.binder);
-        break;
-      case RepoProvider.github:
-      default:
-        url = makeGitHubUrl(this.config.binder);
-        break;
-    }
-    return url;
-  }
-
   async checkForSavedBinderSession() {
-    const url = this._makeBinderUrl();
+    const url = makeBinderUrl(this.config.binder, this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS);
     return getExistingServer(this.config.savedSessions, url);
   }
 
@@ -273,14 +258,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
    * @param opts
    * @returns
    */
-  async connectToServerViaBinder(): Promise<void> {
+  async connectToServerViaBinder(customProviders?: RepoProviderSpec[]): Promise<void> {
     // request new server
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
       message: `Connecting to binderhub at ${this.config.binder.binderUrl}`,
     });
 
-    const url = this._makeBinderUrl();
+    // TODO binder connection setup probably better as a a factory independent of the server
+    this.repoProviders = [...WELL_KNOWN_REPO_PROVIDERS, ...(customProviders ?? [])];
+
+    const url = makeBinderUrl(this.config.binder, this.repoProviders);
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,

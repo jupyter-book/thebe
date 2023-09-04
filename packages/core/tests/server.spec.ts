@@ -13,7 +13,7 @@ describe('server', () => {
           baseUrl: 'http://localhost:9999',
         },
       },
-      events,
+      { events },
     );
     const server = new ThebeServer(config);
     expect(server).toBeDefined();

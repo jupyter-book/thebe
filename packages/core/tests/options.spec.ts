@@ -1,6 +1,5 @@
 import { describe, test, expect } from 'vitest';
 
-import { RepoProvider } from '../src/types';
 import {
   makeBinderOptions,
   makeKernelOptions,
@@ -15,7 +14,7 @@ describe('options', () => {
         repo: 'executablebooks/thebe-binder-base',
         ref: 'HEAD',
         binderUrl: 'https://mybinder.org',
-        repoProvider: RepoProvider.github,
+        repoProvider: 'github',
       });
     });
     test('override all', () => {
@@ -24,13 +23,13 @@ describe('options', () => {
           repo: 'abc',
           ref: 'x',
           binderUrl: 'anystring',
-          repoProvider: RepoProvider.git,
+          repoProvider: 'git',
         }),
       ).toEqual({
         repo: 'abc',
         ref: 'x',
         binderUrl: 'anystring',
-        repoProvider: RepoProvider.git,
+        repoProvider: 'git',
       });
     });
   });
