@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { makeBinderUrl } from '../src/url';
+import { WELL_KNOWN_REPO_PROVIDERS, makeBinderUrl } from '../src/url';
 import { makeBinderOptions } from '../src/options';
 import { BinderOptions } from '../src/types';
 
@@ -8,41 +8,68 @@ const binderUrl = 'https://binder.curvenote.dev/';
 describe('building binder urls', () => {
   describe('well known providers', () => {
     test('git', () => {
-      expect(makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'git' }))).toEqual(
-        'https://binder.curvenote.dev/build/git/executablebooks%2Fthebe-binder-base/HEAD',
-      );
       expect(
-        makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'git', ref: 'main' })),
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'git' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
+      ).toEqual('https://binder.curvenote.dev/build/git/executablebooks%2Fthebe-binder-base/HEAD');
+      expect(
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'git', ref: 'main' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
       ).toEqual('https://binder.curvenote.dev/build/git/executablebooks%2Fthebe-binder-base/main');
     });
     test('gitlab', () => {
-      expect(makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'gitlab' }))).toEqual(
-        'https://binder.curvenote.dev/build/gl/executablebooks%2Fthebe-binder-base/HEAD',
-      );
       expect(
-        makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'gitlab', ref: 'main' })),
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'gitlab' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
+      ).toEqual('https://binder.curvenote.dev/build/gl/executablebooks%2Fthebe-binder-base/HEAD');
+      expect(
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'gitlab', ref: 'main' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
       ).toEqual('https://binder.curvenote.dev/build/gl/executablebooks%2Fthebe-binder-base/main');
     });
     test('github', () => {
-      expect(makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'github' }))).toEqual(
-        'https://binder.curvenote.dev/build/gh/executablebooks/thebe-binder-base/HEAD',
-      );
       expect(
-        makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'github', ref: 'main' })),
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'github' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
+      ).toEqual('https://binder.curvenote.dev/build/gh/executablebooks/thebe-binder-base/HEAD');
+      expect(
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'github', ref: 'main' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
       ).toEqual('https://binder.curvenote.dev/build/gh/executablebooks/thebe-binder-base/main');
     });
     test('gist', () => {
-      expect(makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'gist' }))).toEqual(
-        'https://binder.curvenote.dev/build/gist/executablebooks/thebe-binder-base/HEAD',
-      );
       expect(
-        makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'gist', ref: 'main' })),
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'gist' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
+      ).toEqual('https://binder.curvenote.dev/build/gist/executablebooks/thebe-binder-base/HEAD');
+      expect(
+        makeBinderUrl(
+          makeBinderOptions({ binderUrl, repoProvider: 'gist', ref: 'main' }),
+          WELL_KNOWN_REPO_PROVIDERS,
+        ),
       ).toEqual('https://binder.curvenote.dev/build/gist/executablebooks/thebe-binder-base/main');
     });
   });
   test('unknown provider throws', () => {
     expect(() =>
-      makeBinderUrl(makeBinderOptions({ binderUrl, repoProvider: 'unknown' })),
+      makeBinderUrl(
+        makeBinderOptions({ binderUrl, repoProvider: 'unknown' }),
+        WELL_KNOWN_REPO_PROVIDERS,
+      ),
     ).toThrow();
   });
   describe('custom providers', () => {

@@ -39,7 +39,7 @@ export interface CoreOptions {
   serverSettings?: ServerSettings;
 }
 
-export interface CustomRepoProviderSpec {
+export interface RepoProviderSpec {
   name: string;
   makeUrl: (opts: BinderOptions) => string;
 }
