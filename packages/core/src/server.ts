@@ -12,7 +12,6 @@ import type { ServiceManager } from '@jupyterlab/services';
 import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
-import { WellKnownRepoProvider } from './types';
 import { WELL_KNOWN_REPO_PROVIDERS, makeBinderUrl } from './url';
 import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
 import {
@@ -39,6 +38,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   sessionManager?: SessionManager;
   serviceManager?: ServiceManager; // jlite only
   repoProviders?: RepoProviderSpec[];
+  binderUrl?: string;
+  binderUserServerUrl?: string;
   private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
   private _isDisposed: boolean;
   private events: EventEmitter;
@@ -51,6 +52,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       this.resolveReadyFn = resolve;
     });
     this._isDisposed = false;
+  }
+
+  get isBinder(): boolean {
+    return !!this.binderUrl;
   }
 
   get isReady(): boolean {
@@ -245,6 +250,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
   }
 
+  makeBinderUrl() {
+    return makeBinderUrl(this.config.binder, this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS);
+  }
+
   async checkForSavedBinderSession() {
     const url = makeBinderUrl(this.config.binder, this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS);
     return getExistingServer(this.config.savedSessions, url);
@@ -268,11 +277,11 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // TODO binder connection setup probably better as a a factory independent of the server
     this.repoProviders = [...WELL_KNOWN_REPO_PROVIDERS, ...(customProviders ?? [])];
 
-    const url = makeBinderUrl(this.config.binder, this.repoProviders);
+    const binderUrl = (this.binderUrl = makeBinderUrl(this.config.binder, this.repoProviders));
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
-      message: `Binder build url is ${url}`,
+      message: `Binder build url is ${this.binderUrl}`,
     });
 
     if (this.config.savedSessions.enabled) {
@@ -280,7 +289,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       // the follow function will ping the server based on the settings and only return
       // non-null if the server is still alive. So highly likely that the remainder of
       // the connection calls below, work.
-      const existingSettings = await getExistingServer(this.config.savedSessions, url);
+      const existingSettings = await getExistingServer(this.config.savedSessions, this.binderUrl);
       if (existingSettings) {
         // Connect to the existing session
         const serverSettings = ServerConnection.makeSettings(existingSettings);
@@ -317,15 +326,15 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       const state: { status: StatusEvent } = {
         status: ServerStatusEvent.launching,
       };
-      const es = new EventSource(url);
+      const es = new EventSource(binderUrl);
       this.events.triggerStatus({
         status: state.status,
-        message: `Opened connection to binder: ${url}`,
+        message: `Opened connection to binder: ${binderUrl}`,
       });
 
       // handle errors
       es.onerror = (evt: Event) => {
-        console.error(`Lost connection to binder: ${url}`, evt);
+        console.error(`Lost connection to binder: ${binderUrl}`, evt);
         es?.close();
         state.status = ErrorStatusEvent.error;
         this.events.triggerError((evt as MessageEvent)?.data);
@@ -348,7 +357,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             state.status = ErrorStatusEvent.error;
             this.events.triggerError({
               status: ErrorStatusEvent.error,
-              message: `Binder: failed to build - ${url} - ${msg.message}`,
+              message: `Binder: failed to build - ${binderUrl} - ${msg.message}`,
             });
             rejectRequest(msg);
             break;
@@ -371,15 +380,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
               });
 
               if (this.config.savedSessions.enabled) {
-                saveServerInfo(this.config.savedSessions, url, this.id, serverSettings);
+                saveServerInfo(this.config.savedSessions, binderUrl, this.id, serverSettings);
                 console.debug(
-                  `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${url}`,
+                  `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${binderUrl}`,
                 );
               }
 
               // promise has already been returned to the caller
               // so we can await here
               await this.sessionManager.ready;
+
+              this.binderUserServerUrl = `${msg.url}?token=${msg.token}`;
 
               state.status = ServerStatusEvent.ready;
               this.events.triggerStatus({
