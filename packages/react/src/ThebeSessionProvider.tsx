@@ -7,8 +7,8 @@ interface ThebeSessionContextData {
   path?: string;
   session?: ThebeSession;
   error?: string;
-  starting?: boolean;
-  ready?: boolean;
+  starting: boolean;
+  ready: boolean;
   start?: () => Promise<void>;
   shutdown?: () => Promise<void>;
 }
@@ -104,5 +104,5 @@ export function ThebeSessionProvider({
 
 export function useThebeSession(): ThebeSessionContextData {
   const sessionContext = useContext(ThebeSessionContext);
-  return sessionContext ?? {};
+  return sessionContext ?? { starting: false, ready: false };
 }

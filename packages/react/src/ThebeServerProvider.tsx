@@ -14,13 +14,13 @@ type ListenerFn = (data: ThebeEventData) => void;
 
 export const ThebeServerContext = React.createContext<
   | {
+      connecting: boolean;
+      ready: boolean;
       config?: Config;
       events?: ThebeEvents;
       server?: ThebeServer;
-      connecting: boolean;
-      ready: boolean;
-      connect: () => void;
-      disconnect: () => Promise<void>;
+      connect?: () => void;
+      disconnect?: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -147,7 +147,10 @@ export function useThebeServer() {
   const { core } = thebe ?? {};
 
   const serverContext = useContext(ThebeServerContext);
-  const { config, events, server, connecting, ready, connect, disconnect } = serverContext ?? {};
+  const { config, events, server, connecting, ready, connect, disconnect } = serverContext ?? {
+    ready: false,
+    connecting: false,
+  };
 
   const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
   const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
@@ -195,5 +198,5 @@ export function useThebeServer() {
         subscribe,
         unsubAll,
       }
-    : {};
+    : { connecting: false, ready: false };
 }
