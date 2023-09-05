@@ -79,6 +79,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     return this.sessionManager?.shutdownAll();
   }
 
+  async check(): Promise<boolean> {
+    const resp = await ThebeServer.status(
+      this.sessionManager?.serverSettings ?? this.config.serverSettings,
+    );
+    return resp.ok;
+  }
+
   dispose() {
     if (this._isDisposed) return;
     if (!this.serviceManager?.isDisposed) this.serviceManager?.dispose();
@@ -318,6 +325,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         });
 
         return this.sessionManager.ready.then(() => {
+          this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
           this.events.triggerStatus({
             status: ServerStatusEvent.ready,
             message: `Re-connected to binder server`,
@@ -438,7 +446,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     return url;
   }
 
-  static status(serverSettings: Required<ServerSettings>): Promise<void | Response> {
+  static status(serverSettings: ServerSettings) {
     return ServerConnection.makeRequest(
       `${serverSettings.baseUrl}api/status`,
       {},
