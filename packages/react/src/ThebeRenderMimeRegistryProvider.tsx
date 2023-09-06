@@ -25,8 +25,5 @@ export function ThebeRenderMimeRegistryProvider({ children }: React.PropsWithChi
 
 export function useRenderMimeRegistry() {
   const context = React.useContext(RenderMimeRegistryContext);
-  if (context === undefined) {
-    throw new Error('useRenderMimeRegistry must be used within a ThebeRenderMimeRegistry');
-  }
-  return context.rendermime;
+  return context?.rendermime;
 }

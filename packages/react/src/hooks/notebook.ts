@@ -5,7 +5,6 @@ import { useThebeLoader } from '../ThebeLoaderProvider';
 import type { INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
 import { useRenderMimeRegistry } from '../ThebeRenderMimeRegistryProvider';
-import { render } from 'react-dom';
 
 export interface NotebookExecuteOptions {
   stopOnError?: boolean;
@@ -124,6 +123,8 @@ export function useNotebook(
   const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState<boolean>(false);
 
+  if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
+
   const {
     ready,
     attached,
@@ -199,6 +200,7 @@ export function useNotebookFromSource(sourceCode: string[], opts = { refsForWidg
   const { config } = useThebeConfig();
   const rendermime = useRenderMimeRegistry();
   const [loading, setLoading] = useState(false);
+  if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
   const {
     ready,
     attached,
@@ -262,6 +264,7 @@ export function useNotebookfromSourceLegacy(sourceCode: string[]) {
   const { core } = useThebeLoader();
   const { config } = useThebeConfig();
   const rendermime = useRenderMimeRegistry();
+  if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
 
   const [busy, setBusy] = useState<boolean>(false);
   const [notebook, setNotebook] = useState<ThebeNotebook | undefined>();

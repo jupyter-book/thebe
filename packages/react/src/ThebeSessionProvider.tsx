@@ -4,13 +4,13 @@ import { useThebeServer } from './ThebeServerProvider';
 import { useRenderMimeRegistry } from './ThebeRenderMimeRegistryProvider';
 
 interface ThebeSessionContextData {
-  path: string;
+  path?: string;
   session?: ThebeSession;
+  error?: string;
   starting: boolean;
   ready: boolean;
-  error?: string;
-  start: () => Promise<void>;
-  shutdown: () => Promise<void>;
+  start?: () => Promise<void>;
+  shutdown?: () => Promise<void>;
 }
 
 export const ThebeSessionContext = React.createContext<ThebeSessionContextData | undefined>(
@@ -36,6 +36,7 @@ export function ThebeSessionProvider({
   const [error, setError] = useState<string | undefined>();
 
   const startSession = () => {
+    if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
     setStarting(true);
     server
       ?.startNewSession(rendermime, { ...config?.kernels, path })
@@ -103,8 +104,5 @@ export function ThebeSessionProvider({
 
 export function useThebeSession(): ThebeSessionContextData {
   const sessionContext = useContext(ThebeSessionContext);
-  if (sessionContext === undefined) {
-    throw new Error('useThebeSession must be used inside a ThebeSessionProvider');
-  }
-  return sessionContext;
+  return sessionContext ?? { starting: false, ready: false };
 }

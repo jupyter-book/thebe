@@ -41,7 +41,12 @@ export interface CoreOptions {
 
 export interface RepoProviderSpec {
   name: string;
-  makeUrl: (opts: BinderOptions) => string;
+  makeUrls: (opts: BinderOptions) => BinderUrlSet;
+}
+
+export interface BinderUrlSet {
+  build: string;
+  launch: string;
 }
 
 export type WellKnownRepoProvider = 'git' | 'github' | 'gitlab' | 'gist';
