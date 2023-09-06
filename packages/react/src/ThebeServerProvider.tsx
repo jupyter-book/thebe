@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import type {
   Config,
   CoreOptions,
+  RepoProviderSpec,
   ThebeEventCb,
   ThebeEventData,
   ThebeEvents,
@@ -13,13 +14,13 @@ type ListenerFn = (data: ThebeEventData) => void;
 
 export const ThebeServerContext = React.createContext<
   | {
+      connecting: boolean;
+      ready: boolean;
       config?: Config;
       events?: ThebeEvents;
       server?: ThebeServer;
-      connecting: boolean;
-      ready: boolean;
-      connect: () => void;
-      disconnect: () => Promise<void>;
+      connect?: () => void;
+      disconnect?: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -31,6 +32,7 @@ export function ThebeServerProvider({
   useBinder,
   useJupyterLite,
   customConnectFn,
+  customRepoProviders,
   events,
   children,
 }: React.PropsWithChildren<{
@@ -41,6 +43,7 @@ export function ThebeServerProvider({
   useJupyterLite?: boolean;
   events?: ThebeEvents;
   customConnectFn?: (server: ThebeServer) => Promise<void>;
+  customRepoProviders?: RepoProviderSpec[];
 }>) {
   const { core } = useThebeLoader();
   const [doConnect, setDoConnect] = useState(connect);
@@ -57,17 +60,21 @@ export function ThebeServerProvider({
   );
 
   useEffect(() => {
-    if (!core || !thebeConfig) return;
+    if (!core || !thebeConfig || server) return;
     setServer(new core.ThebeServer(thebeConfig));
-  }, [core, thebeConfig]);
+  }, [core, thebeConfig, server]);
 
   // Once the core is loaded, connect to a server
+  // TODO: this should be an action not a side effect
   useEffect(() => {
     if (!core || !thebeConfig) return; // TODO is there a better way to keep typescript happy here?
     if (!server || !doConnect) return;
+    // do not reconnect if already connected!
+    if (server.isReady && server.userServerUrl) return;
+    // TODO is the user server really still alive? this would be an async call to server.check
     setConnecting(true);
     if (customConnectFn) customConnectFn(server);
-    else if (useBinder) server.connectToServerViaBinder();
+    else if (useBinder) server.connectToServerViaBinder(customRepoProviders);
     else if (useJupyterLite)
       server.connectToJupyterLiteServer({
         litePluginSettings: {
@@ -140,13 +147,15 @@ export function useDisposeThebeServer() {
 }
 
 export function useThebeServer() {
-  const serverContext = useContext(ThebeServerContext);
-  if (serverContext === undefined) {
-    throw new Error('useThebeServer must be used inside a ThebeServerProvider');
-  }
-  const { config, events, server, connecting, ready, connect, disconnect } = serverContext;
+  const thebe = useThebeLoader();
+  const { core } = thebe ?? {};
 
-  const { core } = useThebeLoader();
+  const serverContext = useContext(ThebeServerContext);
+  const { config, events, server, connecting, ready, connect, disconnect } = serverContext ?? {
+    ready: false,
+    connecting: false,
+  };
+
   const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
   const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
 
@@ -180,16 +189,18 @@ export function useThebeServer() {
     setEventCallbacks([]);
   }, [config, server]);
 
-  return {
-    config,
-    events,
-    server,
-    connecting,
-    ready,
-    error,
-    connect,
-    disconnect,
-    subscribe,
-    unsubAll,
-  };
+  return serverContext
+    ? {
+        config,
+        events,
+        server,
+        connecting,
+        ready,
+        error,
+        connect,
+        disconnect,
+        subscribe,
+        unsubAll,
+      }
+    : { connecting: false, ready: false };
 }

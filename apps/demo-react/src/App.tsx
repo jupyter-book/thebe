@@ -19,7 +19,7 @@ function App() {
         kernelName: 'python',
       },
       binderOptions: {
-        repo: 'curvenote/binder-base',
+        repo: 'executablebooks/thebe-binder-base',
       },
     }),
     [path],

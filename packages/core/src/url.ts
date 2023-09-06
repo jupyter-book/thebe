@@ -118,5 +118,7 @@ export function makeBinderUrls(
   if (!Object.keys(providerMap).includes(provider))
     throw Error(`Unknown provider ${opts.repoProvider}`);
 
+  if (!providerMap[provider].makeUrls) throw Error(`No makeUrls function for ${provider}`);
+
   return providerMap[provider].makeUrls(opts);
 }

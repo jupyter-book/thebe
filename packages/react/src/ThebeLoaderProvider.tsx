@@ -118,10 +118,5 @@ export function ThebeBundleLoaderProvider({
 
 export function useThebeLoader() {
   const context = React.useContext(ThebeLoaderContext);
-  if (context === undefined) {
-    throw new Error(
-      'useThebeLoader must be used inside a ThebeLoaderProvider or ThebeBundleLoaderProvider',
-    );
-  }
-  return context;
+  return context ?? { loading: false, load: () => ({}) };
 }
