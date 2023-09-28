@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.3.4
+
+### Patch Changes
+
+- 🔧 fix missing `lib/` folder in released package
+  - thebe-lite@0.3.4
+
 ## 0.3.3
 
 ### Patch Changes
