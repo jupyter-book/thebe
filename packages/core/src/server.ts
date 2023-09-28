@@ -368,7 +368,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         console.error(`Lost connection to binder: ${urls.build}`, evt);
         es?.close();
         state.status = ErrorStatusEvent.error;
-        this.events.triggerError((evt as MessageEvent)?.data);
+        const data = (evt as MessageEvent)?.data;
+        const phase = data ? data.phase : 'unknown';
+        const message = data ? data.message : 'no message';
+        this.events.triggerError({
+          status: ErrorStatusEvent.error,
+          message: `phase: ${phase} - ${message} - Lost connection to binder`,
+        });
         rejectRequest(evt);
       };
 
