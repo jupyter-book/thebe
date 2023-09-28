@@ -1,5 +1,18 @@
 # thebe-react
 
+## 0.3.3
+
+### Patch Changes
+
+- 08e008e: Move error handler for the server out of hook and up into the ThebeServerProvider allowing for consistent reactions to an error state accross page navigation.
+- 57dcdaf: ThebeServerProvider will no longer replace an existing server on rerender if that server is ready and has user server URL.
+- 57dcdaf: Hooks no longer throw but return empty or uninitialised objects instead, this allows for much more flexibility in how respective providers are rendered.
+- Updated dependencies [87395cb]
+- Updated dependencies [08e008e]
+- Updated dependencies [57dcdaf]
+- Updated dependencies [08e008e]
+  - thebe-core@0.3.3
+
 ## 0.3.2
 
 ### Patch Changes

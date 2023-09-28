@@ -1,5 +1,15 @@
 # thebe-core
 
+## 0.3.3
+
+### Patch Changes
+
+- 87395cb: Changed how binder urls are built to use a RepoProviderSpec which can be extended by callers of ThebeServer to include custom specs.
+- 08e008e: Fixed error in event trigger invocation that caused an exception on binder conneciton failures
+- 57dcdaf: Add check call for user server status
+- 08e008e: Emit an error event for exceptions thrown during the binder url formation, including for unknown providers.
+  - thebe-lite@0.3.3
+
 ## 0.3.2
 
 ### Patch Changes

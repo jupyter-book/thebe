@@ -1,5 +1,16 @@
 # demo-react
 
+## 0.2.5
+
+### Patch Changes
+
+- 57dcdaf: ThebeServerProvider will no longer replace an existing server on rerender if that server is ready and has user server URL.
+- 57dcdaf: Hooks no longer throw but return empty or uninitialised objects instead, this allows for much more flexibility in how respective providers are rendered.
+- Updated dependencies [08e008e]
+- Updated dependencies [57dcdaf]
+- Updated dependencies [57dcdaf]
+  - thebe-react@0.3.3
+
 ## 0.2.4
 
 ### Patch Changes
