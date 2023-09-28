@@ -265,11 +265,19 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   }
 
   async checkForSavedBinderSession() {
-    const { build } = makeBinderUrls(
-      this.config.binder,
-      this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS,
-    );
-    return getExistingServer(this.config.savedSessions, build);
+    try {
+      const { build } = makeBinderUrls(
+        this.config.binder,
+        this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS,
+      );
+      return getExistingServer(this.config.savedSessions, build);
+    } catch (err: any) {
+      this.events.triggerError({
+        status: ErrorStatusEvent.error,
+        message: `${err} - Failed to check for saved session.`,
+      });
+      return null;
+    }
   }
 
   /**
@@ -290,7 +298,15 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // TODO binder connection setup probably better as a a factory independent of the server
     this.repoProviders = [...WELL_KNOWN_REPO_PROVIDERS, ...(customProviders ?? [])];
 
-    this.binderUrls = makeBinderUrls(this.config.binder, this.repoProviders);
+    try {
+      this.binderUrls = makeBinderUrls(this.config.binder, this.repoProviders);
+    } catch (err: any) {
+      this.events.triggerError({
+        status: ErrorStatusEvent.error,
+        message: `${err} - Failed to connect to binderhub at ${this.config.binder.binderUrl}`,
+      });
+      return;
+    }
     const urls = this.binderUrls;
 
     this.events.triggerStatus({
@@ -352,7 +368,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         console.error(`Lost connection to binder: ${urls.build}`, evt);
         es?.close();
         state.status = ErrorStatusEvent.error;
-        this.events.triggerError((evt as MessageEvent)?.data);
+        const data = (evt as MessageEvent)?.data;
+        const phase = data ? data.phase : 'unknown';
+        const message = data ? data.message : 'no message';
+        this.events.triggerError({
+          status: ErrorStatusEvent.error,
+          message: `phase: ${phase} - ${message} - Lost connection to binder`,
+        });
         rejectRequest(evt);
       };
 

@@ -19,6 +19,7 @@ export const ThebeServerContext = React.createContext<
       config?: Config;
       events?: ThebeEvents;
       server?: ThebeServer;
+      error?: string;
       connect?: () => void;
       disconnect?: () => Promise<void>;
     }
@@ -50,6 +51,7 @@ export function ThebeServerProvider({
   const [connecting, setConnecting] = useState<boolean>(false);
   const [server, setServer] = useState<ThebeServer | undefined>();
   const [ready, setReady] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
 
   // create a valid configuration, either using the one supplied
   // or based on the options provided
@@ -59,6 +61,18 @@ export function ThebeServerProvider({
     [core, options],
   );
 
+  // register an error handler immedately on the config changing, thiis is done as a
+  // side effect so tht we can un-register on unmount
+  useEffect(() => {
+    if (!core || !thebeConfig) return;
+    const handler = (evt: string, data: ThebeEventData) => {
+      setError(`${data.status} - ${data.message}`);
+    };
+    thebeConfig.events.on(core.ThebeEventType.error, handler);
+    return () => thebeConfig.events.off(core.ThebeEventType.error, handler);
+  }, [core, thebeConfig]);
+
+  // create an iniital server
   useEffect(() => {
     if (!core || !thebeConfig || server) return;
     setServer(new core.ThebeServer(thebeConfig));
@@ -109,6 +123,7 @@ export function ThebeServerProvider({
           setReady(false);
           setDoConnect(false);
         },
+        error,
       }}
     >
       {children}
@@ -151,23 +166,13 @@ export function useThebeServer() {
   const { core } = thebe ?? {};
 
   const serverContext = useContext(ThebeServerContext);
-  const { config, events, server, connecting, ready, connect, disconnect } = serverContext ?? {
-    ready: false,
-    connecting: false,
-  };
-
-  const [error, setError] = useState<string | undefined>(); // TODO how to handle errors better via the provider
-  const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
-
-  // configure error handling
-  useEffect(() => {
-    if (!core || !config || !server) return;
-    const handler = (evt: string, data: ThebeEventData) => {
-      if (data.id === server?.id) setError(`${data.status} - ${data.message}`);
+  const { config, events, server, connecting, ready, connect, disconnect, error } =
+    serverContext ?? {
+      ready: false,
+      connecting: false,
     };
-    config?.events.on(core.ThebeEventType.error, handler);
-    return () => config.events.off(core.ThebeEventType.error, handler);
-  }, [config, server]);
+
+  const [eventCallbacks, setEventCallbacks] = useState<ThebeEventCb[]>([]);
 
   const subscribe = useCallback(
     (fn: ListenerFn) => {
