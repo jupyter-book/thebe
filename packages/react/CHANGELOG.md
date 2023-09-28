@@ -1,5 +1,13 @@
 # thebe-react
 
+## 0.3.5
+
+### Patch Changes
+
+- 🛠 explicit setting of files to include contents of the `dist` or `lib` folders to avoid missing package files
+- Updated dependencies
+  - thebe-core@0.3.5
+
 ## 0.3.4
 
 ### Patch Changes

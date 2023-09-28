@@ -1,13 +1,13 @@
 {
   "name": "thebe-core",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Typescript based core functionality for Thebe",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
-  "style": "dist/thebe-core.css",
+  "style": "dist/lib/thebe-core.css",
   "files": [
-    "dist"
+    "dist/**/*"
   ],
   "scripts": {
     "clean": "rm -rf dist",
@@ -72,7 +72,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "style-loader": "^3.3.1",
-    "thebe-lite": "^0.3.4",
+    "thebe-lite": "^0.3.5",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
@@ -83,7 +83,7 @@
     "webpack-merge": "^5.8.0"
   },
   "peerDependencies": {
-    "thebe-lite": "^0.3.4"
+    "thebe-lite": "^0.3.5"
   },
   "dependencies": {
     "@jupyter-widgets/base": "^6.0.1",

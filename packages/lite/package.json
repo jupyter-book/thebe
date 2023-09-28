@@ -1,9 +1,12 @@
 {
   "name": "thebe-lite",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Thebe extension library for WASM kernels via JupyterLite",
   "main": "dist/lib/thebe-lite.min.js",
   "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "clean": "rm -rf ./dist",
     "build:bundle": "webpack --config webpack.config.cjs",

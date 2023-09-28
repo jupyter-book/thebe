@@ -1,5 +1,13 @@
 # thebe
 
+## 0.9.0
+
+### Patch Changes
+
+- 🛠 explicit setting of files to include contents of the `dist` or `lib` folders to avoid missing package files
+- Updated dependencies
+  - thebe-core@0.3.5
+
 ## 0.9.0-rc.8
 
 ### Patch Changes

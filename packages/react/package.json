@@ -1,12 +1,12 @@
 {
   "name": "thebe-react",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "sideEffects": false,
   "description": "React providers and components for thebe-core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/**/*"
   ],
   "keywords": [
     "executablebooks",
@@ -45,7 +45,7 @@
     "@jupyterlab/nbformat": "^3.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "thebe-core": "^0.3.4"
+    "thebe-core": "^0.3.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

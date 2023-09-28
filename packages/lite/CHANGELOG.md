@@ -1,5 +1,11 @@
 # thebe-lite
 
+## 0.3.5
+
+### Patch Changes
+
+- 🛠 explicit setting of files to include contents of the `dist` or `lib` folders to avoid missing package files
+
 ## 0.3.4
 
 ## 0.3.3
