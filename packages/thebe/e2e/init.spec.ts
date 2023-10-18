@@ -10,7 +10,7 @@ describe('Initialization check', () => {
   test('should have the title "readonly1"', async () => {
     await expect(page.title()).resolves.toMatch('readonly1');
   });
-  test('should have CodeMirror initalized', async () => {
+  test('should have CodeMirror initialized', async () => {
     const text = await page.evaluate(() => document.body.innerHTML);
     expect(text).toContain('thebe-cell');
   });

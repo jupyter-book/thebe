@@ -44,7 +44,7 @@
 
 ### Patch Changes
 
-- Updated interface to allow jupyterlite options to be passed into bundle. React provider updated to access useJuptyerLite prop and react-demo updated to use the new prop.
+- Updated interface to allow jupyterlite options to be passed into bundle. React provider updated to access useJupyterLite prop and react-demo updated to use the new prop.
 
 ## 0.2.0
 
@@ -54,4 +54,4 @@
 
 ### Patch Changes
 
-- Update to juptyerlite 0.1.0
+- Update to jupyterlite 0.1.0

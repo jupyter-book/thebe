@@ -19,7 +19,7 @@
 
 ### Patch Changes
 
-- 08e008e: Move error handler for the server out of hook and up into the ThebeServerProvider allowing for consistent reactions to an error state accross page navigation.
+- 08e008e: Move error handler for the server out of hook and up into the ThebeServerProvider allowing for consistent reactions to an error state across page navigation.
 - 57dcdaf: ThebeServerProvider will no longer replace an existing server on rerender if that server is ready and has user server URL.
 - 57dcdaf: Hooks no longer throw but return empty or uninitialised objects instead, this allows for much more flexibility in how respective providers are rendered.
 - Updated dependencies [87395cb]
@@ -121,7 +121,7 @@
 
 ### Patch Changes
 
-- Updated interface to allow jupyterlite options to be passed into bundle. React provider updated to access useJuptyerLite prop and react-demo updated to use the new prop.
+- Updated interface to allow jupyterlite options to be passed into bundle. React provider updated to access useJupyterLite prop and react-demo updated to use the new prop.
   - thebe-core@0.2.1
 
 ## 0.2.0

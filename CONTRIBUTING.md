@@ -6,7 +6,7 @@
 
 The main `thebe` packages are located in `packages/` and are:
 
-- `thebe-core` - object based API for connecting to and executing against juptyer servers
+- `thebe-core` - object based API for connecting to and executing against jupyter servers
 - `thebe-lite` - a side-loaded extension to `thebe-core` enabling use of a `JupyterLiteServer`
 - `thebe-react` - React components for using `thebe-core`
 - `thebe` - top-level library for use directly in html pages

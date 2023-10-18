@@ -30,7 +30,7 @@ This is dependent on you making `thebe` and `thebe-lite` available as part of yo
 
 - Load the latest javascipt bundle for `thebe-lite`.
 - Load the javascript bundle for `thebe`.
-- Load the styles you'll need for rendering Juptyer outputs and ipywidgets properly.
+- Load the styles you'll need for rendering Jupyter outputs and ipywidgets properly.
 
 You should include the following files in your deployment:
 
@@ -58,7 +58,7 @@ Enable the JupyterLite server by adding the follow configuration script to the `
 
 `thebe-lite` is currently limited to using the `pyodide` kernel. By default, `thebe-lite` will look for python (WASM) wheels (`.whl`) on relative paths, meaning you have to take care to also deploy them and ensure they are reachable on the expected url paths (more on that in [`thebe-lite` options](./lite-options.md)).
 
-But we can avoid that by overriding some JuptyerLite settings directly, and load the wheels from CDN. This makes inital setup much easier!
+But we can avoid that by overriding some JupyterLite settings directly, and load the wheels from CDN. This makes initial setup much easier!
 
 Do this by adding an additional `script` to the `<head>` of your page, **above** the `<script>` tags that load `thebe-lite`:
 
@@ -78,11 +78,11 @@ Do this by adding an additional `script` to the `<head>` of your page, **above**
 </script>
 ```
 
-Note due to the namin convention of the `piplite` wheel, it's necessary to keep this updated to the latest version manually.
+Note due to the naming convention of the `piplite` wheel, it's necessary to keep this updated to the latest version manually.
 
 ## Add some UI elements
 
-Thebe provides some default UI componponents that can be customixed via css. To add these components to your page add the following `html` elements in desired location.
+Thebe provides some default UI components that can be customised via css. To add these components to your page add the following `html` elements in desired location.
 Add at least the first element to have a way to activate`thebe`.
 
 ```{code-block} xml
@@ -98,7 +98,7 @@ Then extend the configuration script that you added above to enable the widgets,
 <script type="text/x-thebe-config">
   {
       useBinder: false,
-      useJuptyerLite: true,
+      useJupyterLite: true,
       mountActivateWidget: true,
       mountStatusWidget: true,
   }
@@ -109,7 +109,7 @@ Provided that the `thebe` script and styles are properly loaded, when you refres
 
 ![](./images/thebe-ui-widgets.png)
 
-Pressing activate should start the in-browser Juptyer server and setup the kernel but before you do that! Let's make sure that `thebe` will be able to find the source code on your site.
+Pressing activate should start the in-browser Jupyter server and setup the kernel but before you do that! Let's make sure that `thebe` will be able to find the source code on your site.
 
 ## Customising the source code selector
 

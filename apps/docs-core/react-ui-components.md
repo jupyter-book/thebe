@@ -11,4 +11,4 @@ ErrorTray
 : Used to display out-of-band error messages from ThebeNotebook. As errors could occur in notebook cells that are not attached to you page, the `ErrorTray` will help you display those with the standard Jupyter formatting for errors and tracebacks.
 
 JupyterOutputDecoration
-: Can be used to a bounding box and Juptyer Logo to your jupyter output areas.
+: Can be used to a bounding box and Jupyter Logo to your jupyter output areas.

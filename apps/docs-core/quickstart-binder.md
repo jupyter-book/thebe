@@ -20,7 +20,7 @@ Add the following to the `<head>` section of your HTML:
 This will:
 
 - Load the javascript bundle for the latest Release Candidate version of `thebe`.
-- Load the styles for the same version, including the styles you'll need for rendering Juptyer outputs and ipywidgets properly.
+- Load the styles for the same version, including the styles you'll need for rendering Jupyter outputs and ipywidgets properly.
 
 ## Configure `thebe` to work with binder
 
@@ -42,7 +42,7 @@ This is very compact as `thebe` will assume the default repository provider is `
 
 ## Add some UI elements
 
-Thebe provides some default UI componponents that can be customixed via css. To add these components to your page add the following `html` elements in desired location.
+Thebe provides some default UI components that can be customised via css. To add these components to your page add the following `html` elements in desired location.
 Add at least the first element to have a way to activate`thebe`.
 
 ```{code-block} xml
