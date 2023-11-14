@@ -7,8 +7,6 @@ import 'codemirror/theme/abcdef.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/theme/idea.css';
 
-import { Mode } from '@jupyterlab/codemirror';
-
 import type { Options } from './options';
 import type { IThebeCell } from 'thebe-core';
 import type { ICompleteReplyMsg } from '@jupyterlab/services/lib/kernel/messages';
@@ -130,9 +128,11 @@ export function setupCodemirror(
   );
   console.debug('thebe:setupCodemirror:codeMirrorConfig', codeMirrorConfig);
 
-  Mode.ensure(codeMirrorConfig.mode).then(() => ref.cm?.setOption('mode', codeMirrorConfig.mode));
   ref.cm = new CodeMirror(editorEl as HTMLElement, codeMirrorConfig);
-  console.debug('thebe:setupCodemirror:autoLoadMode mode for', codeMirrorConfig.mode);
+  // TODO enable loading of mode js files via configuration
+  // see https://github.com/jupyterlab/jupyterlab/blob/3.6.x/packages/codemirror/src/mode.ts for
+  // an example of how to do this
+  ref.cm?.setOption('mode', codeMirrorConfig.mode);
 
   // All cells in the notebook automatically update their sources on change
   ref?.cm?.on('change', () => {
