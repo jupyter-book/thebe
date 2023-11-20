@@ -1,6 +1,6 @@
 import * as thebe from '../src';
 import { appendElementToBody } from './helpers';
-import type { JupyterServer } from '@jupyterlab/testutils';
+import type { JupyterServer } from '@jupyterlab/testing';
 
 let server: JupyterServer | undefined;
 
