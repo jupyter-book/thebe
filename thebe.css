@@ -6,41 +6,41 @@
   --jp-shadow-ambient-color: rgba( var(--jp-shadow-base-lightness), var(--jp-shadow-base-lightness), var(--jp-shadow-base-lightness), 0.12 );
   --jp-elevation-z0: none;
   --jp-elevation-z1:
-    0px 2px 1px -1px var(--jp-shadow-umbra-color),
-    0px 1px 1px 0px var(--jp-shadow-penumbra-color),
-    0px 1px 3px 0px var(--jp-shadow-ambient-color);
+    0 2px 1px -1px var(--jp-shadow-umbra-color),
+    0 1px 1px 0 var(--jp-shadow-penumbra-color),
+    0 1px 3px 0 var(--jp-shadow-ambient-color);
   --jp-elevation-z2:
-    0px 3px 1px -2px var(--jp-shadow-umbra-color),
-    0px 2px 2px 0px var(--jp-shadow-penumbra-color),
-    0px 1px 5px 0px var(--jp-shadow-ambient-color);
+    0 3px 1px -2px var(--jp-shadow-umbra-color),
+    0 2px 2px 0 var(--jp-shadow-penumbra-color),
+    0 1px 5px 0 var(--jp-shadow-ambient-color);
   --jp-elevation-z4:
-    0px 2px 4px -1px var(--jp-shadow-umbra-color),
-    0px 4px 5px 0px var(--jp-shadow-penumbra-color),
-    0px 1px 10px 0px var(--jp-shadow-ambient-color);
+    0 2px 4px -1px var(--jp-shadow-umbra-color),
+    0 4px 5px 0 var(--jp-shadow-penumbra-color),
+    0 1px 10px 0 var(--jp-shadow-ambient-color);
   --jp-elevation-z6:
-    0px 3px 5px -1px var(--jp-shadow-umbra-color),
-    0px 6px 10px 0px var(--jp-shadow-penumbra-color),
-    0px 1px 18px 0px var(--jp-shadow-ambient-color);
+    0 3px 5px -1px var(--jp-shadow-umbra-color),
+    0 6px 10px 0 var(--jp-shadow-penumbra-color),
+    0 1px 18px 0 var(--jp-shadow-ambient-color);
   --jp-elevation-z8:
-    0px 5px 5px -3px var(--jp-shadow-umbra-color),
-    0px 8px 10px 1px var(--jp-shadow-penumbra-color),
-    0px 3px 14px 2px var(--jp-shadow-ambient-color);
+    0 5px 5px -3px var(--jp-shadow-umbra-color),
+    0 8px 10px 1px var(--jp-shadow-penumbra-color),
+    0 3px 14px 2px var(--jp-shadow-ambient-color);
   --jp-elevation-z12:
-    0px 7px 8px -4px var(--jp-shadow-umbra-color),
-    0px 12px 17px 2px var(--jp-shadow-penumbra-color),
-    0px 5px 22px 4px var(--jp-shadow-ambient-color);
+    0 7px 8px -4px var(--jp-shadow-umbra-color),
+    0 12px 17px 2px var(--jp-shadow-penumbra-color),
+    0 5px 22px 4px var(--jp-shadow-ambient-color);
   --jp-elevation-z16:
-    0px 8px 10px -5px var(--jp-shadow-umbra-color),
-    0px 16px 24px 2px var(--jp-shadow-penumbra-color),
-    0px 6px 30px 5px var(--jp-shadow-ambient-color);
+    0 8px 10px -5px var(--jp-shadow-umbra-color),
+    0 16px 24px 2px var(--jp-shadow-penumbra-color),
+    0 6px 30px 5px var(--jp-shadow-ambient-color);
   --jp-elevation-z20:
-    0px 10px 13px -6px var(--jp-shadow-umbra-color),
-    0px 20px 31px 3px var(--jp-shadow-penumbra-color),
-    0px 8px 38px 7px var(--jp-shadow-ambient-color);
+    0 10px 13px -6px var(--jp-shadow-umbra-color),
+    0 20px 31px 3px var(--jp-shadow-penumbra-color),
+    0 8px 38px 7px var(--jp-shadow-ambient-color);
   --jp-elevation-z24:
-    0px 11px 15px -7px var(--jp-shadow-umbra-color),
-    0px 24px 38px 3px var(--jp-shadow-penumbra-color),
-    0px 9px 46px 8px var(--jp-shadow-ambient-color);
+    0 11px 15px -7px var(--jp-shadow-umbra-color),
+    0 24px 38px 3px var(--jp-shadow-penumbra-color),
+    0 9px 46px 8px var(--jp-shadow-ambient-color);
   --jp-border-width: 1px;
   --jp-border-color0: var(--md-grey-400);
   --jp-border-color1: var(--md-grey-400);
@@ -54,11 +54,12 @@
   --jp-ui-font-size2: 1.2em;
   --jp-ui-font-size3: 1.44em;
   --jp-ui-font-family:
+    system-ui,
     -apple-system,
-    BlinkMacSystemFont,
+    blinkmacsystemfont,
     "Segoe UI",
-    Helvetica,
-    Arial,
+    helvetica,
+    arial,
     sans-serif,
     "Apple Color Emoji",
     "Segoe UI Emoji",
@@ -88,13 +89,14 @@
   --jp-content-font-color1: rgba(0, 0, 0, 0.87);
   --jp-content-font-color2: rgba(0, 0, 0, 0.54);
   --jp-content-font-color3: rgba(0, 0, 0, 0.38);
-  --jp-content-link-color: var(--md-blue-700);
+  --jp-content-link-color: var(--md-blue-900);
   --jp-content-font-family:
+    system-ui,
     -apple-system,
-    BlinkMacSystemFont,
+    blinkmacsystemfont,
     "Segoe UI",
-    Helvetica,
-    Arial,
+    helvetica,
+    arial,
     sans-serif,
     "Apple Color Emoji",
     "Segoe UI Emoji",
@@ -103,8 +105,8 @@
   --jp-code-line-height: 1.3077;
   --jp-code-padding: 5px;
   --jp-code-font-family-default:
-    Menlo,
-    Consolas,
+    menlo,
+    consolas,
     "DejaVu Sans Mono",
     monospace;
   --jp-code-font-family: var(--jp-code-font-family-default);
@@ -117,7 +119,7 @@
   --jp-layout-color2: var(--md-grey-200);
   --jp-layout-color3: var(--md-grey-400);
   --jp-layout-color4: var(--md-grey-600);
-  --jp-inverse-layout-color0: #111111;
+  --jp-inverse-layout-color0: #111;
   --jp-inverse-layout-color1: var(--md-grey-900);
   --jp-inverse-layout-color2: var(--md-grey-800);
   --jp-inverse-layout-color3: var(--md-grey-700);
@@ -158,7 +160,7 @@
   --jp-cell-editor-active-border-color: var(--jp-brand-color1);
   --jp-cell-prompt-width: 64px;
   --jp-cell-prompt-font-family: var(--jp-code-font-family-default);
-  --jp-cell-prompt-letter-spacing: 0px;
+  --jp-cell-prompt-letter-spacing: 0;
   --jp-cell-prompt-opacity: 1;
   --jp-cell-prompt-not-active-opacity: 0.5;
   --jp-cell-prompt-not-active-font-color: var(--md-grey-700);
@@ -176,8 +178,8 @@
   --jp-toolbar-border-color: var(--jp-border-color1);
   --jp-toolbar-micro-height: 8px;
   --jp-toolbar-background: var(--jp-layout-color1);
-  --jp-toolbar-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
-  --jp-toolbar-header-margin: 4px 4px 0px 4px;
+  --jp-toolbar-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.24);
+  --jp-toolbar-header-margin: 4px 4px 0 4px;
   --jp-toolbar-active-background: var(--md-grey-300);
   --jp-statusbar-height: 24px;
   --jp-input-box-shadow: inset 0 0 2px var(--md-blue-300);
@@ -195,15 +197,15 @@
   --jp-mirror-editor-number-color: #080;
   --jp-mirror-editor-def-color: #00f;
   --jp-mirror-editor-variable-color: var(--md-grey-900);
-  --jp-mirror-editor-variable-2-color: #05a;
+  --jp-mirror-editor-variable-2-color: rgb(0, 54, 109);
   --jp-mirror-editor-variable-3-color: #085;
   --jp-mirror-editor-punctuation-color: #05a;
   --jp-mirror-editor-property-color: #05a;
-  --jp-mirror-editor-operator-color: #aa22ff;
+  --jp-mirror-editor-operator-color: #a2f;
   --jp-mirror-editor-comment-color: #408080;
   --jp-mirror-editor-string-color: #ba2121;
   --jp-mirror-editor-string-2-color: #708;
-  --jp-mirror-editor-meta-color: #aa22ff;
+  --jp-mirror-editor-meta-color: #a2f;
   --jp-mirror-editor-qualifier-color: #555;
   --jp-mirror-editor-builtin-color: #008000;
   --jp-mirror-editor-bracket-color: #997;
@@ -234,6 +236,15 @@
   --jp-icon-contrast-color1: var(--md-green-600);
   --jp-icon-contrast-color2: var(--md-pink-600);
   --jp-icon-contrast-color3: var(--md-blue-600);
+  --jp-accept-color-normal: var(--md-blue-700);
+  --jp-accept-color-hover: var(--md-blue-800);
+  --jp-accept-color-active: var(--md-blue-900);
+  --jp-warn-color-normal: var(--md-red-700);
+  --jp-warn-color-hover: var(--md-red-800);
+  --jp-warn-color-active: var(--md-red-900);
+  --jp-reject-color-normal: var(--md-grey-600);
+  --jp-reject-color-hover: var(--md-grey-700);
+  --jp-reject-color-active: var(--md-grey-800);
   --jp-jupyter-icon-color: #f37626;
   --jp-notebook-icon-color: #f37626;
   --jp-json-icon-color: var(--md-orange-700);
@@ -1746,14 +1757,11 @@ pre {
   max-width: 100%;
   height: auto;
 }
-.p-Widget,
 .lm-Widget {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  cursor: default;
 }
-.p-Widget.p-mod-hidden,
 .lm-Widget.lm-mod-hidden {
   display: none !important;
 }
@@ -1762,7 +1770,6 @@ pre {
   transform-origin: top left;
   transform: rotate(-90deg) translate(-100%);
 }
-.p-CommandPalette,
 .lm-CommandPalette {
   display: flex;
   flex-direction: column;
@@ -1771,11 +1778,9 @@ pre {
   -ms-user-select: none;
   user-select: none;
 }
-.p-CommandPalette-search,
 .lm-CommandPalette-search {
   flex: 0 0 auto;
 }
-.p-CommandPalette-content,
 .lm-CommandPalette-content {
   flex: 1 1 auto;
   margin: 0;
@@ -1784,31 +1789,25 @@ pre {
   overflow: auto;
   list-style-type: none;
 }
-.p-CommandPalette-header,
 .lm-CommandPalette-header {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.p-CommandPalette-item,
 .lm-CommandPalette-item {
   display: flex;
   flex-direction: row;
 }
-.p-CommandPalette-itemIcon,
 .lm-CommandPalette-itemIcon {
   flex: 0 0 auto;
 }
-.p-CommandPalette-itemContent,
 .lm-CommandPalette-itemContent {
   flex: 1 1 auto;
   overflow: hidden;
 }
-.p-CommandPalette-itemShortcut,
 .lm-CommandPalette-itemShortcut {
   flex: 0 0 auto;
 }
-.p-CommandPalette-itemLabel,
 .lm-CommandPalette-itemLabel {
   overflow: hidden;
   white-space: nowrap;
@@ -1840,27 +1839,21 @@ pre {
   font-size: 12px;
   cursor: pointer;
 }
-.p-DockPanel,
 .lm-DockPanel {
   z-index: 0;
 }
-.p-DockPanel-widget,
 .lm-DockPanel-widget {
   z-index: 0;
 }
-.p-DockPanel-tabBar,
 .lm-DockPanel-tabBar {
   z-index: 1;
 }
-.p-DockPanel-handle,
 .lm-DockPanel-handle {
   z-index: 2;
 }
-.p-DockPanel-handle.p-mod-hidden,
 .lm-DockPanel-handle.lm-mod-hidden {
   display: none !important;
 }
-.p-DockPanel-handle:after,
 .lm-DockPanel-handle:after {
   position: absolute;
   top: 0;
@@ -1869,37 +1862,30 @@ pre {
   height: 100%;
   content: "";
 }
-.p-DockPanel-handle[data-orientation=horizontal],
 .lm-DockPanel-handle[data-orientation=horizontal] {
   cursor: ew-resize;
 }
-.p-DockPanel-handle[data-orientation=vertical],
 .lm-DockPanel-handle[data-orientation=vertical] {
   cursor: ns-resize;
 }
-.p-DockPanel-handle[data-orientation=horizontal]:after,
 .lm-DockPanel-handle[data-orientation=horizontal]:after {
   left: 50%;
   min-width: 8px;
   transform: translateX(-50%);
 }
-.p-DockPanel-handle[data-orientation=vertical]:after,
 .lm-DockPanel-handle[data-orientation=vertical]:after {
   top: 50%;
   min-height: 8px;
   transform: translateY(-50%);
 }
-.p-DockPanel-overlay,
 .lm-DockPanel-overlay {
   z-index: 3;
   box-sizing: border-box;
   pointer-events: none;
 }
-.p-DockPanel-overlay.p-mod-hidden,
 .lm-DockPanel-overlay.lm-mod-hidden {
   display: none !important;
 }
-.p-Menu,
 .lm-Menu {
   z-index: 10000;
   position: absolute;
@@ -1912,41 +1898,32 @@ pre {
   -ms-user-select: none;
   user-select: none;
 }
-.p-Menu-content,
 .lm-Menu-content {
   margin: 0;
   padding: 0;
   display: table;
   list-style-type: none;
 }
-.p-Menu-item,
 .lm-Menu-item {
   display: table-row;
 }
-.p-Menu-item.p-mod-hidden,
-.p-Menu-item.p-mod-collapsed,
 .lm-Menu-item.lm-mod-hidden,
 .lm-Menu-item.lm-mod-collapsed {
   display: none !important;
 }
-.p-Menu-itemIcon,
-.p-Menu-itemSubmenuIcon,
 .lm-Menu-itemIcon,
 .lm-Menu-itemSubmenuIcon {
   display: table-cell;
   text-align: center;
 }
-.p-Menu-itemLabel,
 .lm-Menu-itemLabel {
   display: table-cell;
   text-align: left;
 }
-.p-Menu-itemShortcut,
 .lm-Menu-itemShortcut {
   display: table-cell;
   text-align: right;
 }
-.p-MenuBar,
 .lm-MenuBar {
   outline: none;
   -webkit-user-select: none;
@@ -1954,7 +1931,6 @@ pre {
   -ms-user-select: none;
   user-select: none;
 }
-.p-MenuBar-content,
 .lm-MenuBar-content {
   margin: 0;
   padding: 0;
@@ -1962,17 +1938,13 @@ pre {
   flex-direction: row;
   list-style-type: none;
 }
-.p--MenuBar-item,
 .lm-MenuBar-item {
   box-sizing: border-box;
 }
-.p-MenuBar-itemIcon,
-.p-MenuBar-itemLabel,
 .lm-MenuBar-itemIcon,
 .lm-MenuBar-itemLabel {
   display: inline-block;
 }
-.p-ScrollBar,
 .lm-ScrollBar {
   display: flex;
   -webkit-user-select: none;
@@ -1980,44 +1952,35 @@ pre {
   -ms-user-select: none;
   user-select: none;
 }
-.p-ScrollBar[data-orientation=horizontal],
 .lm-ScrollBar[data-orientation=horizontal] {
   flex-direction: row;
 }
-.p-ScrollBar[data-orientation=vertical],
 .lm-ScrollBar[data-orientation=vertical] {
   flex-direction: column;
 }
-.p-ScrollBar-button,
 .lm-ScrollBar-button {
   box-sizing: border-box;
   flex: 0 0 auto;
 }
-.p-ScrollBar-track,
 .lm-ScrollBar-track {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
   flex: 1 1 auto;
 }
-.p-ScrollBar-thumb,
 .lm-ScrollBar-thumb {
   box-sizing: border-box;
   position: absolute;
 }
-.p-SplitPanel-child,
 .lm-SplitPanel-child {
   z-index: 0;
 }
-.p-SplitPanel-handle,
 .lm-SplitPanel-handle {
   z-index: 1;
 }
-.p-SplitPanel-handle.p-mod-hidden,
 .lm-SplitPanel-handle.lm-mod-hidden {
   display: none !important;
 }
-.p-SplitPanel-handle:after,
 .lm-SplitPanel-handle:after {
   position: absolute;
   top: 0;
@@ -2026,27 +1989,22 @@ pre {
   height: 100%;
   content: "";
 }
-.p-SplitPanel[data-orientation=horizontal] > .p-SplitPanel-handle,
 .lm-SplitPanel[data-orientation=horizontal] > .lm-SplitPanel-handle {
   cursor: ew-resize;
 }
-.p-SplitPanel[data-orientation=vertical] > .p-SplitPanel-handle,
 .lm-SplitPanel[data-orientation=vertical] > .lm-SplitPanel-handle {
   cursor: ns-resize;
 }
-.p-SplitPanel[data-orientation=horizontal] > .p-SplitPanel-handle:after,
 .lm-SplitPanel[data-orientation=horizontal] > .lm-SplitPanel-handle:after {
   left: 50%;
   min-width: 8px;
   transform: translateX(-50%);
 }
-.p-SplitPanel[data-orientation=vertical] > .p-SplitPanel-handle:after,
 .lm-SplitPanel[data-orientation=vertical] > .lm-SplitPanel-handle:after {
   top: 50%;
   min-height: 8px;
   transform: translateY(-50%);
 }
-.p-TabBar,
 .lm-TabBar {
   display: flex;
   -webkit-user-select: none;
@@ -2054,17 +2012,14 @@ pre {
   -ms-user-select: none;
   user-select: none;
 }
-.p-TabBar[data-orientation=horizontal],
 .lm-TabBar[data-orientation=horizontal] {
   flex-direction: row;
   align-items: flex-end;
 }
-.p-TabBar[data-orientation=vertical],
 .lm-TabBar[data-orientation=vertical] {
   flex-direction: column;
   align-items: flex-end;
 }
-.p-TabBar-content,
 .lm-TabBar-content {
   margin: 0;
   padding: 0;
@@ -2072,15 +2027,12 @@ pre {
   flex: 1 1 auto;
   list-style-type: none;
 }
-.p-TabBar[data-orientation=horizontal] > .p-TabBar-content,
 .lm-TabBar[data-orientation=horizontal] > .lm-TabBar-content {
   flex-direction: row;
 }
-.p-TabBar[data-orientation=vertical] > .p-TabBar-content,
 .lm-TabBar[data-orientation=vertical] > .lm-TabBar-content {
   flex-direction: column;
 }
-.p-TabBar-tab,
 .lm-TabBar-tab {
   display: flex;
   flex-direction: row;
@@ -2088,13 +2040,10 @@ pre {
   overflow: hidden;
   touch-action: none;
 }
-.p-TabBar-tabIcon,
-.p-TabBar-tabCloseIcon,
 .lm-TabBar-tabIcon,
 .lm-TabBar-tabCloseIcon {
   flex: 0 0 auto;
 }
-.p-TabBar-tabLabel,
 .lm-TabBar-tabLabel {
   flex: 1 1 auto;
   overflow: hidden;
@@ -2105,28 +2054,23 @@ pre {
   width: 100%;
   box-sizing: border-box;
 }
-.p-TabBar-tab.p-mod-hidden,
 .lm-TabBar-tab.lm-mod-hidden {
   display: none !important;
 }
 .lm-TabBar-addButton.lm-mod-hidden {
   display: none !important;
 }
-.p-TabBar.p-mod-dragging .p-TabBar-tab,
 .lm-TabBar.lm-mod-dragging .lm-TabBar-tab {
   position: relative;
 }
-.p-TabBar.p-mod-dragging[data-orientation=horizontal] .p-TabBar-tab,
 .lm-TabBar.lm-mod-dragging[data-orientation=horizontal] .lm-TabBar-tab {
   left: 0;
   transition: left 150ms ease;
 }
-.p-TabBar.p-mod-dragging[data-orientation=vertical] .p-TabBar-tab,
 .lm-TabBar.lm-mod-dragging[data-orientation=vertical] .lm-TabBar-tab {
   top: 0;
   transition: top 150ms ease;
 }
-.p-TabBar.p-mod-dragging .p-TabBar-tab.p-mod-dragging,
 .lm-TabBar.lm-mod-dragging .lm-TabBar-tab.lm-mod-dragging {
   transition: none;
 }
@@ -2136,41 +2080,17 @@ pre {
   box-sizing: border-box;
   background: inherit;
 }
-.p-TabPanel-tabBar,
 .lm-TabPanel-tabBar {
   z-index: 1;
 }
-.p-TabPanel-stackedPanel,
 .lm-TabPanel-stackedPanel {
   z-index: 0;
-}
-.jp-Collapse {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-top: 1px solid var(--jp-border-color2);
-  border-bottom: 1px solid var(--jp-border-color2);
-}
-.jp-Collapse-header {
-  padding: 1px 12px;
-  color: var(--jp-ui-font-color1);
-  background-color: var(--jp-layout-color1);
-  font-size: var(--jp-ui-font-size2);
-}
-.jp-Collapse-header:hover {
-  background-color: var(--jp-layout-color2);
-}
-.jp-Collapse-contents {
-  padding: 0px 12px 0px 12px;
-  background-color: var(--jp-layout-color1);
-  color: var(--jp-ui-font-color1);
-  overflow: auto;
 }
 :root {
   --jp-private-commandpalette-search-height: 28px;
 }
 .lm-CommandPalette {
-  padding-bottom: 0px;
+  padding-bottom: 0;
   color: var(--jp-ui-font-color1);
   background: var(--jp-layout-color1);
   font-size: var(--jp-ui-font-size1);
@@ -2210,7 +2130,7 @@ pre {
 }
 .lm-CommandPalette-wrapper {
   overflow: overlay;
-  padding: 0px 9px;
+  padding: 0 9px;
   background-color: var(--jp-input-active-background);
   height: 30px;
   box-shadow: inset 0 0 0 var(--jp-border-width) var(--jp-input-border-color);
@@ -2224,7 +2144,7 @@ pre {
   position: absolute;
   top: 4px;
   right: 4px;
-  padding: 5px 5px 1px 5px;
+  padding: 5px 5px 1px;
 }
 .jp-SearchIconGroup svg {
   height: 20px;
@@ -2250,7 +2170,7 @@ pre {
   font-size: var(--jp-ui-font-size1);
 }
 .lm-CommandPalette-header:first-child {
-  margin-top: 0px;
+  margin-top: 0;
 }
 .lm-CommandPalette-header {
   border-bottom: solid var(--jp-border-width) var(--jp-border-color2);
@@ -2292,9 +2212,6 @@ pre {
 .lm-CommandPalette-item.lm-mod-active .jp-icon-selectable[fill] {
   fill: var(--jp-layout-color0);
 }
-.lm-CommandPalette-item.lm-mod-active .lm-CommandPalette-itemLabel > mark {
-  color: var(--jp-ui-inverse-font-color0);
-}
 .lm-CommandPalette-item.lm-mod-active:hover:not(.lm-mod-disabled) {
   color: var(--jp-ui-inverse-font-color1);
   background: var(--jp-brand-color1);
@@ -2332,7 +2249,7 @@ pre {
 .lm-CommandPalette-content {
   background-color: var(--jp-layout-color1);
 }
-.lm-CommandPalette-content:empty:after {
+.lm-CommandPalette-content:empty::after {
   content: "No results";
   margin: auto;
   margin-top: 20px;
@@ -2346,7 +2263,7 @@ pre {
   text-align: center;
   margin-top: 24px;
   line-height: 1.32;
-  padding: 0px 8px;
+  padding: 0 8px;
   color: var(--jp-content-font-color3);
 }
 .jp-Dialog {
@@ -2356,8 +2273,8 @@ pre {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -2370,7 +2287,7 @@ pre {
   margin-left: auto;
   margin-right: auto;
   background: var(--jp-layout-color1);
-  padding: 24px 24px 12px 24px;
+  padding: 24px 24px 12px;
   min-width: 300px;
   min-height: 150px;
   max-width: 1000px;
@@ -2392,7 +2309,7 @@ pre {
 button.jp-Dialog-button:focus {
   outline: 1px solid var(--jp-brand-color1);
   outline-offset: 4px;
-  -moz-outline-radius: 0px;
+  -moz-outline-radius: 0;
 }
 button.jp-Dialog-button:focus::-moz-focus-inner {
   border: 0;
@@ -2401,16 +2318,16 @@ button.jp-Dialog-button.jp-mod-styled.jp-mod-accept:focus,
 button.jp-Dialog-button.jp-mod-styled.jp-mod-warn:focus,
 button.jp-Dialog-button.jp-mod-styled.jp-mod-reject:focus {
   outline-offset: 4px;
-  -moz-outline-radius: 0px;
+  -moz-outline-radius: 0;
 }
 button.jp-Dialog-button.jp-mod-styled.jp-mod-accept:focus {
-  outline: 1px solid var(--md-blue-700);
+  outline: 1px solid var(--jp-accept-color-normal, var(--jp-brand-color1));
 }
 button.jp-Dialog-button.jp-mod-styled.jp-mod-warn:focus {
-  outline: 1px solid var(--md-red-600);
+  outline: 1px solid var(--jp-warn-color-normal, var(--jp-error-color1));
 }
 button.jp-Dialog-button.jp-mod-styled.jp-mod-reject:focus {
-  outline: 1px solid var(--md-grey-700);
+  outline: 1px solid var(--jp-reject-color-normal, var(--md-grey-600));
 }
 button.jp-Dialog-close-button {
   padding: 0;
@@ -2425,7 +2342,7 @@ button.jp-Dialog-close-button {
   padding-bottom: 12px;
   font-size: var(--jp-ui-font-size3);
   font-weight: 400;
-  color: var(--jp-ui-font-color0);
+  color: var(--jp-ui-font-color1);
 }
 .jp-Dialog-body {
   display: flex;
@@ -2433,6 +2350,7 @@ button.jp-Dialog-close-button {
   flex: 1 1 auto;
   font-size: var(--jp-ui-font-size1);
   background: var(--jp-layout-color1);
+  color: var(--jp-ui-font-color1);
   overflow: auto;
 }
 .jp-Dialog-footer {
@@ -2464,7 +2382,7 @@ button.jp-Dialog-close-button {
   width: 100%;
 }
 .jp-Dialog-body > button {
-  padding: 0px 16px;
+  padding: 0 16px;
 }
 .jp-Dialog-body > label {
   line-height: 1.4;
@@ -2472,31 +2390,6 @@ button.jp-Dialog-close-button {
 }
 .jp-Dialog-button.jp-mod-styled:not(:last-child) {
   margin-right: 12px;
-}
-.jp-HoverBox {
-  position: fixed;
-}
-.jp-HoverBox.jp-mod-outofview {
-  display: none;
-}
-.jp-IFrame {
-  width: 100%;
-  height: 100%;
-}
-.jp-IFrame > iframe {
-  border: none;
-}
-body.lm-mod-override-cursor .jp-IFrame {
-  position: relative;
-}
-body.lm-mod-override-cursor .jp-IFrame:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
 }
 .jp-Input-Boolean-Dialog {
   flex-direction: row-reverse;
@@ -2522,9 +2415,6 @@ body.lm-mod-override-cursor .jp-IFrame:before {
   font-size: var(--jp-ui-font-size1);
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-.jp-MainAreaWidget {
-  contain: strict;
 }
 :root {
   --md-red-50: #ffebee;
@@ -2568,7 +2458,7 @@ body.lm-mod-override-cursor .jp-IFrame:before {
   --md-purple-A100: #ea80fc;
   --md-purple-A200: #e040fb;
   --md-purple-A400: #d500f9;
-  --md-purple-A700: #aa00ff;
+  --md-purple-A700: #a0f;
   --md-deep-purple-50: #ede7f6;
   --md-deep-purple-100: #d1c4e9;
   --md-deep-purple-200: #b39ddb;
@@ -2706,7 +2596,7 @@ body.lm-mod-override-cursor .jp-IFrame:before {
   --md-yellow-800: #f9a825;
   --md-yellow-900: #f57f17;
   --md-yellow-A100: #ffff8d;
-  --md-yellow-A200: #ffff00;
+  --md-yellow-A200: #ff0;
   --md-yellow-A400: #ffea00;
   --md-yellow-A700: #ffd600;
   --md-amber-50: #fff8e1;
@@ -2763,7 +2653,7 @@ body.lm-mod-override-cursor .jp-IFrame:before {
   --md-brown-900: #3e2723;
   --md-grey-50: #fafafa;
   --md-grey-100: #f5f5f5;
-  --md-grey-200: #eeeeee;
+  --md-grey-200: #eee;
   --md-grey-300: #e0e0e0;
   --md-grey-400: #bdbdbd;
   --md-grey-500: #9e9e9e;
@@ -2782,243 +2672,6 @@ body.lm-mod-override-cursor .jp-IFrame:before {
   --md-blue-grey-800: #37474f;
   --md-blue-grey-900: #263238;
 }
-.jp-Spinner {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--jp-layout-color0);
-  outline: none;
-}
-.jp-SpinnerContent {
-  font-size: 10px;
-  margin: 50px auto;
-  text-indent: -9999em;
-  width: 3em;
-  height: 3em;
-  border-radius: 50%;
-  background: var(--jp-brand-color3);
-  background: linear-gradient(to right, #f37626 10%, rgba(255, 255, 255, 0) 42%);
-  position: relative;
-  animation: load3 1s infinite linear, fadeIn 1s;
-}
-.jp-SpinnerContent:before {
-  width: 50%;
-  height: 50%;
-  background: #f37626;
-  border-radius: 100% 0 0 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: "";
-}
-.jp-SpinnerContent:after {
-  background: var(--jp-layout-color0);
-  width: 75%;
-  height: 75%;
-  border-radius: 50%;
-  content: "";
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes load3 {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-button.jp-mod-styled {
-  font-size: var(--jp-ui-font-size1);
-  color: var(--jp-ui-font-color0);
-  border: none;
-  box-sizing: border-box;
-  text-align: center;
-  line-height: 32px;
-  height: 32px;
-  padding: 0px 12px;
-  letter-spacing: 0.8px;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-input.jp-mod-styled {
-  background: var(--jp-input-background);
-  height: 28px;
-  box-sizing: border-box;
-  border: var(--jp-border-width) solid var(--jp-border-color1);
-  padding-left: 7px;
-  padding-right: 7px;
-  font-size: var(--jp-ui-font-size2);
-  color: var(--jp-ui-font-color0);
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-input[type=checkbox].jp-mod-styled {
-  appearance: checkbox;
-  -webkit-appearance: checkbox;
-  -moz-appearance: checkbox;
-  height: auto;
-}
-input.jp-mod-styled:focus {
-  border: var(--jp-border-width) solid var(--md-blue-500);
-  box-shadow: inset 0 0 4px var(--md-blue-300);
-}
-.jp-FileDialog-Checkbox {
-  margin-top: 35px;
-  display: flex;
-  flex-direction: row;
-  align-items: end;
-  width: 100%;
-}
-.jp-FileDialog-Checkbox > label {
-  flex: 1 1 auto;
-}
-.jp-select-wrapper {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  padding: 1px;
-  background-color: var(--jp-layout-color1);
-  height: 28px;
-  box-sizing: border-box;
-  margin-bottom: 12px;
-}
-.jp-select-wrapper.jp-mod-focused select.jp-mod-styled {
-  border: var(--jp-border-width) solid var(--jp-input-active-border-color);
-  box-shadow: var(--jp-input-box-shadow);
-  background-color: var(--jp-input-active-background);
-}
-select.jp-mod-styled:hover {
-  background-color: var(--jp-layout-color1);
-  cursor: pointer;
-  color: var(--jp-ui-font-color0);
-  background-color: var(--jp-input-hover-background);
-  box-shadow: inset 0 0px 1px rgba(0, 0, 0, 0.5);
-}
-select.jp-mod-styled {
-  flex: 1 1 auto;
-  height: 32px;
-  width: 100%;
-  font-size: var(--jp-ui-font-size2);
-  background: var(--jp-input-background);
-  color: var(--jp-ui-font-color0);
-  padding: 0 25px 0 8px;
-  border: var(--jp-border-width) solid var(--jp-input-border-color);
-  border-radius: 0px;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-:root {
-  --jp-private-toolbar-height: calc( 28px + var(--jp-border-width) );
-}
-.jp-Toolbar {
-  color: var(--jp-ui-font-color1);
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: row;
-  border-bottom: var(--jp-border-width) solid var(--jp-toolbar-border-color);
-  box-shadow: var(--jp-toolbar-box-shadow);
-  background: var(--jp-toolbar-background);
-  min-height: var(--jp-toolbar-micro-height);
-  padding: 2px;
-  z-index: 8;
-  overflow-x: hidden;
-}
-.jp-Toolbar > .jp-Toolbar-item.jp-Toolbar-spacer {
-  flex-grow: 1;
-  flex-shrink: 1;
-}
-.jp-Toolbar-item.jp-Toolbar-kernelStatus {
-  display: inline-block;
-  width: 32px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-.jp-Toolbar > .jp-Toolbar-item {
-  flex: 0 0 auto;
-  display: flex;
-  padding-left: 1px;
-  padding-right: 1px;
-  font-size: var(--jp-ui-font-size1);
-  line-height: var(--jp-private-toolbar-height);
-  height: 100%;
-}
-div.jp-ToolbarButton {
-  color: transparent;
-  border: none;
-  box-sizing: border-box;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding: 0px;
-  margin: 0px;
-}
-button.jp-ToolbarButtonComponent {
-  background: var(--jp-layout-color1);
-  border: none;
-  box-sizing: border-box;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding: 0px 6px;
-  margin: 0px;
-  height: 24px;
-  border-radius: var(--jp-border-radius);
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-size: 14px;
-  min-width: unset;
-  min-height: unset;
-}
-button.jp-ToolbarButtonComponent:disabled {
-  opacity: 0.4;
-}
-button.jp-ToolbarButtonComponent span {
-  padding: 0px;
-  flex: 0 0 auto;
-}
-button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
-  font-size: var(--jp-ui-font-size1);
-  line-height: 100%;
-  padding-left: 2px;
-  color: var(--jp-ui-font-color1);
-}
-#jp-main-dock-panel[data-mode=single-document] .jp-MainAreaWidget > .jp-Toolbar.jp-Toolbar-micro {
-  padding: 0;
-  min-height: 0;
-}
-#jp-main-dock-panel[data-mode=single-document] .jp-MainAreaWidget > .jp-Toolbar {
-  border: none;
-  box-shadow: none;
-}
 :root {
   --jp-private-code-span-padding: calc( (var(--jp-code-line-height) - 1) * var(--jp-code-font-size) / 2 );
 }
@@ -3034,8 +2687,8 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
   color: var(--jp-content-font-color1);
   font-size: var(--jp-code-font-size);
   border: none;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 .jp-RenderedText pre a:link {
   text-decoration: none;
@@ -3296,7 +2949,7 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
 .jp-RenderedHTMLCommon ul ol,
 .jp-RenderedHTMLCommon ol ul,
 .jp-RenderedHTMLCommon ol ol {
-  margin-bottom: 0em;
+  margin-bottom: 0;
 }
 .jp-RenderedHTMLCommon hr {
   color: var(--jp-border-color2);
@@ -3330,6 +2983,7 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
   font-size: var(--jp-ui-font-size1);
   table-layout: fixed;
   margin-left: auto;
+  margin-bottom: 1em;
   margin-right: auto;
 }
 .jp-RenderedHTMLCommon thead {
@@ -3340,7 +2994,7 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
 .jp-RenderedHTMLCommon th,
 .jp-RenderedHTMLCommon tr {
   vertical-align: middle;
-  padding: 0.5em 0.5em;
+  padding: 0.5em;
   line-height: normal;
   white-space: normal;
   max-width: none;
@@ -3367,14 +3021,9 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
 .jp-RenderedHTMLCommon tbody tr:hover {
   background: var(--jp-rendermime-table-row-hover-background);
 }
-.jp-RenderedHTMLCommon table {
-  margin-bottom: 1em;
-}
 .jp-RenderedHTMLCommon p {
   text-align: left;
-  margin: 0px;
-}
-.jp-RenderedHTMLCommon p {
+  margin: 0;
   margin-bottom: 1em;
 }
 .jp-RenderedHTMLCommon img {
@@ -3391,10 +3040,6 @@ button.jp-ToolbarButtonComponent .jp-ToolbarButtonComponent-label {
 }
 [data-jp-theme-light=true] .jp-RenderedImage img.jp-needs-dark-background {
   background-color: var(--jp-inverse-layout-color1);
-}
-[data-jp-theme-light=false] .jp-RenderedImage img.jp-needs-dark-background {
-}
-[data-jp-theme-light=true] .jp-RenderedImage img.jp-needs-light-background {
 }
 .jp-RenderedHTMLCommon img,
 .jp-RenderedImage img,
