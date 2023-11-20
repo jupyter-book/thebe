@@ -31,7 +31,7 @@ The `thebe` library is published as a collection of sub-packages on [npm](https:
 : Use when you have a static HTML website or a framework where you can add scripts to load the javascript bundle and set configuraton options easily. You're happy with loading codemirror to make all selected `<pre>` tags into editors and the default `thebe` UI. See [quickstart](/thebe/quickstart) or [using `thebe`](/thebe/using-thebe).
 
 `thebe-core`
-: Use when you are adding jupyter based computation into a typescript application, when you want Jupyter outputs on your webpage but you don't want to show all the code or when you want `thebe`-like behaviour, but want to complete control tover the UI and kernel connections. See [using `thebe-core`](/thebe/using-core).
+: Use when you are adding jupyter based computation into a typescript application, when you want Jupyter outputs on your webpage but you don't want to show all the code or when you want `thebe`-like behaviour, but want to complete control over the UI and kernel connections. See [using `thebe-core`](/thebe/using-core).
 
 `thebe-lite`
 : Add this library alongside any other sub-package when you want to enable in-browser computation with the `useJupyterLite` option. See [using `thebe-lite`](/thebe/using-thebe-lite).

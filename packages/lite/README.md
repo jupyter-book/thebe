@@ -1,6 +1,6 @@
 # `thebe-lite`
 
-Connect to a `pyodide` kernel via `juptyerlite` in `thebe-core` & `thebe`.
+Connect to a `pyodide` kernel via `jupyterlite` in `thebe-core` & `thebe`.
 
 ## Usage
 

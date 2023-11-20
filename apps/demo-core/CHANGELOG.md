@@ -23,7 +23,7 @@
 
 ### Patch Changes
 
-- Improved all demos and setup autodeply for the simple demo
+- Improved all demos and setup autodeploy for the simple demo
 - Updated dependencies
   - thebe-core@0.2.1
 

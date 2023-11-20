@@ -25,5 +25,5 @@ Or load the `thebe-core` bundle in your browser:
 ## Next steps
 
 - follow the [in browser guide](2-guide-browser.md)
-- follow the [tyepscript guide](3-guide-typescript.md)
+- follow the [typescript guide](3-guide-typescript.md)
 - or if you want something quick try the typescript [quick start](1-quickstart.md)

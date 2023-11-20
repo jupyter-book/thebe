@@ -7,7 +7,7 @@ The Context API is used to make the main objects from `thebe-core` available to 
 
 ```{tip}
 :class: dropdown
-As `thebe-core` makes use of packages and UI components from Juptyer Lab, the providers are setup to dynamically load the libraries. This can be helpful avoid issues with different build systems and Server Side Rendering (SSR).
+As `thebe-core` makes use of packages and UI components from Jupyter Lab, the providers are setup to dynamically load the libraries. This can be helpful avoid issues with different build systems and Server Side Rendering (SSR).
 ```
 
 The providers are:
@@ -32,9 +32,9 @@ Once the core library is loaded a server connection can be established, whilst i
 
 ```{tip}
 :class: dropdown
-In Jupyter Lab and Juptyer notebooks front end implementations, a mapping of 1 session/kernel per document is maintained and this is also the way in whcih `thebe-react` and `thebe-core` are configured by default.
+In Jupyter Lab and Jupyter notebooks front end implementations, a mapping of 1 session/kernel per document is maintained and this is also the way in which `thebe-react` and `thebe-core` are configured by default.
 
-Think about this when deciding how to distribute `ThebeSessions` accross pages/screens in your application. This is important as using a single session across pages means that they are sharing a common kernel,  variable scope, and `ipywidget` manager (See [`Using ipywidgets`](/thebe/using-ipywidgets) for details on thathe latter).
+Think about this when deciding how to distribute `ThebeSessions` across pages/screens in your application. This is important as using a single session across pages means that they are sharing a common kernel,  variable scope, and `ipywidget` manager (See [`Using ipywidgets`](/thebe/using-ipywidgets) for details on thathe latter).
 ```
 
 A typical provider cascade is:
@@ -94,7 +94,7 @@ export declare function useThebeCore(): {
 : Can be used to trigger async loading of the `thebe-core` library by a child component.
 
 `loading: boolean`
-: will be `true` during ashync loading.
+: will be `true` during async loading.
 
 `error?: string | undefined`
 : If an exception occurs, the message will be provided here.
@@ -155,23 +155,23 @@ It accepts a number of props:
 : Accepts an external `Config` object, which if supplied will cause `options` to be ignored **(consider deprecation)**.
 
 `events: ThebeEvents`
-: Accepts an exernal `ThebeEvents` object, allowing for custom configuation of the event emitter used in `thebe-core` objects or for sharing of one event emitter accross multiple server connections **(consider deprecation)**.
+: Accepts an external `ThebeEvents` object, allowing for custom configuration of the event emitter used in `thebe-core` objects or for sharing of one event emitter across multiple server connections **(consider deprecation)**.
 
 `useBinder: boolean`
-: Will invoke `server.connectToServerViaBinder` to establish a server connection. This takes precedence over `useJuptyerLite` but will have no effect if `customConnectFn` is supplied.
+: Will invoke `server.connectToServerViaBinder` to establish a server connection. This takes precedence over `useJupyterLite` but will have no effect if `customConnectFn` is supplied.
 
-`useJuptyerLite: boolean`
-: Will start the in-browser JuptyerLite server but will have no effect if either `useBinder: true` or a `customConnectFn` is provided.
+`useJupyterLite: boolean`
+: Will start the in-browser JupyterLite server but will have no effect if either `useBinder: true` or a `customConnectFn` is provided.
 
 `customConnectFn: (server: ThebeServer) => void`
-: Supply a function that can establish a connection for the `server` object provided in the argument. The `server` ojbect will be a fresh instance that should be updated to reflect the state of the server after the connection attempt is complete. One use of this option would be to provision of a server on a Jupyter Hub via an authenitcated API call.
+: Supply a function that can establish a connection for the `server` object provided in the argument. The `server` object will be a fresh instance that should be updated to reflect the state of the server after the connection attempt is complete. One use of this option would be to provision of a server on a Jupyter Hub via an authenticated API call.
 
 ### hooks
 
 Three convenience hooks are available for use with the provider. Each will throw on an `undefined` context, otherwise returning the object specified:
 
 `useThebeConfig`
-: The first will return the configuation object from the server context.
+: The first will return the configuration object from the server context.
 
 `useDisposeThebeServer`
 : On rendering a child component with this hook, the serve will be shutdown (including all sessions) and disposed.
@@ -213,7 +213,7 @@ Three convenience hooks are available for use with the provider. Each will throw
 : A helper function to add an event listener to the `ThebeEvent`'s emitter that is scoped to this server.
 
 `unsubAll`
-: Will unsubscribe all listers that were added via `subscribe`
+: Will unsubscribe all listeners that were added via `subscribe`
 
 ### ThebeSessionProvider
 
@@ -263,4 +263,4 @@ A single convenience hook is available. This will throw on an `undefined` contex
 : Request a session/kernel from within a child component. This will only work if a `ThebeServer` is available and ready.
 
 `shutdown`
-: Trigger shudown of the current session.
+: Trigger shutdown of the current session.

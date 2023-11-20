@@ -45,7 +45,7 @@ The asynchronous [`connect`](reference/modules.md#connect) function will establi
 const server = await connect(config);
 ```
 
-Once resolved it provides a `ThebeServer` object that can be used to start a new session / kernel. The configuration object is availble on `server.config`.
+Once resolved it provides a `ThebeServer` object that can be used to start a new session / kernel. The configuration object is available on `server.config`.
 
 ```typescript
 ...
