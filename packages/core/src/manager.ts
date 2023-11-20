@@ -1,5 +1,4 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import type { IKernelConnection } from '@jupyterlab/services/lib/kernel/kernel';
 import type { Widget } from '@lumino/widgets';
 
 import * as LuminoWidget from '@lumino/widgets';
@@ -14,6 +13,7 @@ import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
+import type { Kernel } from '@jupyterlab/services';
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -25,7 +25,7 @@ export class ThebeManager extends KernelWidgetManager {
   id: string;
   _loader: RequireJsLoader;
 
-  constructor(kernel: IKernelConnection, rendermime: IRenderMimeRegistry) {
+  constructor(kernel: Kernel.IKernelConnection, rendermime: IRenderMimeRegistry) {
     super(kernel, rendermime);
 
     this.id = shortId();

@@ -74,30 +74,6 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'usage',
-                    corejs: 3,
-                    shippedProposals: true,
-                    targets: {
-                      browsers: ['chrome 60', 'edge 15', 'firefox 45', 'safari 10'],
-                    },
-                  },
-                ],
-              ],
-            },
-          },
-          type: 'javascript/auto',
-        },
-        {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
           // type: 'javascript/auto',

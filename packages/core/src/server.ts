@@ -9,7 +9,7 @@ import type {
   SessionIModel,
 } from './types';
 import type { Config } from './config';
-import type { ServiceManager } from '@jupyterlab/services';
+import type { ServiceManager, Session } from '@jupyterlab/services';
 import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
@@ -36,7 +36,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   readonly id: string;
   readonly config: Config;
   readonly ready: Promise<ThebeServer>;
-  sessionManager?: SessionManager;
+  sessionManager?: Session.IManager;
   serviceManager?: ServiceManager; // jlite only
   repoProviders?: RepoProviderSpec[];
   binderUrls?: BinderUrlSet;
@@ -130,10 +130,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   async listRunningSessions(): Promise<SessionIModel[]> {
     await this.ready;
     const iter = this.sessionManager?.running();
-    const models = [];
-    let model;
+    const models: SessionIModel[] = [];
+    let model: IteratorResult<SessionIModel, any> | undefined;
     while ((model = iter?.next()) !== undefined) {
-      models.push(model);
+      models.push(model.value);
     }
     return models;
   }
@@ -461,6 +461,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // TODO BUG this is the wrong serverSetting, they should be for the active connection
     if (!this.sessionManager)
       throw new Error('Must connect to a server before requesting KernelSpecs');
+    if (!this.sessionManager?.serverSettings)
+      throw new Error('No server settings available in session manager');
     const settings = this.sessionManager?.serverSettings;
     const baseUrl = new URL(settings.baseUrl);
     const url = new URL(`${baseUrl.pathname}${relativeUrl}`.replace('//', '/'), baseUrl.origin);
