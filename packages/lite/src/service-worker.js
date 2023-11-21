@@ -2,9 +2,10 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="../../../node_modules/@types/serviceworker/index.d.ts" />
 /**
- * The name of the cache
+ * reproduced and reduced from https://github.com/jupyterlite/jupyterlite/blob/main/packages/server/src/service-worker.ts
+ * to remove caching and other features not needed for thebe
  */
-const CACHE = 'precache';
+
 /**
  * Communication channel for drive access
  */
@@ -21,7 +22,6 @@ self.addEventListener('fetch', onFetch);
  */
 function onInstall(event) {
   void self.skipWaiting();
-  //   event.waitUntil(cacheAll());
 }
 /**
  * Handle activation.
@@ -47,39 +47,7 @@ async function onFetch(event) {
     event.respondWith(responsePromise);
   }
 }
-// utilities
-// /** Get a cached response, and update cache. */
-// async function maybeFromCache(event) {
-//   const { request } = event;
-//   let response = await fromCache(request);
-//   if (response) {
-//     event.waitUntil(refetch(request));
-//   } else {
-//     response = await fetch(request);
-//     event.waitUntil(updateCache(request, response.clone()));
-//   }
-//   return response;
-// }
-// /**
-//  * Restore a response from the cache based on the request.
-//  */
-// async function fromCache(request) {
-//   const cache = await openCache();
-//   const response = await cache.match(request);
-//   if (!response || response.status === 404) {
-//     return null;
-//   }
-//   return response;
-// }
-// /**
-//  * This is where we call the server to get the newest version of the
-//  * file to use the next time we show view
-//  */
-// async function refetch(request) {
-//   const fromServer = await fetch(request);
-//   await updateCache(request, fromServer);
-//   return fromServer;
-// }
+
 /**
  * Whether a given URL should be broadcast
  */
@@ -111,23 +79,5 @@ async function broadcastOne(request) {
   broadcast.postMessage(message);
   return await promise;
 }
-// async function openCache() {
-//   return await caches.open(CACHE);
-// }
-// /**
-//  * Cache a request/response pair.
-//  */
-// async function updateCache(request, response) {
-//   const cache = await openCache();
-//   return cache.put(request, response);
-// }
-/**
- * Add all to the cache
- *
- * this is where we should (try to) add all relevant files
- */
-// async function cacheAll() {
-//   const cache = await openCache();
-//   return await cache.addAll([]);
-// }
+
 //# sourceMappingURL=service-worker.js.map
