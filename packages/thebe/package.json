@@ -36,7 +36,8 @@
     "publish": "npm publish --tag rc"
   },
   "files": [
-    "lib/**"
+    "lib/**",
+    "src/**/*"
   ],
   "repository": {
     "type": "git",

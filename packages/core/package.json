@@ -7,7 +7,8 @@
   "types": "dist/types/index.d.ts",
   "style": "dist/lib/thebe-core.css",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "src/**/*"
   ],
   "scripts": {
     "clean": "rm -rf dist",

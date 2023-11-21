@@ -5,7 +5,8 @@
   "main": "dist/lib/thebe-lite.min.js",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "src/**/*"
   ],
   "scripts": {
     "clean": "rm -rf ./dist",
