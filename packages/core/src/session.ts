@@ -1,5 +1,5 @@
 import type { ISessionConnection } from '@jupyterlab/services/lib/session/session';
-import { EventSubject, SessionStatusEvent } from './events';
+import { ErrorStatusEvent, EventSubject, SessionStatusEvent } from './events';
 import { ThebeManager } from './manager';
 import type ThebeServer from './server';
 import { EventEmitter } from './emitter';
@@ -23,6 +23,46 @@ class ThebeSession {
 
     if (this.connection.kernel == null) throw Error('ThebeSession - kernel is null');
     this.manager = new ThebeManager(this.connection.kernel, rendermime);
+
+    this.connection.statusChanged.connect((_, s) => {
+      // 'unknown' | 'starting' | 'idle' | 'busy' | 'terminating' | 'restarting' | 'autorestarting' | 'dead'
+      let status;
+      switch (s) {
+        case 'starting':
+        case 'restarting':
+        case 'autorestarting':
+          status = SessionStatusEvent.starting;
+          break;
+        case 'idle':
+        case 'busy':
+          status = SessionStatusEvent.ready;
+          break;
+        case 'terminating':
+        case 'dead':
+        default:
+          status = SessionStatusEvent.shutdown;
+          break;
+      }
+
+      this.events.triggerStatus({
+        status,
+        message: `kernel ${this.connection.name} status changed to ${status}[${s}]`,
+      });
+      if (s === 'dead') {
+        this.events.triggerError({
+          status: ErrorStatusEvent.session,
+          message: `kernel ${this.connection.name} is dead`,
+        });
+        this.dispose();
+      }
+    });
+
+    this.connection.disposed.connect(() => {
+      this.events.triggerStatus({
+        status: SessionStatusEvent.shutdown,
+        message: `kernel ${this.connection.name} disposed`,
+      });
+    });
 
     this.events.triggerStatus({
       status: SessionStatusEvent.ready,

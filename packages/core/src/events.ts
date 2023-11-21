@@ -53,6 +53,8 @@ export enum ErrorStatusEvent {
   'warning' = 'warning',
   'executeError' = 'execute-error',
   'error' = 'error',
+  'server' = 'server-error',
+  'session' = 'session-error',
 }
 
 export function errorToMessage(json: IError): string {

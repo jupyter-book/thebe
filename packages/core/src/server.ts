@@ -213,6 +213,22 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       serverSettings,
     });
 
+    this.sessionManager.connectionFailure.connect((_, err) => {
+      this.events.triggerError({
+        status: ErrorStatusEvent.server,
+        message: `connection failure: ${err}`,
+      });
+    });
+
+    this.sessionManager.runningChanged.connect((_, models) => {
+      this.events.triggerStatus({
+        status: ServerStatusEvent.ready,
+        message: `${models.length} running sessions changed: ${models
+          .map((m) => m.name)
+          .join(',')}`,
+      });
+    });
+
     this.events.triggerStatus({
       status: ServerStatusEvent.ready,
       message: `Created SessionManager`,
@@ -374,7 +390,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     }
 
     // TODO we can get rid of one level of promise here?
-    // const requestPromise: Promise<void> = new Promise((resolveRequest, rejectRequest) => {
     // Talk to the binder server
     const state: { status: StatusEvent } = {
       status: ServerStatusEvent.launching,
@@ -399,7 +414,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         status: ErrorStatusEvent.error,
         message,
       });
-      // rejectRequest(message);
       this.rejectReadyFn?.(message);
     };
 
@@ -422,7 +436,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             message: `Binder: failed to build - ${urls.build} - ${msg.message}`,
           });
           console.log('reject', msg);
-          // rejectRequest(msg.message);
           this.rejectReadyFn?.(msg.message);
           break;
         case 'ready':
@@ -462,7 +475,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
               message: `Binder server is ready: ${msg.message}`,
             });
 
-            // resolveRequest();
             this.resolveReadyFn?.(this);
           }
           break;
@@ -473,19 +485,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
           });
       }
     };
-    // });
-
-    // return this.ready;
-
-    // return requestPromise.then(
-    //   () => {
-    //     this.resolveReadyFn?.(this);
-    //   },
-    //   (reason: any) => {
-    //     console.log('top level reject');
-    //     this.rejectReadyFn?.(ensureString(reason));
-    //   },
-    // );
   }
 
   //

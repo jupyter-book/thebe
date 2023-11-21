@@ -196,7 +196,7 @@ export function useThebeServer() {
           core.EventSubject.session,
           core.EventSubject.kernel,
         ];
-        if (data.subject && subjects.includes(data.subject) && data.id === server?.id) fn(data);
+        if (data.subject && subjects.includes(data.subject)) fn(data);
       };
       config?.events.on(core.ThebeEventType.status, callbackFn);
       setEventCallbacks([...eventCallbacks, callbackFn]);
