@@ -84,14 +84,8 @@ export function ThebeServerProvider({
     setServer(svr);
   }, [core, thebeConfig, server]);
 
-  // Once the core is loaded, connect to a server
-  // TODO: this should be an action not a side effect
-  useEffect(() => {
-    if (!core || !thebeConfig) return; // TODO is there a better way to keep typescript happy here?
-    if (!server || !doConnect) return;
-    // do not reconnect if already connected!
-    if (server.isReady && server.userServerUrl) return;
-    // TODO is the user server really still alive? this would be an async call to server.check
+  const connectToServer = useCallback(() => {
+    if (!server) return;
     setConnecting(true);
     if (customConnectFn) customConnectFn(server);
     else if (useBinder) server.connectToServerViaBinder(customRepoProviders);
@@ -117,6 +111,19 @@ export function ThebeServerProvider({
         setReady(false);
       },
     );
+
+    return server.ready;
+  }, [server]);
+
+  // Once the core is loaded, connect to a server
+  // TODO: this should be an action not a side effect
+  useEffect(() => {
+    if (!core || !thebeConfig) return; // TODO is there a better way to keep typescript happy here?
+    if (!server || !doConnect) return;
+    // do not reconnect if already connected!
+    if (server.isReady && server.userServerUrl) return;
+    // TODO is the user server really still alive? this would be an async call to server.check
+    connectToServer();
   }, [server, doConnect]);
 
   return (
@@ -127,7 +134,7 @@ export function ThebeServerProvider({
         server,
         connecting,
         ready: (server?.isReady ?? false) && ready, // TODO server status may change, affecting readiness
-        connect: () => setDoConnect(true),
+        connect: connectToServer,
         disconnect: async () => {
           if (core && thebeConfig && server) {
             server.dispose();
