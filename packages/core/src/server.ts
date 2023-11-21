@@ -435,7 +435,6 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             status: ErrorStatusEvent.error,
             message: `Binder: failed to build - ${urls.build} - ${msg.message}`,
           });
-          console.log('reject', msg);
           this.rejectReadyFn?.(msg.message);
           break;
         case 'ready':
