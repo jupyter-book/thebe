@@ -8,6 +8,7 @@ import type {
   SavedSessionOptions,
   MathjaxOptions,
 } from './types';
+import { shortId } from './utils';
 
 export function makeBinderOptions(opts: BinderOptions) {
   return {
@@ -36,12 +37,15 @@ export function makeKernelOptions(opts: KernelOptions): Required<KernelOptions> 
 }
 
 export function makeServerSettings(settings: ServerSettings): Required<ServerSettings> {
+  const baseUrl = settings.baseUrl ?? 'http://localhost:8888';
+  const wsUrl = settings.wsUrl ?? baseUrl.replace(/^http/, 'ws');
+
   return {
-    baseUrl: 'http://localhost:8888',
-    token: 'test-secret',
+    token: shortId(), // randomized default token to prevent accidental access to a local server
     appendToken: true,
-    wsUrl: 'ws://localhost:8888',
     ...settings,
+    wsUrl,
+    baseUrl,
   };
 }
 
