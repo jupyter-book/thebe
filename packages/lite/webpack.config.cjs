@@ -35,6 +35,10 @@ module.exports = {
           to: 'pypi',
           context: path.dirname(require.resolve('@jupyterlite/pyodide-kernel')),
         },
+        {
+          from: './src/service-worker.js',
+          to: './',
+        },
       ],
     }),
   ],
@@ -57,6 +61,13 @@ module.exports = {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        resourceQuery: /text/,
+        type: 'asset/resource',
+        generator: {
+          filename: '[name][ext]',
+        },
       },
     ],
   },

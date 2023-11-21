@@ -1,7 +1,7 @@
 import type { ServiceManager } from '@jupyterlab/services';
+import type { LiteServerConfig } from './types';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { JupyterLiteServer } from '@jupyterlite/server';
-import { LiteServerConfig } from './types';
 
 const serverExtensions = [import('@jupyterlite/server-extension')];
 
