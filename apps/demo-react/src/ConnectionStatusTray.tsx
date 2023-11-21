@@ -1,26 +1,18 @@
 import { useState, useEffect } from 'react';
-import { ThebeEventData, ThebeEventType, EventSubject } from 'thebe-core';
+import { ThebeEventData } from 'thebe-core';
 import { useThebeServer } from 'thebe-react';
 
 export function ConnectionStatusTray() {
-  const { connecting, events } = useThebeServer();
-  const [subscribed, setSubscribed] = useState<boolean>(false);
+  const { connecting, subscribe, unsubAll } = useThebeServer();
   const [status, setStatus] = useState<ThebeEventData | null>(null);
 
   useEffect(() => {
-    if (!events || subscribed) return;
-    events?.on('status' as ThebeEventType, (event: any, data: ThebeEventData) => {
-      // report status events reelated to the server or session connection only
-      if (
-        [EventSubject.server, EventSubject.session, EventSubject.kernel].includes(
-          data.subject as EventSubject,
-        )
-      ) {
-        setStatus(data);
-      }
+    if (!subscribe) return;
+    subscribe((data: ThebeEventData) => {
+      setStatus(data);
     });
-    setSubscribed(true);
-  }, [events, subscribed]);
+    return unsubAll;
+  }, [subscribe, unsubAll]);
 
   return (
     <div className="mono not-prose max-w-[80%] m-auto min-h-[3em] border-[1px] border-blue-500 relative pb-1">

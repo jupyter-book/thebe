@@ -61,12 +61,18 @@ export function ThebeServerProvider({
     [core, options],
   );
 
-  // register an error handler immedately on the config changing, thiis is done as a
+  // register an error handler immedately on the config changing, this is done as a
   // side effect so tht we can un-register on unmount
   useEffect(() => {
     if (!core || !thebeConfig) return;
     const handler = (evt: string, data: ThebeEventData) => {
-      setError(`${data.status} - ${data.message}`);
+      const subjects = [
+        core.EventSubject.server,
+        core.EventSubject.session,
+        core.EventSubject.kernel,
+      ];
+      if (data.subject && subjects.includes(data.subject) && data.id === server?.id)
+        setError(`${data.status} - ${data.message}`);
     };
     thebeConfig.events.on(core.ThebeEventType.error, handler);
     return () => thebeConfig.events.off(core.ThebeEventType.error, handler);
