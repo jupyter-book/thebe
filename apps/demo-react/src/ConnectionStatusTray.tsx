@@ -3,7 +3,7 @@ import { ThebeEventData } from 'thebe-core';
 import { useThebeServer } from 'thebe-react';
 
 export function ConnectionStatusTray() {
-  const { connecting, subscribe, unsubAll } = useThebeServer();
+  const { connecting, subscribe } = useThebeServer();
   const [status, setStatus] = useState<ThebeEventData | null>(null);
 
   useEffect(() => {
@@ -11,8 +11,7 @@ export function ConnectionStatusTray() {
     subscribe((data: ThebeEventData) => {
       setStatus(data);
     });
-    return unsubAll;
-  }, [subscribe, unsubAll]);
+  }, [subscribe]);
 
   return (
     <div className="mono not-prose max-w-[80%] m-auto min-h-[3em] border-[1px] border-blue-500 relative pb-1">

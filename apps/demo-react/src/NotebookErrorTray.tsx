@@ -4,19 +4,17 @@ import { useThebeConfig } from 'thebe-react';
 
 export function NotebookErrorTray() {
   const { config } = useThebeConfig();
-  const [subscribed, setSubscribed] = useState<boolean>(false);
   const [errorEvent, setErrorEvent] = useState<ThebeEventData | null>(null);
 
   useEffect(() => {
-    if (!config?.events || subscribed) return;
-    config?.events?.on('error' as ThebeEventType, (event: any, data: ThebeEventData) => {
-      // report status events reelated to the server or session connection only
+    if (!config) return;
+    config?.events.on('error' as ThebeEventType, (event: any, data: ThebeEventData) => {
+      // report execution error events
       if ([EventSubject.notebook, EventSubject.cell].includes(data.subject as EventSubject)) {
         setErrorEvent(data);
       }
     });
-    setSubscribed(true);
-  }, [config, subscribed]);
+  }, [config]);
 
   if (!errorEvent) return null;
 

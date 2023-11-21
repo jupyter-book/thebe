@@ -25,7 +25,7 @@ function App() {
         repo: 'executablebooks/thebe-binder-base',
       },
     }),
-    [path],
+    [path, mode],
   );
 
   return (

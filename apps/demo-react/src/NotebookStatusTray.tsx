@@ -4,19 +4,17 @@ import { useThebeConfig } from 'thebe-react';
 
 export function NotebookStatusTray() {
   const { config } = useThebeConfig();
-  const [subscribed, setSubscribed] = useState<boolean>(false);
   const [status, setStatus] = useState<ThebeEventData | null>(null);
 
   useEffect(() => {
-    if (!config?.events || subscribed) return;
+    if (!config?.events) return;
     config?.events?.on('status' as ThebeEventType, (event: any, data: ThebeEventData) => {
-      // report status events reelated to the server or session connection only
+      // report status events related to execution only
       if ([EventSubject.notebook, EventSubject.cell].includes(data.subject as EventSubject)) {
         setStatus(data);
       }
     });
-    setSubscribed(true);
-  }, [config, subscribed]);
+  }, [config]);
 
   return (
     <div className="mono not-prose max-w-[80%] m-auto min-h-[3em] border-[1px] border-blue-500 relative pb-1 mt-2">

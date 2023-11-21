@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import type {
   Config,
   CoreOptions,
+  EventSubject,
   RepoProviderSpec,
   ThebeEventCb,
   ThebeEventData,
@@ -61,27 +62,26 @@ export function ThebeServerProvider({
     [core, options],
   );
 
-  // register an error handler immedately on the config changing, this is done as a
-  // side effect so tht we can un-register on unmount
+  // create an iniital server
   useEffect(() => {
-    if (!core || !thebeConfig) return;
+    if (!core || !thebeConfig || server) return;
+    const svr = new core.ThebeServer(thebeConfig);
+
+    // register an error handler immedately
     const handler = (evt: string, data: ThebeEventData) => {
       const subjects = [
         core.EventSubject.server,
         core.EventSubject.session,
         core.EventSubject.kernel,
       ];
-      if (data.subject && subjects.includes(data.subject) && data.id === server?.id)
+      if (data.subject && subjects.includes(data.subject)) {
         setError(`${data.status} - ${data.message}`);
+      }
     };
+    // TODO we need a way to unsubscribe from this that does not cause
+    // error events to be missed due to rerenders
     thebeConfig.events.on(core.ThebeEventType.error, handler);
-    return () => thebeConfig.events.off(core.ThebeEventType.error, handler);
-  }, [core, thebeConfig]);
-
-  // create an iniital server
-  useEffect(() => {
-    if (!core || !thebeConfig || server) return;
-    setServer(new core.ThebeServer(thebeConfig));
+    setServer(svr);
   }, [core, thebeConfig, server]);
 
   // Once the core is loaded, connect to a server
