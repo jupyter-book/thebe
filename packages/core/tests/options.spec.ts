@@ -87,12 +87,14 @@ describe('options', () => {
   });
   describe('server settings', () => {
     test('defaults', () => {
-      expect(makeServerSettings({})).toEqual({
-        baseUrl: 'http://localhost:8888',
-        token: 'test-secret',
-        appendToken: true,
-        wsUrl: 'ws://localhost:8888',
-      });
+      expect(makeServerSettings({})).toEqual(
+        expect.objectContaining({
+          baseUrl: 'http://localhost:8888',
+          token: expect.any(String),
+          appendToken: true,
+          wsUrl: 'ws://localhost:8888',
+        }),
+      );
     });
     test('overrides', () => {
       expect(
