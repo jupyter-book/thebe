@@ -1,5 +1,15 @@
 # thebe-lite
 
+## 1.0.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+
+### Patch Changes
+
+- 092b05c: Packages now ship their source to enable sourcemaps in development workflows
+
 ## 0.3.5
 
 ### Patch Changes

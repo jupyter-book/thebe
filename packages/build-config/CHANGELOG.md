@@ -1,5 +1,11 @@
 # build-config
 
+## 0.1.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+
 ## 0.0.2
 
 ### Patch Changes

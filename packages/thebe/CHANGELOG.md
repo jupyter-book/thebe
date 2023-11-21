@@ -2,6 +2,21 @@
 
 ## 0.9.0
 
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+
+### Patch Changes
+
+- 092b05c: Packages now ship their source to enable sourcemaps in development workflows
+- Updated dependencies [c78bb6f]
+- Updated dependencies [fda8021]
+- Updated dependencies [26a8fb8]
+- Updated dependencies [092b05c]
+  - thebe-core@1.0.0
+
+## 0.9.0
+
 ### Patch Changes
 
 - 🛠 explicit setting of files to include contents of the `dist` or `lib` folders to avoid missing package files

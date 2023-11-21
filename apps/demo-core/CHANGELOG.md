@@ -1,5 +1,15 @@
 # demo-core
 
+## 2.1.2
+
+### Patch Changes
+
+- Updated dependencies [c78bb6f]
+- Updated dependencies [fda8021]
+- Updated dependencies [26a8fb8]
+- Updated dependencies [092b05c]
+  - thebe-core@1.0.0
+
 ## 2.1.1
 
 ### Patch Changes

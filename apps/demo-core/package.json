@@ -1,6 +1,6 @@
 {
   "name": "demo-core",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Demonstration App for thebe",
   "files": [
     "dist"
@@ -49,6 +49,6 @@
     "null-loader": "^4.0.1"
   },
   "dependencies": {
-    "thebe-core": "^0.3.0"
+    "thebe-core": "^1.0.0"
   }
 }

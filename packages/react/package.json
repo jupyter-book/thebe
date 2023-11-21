@@ -1,6 +1,6 @@
 {
   "name": "thebe-react",
-  "version": "0.3.5",
+  "version": "1.0.0",
   "sideEffects": false,
   "description": "React providers and components for thebe-core",
   "main": "dist/index.js",
@@ -46,7 +46,7 @@
     "@jupyterlab/nbformat": "^3.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "thebe-core": "^0.3.5"
+    "thebe-core": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
