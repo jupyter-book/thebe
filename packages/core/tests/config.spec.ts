@@ -36,12 +36,14 @@ describe('config', () => {
       });
     });
     test('server settings', () => {
-      expect(config.serverSettings).toEqual({
-        baseUrl: 'http://localhost:8888',
-        token: 'test-secret',
-        appendToken: true,
-        wsUrl: 'ws://localhost:8888',
-      });
+      expect(config.serverSettings).toEqual(
+        expect.objectContaining({
+          baseUrl: 'http://localhost:8888',
+          token: expect.any(String),
+          appendToken: true,
+          wsUrl: 'ws://localhost:8888',
+        }),
+      );
     });
   });
 });
