@@ -4,7 +4,6 @@ export function ConnectionErrorTray() {
   const { error: loaderError } = useThebeLoader();
   const { error: serverError } = useThebeServer();
   const { error: sessionError } = useThebeSession();
-
   const errors = loaderError || serverError || sessionError;
 
   if (!errors) return null;

@@ -4,10 +4,6 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
-import { ConnectionStatusTray } from './ConnectionStatusTray';
-import { ConnectionErrorTray } from './ConnectionErrorTray';
-import { NotebookStatusTray } from './NotebookStatusTray';
-import { NotebookErrorTray } from './NotebookErrorTray';
 
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
@@ -19,7 +15,7 @@ function App() {
     () => ({
       kernelOptions: {
         path,
-        kernelName: 'python',
+        kernelName: 'python-something-uknkkjdaskfjdhalj',
       },
       binderOptions: {
         repo: 'executablebooks/thebe-binder-base',
@@ -57,10 +53,6 @@ function App() {
         >
           <ServerMode mode={mode} setMode={setMode} />
           <Connect />
-          <ConnectionStatusTray />
-          <ConnectionErrorTray />
-          <NotebookStatusTray />
-          <NotebookErrorTray />
           <Outlet />
         </ThebeServerProvider>
       </ThebeBundleLoaderProvider>

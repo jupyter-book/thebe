@@ -1,4 +1,8 @@
 import { ThebeSessionProvider, ThebeRenderMimeRegistryProvider, useThebeServer } from 'thebe-react';
+import { ConnectionStatusTray } from './ConnectionStatusTray';
+import { ConnectionErrorTray } from './ConnectionErrorTray';
+import { NotebookStatusTray } from './NotebookStatusTray';
+import { NotebookErrorTray } from './NotebookErrorTray';
 
 export function NotebookPage({ children }: React.PropsWithChildren) {
   const { ready, config } = useThebeServer();
@@ -7,7 +11,13 @@ export function NotebookPage({ children }: React.PropsWithChildren) {
   return (
     <ThebeRenderMimeRegistryProvider>
       <ThebeSessionProvider start path={config?.kernels.path}>
-        {children}
+        <>
+          <ConnectionStatusTray />
+          <ConnectionErrorTray />
+          <NotebookStatusTray />
+          <NotebookErrorTray />
+          {children}
+        </>
       </ThebeSessionProvider>
     </ThebeRenderMimeRegistryProvider>
   );

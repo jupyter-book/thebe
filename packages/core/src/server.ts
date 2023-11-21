@@ -32,7 +32,7 @@ async function responseToJson(res: Response) {
   return json as RestAPIContentsResponse;
 }
 
-function ensureString(errorLike: any): string {
+function errorAsString(errorLike: any): string {
   if (typeof errorLike === 'string') return errorLike;
   if (errorLike.message) return errorLike.message;
   if (errorLike.status && errorLike.statusText)
@@ -244,7 +244,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         });
         this.resolveReadyFn?.(this);
       },
-      (err) => this.rejectReadyFn?.(ensureString(err)),
+      (err) => this.rejectReadyFn?.(errorAsString(err)),
     );
   }
 
@@ -290,7 +290,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         });
         this.resolveReadyFn?.(this);
       },
-      (err) => this.rejectReadyFn?.(ensureString(err)),
+      (err) => this.rejectReadyFn?.(errorAsString(err)),
     );
   }
 
@@ -383,7 +383,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             });
             this.resolveReadyFn?.(this);
           },
-          (err) => this.rejectReadyFn?.(ensureString(err)),
+          (err) => this.rejectReadyFn?.(errorAsString(err)),
         );
         // else drop out of this block and request a new session
       }
