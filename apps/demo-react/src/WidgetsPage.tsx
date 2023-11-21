@@ -1,11 +1,10 @@
 import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 import { useParams } from 'react-router-dom';
-import { ConnectionErrorTray } from './ConnectionErrorTray';
 
 export function WidgetsPage() {
   const { notebookName } = useParams<{ notebookName: string }>();
-  const { ready, executing, executeAll, errors, cellRefs, cellIds } = useNotebook(
+  const { ready, executing, executeAll, cellRefs, cellIds } = useNotebook(
     notebookName ?? 'widget-test',
     async (n) => {
       const url = `/${n}.ipynb`;
