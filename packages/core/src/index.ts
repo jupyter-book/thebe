@@ -14,3 +14,4 @@ export * from './manager';
 export * from './rendermime';
 export * from './types';
 export * from './config';
+export { clearAllSavedSessions, clearSavedSession } from './sessions';

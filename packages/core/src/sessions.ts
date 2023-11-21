@@ -86,3 +86,38 @@ export async function getExistingServer(
 
   return existingSettings;
 }
+
+/**
+ * Remove all saved sessions items from local storage based on the storagePrefix provided.
+ * The appropriate (default) storage prefix will be available in the SavedSessionOptions object
+ * in the Config object.
+ *
+ * @param storagePrefix
+ */
+export function clearAllSavedSessions(storagePrefix: string) {
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < window.localStorage.length; i++) {
+    const key = window.localStorage.key(i);
+    if (key?.startsWith(storagePrefix)) {
+      keysToRemove.push(key);
+    }
+  }
+  console.debug(
+    `thebe:clearAllSavedSessions - removing ${keysToRemove.length} saved sessions`,
+    keysToRemove.join(','),
+  );
+  keysToRemove.forEach((key) => window.localStorage.removeItem(key));
+}
+
+/**
+ * Remove all saved sessions items from local storage based on the storagePrefix provided.
+ * The appropriate (default) storage prefix will be available in the SavedSessionOptions object
+ * in the Config object.
+ *
+ * @param storagePrefix
+ * @param url
+ */
+export function clearSavedSession(storagePrefix: string, url: string) {
+  console.debug(`thebe:clearSavedSession - removing ${makeStorageKey(storagePrefix, url)}`);
+  window.localStorage.removeItem(makeStorageKey(storagePrefix, url));
+}
