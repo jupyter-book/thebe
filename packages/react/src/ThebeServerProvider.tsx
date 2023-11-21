@@ -100,10 +100,17 @@ export function ThebeServerProvider({
         },
       });
     else server.connectToJupyterServer();
-    server.ready.then(() => {
-      setConnecting(false);
-      setReady(true);
-    });
+
+    server.ready.then(
+      () => {
+        setConnecting(false);
+        setReady(true);
+      },
+      () => {
+        setConnecting(false);
+        setReady(false);
+      },
+    );
   }, [server, doConnect]);
 
   return (

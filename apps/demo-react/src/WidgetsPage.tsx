@@ -1,7 +1,7 @@
 import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 import { useParams } from 'react-router-dom';
-import { ErrorTray } from './ErrorTray';
+import { ConnectionErrorTray } from './ConnectionErrorTray';
 
 export function WidgetsPage() {
   const { notebookName } = useParams<{ notebookName: string }>();
@@ -28,7 +28,7 @@ export function WidgetsPage() {
       <h4 className="text-sm">
         notebook: <code>{notebookName}.ipynb</code>
       </h4>
-      <div className="mt-3 inline-block bg-green-500 text-white text-sm font-bold py-2 px-4 rounded-full">
+      <div className="inline-block px-4 py-2 mt-3 text-sm font-bold text-white bg-green-500 rounded-full">
         {ready ? 'ready' : 'not ready'}
       </div>
       <div className="mt-4">
@@ -39,8 +39,8 @@ export function WidgetsPage() {
         )}
         {executing && 'EXECUTING...'}
       </div>
-      <div className="m-auto max-w-3xl">
-        {errors && <ErrorTray errors={errors} />}
+      <div className="max-w-3xl m-auto">
+        {/* {errors && <ConnectionErrorTray />} */}
         {cellRefs.map((ref, idx) => {
           return (
             <JupyterOutputDecoration key={cellIds[idx]}>

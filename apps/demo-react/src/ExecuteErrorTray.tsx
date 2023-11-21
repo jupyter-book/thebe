@@ -39,15 +39,15 @@ function ErrorTrayMessage({ errors }: { errors: IThebeNotebookError[] }) {
   );
 }
 
-export function ErrorTray({ errors }: { errors: IThebeNotebookError[] }) {
+export function ExecuteErrorTray({ errors }: { errors: IThebeNotebookError[] }) {
   return (
-    <div className="mt-8 text-sm border border-red-400 text-red-600 px-4 pt-3 rounded relative border-1">
+    <div className="relative px-4 pt-3 mt-8 text-sm text-red-600 border border-red-400 rounded border-1">
       <div>
         <span className="font-bold">Error</span> - a page refresh may resolve this. If not, shutdown
         this simulation and start another. If the error persists please contact support with a
         screenshot of this page, including the error message below.
       </div>
-      <ErrorTrayMessage errors={errors} />
+      <ErrorTrayMessage errors={errors ?? []} />
     </div>
   );
 }
