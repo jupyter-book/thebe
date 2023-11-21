@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import type {
   Config,
   CoreOptions,
+  EventSubject,
   RepoProviderSpec,
   ThebeEventCb,
   ThebeEventData,
@@ -61,21 +62,26 @@ export function ThebeServerProvider({
     [core, options],
   );
 
-  // register an error handler immedately on the config changing, thiis is done as a
-  // side effect so tht we can un-register on unmount
-  useEffect(() => {
-    if (!core || !thebeConfig) return;
-    const handler = (evt: string, data: ThebeEventData) => {
-      setError(`${data.status} - ${data.message}`);
-    };
-    thebeConfig.events.on(core.ThebeEventType.error, handler);
-    return () => thebeConfig.events.off(core.ThebeEventType.error, handler);
-  }, [core, thebeConfig]);
-
   // create an iniital server
   useEffect(() => {
     if (!core || !thebeConfig || server) return;
-    setServer(new core.ThebeServer(thebeConfig));
+    const svr = new core.ThebeServer(thebeConfig);
+
+    // register an error handler immedately
+    const handler = (evt: string, data: ThebeEventData) => {
+      const subjects = [
+        core.EventSubject.server,
+        core.EventSubject.session,
+        core.EventSubject.kernel,
+      ];
+      if (data.subject && subjects.includes(data.subject)) {
+        setError(`${data.status} - ${data.message}`);
+      }
+    };
+    // TODO we need a way to unsubscribe from this that does not cause
+    // error events to be missed due to rerenders
+    thebeConfig.events.on(core.ThebeEventType.error, handler);
+    setServer(svr);
   }, [core, thebeConfig, server]);
 
   // Once the core is loaded, connect to a server
@@ -100,10 +106,17 @@ export function ThebeServerProvider({
         },
       });
     else server.connectToJupyterServer();
-    server.ready.then(() => {
-      setConnecting(false);
-      setReady(true);
-    });
+
+    server.ready.then(
+      () => {
+        setConnecting(false);
+        setReady(true);
+      },
+      () => {
+        setConnecting(false);
+        setReady(false);
+      },
+    );
   }, [server, doConnect]);
 
   return (
@@ -178,7 +191,12 @@ export function useThebeServer() {
     (fn: ListenerFn) => {
       if (!core || !config || !server) return;
       const callbackFn = (evt: string, data: ThebeEventData) => {
-        if (data.id === server?.id) fn(data);
+        const subjects = [
+          core.EventSubject.server,
+          core.EventSubject.session,
+          core.EventSubject.kernel,
+        ];
+        if (data.subject && subjects.includes(data.subject)) fn(data);
       };
       config?.events.on(core.ThebeEventType.status, callbackFn);
       setEventCallbacks([...eventCallbacks, callbackFn]);

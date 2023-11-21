@@ -32,6 +32,14 @@ async function responseToJson(res: Response) {
   return json as RestAPIContentsResponse;
 }
 
+function errorAsString(errorLike: any): string {
+  if (typeof errorLike === 'string') return errorLike;
+  if (errorLike.message) return errorLike.message;
+  if (errorLike.status && errorLike.statusText)
+    return `${errorLike.status} - ${errorLike.statusText}`;
+  return JSON.stringify(errorLike);
+}
+
 class ThebeServer implements ServerRuntime, ServerRestAPI {
   readonly id: string;
   readonly config: Config;
@@ -42,6 +50,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   binderUrls?: BinderUrlSet;
   userServerUrl?: string;
   private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
+  private rejectReadyFn?: (reason?: any) => void;
   private _isDisposed: boolean;
   private events: EventEmitter;
 
@@ -49,8 +58,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     this.id = shortId();
     this.config = config;
     this.events = new EventEmitter(this.id, config, EventSubject.server, this);
-    this.ready = new Promise((resolve) => {
+    this.ready = new Promise((resolve, reject) => {
       this.resolveReadyFn = resolve;
+      this.rejectReadyFn = reject;
     });
     this._isDisposed = false;
   }
@@ -179,14 +189,16 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       await ThebeServer.status(serverSettings);
       this.events.triggerStatus({
         status: ServerStatusEvent.launching,
-        message: `Server responds to pings`,
+        message: `Server reachable`,
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {
+      const message = `Server not reachable (${serverSettings.baseUrl}) - ${err}`;
       this.events.triggerError({
         status: ErrorStatusEvent.error,
-        message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
+        message,
       });
+      this.rejectReadyFn?.(message);
       return;
     }
 
@@ -201,20 +213,39 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       serverSettings,
     });
 
+    this.sessionManager.connectionFailure.connect((_, err) => {
+      this.events.triggerError({
+        status: ErrorStatusEvent.server,
+        message: `connection failure: ${err}`,
+      });
+    });
+
+    this.sessionManager.runningChanged.connect((_, models) => {
+      this.events.triggerStatus({
+        status: ServerStatusEvent.ready,
+        message: `${models.length} running sessions changed: ${models
+          .map((m) => m.name)
+          .join(',')}`,
+      });
+    });
+
     this.events.triggerStatus({
       status: ServerStatusEvent.ready,
       message: `Created SessionManager`,
     });
 
     // Resolve the ready promise
-    return this.sessionManager.ready.then(() => {
-      this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
-      this.events.triggerStatus({
-        status: ServerStatusEvent.ready,
-        message: `Server connection ready`,
-      });
-      this.resolveReadyFn?.(this);
-    });
+    return this.sessionManager.ready.then(
+      () => {
+        this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
+        this.events.triggerStatus({
+          status: ServerStatusEvent.ready,
+          message: `Server connection ready`,
+        });
+        this.resolveReadyFn?.(this);
+      },
+      (err) => this.rejectReadyFn?.(errorAsString(err)),
+    );
   }
 
   /**
@@ -250,14 +281,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    return this.sessionManager?.ready.then(() => {
-      this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
-      this.events.triggerStatus({
-        status: ServerStatusEvent.ready,
-        message: `Server connection established`,
-      });
-      this.resolveReadyFn?.(this);
-    });
+    return this.sessionManager?.ready.then(
+      () => {
+        this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
+        this.events.triggerStatus({
+          status: ServerStatusEvent.ready,
+          message: `Server connection established`,
+        });
+        this.resolveReadyFn?.(this);
+      },
+      (err) => this.rejectReadyFn?.(errorAsString(err)),
+    );
   }
 
   makeBinderUrls() {
@@ -340,116 +374,116 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
           message: `Created KernelManager`,
         });
 
-        return this.sessionManager.ready.then(() => {
-          this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
-          this.events.triggerStatus({
-            status: ServerStatusEvent.ready,
-            message: `Re-connected to binder server`,
-          });
-          this.resolveReadyFn?.(this);
-        });
+        return this.sessionManager.ready.then(
+          () => {
+            this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
+            this.events.triggerStatus({
+              status: ServerStatusEvent.ready,
+              message: `Re-connected to binder server`,
+            });
+            this.resolveReadyFn?.(this);
+          },
+          (err) => this.rejectReadyFn?.(errorAsString(err)),
+        );
         // else drop out of this block and request a new session
       }
     }
 
-    const requestPromise: Promise<void> = new Promise((resolveRequest, rejectRequest) => {
-      // Talk to the binder server
-      const state: { status: StatusEvent } = {
-        status: ServerStatusEvent.launching,
-      };
-      const es = new EventSource(urls.build);
-      this.events.triggerStatus({
-        status: state.status,
-        message: `Opened connection to binder: ${urls.build}`,
+    // TODO we can get rid of one level of promise here?
+    // Talk to the binder server
+    const state: { status: StatusEvent } = {
+      status: ServerStatusEvent.launching,
+    };
+    const es = new EventSource(urls.build);
+    this.events.triggerStatus({
+      status: state.status,
+      message: `Opened connection to binder: ${urls.build}`,
+    });
+
+    // handle errors
+    es.onerror = (evt: Event) => {
+      console.error(`Lost connection to binder: ${urls.build}`, evt);
+      es?.close();
+      state.status = ErrorStatusEvent.error;
+      const data = (evt as MessageEvent)?.data;
+      const phase = data ? data.phase : 'unknown';
+      const message = `Lost connection to binder: ${urls.build}\nphase: ${phase} - ${
+        data ? data.message : 'no message'
+      }`;
+      this.events.triggerError({
+        status: ErrorStatusEvent.error,
+        message,
       });
+      this.rejectReadyFn?.(message);
+    };
 
-      // handle errors
-      es.onerror = (evt: Event) => {
-        console.error(`Lost connection to binder: ${urls.build}`, evt);
-        es?.close();
-        state.status = ErrorStatusEvent.error;
-        const data = (evt as MessageEvent)?.data;
-        const phase = data ? data.phase : 'unknown';
-        const message = data ? data.message : 'no message';
-        this.events.triggerError({
-          status: ErrorStatusEvent.error,
-          message: `phase: ${phase} - ${message} - Lost connection to binder`,
-        });
-        rejectRequest(evt);
-      };
+    es.onmessage = async (evt: MessageEvent<string>) => {
+      const msg: {
+        // TODO must be in Jupyterlab types somewhere
+        phase: string;
+        message: string;
+        url: string;
+        token: string;
+      } = JSON.parse(evt.data);
 
-      es.onmessage = async (evt: MessageEvent<string>) => {
-        const msg: {
-          // TODO must be in Jupyterlab types somewhere
-          phase: string;
-          message: string;
-          url: string;
-          token: string;
-        } = JSON.parse(evt.data);
-
-        const phase = msg.phase?.toLowerCase() ?? '';
-        switch (phase) {
-          case 'failed':
+      const phase = msg.phase?.toLowerCase() ?? '';
+      switch (phase) {
+        case 'failed':
+          es?.close();
+          state.status = ErrorStatusEvent.error;
+          this.events.triggerError({
+            status: ErrorStatusEvent.error,
+            message: `Binder: failed to build - ${urls.build} - ${msg.message}`,
+          });
+          this.rejectReadyFn?.(msg.message);
+          break;
+        case 'ready':
+          {
             es?.close();
-            state.status = ErrorStatusEvent.error;
-            this.events.triggerError({
-              status: ErrorStatusEvent.error,
-              message: `Binder: failed to build - ${urls.build} - ${msg.message}`,
+
+            const settings: ServerSettings = {
+              baseUrl: msg.url,
+              wsUrl: 'ws' + msg.url.slice(4),
+              token: msg.token,
+              appendToken: true,
+            };
+
+            const serverSettings = ServerConnection.makeSettings(settings);
+            const kernelManager = new KernelManager({ serverSettings });
+            this.sessionManager = new SessionManager({
+              kernelManager,
+              serverSettings,
             });
-            rejectRequest(msg);
-            break;
-          case 'ready':
-            {
-              es?.close();
 
-              const settings: ServerSettings = {
-                baseUrl: msg.url,
-                wsUrl: 'ws' + msg.url.slice(4),
-                token: msg.token,
-                appendToken: true,
-              };
-
-              const serverSettings = ServerConnection.makeSettings(settings);
-              const kernelManager = new KernelManager({ serverSettings });
-              this.sessionManager = new SessionManager({
-                kernelManager,
-                serverSettings,
-              });
-
-              if (this.config.savedSessions.enabled) {
-                saveServerInfo(this.config.savedSessions, urls.build, this.id, serverSettings);
-                console.debug(
-                  `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${urls.build}`,
-                );
-              }
-
-              // promise has already been returned to the caller
-              // so we can await here
-              await this.sessionManager.ready;
-
-              this.userServerUrl = `${msg.url}?token=${msg.token}`;
-
-              state.status = ServerStatusEvent.ready;
-              this.events.triggerStatus({
-                status: state.status,
-                message: `Binder server is ready: ${msg.message}`,
-              });
-
-              resolveRequest();
+            if (this.config.savedSessions.enabled) {
+              saveServerInfo(this.config.savedSessions, urls.build, this.id, serverSettings);
+              console.debug(
+                `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${urls.build}`,
+              );
             }
-            break;
-          default:
+
+            // promise has already been returned to the caller
+            // so we can await here
+            await this.sessionManager.ready;
+
+            this.userServerUrl = `${msg.url}?token=${msg.token}`;
+
+            state.status = ServerStatusEvent.ready;
             this.events.triggerStatus({
               status: state.status,
-              message: `Binder is: ${phase} - ${msg.message}`,
+              message: `Binder server is ready: ${msg.message}`,
             });
-        }
-      };
-    });
 
-    return requestPromise.then(() => {
-      this.resolveReadyFn?.(this);
-    });
+            this.resolveReadyFn?.(this);
+          }
+          break;
+        default:
+          this.events.triggerStatus({
+            status: state.status,
+            message: `Binder is: ${phase} - ${msg.message}`,
+          });
+      }
+    };
   }
 
   //

@@ -20,7 +20,8 @@ describe('server', () => {
     expect(server.id).toBeDefined();
 
     try {
-      await server.connectToJupyterServer();
+      server.connectToJupyterServer();
+      await server.ready;
     } catch (err: any) {
       expect(err).toBeDefined();
       expect(err).toContain('Server not reachable (http://localhost:9999/)');

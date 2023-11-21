@@ -4,7 +4,6 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
-import { ThebeStatusTray } from './ThebeStatusTray';
 
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
@@ -54,7 +53,6 @@ function App() {
         >
           <ServerMode mode={mode} setMode={setMode} />
           <Connect />
-          <ThebeStatusTray />
           <Outlet />
         </ThebeServerProvider>
       </ThebeBundleLoaderProvider>

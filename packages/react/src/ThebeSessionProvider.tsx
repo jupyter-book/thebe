@@ -30,17 +30,23 @@ export function ThebeSessionProvider({
   const { config, server, ready: serverReady } = useThebeServer();
   const rendermime = useRenderMimeRegistry();
 
+  const [doStart, setDoStart] = useState(start);
   const [starting, setStarting] = useState(false);
   const [session, setSession] = useState<ThebeSession | undefined>();
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
+  /// Once server connection is open, auto start a session if start prop is true
+  useEffect(() => {
+    if (!server || !serverReady || !doStart || starting || ready) return;
+    startSession();
+  }, [ready, doStart, starting, server, serverReady]);
+
   const startSession = () => {
     if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
     setStarting(true);
-    server
-      ?.startNewSession(rendermime, { ...config?.kernels, path })
-      .then((sesh: ThebeSession | null) => {
+    server?.startNewSession(rendermime, { ...config?.kernels, path }).then(
+      (sesh: ThebeSession | null) => {
         setStarting(false);
         if (sesh == null) {
           server?.getKernelSpecs().then((specs) => {
@@ -52,14 +58,15 @@ export function ThebeSessionProvider({
         }
         setSession(sesh);
         setReady(true); // not this could use the thebe event mechanism
-      });
+      },
+      (err: any) => {
+        setError(typeof err === 'object' ? err.message : JSON.stringify(err));
+        setReady(false);
+        setDoStart(false);
+        setStarting(false);
+      },
+    );
   };
-
-  /// Once server connection is open, auto start a session if start prop is true
-  useEffect(() => {
-    if (!server || !serverReady || !start || starting || ready) return;
-    startSession();
-  }, [ready, start, starting, server, serverReady]);
 
   // shutdown session on navigate away
   useEffect(() => {
