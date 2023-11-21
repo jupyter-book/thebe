@@ -15,7 +15,7 @@ function App() {
     () => ({
       kernelOptions: {
         path,
-        kernelName: 'python-something-uknkkjdaskfjdhalj',
+        kernelName: 'python',
       },
       binderOptions: {
         repo: 'executablebooks/thebe-binder-base',
