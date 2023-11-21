@@ -42,6 +42,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   binderUrls?: BinderUrlSet;
   userServerUrl?: string;
   private resolveReadyFn?: (value: ThebeServer | PromiseLike<ThebeServer>) => void;
+  private rejectReadyFn?: (reason?: any) => void;
   private _isDisposed: boolean;
   private events: EventEmitter;
 
@@ -49,8 +50,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     this.id = shortId();
     this.config = config;
     this.events = new EventEmitter(this.id, config, EventSubject.server, this);
-    this.ready = new Promise((resolve) => {
+    this.ready = new Promise((resolve, reject) => {
       this.resolveReadyFn = resolve;
+      this.rejectReadyFn = reject;
     });
     this._isDisposed = false;
   }
@@ -179,7 +181,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       await ThebeServer.status(serverSettings);
       this.events.triggerStatus({
         status: ServerStatusEvent.launching,
-        message: `Server responds to pings`,
+        message: `Server reachable`,
       });
       // eslint-disable-next-line no-empty
     } catch (err: any) {
@@ -187,6 +189,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         status: ErrorStatusEvent.error,
         message: `Server not reachable (${serverSettings.baseUrl}) - ${err}`,
       });
+      this.rejectReadyFn?.(err);
       return;
     }
 
@@ -207,14 +210,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     });
 
     // Resolve the ready promise
-    return this.sessionManager.ready.then(() => {
-      this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
-      this.events.triggerStatus({
-        status: ServerStatusEvent.ready,
-        message: `Server connection ready`,
-      });
-      this.resolveReadyFn?.(this);
-    });
+    return this.sessionManager.ready.then(
+      () => {
+        this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
+        this.events.triggerStatus({
+          status: ServerStatusEvent.ready,
+          message: `Server connection ready`,
+        });
+        this.resolveReadyFn?.(this);
+      },
+      (err) => this.rejectReadyFn?.(err),
+    );
   }
 
   /**
@@ -250,14 +256,17 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       message: `Received SessionMananger from JupyterLite`,
     });
 
-    return this.sessionManager?.ready.then(() => {
-      this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
-      this.events.triggerStatus({
-        status: ServerStatusEvent.ready,
-        message: `Server connection established`,
-      });
-      this.resolveReadyFn?.(this);
-    });
+    return this.sessionManager?.ready.then(
+      () => {
+        this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
+        this.events.triggerStatus({
+          status: ServerStatusEvent.ready,
+          message: `Server connection established`,
+        });
+        this.resolveReadyFn?.(this);
+      },
+      (err) => this.rejectReadyFn?.(err),
+    );
   }
 
   makeBinderUrls() {
@@ -340,18 +349,22 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
           message: `Created KernelManager`,
         });
 
-        return this.sessionManager.ready.then(() => {
-          this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
-          this.events.triggerStatus({
-            status: ServerStatusEvent.ready,
-            message: `Re-connected to binder server`,
-          });
-          this.resolveReadyFn?.(this);
-        });
+        return this.sessionManager.ready.then(
+          () => {
+            this.userServerUrl = `${serverSettings.baseUrl}?token=${serverSettings.token}`;
+            this.events.triggerStatus({
+              status: ServerStatusEvent.ready,
+              message: `Re-connected to binder server`,
+            });
+            this.resolveReadyFn?.(this);
+          },
+          (err) => this.rejectReadyFn?.(err),
+        );
         // else drop out of this block and request a new session
       }
     }
 
+    // TODO we can get rid of one level of promise here?
     const requestPromise: Promise<void> = new Promise((resolveRequest, rejectRequest) => {
       // Talk to the binder server
       const state: { status: StatusEvent } = {
@@ -447,9 +460,12 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       };
     });
 
-    return requestPromise.then(() => {
-      this.resolveReadyFn?.(this);
-    });
+    return requestPromise.then(
+      () => {
+        this.resolveReadyFn?.(this);
+      },
+      (err) => this.rejectReadyFn?.(err),
+    );
   }
 
   //
