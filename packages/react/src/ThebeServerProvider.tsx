@@ -84,7 +84,7 @@ export function ThebeServerProvider({
     setServer(svr);
   }, [core, thebeConfig, server]);
 
-  const connectToServer = useCallback(() => {
+  const connectToServer = () => {
     if (!server) return;
     setConnecting(true);
     if (customConnectFn) customConnectFn(server);
@@ -113,7 +113,7 @@ export function ThebeServerProvider({
     );
 
     return server.ready;
-  }, [server]);
+  };
 
   // Once the core is loaded, connect to a server
   // TODO: this should be an action not a side effect

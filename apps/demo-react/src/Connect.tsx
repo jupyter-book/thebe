@@ -17,10 +17,15 @@ export function Connect() {
 
   return (
     <div className="my-2">
-      {!ready && (
+      {!connecting && !ready && (
         <button className="button" onClick={clickConnect} disabled={!core || connecting}>
           connect
         </button>
+      )}
+      {connecting && (
+        <span className="inline-block h-[41px] bg-orange-500 text-white font-bold py-2 px-4 rounded-full">
+          connecting
+        </span>
       )}
       {ready && (
         <span className="inline-block h-[41px] bg-green-500 text-white font-bold py-2 px-4 rounded-full">

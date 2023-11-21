@@ -5,9 +5,9 @@ import { NotebookStatusTray } from './NotebookStatusTray';
 import { NotebookErrorTray } from './NotebookErrorTray';
 
 export function NotebookPage({ children }: React.PropsWithChildren) {
-  const { ready, config } = useThebeServer();
+  const { connecting, ready, config } = useThebeServer();
 
-  if (!ready) return null;
+  if (!connecting && !ready) return null;
   return (
     <ThebeRenderMimeRegistryProvider>
       <ThebeSessionProvider start path={config?.kernels.path}>
