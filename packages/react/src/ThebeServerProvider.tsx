@@ -178,7 +178,12 @@ export function useThebeServer() {
     (fn: ListenerFn) => {
       if (!core || !config || !server) return;
       const callbackFn = (evt: string, data: ThebeEventData) => {
-        if (data.id === server?.id) fn(data);
+        const subjects = [
+          core.EventSubject.server,
+          core.EventSubject.session,
+          core.EventSubject.kernel,
+        ];
+        if (data.subject && subjects.includes(data.subject) && data.id === server?.id) fn(data);
       };
       config?.events.on(core.ThebeEventType.status, callbackFn);
       setEventCallbacks([...eventCallbacks, callbackFn]);
