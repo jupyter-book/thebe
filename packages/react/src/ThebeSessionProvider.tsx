@@ -21,7 +21,7 @@ export const ThebeSessionContext = React.createContext<ThebeSessionContextData |
 
 export function ThebeSessionProvider({
   start = true,
-  path = '/thebe.ipynb',
+  path,
   shutdownOnUnmount = false,
   children,
 }: React.PropsWithChildren<{
@@ -56,7 +56,7 @@ export function ThebeSessionProvider({
         data.status === 'shutdown' &&
         data.id === session.id
       ) {
-        setError(`session ${path} - ${data.status} - ${data.message}`);
+        setError(`session ${session.path} - ${data.status} - ${data.message}`);
       }
     };
     config.events.on(core.ThebeEventType.status, handler);
@@ -65,7 +65,7 @@ export function ThebeSessionProvider({
   const startSession = () => {
     if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
     setStarting(true);
-    server?.startNewSession(rendermime, { ...config?.kernels, path }).then(
+    server?.startNewSession(rendermime, { path }).then(
       (sesh: ThebeSession | null) => {
         setStarting(false);
         if (sesh == null) {
