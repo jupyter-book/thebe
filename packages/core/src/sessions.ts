@@ -94,7 +94,7 @@ export async function getExistingServer(
  *
  * @param storagePrefix
  */
-export function clearAllSavedSessions(storagePrefix: string) {
+export function clearAllSavedSessions(storagePrefix: string = 'thebe-binder') {
   const keysToRemove: string[] = [];
   for (let i = 0; i < window.localStorage.length; i++) {
     const key = window.localStorage.key(i);
@@ -117,7 +117,7 @@ export function clearAllSavedSessions(storagePrefix: string) {
  * @param storagePrefix
  * @param url
  */
-export function clearSavedSession(storagePrefix: string, url: string) {
+export function clearSavedSession(storagePrefix: string = 'thebe-binder', url: string = '') {
   console.debug(`thebe:clearSavedSession - removing ${makeStorageKey(storagePrefix, url)}`);
   window.localStorage.removeItem(makeStorageKey(storagePrefix, url));
 }
