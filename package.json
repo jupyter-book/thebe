@@ -30,7 +30,9 @@
     "start:react": "turbo run start --filter=demo-react",
     "start:docs-core": "turbo run start --filter=docs-core",
     "changeset": "changeset",
-    "dev": "turbo run dev --parallel"
+    "dev": "turbo run dev --parallel",
+    "version": "changeset version && npm install",
+    "publish-after-0.9.0": "npm run clean && npm run build -- --force && changeset publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",

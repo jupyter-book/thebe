@@ -1,5 +1,21 @@
 # thebe-core
 
+## 0.4.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+- 26a8fb8: Improved handling of connection errors for local server and binder during the connection attempt and if the kernel or server connection fails. Also simplified the binder connection functionality.
+
+### Patch Changes
+
+- fda8021: Added and exported utility functions `clearAllSavedSessions`,`clearSavedSession` to assist apps with managing saved binder sessions in local storage
+- 092b05c: Packages now ship their source to enable sourcemaps in development workflows
+- Updated dependencies [c78bb6f]
+- Updated dependencies [1ce79f6]
+- Updated dependencies [092b05c]
+  - thebe-lite@1.0.0
+
 ## 0.3.5
 
 ### Patch Changes

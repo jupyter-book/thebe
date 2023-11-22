@@ -1,5 +1,22 @@
 # thebe-react
 
+## 0.4.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+- 26a8fb8: Improved handling of connection errors for local server and binder during the connection attempt and if the kernel or server connection fails. Also simplified the binder connection functionality.
+
+### Patch Changes
+
+- 092b05c: Packages now ship their source to enable sourcemaps in development workflows
+- 358b62e: ThebeServerProvider's connect function returns a promise
+- Updated dependencies [c78bb6f]
+- Updated dependencies [fda8021]
+- Updated dependencies [26a8fb8]
+- Updated dependencies [092b05c]
+  - thebe-core@1.0.0
+
 ## 0.3.5
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # thebe-lite
 
+## 0.4.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+- 1ce79f6: Added a custom service worker for jupyterlite based on the default jupyterlite sw but with no caching, added build steps for this to be included in `thebe-lite` builds.
+
+### Patch Changes
+
+- 092b05c: Packages now ship their source to enable sourcemaps in development workflows
+
 ## 0.3.5
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # demo-react
 
+## 0.2.6
+
+### Patch Changes
+
+- 26a8fb8: Updated the demo to add examples of curfacing the different status and error feeds available; connection (server, session, kernel) vs execution (notebook, cell)
+- Updated dependencies [c78bb6f]
+- Updated dependencies [26a8fb8]
+- Updated dependencies [092b05c]
+- Updated dependencies [358b62e]
+  - thebe-react@1.0.0
+
 ## 0.2.5
 
 ### Patch Changes

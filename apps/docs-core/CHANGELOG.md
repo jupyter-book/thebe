@@ -1,5 +1,11 @@
 # docs-core
 
+## 1.1.0
+
+### Minor Changes
+
+- c78bb6f: Updated jupyter dependencies and pyodide kernel.
+
 ## 1.0.4
 
 ### Patch Changes
