@@ -120,7 +120,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     // https://jupyterlab.readthedocs.io/en/3.4.x/api/modules/services.session.html#isessionoptions
     const path = kernelOptions?.path ?? this.config.kernels.path;
     let name = 'thebe.ipynb';
-    const match = path.match(/\/*([a-zA-Z0-9]+.ipynb)$/);
+    const match = path.match(/\/*([a-zA-Z0-9-]+.ipynb)$/);
     if (match) {
       name = match[1];
     }
