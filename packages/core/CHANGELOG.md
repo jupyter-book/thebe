@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.4.1
+
+### Patch Changes
+
+- 6d29986: Added default arguments to clear sesion storage utility functions
+  - thebe-lite@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes

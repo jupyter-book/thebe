@@ -1,5 +1,13 @@
 # thebe-react
 
+## 0.4.1
+
+### Patch Changes
+
+- 6d29986: `ThebeSessionProvider` monitors status events for session/kernel shutdown messages and promotes this to an error if the corresponding session has shutdown.
+- Updated dependencies [6d29986]
+  - thebe-core@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
