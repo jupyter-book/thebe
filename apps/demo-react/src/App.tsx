@@ -20,6 +20,9 @@ function App() {
       binderOptions: {
         repo: 'executablebooks/thebe-binder-base',
       },
+      serverSettings: {
+        token: 'test-secret',
+      },
     }),
     [path],
   );
