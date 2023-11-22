@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import type { ThebeSession } from 'thebe-core';
 import { useThebeServer } from './ThebeServerProvider';
 import { useRenderMimeRegistry } from './ThebeRenderMimeRegistryProvider';
+import { ThebeEventData } from 'thebe-core';
+import { useThebeLoader } from './ThebeLoaderProvider';
 
 interface ThebeSessionContextData {
   path?: string;
@@ -27,6 +29,7 @@ export function ThebeSessionProvider({
   path?: string;
   shutdownOnUnmount?: boolean;
 }>) {
+  const { core } = useThebeLoader();
   const { config, server, ready: serverReady } = useThebeServer();
   const rendermime = useRenderMimeRegistry();
 
@@ -41,6 +44,23 @@ export function ThebeSessionProvider({
     if (!server || !serverReady || !doStart || starting || ready) return;
     startSession();
   }, [ready, doStart, starting, server, serverReady]);
+
+  // register an event handler to monitor for session status changes
+  useEffect(() => {
+    if (!core || !config || !session) return;
+    const handler = (evt: string, data: ThebeEventData) => {
+      const subjects = [core.EventSubject.session, core.EventSubject.kernel];
+      if (
+        data.subject &&
+        subjects.includes(data.subject) &&
+        data.status === 'shutdown' &&
+        data.id === session.id
+      ) {
+        setError(`session ${path} - ${data.status} - ${data.message}`);
+      }
+    };
+    config.events.on(core.ThebeEventType.status, handler);
+  }, [core, config, session]);
 
   const startSession = () => {
     if (!rendermime) throw new Error('ThebeSessionProvider requires a RenderMimeRegistryProvider');
