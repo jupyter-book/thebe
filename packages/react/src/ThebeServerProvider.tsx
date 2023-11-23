@@ -142,6 +142,8 @@ export function ThebeServerProvider({
           }
           setReady(false);
           setDoConnect(false);
+          setConnecting(false);
+          setError(undefined);
         },
         error,
       }}
