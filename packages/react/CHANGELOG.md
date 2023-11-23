@@ -1,5 +1,12 @@
 # thebe-react
 
+## 0.4.2
+
+### Patch Changes
+
+- 0b25237: Modified providers to enable consistent state after disconnect/shutdown
+  - thebe-core@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes
