@@ -38,6 +38,7 @@ export function ThebeSessionProvider({
   const [session, setSession] = useState<ThebeSession | undefined>();
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | undefined>();
+  const [unsubscribe, setUnsubscribe] = useState<(() => void) | undefined>();
 
   /// Once server connection is open, auto start a session if start prop is true
   useEffect(() => {
@@ -59,7 +60,7 @@ export function ThebeSessionProvider({
         setError(`session ${session.path} - ${data.status} - ${data.message}`);
       }
     };
-    config.events.on(core.ThebeEventType.status, handler);
+    setUnsubscribe(config.events.on(core.ThebeEventType.status, handler));
   }, [core, config, session]);
 
   const startSession = () => {
@@ -92,8 +93,12 @@ export function ThebeSessionProvider({
   useEffect(() => {
     return () => {
       if (shutdownOnUnmount) {
+        unsubscribe?.();
+        setUnsubscribe(undefined);
         session?.shutdown().then(() => {
           setReady(false);
+          setStarting(false);
+          setError(undefined);
         });
       }
     };
@@ -116,9 +121,13 @@ export function ThebeSessionProvider({
         },
         shutdown: async () => {
           if (session) {
+            unsubscribe?.();
+            setUnsubscribe(undefined);
             await session.shutdown();
             setSession(undefined);
             setReady(false);
+            setStarting(false);
+            setError(undefined);
           }
         },
         error,
