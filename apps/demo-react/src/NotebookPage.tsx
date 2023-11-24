@@ -3,6 +3,7 @@ import { ConnectionStatusTray } from './ConnectionStatusTray';
 import { ConnectionErrorTray } from './ConnectionErrorTray';
 import { NotebookStatusTray } from './NotebookStatusTray';
 import { NotebookErrorTray } from './NotebookErrorTray';
+import { AdminPanel } from './AdminPanel';
 
 export function NotebookPage({ children }: React.PropsWithChildren) {
   const { connecting, ready, config, error } = useThebeServer();
@@ -16,6 +17,7 @@ export function NotebookPage({ children }: React.PropsWithChildren) {
           <ConnectionErrorTray />
           <NotebookStatusTray />
           <NotebookErrorTray />
+          <AdminPanel />
           {children}
         </>
       </ThebeSessionProvider>
