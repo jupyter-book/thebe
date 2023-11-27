@@ -1,5 +1,13 @@
 # thebe-core
 
+## 0.4.3
+
+### Patch Changes
+
+- 43dfd6a: Await session manager before trying to start a new sessions and change exception condition
+- a730cb3: Fixed `server.listRunningSession` to use the new iterator returned by `sessionManager.running()` properly. This fixed an unhandle exception that was breaking `myst-theme` based sites.
+  - thebe-lite@0.4.3
+
 ## 0.4.2
 
 ### Patch Changes

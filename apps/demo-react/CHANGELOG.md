@@ -1,5 +1,12 @@
 # demo-react
 
+## 0.2.7
+
+### Patch Changes
+
+- a730cb3: Fixed `server.listRunningSession` to use the new iterator returned by `sessionManager.running()` properly. This fixed an unhandle exception that was breaking `myst-theme` based sites.
+  - thebe-react@0.4.3
+
 ## 0.2.6
 
 ### Patch Changes
