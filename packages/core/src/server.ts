@@ -141,9 +141,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     await this.ready;
     const iter = this.sessionManager?.running();
     const models: SessionIModel[] = [];
-    let model: IteratorResult<SessionIModel, any> | undefined;
-    while ((model = iter?.next()) !== undefined) {
-      models.push(model.value);
+    let result = iter?.next();
+    while (result && !result.done) {
+      models.push(result.value);
+      result = iter?.next();
     }
     return models;
   }
