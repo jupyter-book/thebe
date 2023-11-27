@@ -111,9 +111,11 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   ): Promise<ThebeSession | null> {
     await this.ready;
 
-    if (!this.sessionManager?.isReady) {
+    if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
+
+    await this.sessionManager.ready;
 
     // name is assumed to be a non empty string but is otherwise note required
     // if a notebook name has been supplied on the path, use that otherwise use a default
@@ -157,12 +159,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   async connectToExistingSession(model: SessionIModel, rendermime: IRenderMimeRegistry) {
     await this.ready;
-    if (!this.sessionManager?.isReady) {
+    if (!this.sessionManager) {
       throw Error('Requesting session from a server, with no SessionManager available');
     }
 
-    const connection = this.sessionManager?.connectTo({ model });
+    await this.sessionManager.ready;
 
+    const connection = this.sessionManager?.connectTo({ model });
     return new ThebeSession(this, connection, rendermime);
   }
 
