@@ -50,6 +50,7 @@ export function useNotebookBase() {
 
   const executeAll = (options?: NotebookExecuteOptions) => {
     if (!notebook) throw new Error('executeAll called before notebook available');
+    if (!session) throw new Error('executeAll called before session available');
     options?.before?.();
     setExecuting(true);
     return notebook
@@ -69,6 +70,7 @@ export function useNotebookBase() {
     options?: NotebookExecuteOptions,
   ) => {
     if (!notebook) throw new Error('executeSome called before notebook available');
+    if (!session) throw new Error('executeAll called before session available');
     options?.before?.();
     setExecuting(true);
     const filteredCells = notebook.cells.filter(predicate).map((c) => c.id);
