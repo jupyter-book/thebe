@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.4.4
+
+### Patch Changes
+
+- 1ba03ed: Storage key prefixes for saved sessions are based on url origin and pathname only, hash and query params are ignored
+  - thebe-lite@0.4.4
+
 ## 0.4.3
 
 ### Patch Changes
