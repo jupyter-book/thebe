@@ -2,7 +2,9 @@ import { KernelAPI, ServerConnection } from '@jupyterlab/services';
 import type { SavedSessionInfo, SavedSessionOptions, ServerSettings } from './types';
 
 export function makeStorageKey(storagePrefix: string, url: string) {
-  return storagePrefix + url;
+  const urlObj = new URL(url);
+  // ignore the query string and hash
+  return `${storagePrefix}-${urlObj.origin + urlObj.pathname}`;
 }
 
 export function removeServerInfo(savedSession: Required<SavedSessionOptions>, url: string) {
@@ -94,7 +96,7 @@ export async function getExistingServer(
  *
  * @param storagePrefix
  */
-export function clearAllSavedSessions(storagePrefix: string = 'thebe-binder') {
+export function clearAllSavedSessions(storagePrefix = 'thebe-binder') {
   const keysToRemove: string[] = [];
   for (let i = 0; i < window.localStorage.length; i++) {
     const key = window.localStorage.key(i);
@@ -117,7 +119,7 @@ export function clearAllSavedSessions(storagePrefix: string = 'thebe-binder') {
  * @param storagePrefix
  * @param url
  */
-export function clearSavedSession(storagePrefix: string = 'thebe-binder', url: string = '') {
+export function clearSavedSession(storagePrefix = 'thebe-binder', url = '') {
   console.debug(`thebe:clearSavedSession - removing ${makeStorageKey(storagePrefix, url)}`);
   window.localStorage.removeItem(makeStorageKey(storagePrefix, url));
 }
