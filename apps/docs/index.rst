@@ -112,8 +112,8 @@ HTML based examples
 Source code for these examples can be found in `thebe/docs/_static/html_examples folder <https://github.com/executablebooks/thebe/tree/master/examples>`_
 
 .. IMPORTANT::
-  All examples build a _local_ version of `thebe` in order to show off the latest features.
-  If you'd like to instead load the latest _release_ of Thebe, replace the `<script>` elements with the following:
+  All examples build a *local* version of `thebe` in order to show off the latest features.
+  If you'd like to instead load the latest *release* of Thebe, replace the `<script>` elements with the following:
 
   ```html
   <script type="text/javascript" src="https://unpkg.com/thebe@latest"></script>
