@@ -4,6 +4,7 @@ import type { IOutput, IError } from '@jupyterlab/nbformat';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
+import type { Config } from './config';
 
 export type CellKind = 'code' | 'markdown';
 
@@ -41,12 +42,13 @@ export interface CoreOptions {
 
 export interface RepoProviderSpec {
   name: string;
-  makeUrls: (opts: BinderOptions) => BinderUrlSet;
+  makeUrls: (config: Config) => BinderUrlSet;
 }
 
 export interface BinderUrlSet {
   build: string;
   launch: string;
+  storageKey?: string;
 }
 
 export type WellKnownRepoProvider = 'git' | 'github' | 'gitlab' | 'gist';
