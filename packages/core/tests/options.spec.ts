@@ -38,7 +38,7 @@ describe('options', () => {
       expect(makeSavedSessionOptions({})).toEqual({
         enabled: true,
         maxAge: 86400,
-        storagePrefix: 'thebe-binder-',
+        storagePrefix: 'thebe-binder',
       });
     });
     test('overrides', () => {
