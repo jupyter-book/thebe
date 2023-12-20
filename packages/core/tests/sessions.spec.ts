@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { makeStorageKey } from '../src/sessions';
+import { makeDefaultStorageKey } from '../src/sessions';
 
 describe('session saving', () => {
   describe('make storage key', () => {
@@ -19,7 +19,7 @@ describe('session saving', () => {
       ['https://mybinder.org/', 'prefix-https://mybinder.org/'],
       ['https://mybinder.org:1234/', 'prefix-https://mybinder.org:1234/'],
     ])('%s', (url, result) => {
-      expect(makeStorageKey('prefix', url)).toEqual(result);
+      expect(makeDefaultStorageKey('prefix', url)).toEqual(result);
     });
   });
 });

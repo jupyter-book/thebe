@@ -24,7 +24,7 @@ export function makeSavedSessionOptions(opts: SavedSessionOptions): Required<Sav
   return {
     enabled: true,
     maxAge: 86400,
-    storagePrefix: 'thebe-binder-',
+    storagePrefix: 'thebe-binder',
     ...opts,
   };
 }

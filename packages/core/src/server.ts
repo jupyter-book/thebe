@@ -14,7 +14,7 @@ import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
 import { WELL_KNOWN_REPO_PROVIDERS, makeBinderUrls } from './url';
-import { getExistingServer, makeStorageKey, saveServerInfo } from './sessions';
+import { getExistingServer, makeDefaultStorageKey, saveServerInfo } from './sessions';
 import {
   KernelManager,
   KernelSpecAPI,
@@ -172,7 +172,9 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   async clearSavedBinderSessions() {
     const url = this.sessionManager?.serverSettings?.baseUrl;
     if (url)
-      window.localStorage.removeItem(makeStorageKey(this.config.savedSessions.storagePrefix, url));
+      window.localStorage.removeItem(
+        makeDefaultStorageKey(this.config.savedSessions.storagePrefix, url),
+      );
   }
 
   /**
@@ -299,13 +301,13 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   }
 
   makeBinderUrls() {
-    return makeBinderUrls(this.config.binder, this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS);
+    return makeBinderUrls(this.config, this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS);
   }
 
   async checkForSavedBinderSession() {
     try {
       const { build } = makeBinderUrls(
-        this.config.binder,
+        this.config,
         this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS,
       );
       return getExistingServer(this.config.savedSessions, build);
@@ -337,7 +339,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
     this.repoProviders = [...WELL_KNOWN_REPO_PROVIDERS, ...(customProviders ?? [])];
 
     try {
-      this.binderUrls = makeBinderUrls(this.config.binder, this.repoProviders);
+      this.binderUrls = makeBinderUrls(this.config, this.repoProviders);
     } catch (err: any) {
       this.events.triggerError({
         status: ErrorStatusEvent.error,

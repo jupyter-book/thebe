@@ -1,4 +1,17 @@
-import type { BinderOptions, BinderUrlSet, RepoProviderSpec } from './types';
+import type { Config } from './config';
+import { makeDefaultStorageKey } from './sessions';
+import type { BinderUrlSet, RepoProviderSpec } from './types';
+
+function makeDefaultBuildSpec(storagePrefix: string, binderUrl: string, stub: string) {
+  const build = `${binderUrl}/build/${stub}`;
+  const launch = `${binderUrl}/v2/${stub}`;
+
+  return {
+    build,
+    launch,
+    storageKey: makeDefaultStorageKey(storagePrefix, build),
+  };
+}
 
 /**
  * Make a binder url for git providers
@@ -10,16 +23,13 @@ import type { BinderOptions, BinderUrlSet, RepoProviderSpec } from './types';
  * @param opts BinderOptions
  * @returns a binder compatible url
  */
-function makeGitUrls(opts: BinderOptions) {
-  if (!opts.repo) throw Error('repo is required for git provider');
-  const { repo, binderUrl, ref } = opts;
+function makeGitUrls(config: Config) {
+  if (!config.binder.repo) throw Error('repo is required for git provider');
+  const { repo, binderUrl, ref } = config.binder;
   const encodedRepo = encodeURIComponent(repo.replace(/(^\/)|(\/?$)/g, ''));
   const base = binderUrl?.replace(/(\/?$)/g, '');
   const stub = `git/${encodedRepo}/${ref ?? 'HEAD'}`;
-  return {
-    build: `${base}/build/${stub}`,
-    launch: `${base}/v2/${stub}`,
-  };
+  return makeDefaultBuildSpec(config.savedSessions.storagePrefix, base, stub);
 }
 
 /**
@@ -33,17 +43,16 @@ function makeGitUrls(opts: BinderOptions) {
  * @param opts BinderOptions
  * @returns  a binder compatible url
  */
-function makeGitLabUrl(opts: BinderOptions) {
-  if (!opts.repo) throw Error('repo is required for gitlab provider');
-  const binderUrl = opts.binderUrl?.replace(/(\/?$)/g, '');
+function makeGitLabUrl(config: Config) {
+  if (!config.binder.repo) throw Error('repo is required for gitlab provider');
+  const binderUrl = config.binder.binderUrl?.replace(/(\/?$)/g, '');
   const repo = encodeURIComponent(
-    (opts.repo ?? '').replace(/^(https?:\/\/)?gitlab.com\//, '').replace(/(^\/)|(\/?$)/g, ''),
+    (config.binder.repo ?? '')
+      .replace(/^(https?:\/\/)?gitlab.com\//, '')
+      .replace(/(^\/)|(\/?$)/g, ''),
   );
-  const stub = `gl/${repo}/${opts.ref ?? 'HEAD'}`;
-  return {
-    build: `${binderUrl}/build/${stub}`,
-    launch: `${binderUrl}/v2/${stub}`,
-  };
+  const stub = `gl/${repo}/${config.binder.ref ?? 'HEAD'}`;
+  return makeDefaultBuildSpec(config.savedSessions.storagePrefix, binderUrl, stub);
 }
 
 /**
@@ -57,26 +66,26 @@ function makeGitLabUrl(opts: BinderOptions) {
  * @param opts BinderOptions
  * @returns  a binder compatible url
  */
-function makeGitHubUrl(opts: BinderOptions) {
-  if (!opts.repo) throw Error('repo is required for github provider');
-  const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
-  const binderUrl = opts.binderUrl?.replace(/(\/?$)/g, '');
-  const stub = `gh/${repo}/${opts.ref ?? 'HEAD'}`;
-  return {
-    build: `${binderUrl}/build/${stub}`,
-    launch: `${binderUrl}/v2/${stub}`,
-  };
+function makeGitHubUrl(config: Config) {
+  if (!config.binder.repo) throw Error('repo is required for github provider');
+  const repo = config.binder.repo
+    .replace(/^(https?:\/\/)?github.com\//, '')
+    .replace(/(^\/)|(\/?$)/g, '');
+  const binderUrl = config.binder.binderUrl?.replace(/(\/?$)/g, '');
+  const stub = `gh/${repo}/${config.binder.ref ?? 'HEAD'}`;
+
+  return makeDefaultBuildSpec(config.savedSessions.storagePrefix, binderUrl, stub);
 }
 
-function makeGistUrl(opts: BinderOptions) {
-  if (!opts.repo) throw Error('repo is required for gist provider');
-  const repo = opts.repo.replace(/^(https?:\/\/)?github.com\//, '').replace(/(^\/)|(\/?$)/g, '');
-  const binderUrl = opts.binderUrl?.replace(/(\/?$)/g, '');
-  const stub = `gist/${repo}/${opts.ref ?? 'HEAD'}`;
-  return {
-    build: `${binderUrl}/build/${stub}`,
-    launch: `${binderUrl}/v2/${stub}`,
-  };
+function makeGistUrl(config: Config) {
+  if (!config.binder.repo) throw Error('repo is required for gist provider');
+  const repo = config.binder.repo
+    .replace(/^(https?:\/\/)?github.com\//, '')
+    .replace(/(^\/)|(\/?$)/g, '');
+  const binderUrl = config.binder.binderUrl?.replace(/(\/?$)/g, '');
+  const stub = `gist/${repo}/${config.binder.ref ?? 'HEAD'}`;
+
+  return makeDefaultBuildSpec(config.savedSessions.storagePrefix, binderUrl, stub);
 }
 
 export const GITHUB_SPEC: RepoProviderSpec = {
@@ -107,18 +116,15 @@ export const WELL_KNOWN_REPO_PROVIDERS = [GITHUB_SPEC, GITLAB_SPEC, GIT_SPEC, GI
  * Custom providers are supported by passing in an array of CustomRepoProviderSpecs.
  *
  */
-export function makeBinderUrls(
-  opts: BinderOptions,
-  repoProviders: RepoProviderSpec[],
-): BinderUrlSet {
+export function makeBinderUrls(config: Config, repoProviders: RepoProviderSpec[]): BinderUrlSet {
   const providerMap: Record<string, RepoProviderSpec> =
     repoProviders.reduce((obj, spec) => ({ ...obj, [spec.name]: spec }), {}) ?? {};
 
-  const provider = opts.repoProvider ?? 'github';
+  const provider = config.binder.repoProvider ?? 'github';
   if (!Object.keys(providerMap).includes(provider))
-    throw Error(`Unknown provider ${opts.repoProvider}`);
+    throw Error(`Unknown provider ${config.binder.repoProvider}`);
 
   if (!providerMap[provider].makeUrls) throw Error(`No makeUrls function for ${provider}`);
 
-  return providerMap[provider].makeUrls(opts);
+  return providerMap[provider].makeUrls(config);
 }

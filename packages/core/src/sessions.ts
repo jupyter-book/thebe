@@ -1,18 +1,18 @@
 import { KernelAPI, ServerConnection } from '@jupyterlab/services';
 import type { SavedSessionInfo, SavedSessionOptions, ServerSettings } from './types';
 
-export function makeStorageKey(storagePrefix: string, url: string) {
+export function makeDefaultStorageKey(storagePrefix: string, url: string) {
   const urlObj = new URL(url);
   // ignore the query string and hash
   return `${storagePrefix}-${urlObj.origin + urlObj.pathname}`;
 }
 
 export function removeServerInfo(savedSession: Required<SavedSessionOptions>, url: string) {
-  window.localStorage.removeItem(makeStorageKey(savedSession.storagePrefix, url));
+  window.localStorage.removeItem(makeDefaultStorageKey(savedSession.storagePrefix, url));
 }
 
 export function updateLastUsedTimestamp(savedSession: Required<SavedSessionOptions>, url: string) {
-  const storageKey = makeStorageKey(savedSession.storagePrefix, url);
+  const storageKey = makeDefaultStorageKey(savedSession.storagePrefix, url);
   const saved = window.localStorage.getItem(storageKey);
   if (!saved) return;
   const obj = JSON.parse(saved);
@@ -29,7 +29,7 @@ export function saveServerInfo(
     // save the current connection url+token to reuse later
     const { baseUrl, token, wsUrl } = serverSettings;
     window.localStorage.setItem(
-      makeStorageKey(savedSession.storagePrefix, url),
+      makeDefaultStorageKey(savedSession.storagePrefix, url),
       JSON.stringify({
         id,
         baseUrl,
@@ -49,7 +49,7 @@ export async function getExistingServer(
   url: string,
 ): Promise<SavedSessionInfo | null> {
   if (!savedSessionOptions.enabled) return null;
-  const storageKey = makeStorageKey(savedSessionOptions.storagePrefix, url);
+  const storageKey = makeDefaultStorageKey(savedSessionOptions.storagePrefix, url);
   const storedInfoJSON = window.localStorage.getItem(storageKey);
   if (storedInfoJSON == null) {
     console.debug('thebe:getExistingServer No session saved in ', storageKey);
@@ -120,6 +120,6 @@ export function clearAllSavedSessions(storagePrefix = 'thebe-binder') {
  * @param url
  */
 export function clearSavedSession(storagePrefix = 'thebe-binder', url = '') {
-  console.debug(`thebe:clearSavedSession - removing ${makeStorageKey(storagePrefix, url)}`);
-  window.localStorage.removeItem(makeStorageKey(storagePrefix, url));
+  console.debug(`thebe:clearSavedSession - removing ${makeDefaultStorageKey(storagePrefix, url)}`);
+  window.localStorage.removeItem(makeDefaultStorageKey(storagePrefix, url));
 }
