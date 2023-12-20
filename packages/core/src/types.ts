@@ -48,7 +48,7 @@ export interface RepoProviderSpec {
 export interface BinderUrlSet {
   build: string;
   launch: string;
-  storageKey?: string;
+  storageKey: string;
 }
 
 export type WellKnownRepoProvider = 'git' | 'github' | 'gitlab' | 'gist';

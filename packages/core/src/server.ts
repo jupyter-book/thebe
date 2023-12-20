@@ -14,7 +14,7 @@ import type { LiteServerConfig } from 'thebe-lite';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { StatusEvent } from './events';
 import { WELL_KNOWN_REPO_PROVIDERS, makeBinderUrls } from './url';
-import { getExistingServer, makeDefaultStorageKey, saveServerInfo } from './sessions';
+import { getExistingServer, saveServerInfo } from './sessions';
 import {
   KernelManager,
   KernelSpecAPI,
@@ -170,11 +170,8 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
   }
 
   async clearSavedBinderSessions() {
-    const url = this.sessionManager?.serverSettings?.baseUrl;
-    if (url)
-      window.localStorage.removeItem(
-        makeDefaultStorageKey(this.config.savedSessions.storagePrefix, url),
-      );
+    const urls = this.makeBinderUrls();
+    window.localStorage.removeItem(urls.storageKey);
   }
 
   /**
@@ -306,11 +303,11 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   async checkForSavedBinderSession() {
     try {
-      const { build } = makeBinderUrls(
+      const { storageKey } = makeBinderUrls(
         this.config,
         this.repoProviders ?? WELL_KNOWN_REPO_PROVIDERS,
       );
-      return getExistingServer(this.config.savedSessions, build);
+      return getExistingServer(this.config.savedSessions, storageKey);
     } catch (err: any) {
       this.events.triggerError({
         status: ErrorStatusEvent.error,
@@ -359,7 +356,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       // the follow function will ping the server based on the settings and only return
       // non-null if the server is still alive. So highly likely that the remainder of
       // the connection calls below, work.
-      const existingSettings = await getExistingServer(this.config.savedSessions, urls.build);
+      const existingSettings = await this.checkForSavedBinderSession();
       if (existingSettings) {
         // Connect to the existing session
         const serverSettings = ServerConnection.makeSettings(existingSettings);
@@ -462,7 +459,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
             });
 
             if (this.config.savedSessions.enabled) {
-              saveServerInfo(this.config.savedSessions, urls.build, this.id, serverSettings);
+              saveServerInfo(urls.storageKey, this.id, serverSettings);
               console.debug(
                 `thebe:server:connectToServerViaBinder Saved session for ${this.id} at ${urls.build}`,
               );
