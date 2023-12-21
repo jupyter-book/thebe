@@ -1,18 +1,11 @@
 import { KernelAPI, ServerConnection } from '@jupyterlab/services';
 import type { SavedSessionInfo, SavedSessionOptions, ServerSettings } from './types';
 
-export function makeDefaultStorageKey(storagePrefix: string, url: string) {
-  const urlObj = new URL(url);
-  // ignore the query string and hash
-  return `${storagePrefix}-${urlObj.origin + urlObj.pathname}`;
+export function removeServerInfo(storageKey: string) {
+  window.localStorage.removeItem(storageKey);
 }
 
-export function removeServerInfo(savedSession: Required<SavedSessionOptions>, url: string) {
-  window.localStorage.removeItem(makeDefaultStorageKey(savedSession.storagePrefix, url));
-}
-
-export function updateLastUsedTimestamp(savedSession: Required<SavedSessionOptions>, url: string) {
-  const storageKey = makeDefaultStorageKey(savedSession.storagePrefix, url);
+export function updateLastUsedTimestamp(storageKey: string) {
   const saved = window.localStorage.getItem(storageKey);
   if (!saved) return;
   const obj = JSON.parse(saved);
@@ -20,8 +13,7 @@ export function updateLastUsedTimestamp(savedSession: Required<SavedSessionOptio
 }
 
 export function saveServerInfo(
-  savedSession: Required<SavedSessionOptions>,
-  url: string,
+  storageKey: string,
   id: string,
   serverSettings: Required<ServerSettings>,
 ) {
@@ -29,7 +21,7 @@ export function saveServerInfo(
     // save the current connection url+token to reuse later
     const { baseUrl, token, wsUrl } = serverSettings;
     window.localStorage.setItem(
-      makeDefaultStorageKey(savedSession.storagePrefix, url),
+      storageKey,
       JSON.stringify({
         id,
         baseUrl,
@@ -46,10 +38,9 @@ export function saveServerInfo(
 
 export async function getExistingServer(
   savedSessionOptions: Required<SavedSessionOptions>,
-  url: string,
+  storageKey: string,
 ): Promise<SavedSessionInfo | null> {
   if (!savedSessionOptions.enabled) return null;
-  const storageKey = makeDefaultStorageKey(savedSessionOptions.storagePrefix, url);
   const storedInfoJSON = window.localStorage.getItem(storageKey);
   if (storedInfoJSON == null) {
     console.debug('thebe:getExistingServer No session saved in ', storageKey);
@@ -81,7 +72,7 @@ export async function getExistingServer(
   }
 
   // refresh lastUsed timestamp in stored info
-  updateLastUsedTimestamp(savedSessionOptions, existingSettings.baseUrl);
+  updateLastUsedTimestamp(storageKey);
   console.debug(
     `thebe:getExistingServer Saved binder session is valid and will be reused ${existingSettings.baseUrl}`,
   );
@@ -119,7 +110,7 @@ export function clearAllSavedSessions(storagePrefix = 'thebe-binder') {
  * @param storagePrefix
  * @param url
  */
-export function clearSavedSession(storagePrefix = 'thebe-binder', url = '') {
-  console.debug(`thebe:clearSavedSession - removing ${makeDefaultStorageKey(storagePrefix, url)}`);
-  window.localStorage.removeItem(makeDefaultStorageKey(storagePrefix, url));
+export function clearSavedSession(storageKey: string) {
+  console.debug(`thebe:clearSavedSession - removing ${storageKey}`);
+  window.localStorage.removeItem(storageKey);
 }

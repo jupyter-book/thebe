@@ -1,6 +1,11 @@
 import type { Config } from './config';
-import { makeDefaultStorageKey } from './sessions';
 import type { BinderUrlSet, RepoProviderSpec } from './types';
+
+export function makeDefaultStorageKey(storagePrefix: string, url: string) {
+  const urlObj = new URL(url);
+  // ignore the query string and hash
+  return `${storagePrefix}-${urlObj.origin + urlObj.pathname}`;
+}
 
 function makeDefaultBuildSpec(storagePrefix: string, binderUrl: string, stub: string) {
   const build = `${binderUrl}/build/${stub}`;

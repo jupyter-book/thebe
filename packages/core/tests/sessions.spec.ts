@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { makeDefaultStorageKey } from '../src/sessions';
+import { makeDefaultStorageKey } from '../src/url';
 
 describe('session saving', () => {
   describe('make storage key', () => {
