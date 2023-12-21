@@ -1,7 +1,7 @@
 import type { Config } from './config';
 import type { BinderUrlSet, RepoProviderSpec } from './types';
 
-function makeDefaultStorageKey(storagePrefix: string, url: string) {
+export function makeDefaultStorageKey(storagePrefix: string, url: string) {
   const urlObj = new URL(url);
   // ignore the query string and hash
   return `${storagePrefix}-${urlObj.origin + urlObj.pathname}`;
