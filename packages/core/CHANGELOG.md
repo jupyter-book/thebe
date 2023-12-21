@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.4.5
+
+### Patch Changes
+
+- cbeab97: Repo providers now also return the storage key for saved sessions so that they can make informed decisions about how to cache the session details based on the url/repo-spec.
+  - thebe-lite@0.4.5
+
 ## 0.4.4
 
 ### Patch Changes

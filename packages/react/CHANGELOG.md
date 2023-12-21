@@ -1,5 +1,12 @@
 # thebe-react
 
+## 0.4.5
+
+### Patch Changes
+
+- Updated dependencies [cbeab97]
+  - thebe-core@0.4.5
+
 ## 0.4.4
 
 ### Patch Changes

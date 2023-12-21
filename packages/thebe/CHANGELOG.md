@@ -1,5 +1,9 @@
 # thebe
 
+## 0.9.0-rc.12
+
+- updated `thebe-core` dependency
+
 ## 0.9.0-rc.11
 
 ### Minor Changes
