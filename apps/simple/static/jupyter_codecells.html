@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jupyter - Thebe Demo</title>
+    <!-- Configure and load Thebe !-->
+    <link rel="stylesheet" href="thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="index.js"></script>
+    <script>
+      function createSession(){
+        let secure = ""; // set to "s" if secure else set "" 
+        let server = document.getElementById("jupyterServer").value;
+        let serverToken = document.getElementById("jupyterToken").value;
+        let jupyterKernel = document.getElementById("jupyterKernel").value;
+        let config = {
+          bootstrap: false,
+          preRenderHook: false,
+          predefinedOutput: false,
+          outputSelector: '[data-output]',
+          requestKernel: true,
+          mountActivateWidget: true,
+          mountStatusWidget: true,
+          useJupyterLite: false,
+          useBinder: false,
+          kernelOptions: {
+            name: jupyterKernel,
+            kernelName: jupyterKernel,
+          },
+          serverSettings: {
+            baseUrl: "http://"+server,
+            wsUrl: "ws://"+server,
+            token: serverToken,
+          },
+          selector: "[data-executable]",
+          stripPrompts: false,
+          mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
+          codeMirrorConfig: {},
+        };
+        window.thebe.configuration = config;
+        // start setup
+        window.thebe.mountStatusWidget();
+        window.thebe.bootstrap(config);
+      }
+      function newCode(){
+        let content = '        <pre        style="background-color: #eee; padding: 16px"        data-executable="true"        data-language="python"      >%matplotlib inline\nimport numpy as np\nimport matplotlib.pyplot as plt\nplt.ion()\nfig, ax = plt.subplots()\nax.scatter(*np.random.randn(2, 100), c=np.random.randn(100))\nax.set(title="Wow, an interactive plot!")   \n   </pre>        ';
+        document.getElementById("codeCells").insertAdjacentHTML("beforeend",content);
+        window.thebe.newCells(window.thebe.configuration);
+      }
+      
+      function replaceCode(){
+        let content = '        <pre        style="background-color: #eee; padding: 16px"        data-executable="true"        data-language="python"      >%matplotlib inline\nimport matplotlib.pyplot as plt\nimport numpy as np\nfrom ipywidgets import interactive\n\ndef plot(m,c):\n    x = np.random.rand(10)\n    y = m *x + c\n    y2 = x\n    plt.plot(x,y)\n    plt.plot(x,y2)\n    plt.show()\ninteractive(plot, m=(-10,10, 0.5), c=(-5,5,0.5))   \n   </pre>        ';
+        document.getElementById("codeCells").innerHTML = content;
+        window.thebe.replaceCells(window.thebe.configuration);
+      }
+      
+    </script>
+    <style>
+      .CodeMirror {
+        max-width: 900px;
+      }
+      pre.code {
+        background-color: #eee;
+        padding: 16px;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div id="content" style="margin: 24px auto; max-width: 900px">
+      <h1>Handling code cells using a local server</h1>
+      <p>
+        To use this demo you to to have a juptyer server available and able to receive connections
+        from <code>localhost</code>. To start a local server, use the following command:
+      </p>
+      <p>
+        <code>jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</code>
+      </p>
+      <p>Use the + and - button to either create new code cells at the end or to remove all code cells and start fresh.</p>
+      <div>
+        <input id="jupyterKernel" type="text" placeholder="kernel: python3" value="python3">
+        <input id="jupyterServer" type="text" placeholder="server-url: localhost:8888" value="localhost:8888">
+        <input id="jupyterToken" type="password" placeholder="secret-token: secret" value="secret">
+        <input type="button" onclick="createSession()" value="Connect">
+      </div>
+      <div class="thebe-status"></div>
+      <div id="codeCells">
+        <pre
+          style="background-color: #eee; padding: 16px"
+          data-executable="true"
+          data-language="python"
+        >
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+plt.ion()
+fig, ax = plt.subplots()
+ax.scatter(*np.random.randn(2, 100), c=np.random.randn(100))
+ax.set(title="Wow, an interactive plot!")
+        </pre>
+        <pre
+          style="background-color: #eee; padding: 16px"
+          data-executable="true"
+          data-language="python"
+        >
+print("hello world")
+        </pre>
+      </div>
+    </div>
+    <button onclick="newCode()">+</button>
+    <button onclick="replaceCode()">-</button>
+  </body>
+</html>
