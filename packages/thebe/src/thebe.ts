@@ -45,6 +45,81 @@ export function mountActivateWidget(options: Options = {}) {
   window.thebe.activateButton.mount();
 }
 
+/*
+* detect new code cells
+*/
+export async function newCells(opts: Partial<Options> = {}) {
+  // bootstrap thebe on the page
+  // merge defaults, pageConfig, etc.
+  const options = mergeOptions({ useBinder: true, requestKernel: true, ...opts });
+
+  if (options.preRenderHook) options.preRenderHook();
+  if (options.stripPrompts) stripPrompts(options);
+  if (options.stripOutputPrompts) stripOutputPrompts(options);
+
+  const { selector, outputSelector } = options;
+  const items: CellDOMPlaceholder[] = findCells(
+    selector ?? defaultSelector,
+    outputSelector ?? defaultOutputSelector,
+  );
+
+  const codeWithIds = items.map(({ id, placeholders: { source: el } }) => {
+    return { id, source: el.textContent?.trim() ?? '' };
+  });
+
+  const config = makeConfiguration(options, window.thebe.events);
+  if( window.thebe.session == undefined || window.thebe.notebook == undefined || window.thebe.notebook?.cells.length < 1 ){
+    bootstrap(opts);
+  }
+
+  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook!.rendermime);
+  const session = window.thebe.notebook!.cells[0].session;
+  notebook.cells.forEach((cell) => {
+    cell.session = session;
+    window.thebe.notebook?.cells.push(cell);
+  })
+
+  renderAllCells(options, window.thebe.notebook!, items);
+}
+
+/*
+* detect new code cells and delete all old cells from notebook.cells
+*/
+export async function replaceCells(opts: Partial<Options> = {}) {
+  // bootstrap thebe on the page
+  // merge defaults, pageConfig, etc.
+  const options = mergeOptions({ useBinder: true, requestKernel: true, ...opts });
+
+  if (options.preRenderHook) options.preRenderHook();
+  if (options.stripPrompts) stripPrompts(options);
+  if (options.stripOutputPrompts) stripOutputPrompts(options);
+
+  const { selector, outputSelector } = options;
+  const items: CellDOMPlaceholder[] = findCells(
+    selector ?? defaultSelector,
+    outputSelector ?? defaultOutputSelector,
+  );
+
+  const codeWithIds = items.map(({ id, placeholders: { source: el } }) => {
+    return { id, source: el.textContent?.trim() ?? '' };
+  });
+
+  const config = makeConfiguration(options, window.thebe.events);
+
+  if( window.thebe.session == undefined || window.thebe.notebook == undefined || window.thebe.notebook?.cells.length < 1 ){
+    bootstrap(opts);
+  }
+  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook!.rendermime);
+  const session = window.thebe.notebook!.cells[0].session;
+  window.thebe.notebook!.cells = [];
+  notebook.cells.forEach((cell) => {
+    cell.session = session;
+    window.thebe.notebook?.cells.push(cell);
+  })
+
+  renderAllCells(options, window.thebe.notebook!, items);
+}
+
 /**
  * Bootstrap the library based on the configuration given.
  *
