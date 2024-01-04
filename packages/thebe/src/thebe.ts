@@ -46,8 +46,8 @@ export function mountActivateWidget(options: Options = {}) {
 }
 
 /*
-* detect new code cells
-*/
+ * detect new code cells
+ */
 export async function newCells(opts: Partial<Options> = {}) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
@@ -68,23 +68,32 @@ export async function newCells(opts: Partial<Options> = {}) {
   });
 
   const config = makeConfiguration(options, window.thebe.events);
-  if( window.thebe.session == undefined || window.thebe.notebook == undefined || window.thebe.notebook?.cells.length < 1 ){
+  if (
+    window.thebe.session === undefined ||
+    window.thebe.notebook === undefined ||
+    window.thebe.notebook?.cells.length < 1
+  ) {
     bootstrap(opts);
   }
 
-  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook!.rendermime);
-  const session = window.thebe.notebook!.cells[0].session;
+  if (!window.thebe.notebook) {
+    // successfull bootstrap should have set window.thebe.notebook
+    throw new Error('Notebook not available - window.thebe.notebook is undefined');
+  }
+
+  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook.rendermime);
+  const session = window.thebe.notebook.cells[0].session;
   notebook.cells.forEach((cell) => {
     cell.session = session;
     window.thebe.notebook?.cells.push(cell);
-  })
+  });
 
-  renderAllCells(options, window.thebe.notebook!, items);
+  renderAllCells(options, window.thebe.notebook, items);
 }
 
 /*
-* detect new code cells and delete all old cells from notebook.cells
-*/
+ * detect new code cells and delete all old cells from notebook.cells
+ */
 export async function replaceCells(opts: Partial<Options> = {}) {
   // bootstrap thebe on the page
   // merge defaults, pageConfig, etc.
@@ -106,18 +115,28 @@ export async function replaceCells(opts: Partial<Options> = {}) {
 
   const config = makeConfiguration(options, window.thebe.events);
 
-  if( window.thebe.session == undefined || window.thebe.notebook == undefined || window.thebe.notebook?.cells.length < 1 ){
+  if (
+    window.thebe.session === undefined ||
+    window.thebe.notebook === undefined ||
+    window.thebe.notebook?.cells.length < 1
+  ) {
     bootstrap(opts);
   }
-  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook!.rendermime);
-  const session = window.thebe.notebook!.cells[0].session;
-  window.thebe.notebook!.cells = [];
+
+  if (!window.thebe.notebook) {
+    // successfull bootstrap should have set window.thebe.notebook
+    throw new Error('Notebook not available - window.thebe.notebook is undefined');
+  }
+
+  const notebook = setupNotebookFromBlocks(codeWithIds, config, window.thebe.notebook.rendermime);
+  const session = window.thebe.notebook.cells[0].session;
+  window.thebe.notebook.cells = [];
   notebook.cells.forEach((cell) => {
     cell.session = session;
     window.thebe.notebook?.cells.push(cell);
-  })
+  });
 
-  renderAllCells(options, window.thebe.notebook!, items);
+  renderAllCells(options, window.thebe.notebook, items);
 }
 
 /**
