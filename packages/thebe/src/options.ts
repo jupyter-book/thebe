@@ -20,7 +20,7 @@ export interface ThebeOptions {
   mountRunButton?: boolean;
   mountRunAllButton?: boolean;
   mountRestartButton?: boolean;
-  mountRestartallButton?: boolean;
+  mountRestartAllButton?: boolean;
   preRenderHook?: (() => void) | null;
   // thebe specific options
   stripPrompts?: {
@@ -59,7 +59,7 @@ export const defaultOptions: ThebeOptions = {
   mountRunButton: true,
   mountRunAllButton: true,
   mountRestartButton: true,
-  mountRestartallButton: true,
+  mountRestartAllButton: true,
   codeMirrorConfig: {},
 };
 
