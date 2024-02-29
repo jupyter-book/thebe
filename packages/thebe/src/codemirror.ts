@@ -132,17 +132,17 @@ export function setupCodemirror(
   // TODO enable loading of mode js files via configuration
   // see https://github.com/jupyterlab/jupyterlab/blob/3.6.x/packages/codemirror/src/mode.ts for
   // an example of how to do this
-  ref.cm?.setOption('mode', codeMirrorConfig.mode);
+  ref.cm.setOption('mode', codeMirrorConfig.mode);
 
   // All cells in the notebook automatically update their sources on change
-  ref?.cm?.on('change', () => {
-    const code = ref?.cm?.getValue();
+  ref.cm.on('change', () => {
+    const code = ref.cm.getValue();
     cell.source = code;
-    ref?.cm?.refresh();
+    ref.cm.refresh();
   });
 
   if (codeMirrorConfig.readOnly) {
-    ref.cm?.display.lineDiv.setAttribute('data-readonly', 'true');
+    ref.cm.display.lineDiv.setAttribute('data-readonly', 'true');
     editorEl.setAttribute('data-readonly', 'true');
     cellEl.setAttribute('data-readonly', 'true');
   }
