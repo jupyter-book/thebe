@@ -93,9 +93,9 @@ export function ThebeServerProvider({
       server.connectToJupyterLiteServer({
         litePluginSettings: {
           '@jupyterlite/pyodide-kernel-extension:kernel': {
-            pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.2.0/pypi/all.json'],
+            pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.2.3/pypi/all.json'],
             pipliteWheelUrl:
-              'https://unpkg.com/@jupyterlite/pyodide-kernel@0.2.0/pypi/piplite-0.2.0-py3-none-any.whl',
+              'https://unpkg.com/@jupyterlite/pyodide-kernel@0.2.3/pypi/piplite-0.2.3-py3-none-any.whl',
           },
         },
       });
