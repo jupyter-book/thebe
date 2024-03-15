@@ -1,5 +1,15 @@
 # thebe-react
 
+## 0.4.6
+
+### Patch Changes
+
+- a080c19: Update pyodide-kernel.
+
+  Thanks to @jpto.
+
+  - thebe-core@0.4.6
+
 ## 0.4.5
 
 ### Patch Changes

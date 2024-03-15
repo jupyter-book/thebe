@@ -1,5 +1,16 @@
 # thebe
 
+## 0.9.0
+
+### Patch Changes
+
+- 0757602: Removing unneeded undefined guards
+- a080c19: Fixed inconsistent case: `mountRestartallButton` renamed to `mountRestartAllButton`.
+
+  Thanks to @kno10.
+
+  - thebe-core@0.4.6
+
 ## 0.9.0-rc.12
 
 - updated `thebe-core` dependency

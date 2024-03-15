@@ -1,5 +1,13 @@
 # thebe-lite
 
+## 0.4.6
+
+### Patch Changes
+
+- a080c19: Update pyodide-kernel.
+
+  Thanks to @jpto.
+
 ## 0.4.5
 
 ## 0.4.4

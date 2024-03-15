@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies [a080c19]
+  - thebe-lite@0.4.6
+
 ## 0.4.5
 
 ### Patch Changes
