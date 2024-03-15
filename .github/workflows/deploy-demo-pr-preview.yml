@@ -6,6 +6,8 @@ on:
       - reopened
       - synchronize
       - closed
+permissions:
+  pages: write
 jobs:
   deploy-preview:
     runs-on: ubuntu-20.04
