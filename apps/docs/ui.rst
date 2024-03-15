@@ -18,7 +18,7 @@ Cell Buttons
 
 When Thebe is activated, all `<pre>data-executable="true"</pre>` will be converted to code cells and control buttons are rendered by default.
 The buttons are optional, to remove a button, set its respective option to :code:`false`.
-The options are :code:`mountRunButton`, :code:`mountRestartButton`, :code:`mountRestartallButton`.
+The options are :code:`mountRunButton`, :code:`mountRunAllButton`, :code:`mountRestartButton`, :code:`mountRestartAllButton`.
 
 Keyboard Shortcuts
 ==================

@@ -125,7 +125,7 @@ function buildCellUI(
     });
   }
 
-  if (options.mountRestartallButton) {
+  if (options.mountRestartAllButton) {
     restartAll = buildButton(
       controls,
       'restartall',
