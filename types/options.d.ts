@@ -12,7 +12,7 @@ export interface ThebeOptions {
     mountRunButton?: boolean;
     mountRunAllButton?: boolean;
     mountRestartButton?: boolean;
-    mountRestartallButton?: boolean;
+    mountRestartAllButton?: boolean;
     preRenderHook?: (() => void) | null;
     stripPrompts?: {
         inPrompt?: string;
