@@ -56,7 +56,7 @@
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
     "happy-dom": "^10.11.2",
-    "turbo": "^1.4.2",
+    "turbo": "^2.0.3",
     "vitest": "^0.34.2"
   },
   "dependencies": {
@@ -67,5 +67,6 @@
     "@jupyterlab/codemirror": "4.0.8",
     "@jupyterlab/services": "7.0.8",
     "@lumino/widgets": "2.3.1"
-  }
+  },
+  "packageManager": "npm@10.8.1"
 }
