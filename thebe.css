@@ -42,11 +42,11 @@
     0 24px 38px 3px var(--jp-shadow-penumbra-color),
     0 9px 46px 8px var(--jp-shadow-ambient-color);
   --jp-border-width: 1px;
-  --jp-border-color0: var(--md-grey-400);
-  --jp-border-color1: var(--md-grey-400);
-  --jp-border-color2: var(--md-grey-300);
-  --jp-border-color3: var(--md-grey-200);
-  --jp-inverse-border-color: var(--md-grey-600);
+  --jp-border-color0: var(--md-grey-400, #bdbdbd);
+  --jp-border-color1: var(--md-grey-400, #bdbdbd);
+  --jp-border-color2: var(--md-grey-300, #e0e0e0);
+  --jp-border-color3: var(--md-grey-200, #eee);
+  --jp-inverse-border-color: var(--md-grey-600, #757575);
   --jp-border-radius: 2px;
   --jp-ui-font-scale-factor: 1.2;
   --jp-ui-font-size0: 0.83333em;
@@ -89,7 +89,8 @@
   --jp-content-font-color1: rgba(0, 0, 0, 0.87);
   --jp-content-font-color2: rgba(0, 0, 0, 0.54);
   --jp-content-font-color3: rgba(0, 0, 0, 0.38);
-  --jp-content-link-color: var(--md-blue-900);
+  --jp-content-link-color: var(--md-blue-900, #0d47a1);
+  --jp-content-link-visited-color: var(--md-purple-700, #7b1fa2);
   --jp-content-font-family:
     system-ui,
     -apple-system,
@@ -116,46 +117,46 @@
   --jp-code-cursor-width2: 4px;
   --jp-layout-color0: white;
   --jp-layout-color1: white;
-  --jp-layout-color2: var(--md-grey-200);
-  --jp-layout-color3: var(--md-grey-400);
-  --jp-layout-color4: var(--md-grey-600);
+  --jp-layout-color2: var(--md-grey-200, #eee);
+  --jp-layout-color3: var(--md-grey-400, #bdbdbd);
+  --jp-layout-color4: var(--md-grey-600, #757575);
   --jp-inverse-layout-color0: #111;
-  --jp-inverse-layout-color1: var(--md-grey-900);
-  --jp-inverse-layout-color2: var(--md-grey-800);
-  --jp-inverse-layout-color3: var(--md-grey-700);
-  --jp-inverse-layout-color4: var(--md-grey-600);
-  --jp-brand-color0: var(--md-blue-900);
-  --jp-brand-color1: var(--md-blue-700);
-  --jp-brand-color2: var(--md-blue-300);
-  --jp-brand-color3: var(--md-blue-100);
-  --jp-brand-color4: var(--md-blue-50);
-  --jp-accent-color0: var(--md-green-900);
-  --jp-accent-color1: var(--md-green-700);
-  --jp-accent-color2: var(--md-green-300);
-  --jp-accent-color3: var(--md-green-100);
-  --jp-warn-color0: var(--md-orange-900);
-  --jp-warn-color1: var(--md-orange-700);
-  --jp-warn-color2: var(--md-orange-300);
-  --jp-warn-color3: var(--md-orange-100);
-  --jp-error-color0: var(--md-red-900);
-  --jp-error-color1: var(--md-red-700);
-  --jp-error-color2: var(--md-red-300);
-  --jp-error-color3: var(--md-red-100);
-  --jp-success-color0: var(--md-green-900);
-  --jp-success-color1: var(--md-green-700);
-  --jp-success-color2: var(--md-green-300);
-  --jp-success-color3: var(--md-green-100);
-  --jp-info-color0: var(--md-cyan-900);
-  --jp-info-color1: var(--md-cyan-700);
-  --jp-info-color2: var(--md-cyan-300);
-  --jp-info-color3: var(--md-cyan-100);
+  --jp-inverse-layout-color1: var(--md-grey-900, #212121);
+  --jp-inverse-layout-color2: var(--md-grey-800, #424242);
+  --jp-inverse-layout-color3: var(--md-grey-700, #616161);
+  --jp-inverse-layout-color4: var(--md-grey-600, #757575);
+  --jp-brand-color0: var(--md-blue-900, #0d47a1);
+  --jp-brand-color1: var(--md-blue-700, #1976d2);
+  --jp-brand-color2: var(--md-blue-300, #64b5f6);
+  --jp-brand-color3: var(--md-blue-100, #bbdefb);
+  --jp-brand-color4: var(--md-blue-50, #e3f2fd);
+  --jp-accent-color0: var(--md-green-900, #1b5e20);
+  --jp-accent-color1: var(--md-green-700, #388e3c);
+  --jp-accent-color2: var(--md-green-300, #81c784);
+  --jp-accent-color3: var(--md-green-100, #c8e6c9);
+  --jp-warn-color0: var(--md-orange-900, #e65100);
+  --jp-warn-color1: var(--md-orange-700, #f57c00);
+  --jp-warn-color2: var(--md-orange-300, #ffb74d);
+  --jp-warn-color3: var(--md-orange-100, #ffe0b2);
+  --jp-error-color0: var(--md-red-900, #b71c1c);
+  --jp-error-color1: var(--md-red-700, #d32f2f);
+  --jp-error-color2: var(--md-red-300, #e57373);
+  --jp-error-color3: var(--md-red-100, #ffcdd2);
+  --jp-success-color0: var(--md-green-900, #1b5e20);
+  --jp-success-color1: var(--md-green-700, #388e3c);
+  --jp-success-color2: var(--md-green-300, #81c784);
+  --jp-success-color3: var(--md-green-100, #c8e6c9);
+  --jp-info-color0: var(--md-cyan-900, #006064);
+  --jp-info-color1: var(--md-cyan-700, #0097a7);
+  --jp-info-color2: var(--md-cyan-300, #4dd0e1);
+  --jp-info-color3: var(--md-cyan-100, #b2ebf2);
   --jp-cell-padding: 5px;
   --jp-cell-collapser-width: 8px;
   --jp-cell-collapser-min-height: 20px;
   --jp-cell-collapser-not-active-hover-opacity: 0.6;
-  --jp-cell-editor-background: var(--md-grey-100);
-  --jp-cell-editor-border-color: var(--md-grey-300);
-  --jp-cell-editor-box-shadow: inset 0 0 2px var(--md-blue-300);
+  --jp-cell-editor-background: var(--md-grey-100, #f5f5f5);
+  --jp-cell-editor-border-color: var(--md-grey-300, #e0e0e0);
+  --jp-cell-editor-box-shadow: inset 0 0 2px var(--md-blue-300, #64b5f6);
   --jp-cell-editor-active-background: var(--jp-layout-color0);
   --jp-cell-editor-active-border-color: var(--jp-brand-color1);
   --jp-cell-prompt-width: 64px;
@@ -163,16 +164,16 @@
   --jp-cell-prompt-letter-spacing: 0;
   --jp-cell-prompt-opacity: 1;
   --jp-cell-prompt-not-active-opacity: 0.5;
-  --jp-cell-prompt-not-active-font-color: var(--md-grey-700);
+  --jp-cell-prompt-not-active-font-color: var(--md-grey-700, #616161);
   --jp-cell-inprompt-font-color: #307fc1;
   --jp-cell-outprompt-font-color: #bf5b3d;
   --jp-notebook-padding: 10px;
   --jp-notebook-select-background: var(--jp-layout-color1);
-  --jp-notebook-multiselected-color: var(--md-blue-50);
+  --jp-notebook-multiselected-color: var(--md-blue-50, #e3f2fd);
   --jp-notebook-scroll-padding: calc( 100% - var(--jp-code-font-size) * var(--jp-code-line-height) - var(--jp-code-padding) - var(--jp-cell-padding) - 1px );
   --jp-rendermime-error-background: #fdd;
-  --jp-rendermime-table-row-background: var(--md-grey-100);
-  --jp-rendermime-table-row-hover-background: var(--md-light-blue-50);
+  --jp-rendermime-table-row-background: var(--md-grey-100, #cfd8dc);
+  --jp-rendermime-table-row-hover-background: var(--md-light-blue-50, #e1f5fe);
   --jp-dialog-background: rgba(0, 0, 0, 0.25);
   --jp-console-padding: 10px;
   --jp-toolbar-border-color: var(--jp-border-color1);
@@ -180,12 +181,12 @@
   --jp-toolbar-background: var(--jp-layout-color1);
   --jp-toolbar-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.24);
   --jp-toolbar-header-margin: 4px 4px 0 4px;
-  --jp-toolbar-active-background: var(--md-grey-300);
+  --jp-toolbar-active-background: var(--md-grey-300, #90a4ae);
   --jp-statusbar-height: 24px;
-  --jp-input-box-shadow: inset 0 0 2px var(--md-blue-300);
+  --jp-input-box-shadow: inset 0 0 2px var(--md-blue-300, #64b5f6);
   --jp-input-active-background: var(--jp-layout-color1);
   --jp-input-hover-background: var(--jp-layout-color1);
-  --jp-input-background: var(--md-grey-100);
+  --jp-input-background: var(--md-grey-100, #f5f5f5);
   --jp-input-border-color: var(--jp-inverse-border-color);
   --jp-input-active-border-color: var(--jp-brand-color1);
   --jp-input-active-box-shadow-color: rgba(19, 124, 189, 0.3);
@@ -196,7 +197,7 @@
   --jp-mirror-editor-atom-color: #88f;
   --jp-mirror-editor-number-color: #080;
   --jp-mirror-editor-def-color: #00f;
-  --jp-mirror-editor-variable-color: var(--md-grey-900);
+  --jp-mirror-editor-variable-color: var(--md-grey-900, #212121);
   --jp-mirror-editor-variable-2-color: rgb(0, 54, 109);
   --jp-mirror-editor-variable-3-color: #085;
   --jp-mirror-editor-punctuation-color: #05a;
@@ -232,30 +233,30 @@
   --jp-search-selected-match-color: black;
   --jp-search-unselected-match-background-color: var( --jp-inverse-layout-color0 );
   --jp-search-unselected-match-color: var(--jp-ui-inverse-font-color0);
-  --jp-icon-contrast-color0: var(--md-purple-600);
-  --jp-icon-contrast-color1: var(--md-green-600);
-  --jp-icon-contrast-color2: var(--md-pink-600);
-  --jp-icon-contrast-color3: var(--md-blue-600);
-  --jp-accept-color-normal: var(--md-blue-700);
-  --jp-accept-color-hover: var(--md-blue-800);
-  --jp-accept-color-active: var(--md-blue-900);
-  --jp-warn-color-normal: var(--md-red-700);
-  --jp-warn-color-hover: var(--md-red-800);
-  --jp-warn-color-active: var(--md-red-900);
-  --jp-reject-color-normal: var(--md-grey-600);
-  --jp-reject-color-hover: var(--md-grey-700);
-  --jp-reject-color-active: var(--md-grey-800);
+  --jp-icon-contrast-color0: var(--md-purple-600, #8e24aa);
+  --jp-icon-contrast-color1: var(--md-green-600, #43a047);
+  --jp-icon-contrast-color2: var(--md-pink-600, #d81b60);
+  --jp-icon-contrast-color3: var(--md-blue-600, #1e88e5);
+  --jp-accept-color-normal: var(--md-blue-700, #1976d2);
+  --jp-accept-color-hover: var(--md-blue-800, #1565c0);
+  --jp-accept-color-active: var(--md-blue-900, #0d47a1);
+  --jp-warn-color-normal: var(--md-red-700, #d32f2f);
+  --jp-warn-color-hover: var(--md-red-800, #c62828);
+  --jp-warn-color-active: var(--md-red-900, #b71c1c);
+  --jp-reject-color-normal: var(--md-grey-600, #757575);
+  --jp-reject-color-hover: var(--md-grey-700, #616161);
+  --jp-reject-color-active: var(--md-grey-800, #424242);
   --jp-jupyter-icon-color: #f37626;
   --jp-notebook-icon-color: #f37626;
-  --jp-json-icon-color: var(--md-orange-700);
-  --jp-console-icon-background-color: var(--md-blue-700);
+  --jp-json-icon-color: var(--md-orange-700, #f57c00);
+  --jp-console-icon-background-color: var(--md-blue-700, #1976d2);
   --jp-console-icon-color: white;
-  --jp-terminal-icon-background-color: var(--md-grey-800);
-  --jp-terminal-icon-color: var(--md-grey-200);
-  --jp-text-editor-icon-color: var(--md-grey-700);
-  --jp-inspector-icon-color: var(--md-grey-700);
-  --jp-switch-color: var(--md-grey-400);
-  --jp-switch-true-position-color: var(--md-orange-900);
+  --jp-terminal-icon-background-color: var(--md-grey-800, #424242);
+  --jp-terminal-icon-color: var(--md-grey-200, #eee);
+  --jp-text-editor-icon-color: var(--md-grey-700, #616161);
+  --jp-inspector-icon-color: var(--md-grey-700, #616161);
+  --jp-switch-color: var(--md-grey-400, #bdbdbd);
+  --jp-switch-true-position-color: var(--md-orange-900, #e65100);
 }
 tt,
 code,
@@ -2306,6 +2307,9 @@ pre {
 .jp-Dialog-button {
   overflow: visible;
 }
+button.jp-Dialog-button:disabled {
+  opacity: 0.6;
+}
 button.jp-Dialog-button:focus {
   outline: 1px solid var(--jp-brand-color1);
   outline-offset: 4px;
@@ -2327,7 +2331,7 @@ button.jp-Dialog-button.jp-mod-styled.jp-mod-warn:focus {
   outline: 1px solid var(--jp-warn-color-normal, var(--jp-error-color1));
 }
 button.jp-Dialog-button.jp-mod-styled.jp-mod-reject:focus {
-  outline: 1px solid var(--jp-reject-color-normal, var(--md-grey-600));
+  outline: 1px solid var(--jp-reject-color-normal, var(--md-grey-600, #757575));
 }
 button.jp-Dialog-close-button {
   padding: 0;
@@ -2366,10 +2370,6 @@ button.jp-Dialog-close-button {
 .jp-Dialog-checkbox {
   padding-right: 5px;
 }
-.jp-Dialog-checkbox > input:focus-visible {
-  outline: 1px solid var(--jp-input-active-border-color);
-  outline-offset: 1px;
-}
 .jp-Dialog-spacer {
   flex: 1 1 auto;
 }
@@ -2398,6 +2398,18 @@ button.jp-Dialog-close-button {
 }
 .jp-Input-Boolean-Dialog > label {
   flex: 1 1 auto;
+}
+.jp-InputDialog-inputWrapper {
+  display: flex;
+  align-items: baseline;
+}
+.jp-InputDialog-inputWrapper > input.jp-mod-styled:invalid {
+  border-color: var(--jp-error-color0);
+  background: var(--jp-error-color3);
+}
+.jp-InputDialog-inputWrapper > input[required].jp-mod-styled:invalid:placeholder-shown {
+  border-color: unset;
+  background: unset;
 }
 .jp-MainAreaWidget > :focus {
   outline: none;
@@ -2672,6 +2684,13 @@ button.jp-Dialog-close-button {
   --md-blue-grey-800: #37474f;
   --md-blue-grey-900: #263238;
 }
+.jp-Toolbar-item.jp-Toolbar-kernelStatus {
+  display: inline-block;
+  width: 32px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+}
 :root {
   --jp-private-code-span-padding: calc( (var(--jp-code-line-height) - 1) * var(--jp-code-font-size) / 2 );
 }
@@ -2690,17 +2709,17 @@ button.jp-Dialog-close-button {
   margin: 0;
   padding: 0;
 }
-.jp-RenderedText pre a:link {
+.jp-RenderedText pre a[href]:link {
   text-decoration: none;
   color: var(--jp-content-link-color);
 }
-.jp-RenderedText pre a:hover {
+.jp-RenderedText pre a[href]:hover {
   text-decoration: underline;
-  color: var(--jp-content-link-color);
+  color: var(--jp-content-link-hover-color, var(--jp-content-link-color));
 }
-.jp-RenderedText pre a:visited {
+.jp-RenderedText pre a[href]:visited {
   text-decoration: none;
-  color: var(--jp-content-link-color);
+  color: var(--jp-content-link-visited-color, var(--jp-content-link-color));
 }
 .jp-RenderedText pre .ansi-black-fg {
   color: #3e424d;
@@ -2862,11 +2881,11 @@ button.jp-Dialog-close-button {
 }
 .jp-RenderedHTMLCommon a:hover {
   text-decoration: underline;
-  color: var(--jp-content-link-color);
+  color: var(--jp-content-link-hover-color, var(--jp-content-link-color));
 }
 .jp-RenderedHTMLCommon a:visited {
   text-decoration: none;
-  color: var(--jp-content-link-color);
+  color: var(--jp-content-link-visited-color, var(--jp-content-link-color));
 }
 .jp-RenderedHTMLCommon h1,
 .jp-RenderedHTMLCommon h2,
@@ -2878,6 +2897,7 @@ button.jp-Dialog-close-button {
   font-weight: var(--jp-content-heading-font-weight);
   font-style: normal;
   margin: var(--jp-content-heading-margin-top) 0 var(--jp-content-heading-margin-bottom) 0;
+  scroll-margin-top: var(--jp-content-heading-margin-top);
 }
 .jp-RenderedHTMLCommon h1:first-child,
 .jp-RenderedHTMLCommon h2:first-child,
@@ -2886,6 +2906,7 @@ button.jp-Dialog-close-button {
 .jp-RenderedHTMLCommon h5:first-child,
 .jp-RenderedHTMLCommon h6:first-child {
   margin-top: calc(0.5 * var(--jp-content-heading-margin-top));
+  scroll-margin-top: calc(0.5 * var(--jp-content-heading-margin-top));
 }
 .jp-RenderedHTMLCommon h1:last-child,
 .jp-RenderedHTMLCommon h2:last-child,
@@ -3116,7 +3137,7 @@ button.jp-Dialog-close-button {
 a.jp-InternalAnchorLink {
   visibility: hidden;
   margin-left: 8px;
-  color: var(--md-blue-800);
+  color: var(--md-blue-800, #1565c0);
 }
 h1:hover .jp-InternalAnchorLink,
 h2:hover .jp-InternalAnchorLink,
