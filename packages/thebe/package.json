@@ -9,6 +9,9 @@
     "entryPoint": "./src/index.ts",
     "displayName": "Child Package"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": "rm -rf ./lib",
     "build:bundle:dev": "webpack --mode development --devtool inline-source-map --progress --color",
