@@ -1,5 +1,11 @@
 # thebe-lite
 
+## 0.4.7
+
+### Patch Changes
+
+- a9a06ab: Updated `pyodide-kernel` for Juptyerlite to get latest stubbed `widgetsnbextension`
+
 ## 0.4.6
 
 ### Patch Changes

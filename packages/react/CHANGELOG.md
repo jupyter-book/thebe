@@ -1,5 +1,13 @@
 # thebe-react
 
+## 0.4.7
+
+### Patch Changes
+
+- a9a06ab: Updated `pyodide-kernel` for Juptyerlite to get latest stubbed `widgetsnbextension`
+- Updated dependencies [7214737]
+  - thebe-core@0.4.7
+
 ## 0.4.6
 
 ### Patch Changes
