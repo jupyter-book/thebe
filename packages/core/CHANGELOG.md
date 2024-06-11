@@ -1,5 +1,13 @@
 # thebe-core
 
+## 0.4.7
+
+### Patch Changes
+
+- 7214737: Notebooks in subfolders will not have relative paths honoured in `thebe-lite`
+- Updated dependencies [a9a06ab]
+  - thebe-lite@0.4.7
+
 ## 0.4.6
 
 ### Patch Changes

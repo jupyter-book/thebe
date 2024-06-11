@@ -1,5 +1,13 @@
 # thebe
 
+## 0.9.1
+
+### Patch Changes
+
+- 268ebed: `Esc` will blur editor, fix to avoid keyboard trap (wcag 2.1.2) @tonyfast
+- Updated dependencies [7214737]
+  - thebe-core@0.4.7
+
 ## 0.9.0
 
 ### Patch Changes

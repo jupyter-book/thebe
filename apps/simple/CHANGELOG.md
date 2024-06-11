@@ -1,5 +1,11 @@
 # demo-simple
 
+## 1.0.4
+
+### Patch Changes
+
+- a9a06ab: Updated `pyodide-kernel` for Juptyerlite to get latest stubbed `widgetsnbextension`
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "thebe",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Thebe: turn static HTML pages into live documents",
   "main": "lib/index.js",
   "style": "lib/thebe.css",
@@ -63,7 +63,7 @@
     "@jupyter-widgets/base": "6.0.6",
     "@jupyter-widgets/controls": "5.0.7",
     "@jupyter-widgets/jupyterlab-manager": "5.0.9",
-    "thebe-core": "^0.4.6",
+    "thebe-core": "^0.4.7",
     "codemirror": "5.61.1",
     "current-script-polyfill": "^1.0.0"
   },
