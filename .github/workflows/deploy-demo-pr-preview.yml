@@ -7,7 +7,7 @@ on:
       - synchronize
       - closed
 permissions:
-  pages: write
+  contents: write
 jobs:
   deploy-preview:
     runs-on: ubuntu-20.04
