@@ -32,6 +32,7 @@ interface RequiredCodeMirrorConfig {
   extraKeys: {
     'Shift-Enter': () => void;
     'Ctrl-Space': () => void;
+    'Esc': () => void;
   };
 }
 
@@ -61,6 +62,10 @@ export function setupCodemirror(
   }
 
   const ref: { cm?: any } = { cm: undefined };
+
+  function unFocus() {
+    ref.cm?.display.input.blur()
+  }
 
   function codeCompletion() {
     console.debug(`thebe:codemirror:codeCompletion`);
@@ -116,7 +121,8 @@ export function setupCodemirror(
     extraKeys: {
       'Shift-Enter': execute,
       'Ctrl-Space': codeCompletion,
-    },
+      'Esc': unFocus,
+  },
   };
 
   const codeMirrorConfig = Object.assign(
