@@ -117,14 +117,25 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     await this.sessionManager.ready;
 
-    // name is assumed to be a non empty string but is otherwise note required
+    // name is assumed to be a non empty string but is otherwise not required
     // if a notebook name has been supplied on the path, use that otherwise use a default
     // https://jupyterlab.readthedocs.io/en/3.4.x/api/modules/services.session.html#isessionoptions
-    const path = kernelOptions?.path ?? this.config.kernels.path;
+    let path = kernelOptions?.path ?? this.config.kernels.path;
     let name = 'thebe.ipynb';
     const match = path.match(/\/*([a-zA-Z0-9-]+.ipynb)$/);
     if (match) {
       name = match[1];
+    }
+
+    const kernelName = kernelOptions?.kernelName ?? this.config.kernels.kernelName;
+
+    console.debug('thebe:api:startNewSession server', this);
+    console.debug('thebe:api:startNewSession', { name, path, kernelName });
+
+    if (this.serviceManager) {
+      // Temporary Fix: thebe-lite does not yet support filesystem based resouces fully,
+      // so we can't use a path that points to a sub folder.
+      path = path.slice(1).replace(/\//g, '-');
     }
 
     const connection = await this.sessionManager?.startNew({
@@ -132,7 +143,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
       path,
       type: 'notebook',
       kernel: {
-        name: kernelOptions?.kernelName ?? this.config.kernels.kernelName,
+        name: kernelName,
       },
     });
 
@@ -265,7 +276,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
         `thebe-lite is not available at window.thebeLite - load this onto your page before loading thebe or thebe-core.`,
       );
 
-    const serviceManager = await window.thebeLite.startJupyterLiteServer(config);
+    this.serviceManager = await window.thebeLite.startJupyterLiteServer(config);
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
@@ -274,10 +285,10 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     console.debug(
       'thebe:api:connectToJupyterLiteServer:serverSettings:',
-      serviceManager.serverSettings,
+      this.serviceManager.serverSettings,
     );
 
-    this.sessionManager = serviceManager.sessions;
+    this.sessionManager = this.serviceManager.sessions;
 
     this.events.triggerStatus({
       status: ServerStatusEvent.launching,
@@ -286,7 +297,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
     return this.sessionManager?.ready.then(
       () => {
-        this.userServerUrl = `${serviceManager.serverSettings.baseUrl}?token=${serviceManager.serverSettings.token}`;
+        this.userServerUrl = '/'; // TODO bundle jlite UI `${this.serviceManager?.serverSettings.baseUrl}?token=${this.serviceManager?.serverSettings.token}`;
         this.events.triggerStatus({
           status: ServerStatusEvent.ready,
           message: `Server connection established`,
