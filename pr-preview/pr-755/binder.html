@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Binder - Thebe Demo</title>
+    <!-- Configure and load Thebe !-->
+    <script type="text/x-thebe-config">
+      {
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: true,
+        binderOptions: {
+          repo: 'executablebooks/thebe-binder-base',
+          ref: 'HEAD',
+          binderUrl: 'https://mybinder.org',
+        }
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="index.js"></script>
+    <style>
+      .CodeMirror {
+        max-width: 900px;
+      }
+      pre.code {
+        background-color: #eee;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="margin: 24px auto; max-width: 900px">
+      <h1>Simple plots using mybinder.org</h1>
+      <p>
+        Activating this page will connect to the public my binder service at
+        <code>https://mybinder.org</code>, launch a server and connect to a `python3` kernel.
+      </p>
+      <div class="thebe-activate"></div>
+      <div class="thebe-status"></div>
+      <pre class="code" data-executable="true" data-language="python">
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+fig, ax = plt.subplots()
+ax.scatter(*np.random.randn(2, 100), c=np.random.randn(100))
+ax.set(title="Wow, a python plot on my webpage!")
+    </pre
+      >
+    </div>
+  </body>
+</html>
