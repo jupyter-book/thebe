@@ -165,7 +165,10 @@ export function useNotebook(
             .fill(null)
             .map((_, idx) => (node) => {
               console.debug(`new ref[${idx}] - attaching to dom...`, node);
-              if (node != null) cells[idx].attachToDOM(node);
+              if (node != null) {
+                cells[idx].attachToDOM(node);
+                cells[idx].render(cells[idx].outputs);
+              }
             }),
         );
         setNotebook(nb);

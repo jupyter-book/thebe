@@ -7,6 +7,7 @@ import { CellStatusEvent, ErrorStatusEvent, errorToMessage, EventSubject } from 
 import { EventEmitter } from './emitter';
 import type { ICodeCell, IError, IOutput } from '@jupyterlab/nbformat';
 import { ensureString, shortId } from './utils';
+import type ThebeNotebook from './notebook';
 
 class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
   kind: CellKind;
@@ -14,23 +15,23 @@ class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
   metadata: JsonObject;
   session?: ThebeSession;
   executionCount: number | null;
+  notebook?: ThebeNotebook;
   protected initialOutputs: IOutput[];
-  readonly notebookId: string;
   protected busy: boolean;
   protected events: EventEmitter;
 
   constructor(
     id: string,
-    notebookId: string,
     source: string,
     config: Config,
     metadata: JsonObject,
     rendermime: IRenderMimeRegistry,
+    notebook?: ThebeNotebook,
   ) {
     super(id, rendermime);
     this.kind = 'code';
     this.events = new EventEmitter(id, config, EventSubject.cell, this);
-    this.notebookId = notebookId;
+    this.notebook = notebook;
     this.source = source;
     this.metadata = metadata;
     this.busy = false;
@@ -41,17 +42,17 @@ class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
 
   static fromICodeCell(
     icc: ICodeCell,
-    notebookId: string,
     config: Config,
     rendermime: IRenderMimeRegistry,
+    notebook?: ThebeNotebook,
   ) {
     const cell = new ThebeCodeCell(
       icc.id ?? shortId(),
-      notebookId,
       ensureString(icc.source),
       config,
       icc.metadata,
       rendermime,
+      notebook,
     );
     Object.assign(cell.metadata, icc.metadata);
 

@@ -4,7 +4,9 @@ import type { Widget } from '@lumino/widgets';
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
 
-import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
+import { WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
+import type { IManagerState } from '@jupyter-widgets/base-manager';
+import { ManagerBase } from '@jupyter-widgets/base-manager';
 
 export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
 
@@ -13,7 +15,7 @@ import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
-import type { Kernel } from '@jupyterlab/services';
+import type { IManager, Kernel } from '@jupyterlab/services';
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -21,22 +23,20 @@ import type { Kernel } from '@jupyterlab/services';
  * https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
  *
  */
-export class ThebeManager extends KernelWidgetManager {
+export class PassiveThebeManager extends ManagerBase {
   id: string;
   _loader: RequireJsLoader;
 
-  constructor(
-    kernel: Kernel.IKernelConnection,
-    rendermime: IRenderMimeRegistry,
-    widgetState?: Record<string, any>,
-  ) {
-    super(kernel, rendermime);
+  constructor(kernel: Kernel.IKernelConnection, widgetState?: Record<string, any>) {
+    super();
 
     this.id = shortId();
-    /** ensure this registry always gets the widget renderer.
-     * This is essential for cases where widgets are rendered heirarchically
-     */
-    this.rendermime.addFactory(
+    this._registerWidgets();
+    this._loader = new RequireJsLoader();
+  }
+
+  static addWidgetRenderer(rendermime: IRenderMimeRegistry) {
+    rendermime.addFactory(
       {
         safe: false,
         mimeTypes: [WIDGET_MIMETYPE],
@@ -44,9 +44,6 @@ export class ThebeManager extends KernelWidgetManager {
       },
       1,
     );
-
-    this._registerWidgets();
-    this._loader = new RequireJsLoader();
   }
 
   /**
@@ -54,8 +51,20 @@ export class ThebeManager extends KernelWidgetManager {
    * see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
    *
    */
-  async build_widgets(): Promise<void> {
-    throw new Error('ThebeManager:build_widgets not implmented');
+  async hydrate(state: IManagerState): Promise<void> {
+    const models = await this.set_state(state);
+    models.forEach(async (model) => {
+      const view = await this.create_view(model);
+      this.display_view(view);
+    });
+  }
+
+  _get_comm_info() {
+    return Promise.resolve({});
+  }
+
+  _create_comm() {
+    return Promise.reject('no comms available');
   }
 
   async display_view(msg: any, view: any, options: any): Promise<Widget> {

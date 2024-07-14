@@ -5,6 +5,7 @@ import PassiveCellRenderer from './passive';
 import type ThebeSession from './session';
 import type { CellKind, IThebeCell, IThebeCellExecuteReturn, JsonObject } from './types';
 import { ensureString, shortId } from './utils';
+import type ThebeNotebook from './notebook';
 
 /**
  * A Thebe cell that is exepected to contain markdown (or raw) source.
@@ -15,35 +16,35 @@ import { ensureString, shortId } from './utils';
  */
 export default class ThebeMarkdownCell extends PassiveCellRenderer implements IThebeCell {
   id: string;
-  notebookId: string;
   kind: CellKind;
   source: string;
   busy: boolean;
   metadata: JsonObject;
+  notebook?: ThebeNotebook;
 
   constructor(
     id: string,
-    notebookId: string,
     source: string,
     metadata: JsonObject,
     rendermime: IRenderMimeRegistry,
+    notebook?: ThebeNotebook,
   ) {
     super(id, rendermime);
     this.kind = 'markdown';
     this.id = id;
-    this.notebookId = notebookId;
+    this.notebook = notebook;
     this.source = source;
     this.busy = false;
     this.metadata = metadata;
   }
 
-  static fromICell(ic: ICell, notebookId: string, rendermime: IRenderMimeRegistry) {
+  static fromICell(ic: ICell, rendermime: IRenderMimeRegistry, notebook?: ThebeNotebook) {
     const cell = new ThebeMarkdownCell(
       typeof ic.id === 'string' ? ic.id : shortId(),
-      notebookId,
       ensureString(ic.source),
       ic.metadata,
       rendermime,
+      notebook,
     );
     return cell;
   }

@@ -15,19 +15,32 @@ export interface CodeBlock {
   [x: string]: any;
 }
 
+function coerceToObject(maybe: any): Record<string, any> {
+  if (typeof maybe === 'object') return maybe;
+  if (Array.isArray(maybe)) return Object.fromEntries(maybe.map((v, k) => [k, v]));
+  return {};
+}
+
 class ThebeNotebook {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
   cells: IThebeCell[];
   metadata: INotebookMetadata;
+  widgetState: Record<string, any>;
   session?: ThebeSession;
   protected events: EventEmitter;
 
-  constructor(id: string, config: Config, rendermime: IRenderMimeRegistry) {
+  constructor(
+    id: string,
+    config: Config,
+    rendermime: IRenderMimeRegistry,
+    metadata?: INotebookMetadata,
+  ) {
     this.id = id;
     this.events = new EventEmitter(id, config, EventSubject.notebook, this);
     this.cells = [];
-    this.metadata = {};
+    this.metadata = metadata ?? {};
+    this.widgetState = coerceToObject(metadata?.widgets);
     this.rendermime = rendermime;
     console.debug('thebe:notebook constructor', this);
   }
@@ -37,7 +50,14 @@ class ThebeNotebook {
     const notebook = new ThebeNotebook(id, config, rendermime);
     notebook.cells = blocks.map((c) => {
       const metadata = {};
-      const cell = new ThebeCodeCell(c.id, id, c.source, config, metadata, notebook.rendermime);
+      const cell = new ThebeCodeCell(
+        c.id,
+        c.source,
+        config,
+        metadata,
+        notebook.rendermime,
+        notebook,
+      );
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
@@ -52,13 +72,8 @@ class ThebeNotebook {
 
     notebook.cells = ipynb.cells.map((c) => {
       if ((c as ICodeCell).cell_type === 'code')
-        return ThebeCodeCell.fromICodeCell(
-          c as ICodeCell,
-          notebook.id,
-          config,
-          notebook.rendermime,
-        );
-      return ThebeMarkdownCell.fromICell(c, notebook.id, notebook.rendermime);
+        return ThebeCodeCell.fromICodeCell(c as ICodeCell, config, notebook.rendermime, notebook);
+      return ThebeMarkdownCell.fromICell(c, notebook.rendermime, notebook);
     });
 
     return notebook;
@@ -71,6 +86,9 @@ class ThebeNotebook {
     return p;
   }
 
+  /**
+  @deprecated
+   */
   get widgets() {
     return this.findCells('widget') ?? [];
   }

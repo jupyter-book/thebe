@@ -114,6 +114,11 @@ class PassiveCellRenderer implements IPassiveCell {
    */
   render(outputs: nbformat.IOutput[]) {
     this.model.fromJSON(outputs);
+    this.hydrate();
+  }
+
+  hydrate() {
+    console.log('maybe hydrate', this);
   }
 }
 
