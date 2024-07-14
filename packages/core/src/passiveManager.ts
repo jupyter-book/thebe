@@ -10,6 +10,13 @@ import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
 import { WIDGET_VIEW_MIMETYPE } from './manager';
 
+export function makeThebePassiveManager(
+  rendermime: IRenderMimeRegistry,
+  widgetState?: IManagerState,
+) {
+  return new ThebePassiveManager(rendermime, widgetState);
+}
+
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
  * the JupyterLab  Manager and inspierd by the implementation in Voila here:
