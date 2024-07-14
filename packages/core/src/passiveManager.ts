@@ -1,9 +1,10 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import { WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
 import type { IManagerState } from '@jupyter-widgets/base-manager';
 import { ManagerBase } from '@jupyter-widgets/base-manager';
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
+import * as output from '@jupyter-widgets/html-manager/lib/output';
+import { WidgetRenderer } from '@jupyter-widgets/html-manager/lib/output_renderers';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
@@ -20,7 +21,7 @@ export class ThebePassiveManager extends ManagerBase {
   _loader: RequireJsLoader;
   views: Record<string, base.DOMWidgetView> = {};
 
-  constructor(widgetState?: IManagerState) {
+  constructor(rendermime: IRenderMimeRegistry, widgetState?: IManagerState) {
     super();
 
     this.id = shortId();
@@ -28,9 +29,7 @@ export class ThebePassiveManager extends ManagerBase {
     if (widgetState) {
       this.load_state(widgetState);
     }
-  }
 
-  static addWidgetRenderer(rendermime: IRenderMimeRegistry) {
     rendermime.addFactory(
       {
         safe: false,
@@ -40,6 +39,17 @@ export class ThebePassiveManager extends ManagerBase {
       1,
     );
   }
+
+  // static addWidgetRenderer(rendermime: IRenderMimeRegistry) {
+  //   rendermime.addFactory(
+  //     {
+  //       safe: false,
+  //       mimeTypes: [WIDGET_VIEW_MIMETYPE],
+  //       createRenderer: (options) => new WidgetRenderer(options, this as any),
+  //     },
+  //     1,
+  //   );
+  // }
 
   /**
    * TODO implement a reasonable method for thebe-core that can load serialized widget state

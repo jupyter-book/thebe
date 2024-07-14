@@ -30,6 +30,7 @@ class PassiveCellRenderer implements IPassiveCell {
     this.id = id;
     this.rendermime = rendermime ?? makeRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     assert(this.rendermime, 'no rendermime');
+    console.log('rendermime', this.rendermime);
     this.model = new OutputAreaModel({ trusted: true });
     this.area = new OutputArea({
       model: this.model,

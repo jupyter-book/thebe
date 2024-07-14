@@ -168,7 +168,7 @@ export function useNotebook(
       })
       .then((nb: ThebeNotebook) => {
         const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
-        const manager = new ThebePassiveManager();
+        const manager = new ThebePassiveManager(rendermime);
         if (nb.metadata.widgets && (nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE]) {
           manager.load_state((nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE] as IManagerState);
         }
@@ -183,23 +183,23 @@ export function useNotebook(
                 cells[idx].render(cells[idx].initialOutputs);
                 // cells[idx].setOutputText('attached to DOM [OUTPUT]');
 
-                console.log('about to hydrate widgets', cells[idx].outputs);
-                cells[idx].outputs.forEach((output, i) => {
-                  console.log('output', i, output);
-                  if (
-                    (output.output_type === 'display_data' ||
-                      output.output_type === 'execute_result') &&
-                    typeof output.data === 'object'
-                  ) {
-                    console.log('output:confirmed', i, output);
-                    const mimeBundles = output.data as IExecuteResult;
-                    if (mimeBundles[WIDGET_VIEW_MIMETYPE]) {
-                      const model_id = (mimeBundles[WIDGET_VIEW_MIMETYPE] as { model_id: string })
-                        .model_id;
-                      manager.hydrate(model_id, node); // await or faf?
-                    }
-                  }
-                });
+                // console.log('about to hydrate widgets', cells[idx].outputs);
+                // cells[idx].outputs.forEach((output, i) => {
+                //   console.log('output', i, output);
+                //   if (
+                //     (output.output_type === 'display_data' ||
+                //       output.output_type === 'execute_result') &&
+                //     typeof output.data === 'object'
+                //   ) {
+                //     console.log('output:confirmed', i, output);
+                //     const mimeBundles = output.data as IExecuteResult;
+                //     if (mimeBundles[WIDGET_VIEW_MIMETYPE]) {
+                //       const model_id = (mimeBundles[WIDGET_VIEW_MIMETYPE] as { model_id: string })
+                //         .model_id;
+                //       manager.hydrate(model_id, node); // await or faf?
+                //     }
+                //   }
+                // });
               }
             }),
         );
