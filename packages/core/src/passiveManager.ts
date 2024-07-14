@@ -19,6 +19,7 @@ import { WIDGET_VIEW_MIMETYPE } from './manager';
 export class ThebePassiveManager extends ManagerBase {
   id: string;
   _loader: RequireJsLoader;
+  rendermime: IRenderMimeRegistry;
   views: Record<string, base.DOMWidgetView> = {};
 
   constructor(rendermime: IRenderMimeRegistry, widgetState?: IManagerState) {
@@ -29,7 +30,7 @@ export class ThebePassiveManager extends ManagerBase {
     if (widgetState) {
       this.load_state(widgetState);
     }
-
+    this.rendermime = rendermime;
     rendermime.addFactory(
       {
         safe: false,
@@ -40,16 +41,12 @@ export class ThebePassiveManager extends ManagerBase {
     );
   }
 
-  // static addWidgetRenderer(rendermime: IRenderMimeRegistry) {
-  //   rendermime.addFactory(
-  //     {
-  //       safe: false,
-  //       mimeTypes: [WIDGET_VIEW_MIMETYPE],
-  //       createRenderer: (options) => new WidgetRenderer(options, this as any),
-  //     },
-  //     1,
-  //   );
-  // }
+  /**
+   * An accessor allowing us to use the @jupyter-widgets/html-manager/lib/output_renderers
+   */
+  get renderMime() {
+    return this.rendermime;
+  }
 
   /**
    * TODO implement a reasonable method for thebe-core that can load serialized widget state
