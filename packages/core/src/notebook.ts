@@ -52,12 +52,12 @@ class ThebeNotebook {
       const metadata = {};
       const cell = new ThebeCodeCell(
         c.id,
+        notebook.id,
         c.source,
         c.outputs ?? [],
         config,
         metadata,
         notebook.rendermime,
-        notebook,
       );
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
@@ -73,7 +73,12 @@ class ThebeNotebook {
 
     notebook.cells = ipynb.cells.map((c) => {
       if ((c as ICodeCell).cell_type === 'code')
-        return ThebeCodeCell.fromICodeCell(c as ICodeCell, config, notebook.rendermime, notebook);
+        return ThebeCodeCell.fromICodeCell(
+          c as ICodeCell,
+          notebook.id,
+          config,
+          notebook.rendermime,
+        );
       return ThebeMarkdownCell.fromICell(c, notebook.rendermime, notebook);
     });
 
