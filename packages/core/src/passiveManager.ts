@@ -21,11 +21,13 @@ export class ThebePassiveManager extends ManagerBase {
   _loader: RequireJsLoader;
   rendermime: IRenderMimeRegistry;
   views: Record<string, base.DOMWidgetView> = {};
+  models: base.WidgetModel[];
 
   constructor(rendermime: IRenderMimeRegistry, widgetState?: IManagerState) {
     super();
 
     this.id = shortId();
+    this.models = [];
     this._loader = new RequireJsLoader();
     if (widgetState) {
       this.load_state(widgetState);
@@ -53,7 +55,13 @@ export class ThebePassiveManager extends ManagerBase {
    * see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
    */
   async load_state(state: IManagerState): Promise<any[]> {
-    return this.set_state(state);
+    this.models = await this.set_state(state);
+    this.models.forEach((model) => {
+      model.on('change', () => {
+        alert('no comms available');
+      });
+    });
+    return this.models;
   }
 
   async hydrate(model_id: string, el: any): Promise<void> {
@@ -69,7 +77,18 @@ export class ThebePassiveManager extends ManagerBase {
   }
 
   _get_comm_info() {
-    return Promise.resolve({});
+    return Promise.resolve({
+      on_close: () => {
+        return;
+      },
+      on_msg: () => {
+        alert('no comms available');
+        return;
+      },
+      close: () => {
+        return;
+      },
+    });
   }
 
   _create_comm() {
