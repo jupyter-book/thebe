@@ -1,19 +1,22 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Widget } from '@lumino/widgets';
-
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
-
 import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
-
-export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
-
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
 import type { Kernel } from '@jupyterlab/services';
+
+export const WIDGET_STATE_MIMETYPE = 'application/vnd.jupyter.widget-state+json';
+export const WIDGET_VIEW_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
+
+/**
+ * @deprecated use WIDGET_VIEW_MIMETYPE
+ */
+export const WIDGET_MIMETYPE = WIDGET_VIEW_MIMETYPE;
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -25,11 +28,7 @@ export class ThebeManager extends KernelWidgetManager {
   id: string;
   _loader: RequireJsLoader;
 
-  constructor(
-    kernel: Kernel.IKernelConnection,
-    rendermime: IRenderMimeRegistry,
-    widgetState?: Record<string, any>,
-  ) {
+  constructor(kernel: Kernel.IKernelConnection, rendermime: IRenderMimeRegistry) {
     super(kernel, rendermime);
 
     this.id = shortId();
@@ -39,7 +38,7 @@ export class ThebeManager extends KernelWidgetManager {
     this.rendermime.addFactory(
       {
         safe: false,
-        mimeTypes: [WIDGET_MIMETYPE],
+        mimeTypes: [WIDGET_VIEW_MIMETYPE],
         createRenderer: (options) => new WidgetRenderer(options, this as any),
       },
       1,

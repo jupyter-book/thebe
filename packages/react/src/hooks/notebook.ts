@@ -1,10 +1,19 @@
 import { createRef, useEffect, useState } from 'react';
-import type { ThebeNotebook, ThebeSession, IThebeCell, IThebeCellExecuteReturn } from 'thebe-core';
+import {
+  type ThebeNotebook,
+  type ThebeSession,
+  type IThebeCell,
+  type IThebeCellExecuteReturn,
+  ThebePassiveManager,
+  WIDGET_VIEW_MIMETYPE,
+  WIDGET_STATE_MIMETYPE,
+} from 'thebe-core';
 import { useThebeConfig } from '../ThebeServerProvider';
 import { useThebeLoader } from '../ThebeLoaderProvider';
-import type { INotebookContent } from '@jupyterlab/nbformat';
+import type { IExecuteResult, INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
 import { useRenderMimeRegistry } from '../ThebeRenderMimeRegistryProvider';
+import type { IManagerState } from '@jupyter-widgets/base-manager';
 
 export interface NotebookExecuteOptions {
   stopOnError?: boolean;
@@ -159,6 +168,10 @@ export function useNotebook(
       })
       .then((nb: ThebeNotebook) => {
         const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
+        const manager = new ThebePassiveManager();
+        if (nb.metadata.widgets && (nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE]) {
+          manager.load_state((nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE] as IManagerState);
+        }
         // set up an array of callback refs to update the DOM elements
         setRefs(
           Array(cells.length)
@@ -168,6 +181,23 @@ export function useNotebook(
               if (node != null) {
                 cells[idx].attachToDOM(node);
                 cells[idx].render(cells[idx].outputs);
+                cells[idx].setOutputText('attached to DOM [OUTPUT]');
+
+                cells[idx].outputs.forEach((output, i) => {
+                  if (
+                    (output.output_type === 'display_data' ||
+                      output.output_type === 'execute_result') &&
+                    typeof output.data === 'object'
+                  ) {
+                    console.log('output', i, output);
+                    const mimeBundles = output.data as IExecuteResult;
+                    if (mimeBundles[WIDGET_VIEW_MIMETYPE]) {
+                      const model_id = (mimeBundles[WIDGET_VIEW_MIMETYPE] as { model_id: string })
+                        .model_id;
+                      manager.hydrate(model_id, node); // await or faf?
+                    }
+                  }
+                });
               }
             }),
         );

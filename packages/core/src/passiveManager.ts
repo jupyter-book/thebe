@@ -8,14 +8,12 @@ import { WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
 import type { IManagerState } from '@jupyter-widgets/base-manager';
 import { ManagerBase } from '@jupyter-widgets/base-manager';
 
-export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
-
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
-import type { IManager, Kernel } from '@jupyterlab/services';
+import { WIDGET_VIEW_MIMETYPE } from './manager';
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -23,23 +21,26 @@ import type { IManager, Kernel } from '@jupyterlab/services';
  * https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
  *
  */
-export class PassiveThebeManager extends ManagerBase {
+export class ThebePassiveManager extends ManagerBase {
   id: string;
   _loader: RequireJsLoader;
+  views: Record<string, base.DOMWidgetView> = {};
 
-  constructor(kernel: Kernel.IKernelConnection, widgetState?: Record<string, any>) {
+  constructor(widgetState?: IManagerState) {
     super();
 
     this.id = shortId();
-    this._registerWidgets();
     this._loader = new RequireJsLoader();
+    if (widgetState) {
+      this.load_state(widgetState);
+    }
   }
 
   static addWidgetRenderer(rendermime: IRenderMimeRegistry) {
     rendermime.addFactory(
       {
         safe: false,
-        mimeTypes: [WIDGET_MIMETYPE],
+        mimeTypes: [WIDGET_VIEW_MIMETYPE],
         createRenderer: (options) => new WidgetRenderer(options, this as any),
       },
       1,
@@ -49,14 +50,21 @@ export class PassiveThebeManager extends ManagerBase {
   /**
    * TODO implement a reasonable method for thebe-core that can load serialized widget state
    * see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
-   *
    */
-  async hydrate(state: IManagerState): Promise<void> {
-    const models = await this.set_state(state);
-    models.forEach(async (model) => {
-      const view = await this.create_view(model);
-      this.display_view(view);
-    });
+  async load_state(state: IManagerState): Promise<any[]> {
+    return this.set_state(state);
+  }
+
+  async hydrate(model_id: string, el: any): Promise<void> {
+    console.debug(`thebe:manager:hydrate ${model_id}`);
+    const model = await this.get_model(model_id);
+    console.debug(`thebe:manager:hydrate ${model_id} model`, model);
+    const view = await this.create_view(model);
+    this.views[model_id] = view;
+    console.debug(`thebe:manager:hydrate ${model_id} view`, view);
+    console.debug(`thebe:manager:hydrate ${model_id} el`, el);
+    this.display_view(view, el);
+    console.debug(`thebe:manager:hydrate ${model_id} done`);
   }
 
   _get_comm_info() {
@@ -67,9 +75,9 @@ export class PassiveThebeManager extends ManagerBase {
     return Promise.reject('no comms available');
   }
 
-  async display_view(msg: any, view: any, options: any): Promise<Widget> {
-    if (options.el) {
-      LuminoWidget.Widget.attach(view.luminoWidget, options.el);
+  async display_view(view: any, el?: any): Promise<Widget> {
+    if (el) {
+      LuminoWidget.Widget.attach(view.luminoWidget, el);
     }
     if (view.el) {
       view.el.setAttribute('data-thebe-jupyter-widget', '');
@@ -97,12 +105,12 @@ export class PassiveThebeManager extends ManagerBase {
     console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
     const rjs = await this._loader.ready;
 
-    if (
-      moduleName === '@jupyter-widgets/base' ||
-      moduleName === '@jupyter-widgets/controls' ||
-      moduleName === '@jupyter-widgets/output'
-    ) {
-      return super.loadClass(className, moduleName, moduleVersion);
+    if (moduleName === '@jupyter-widgets/base') {
+      return (base as Record<string, any>)[className];
+    } else if (moduleName === '@jupyter-widgets/controls') {
+      return (controls as Record<string, any>)[className];
+    } else if (moduleName === '@jupyter-widgets/output') {
+      return (output as Record<string, any>)[className];
     } else {
       let mod;
       try {
@@ -120,23 +128,5 @@ export class PassiveThebeManager extends ManagerBase {
         throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
       }
     }
-  }
-
-  private _registerWidgets() {
-    this.register({
-      name: '@jupyter-widgets/base',
-      version: base.JUPYTER_WIDGETS_VERSION,
-      exports: base as unknown as base.ExportData, // TODO improve typing
-    });
-    this.register({
-      name: '@jupyter-widgets/controls',
-      version: controls.JUPYTER_CONTROLS_VERSION,
-      exports: controls as unknown as base.ExportData, // TODO improve typing
-    });
-    this.register({
-      name: '@jupyter-widgets/output',
-      version: output.OUTPUT_WIDGET_VERSION,
-      exports: output as any,
-    });
   }
 }
