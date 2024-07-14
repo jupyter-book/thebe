@@ -79,7 +79,7 @@ class ThebeNotebook {
           config,
           notebook.rendermime,
         );
-      return ThebeMarkdownCell.fromICell(c, notebook.rendermime, notebook);
+      return ThebeMarkdownCell.fromICell(c, notebook.id, notebook.rendermime);
     });
 
     return notebook;

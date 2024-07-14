@@ -16,35 +16,35 @@ import type ThebeNotebook from './notebook';
  */
 export default class ThebeMarkdownCell extends PassiveCellRenderer implements IThebeCell {
   id: string;
+  notebookId: string;
   kind: CellKind;
   source: string;
   busy: boolean;
   metadata: JsonObject;
-  notebook?: ThebeNotebook;
 
   constructor(
     id: string,
+    notebookId: string,
     source: string,
     metadata: JsonObject,
     rendermime: IRenderMimeRegistry,
-    notebook?: ThebeNotebook,
   ) {
     super(id, [], rendermime);
     this.kind = 'markdown';
     this.id = id;
-    this.notebook = notebook;
+    this.notebookId = notebookId;
     this.source = source;
     this.busy = false;
     this.metadata = metadata;
   }
 
-  static fromICell(ic: ICell, rendermime: IRenderMimeRegistry, notebook?: ThebeNotebook) {
+  static fromICell(ic: ICell, notebookId: string, rendermime: IRenderMimeRegistry) {
     const cell = new ThebeMarkdownCell(
       typeof ic.id === 'string' ? ic.id : shortId(),
+      notebookId,
       ensureString(ic.source),
       ic.metadata,
       rendermime,
-      notebook,
     );
     return cell;
   }
