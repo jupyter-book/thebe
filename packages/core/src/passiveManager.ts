@@ -1,13 +1,7 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import type { Widget } from '@lumino/widgets';
-
-import * as LuminoWidget from '@lumino/widgets';
-import { MessageLoop } from '@lumino/messaging';
-
 import { WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
 import type { IManagerState } from '@jupyter-widgets/base-manager';
 import { ManagerBase } from '@jupyter-widgets/base-manager';
-
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
@@ -75,14 +69,15 @@ export class ThebePassiveManager extends ManagerBase {
     return Promise.reject('no comms available');
   }
 
-  async display_view(view: any, el?: any): Promise<Widget> {
+  async display_view(view: any, el?: HTMLElement): Promise<any> {
     if (el) {
-      LuminoWidget.Widget.attach(view.luminoWidget, el);
+      el.appendChild(view.luminoWidget.node);
+      // LuminoWidget.Widget.attach(view.luminoWidget, el);
     }
     if (view.el) {
       view.el.setAttribute('data-thebe-jupyter-widget', '');
       view.el.addEventListener('jupyterWidgetResize', () => {
-        MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
+        // MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
       });
     }
     return view.luminoWidget;
