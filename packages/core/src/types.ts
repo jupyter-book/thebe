@@ -6,9 +6,7 @@ import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
 import type { Config } from './config';
 import type ThebeNotebook from './notebook';
-
 export type CellKind = 'code' | 'markdown';
-
 export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
 export type KernelISpecModels = KernelSpecAPI.ISpecModels;
@@ -86,8 +84,9 @@ export interface IPassiveCell {
   readonly rendermime: IRenderMimeRegistry;
   readonly isAttachedToDOM: boolean;
   readonly outputs: IOutput[];
+  readonly initialOutputs: IOutput[];
 
-  attachToDOM(el?: HTMLElement): void;
+  attachToDOM(el?: HTMLElement, opts?: { strict?: boolean; appendExisting?: boolean }): void;
   setOutputText(text: string): void;
   clear(): void;
   clearOnError(error?: any): void;

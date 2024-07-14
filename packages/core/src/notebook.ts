@@ -53,6 +53,7 @@ class ThebeNotebook {
       const cell = new ThebeCodeCell(
         c.id,
         c.source,
+        c.outputs ?? [],
         config,
         metadata,
         notebook.rendermime,

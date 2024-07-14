@@ -29,7 +29,7 @@ export default class ThebeMarkdownCell extends PassiveCellRenderer implements IT
     rendermime: IRenderMimeRegistry,
     notebook?: ThebeNotebook,
   ) {
-    super(id, rendermime);
+    super(id, [], rendermime);
     this.kind = 'markdown';
     this.id = id;
     this.notebook = notebook;

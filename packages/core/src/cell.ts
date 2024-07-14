@@ -16,19 +16,19 @@ class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
   session?: ThebeSession;
   executionCount: number | null;
   notebook?: ThebeNotebook;
-  protected initialOutputs: IOutput[];
   protected busy: boolean;
   protected events: EventEmitter;
 
   constructor(
     id: string,
     source: string,
+    outputs: IOutput[],
     config: Config,
     metadata: JsonObject,
     rendermime: IRenderMimeRegistry,
     notebook?: ThebeNotebook,
   ) {
-    super(id, rendermime);
+    super(id, outputs, rendermime);
     this.kind = 'code';
     this.events = new EventEmitter(id, config, EventSubject.cell, this);
     this.notebook = notebook;
@@ -36,7 +36,6 @@ class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
     this.metadata = metadata;
     this.busy = false;
     this.executionCount = null;
-    this.initialOutputs = [];
     console.debug('thebe:cell constructor', this);
   }
 
@@ -49,6 +48,7 @@ class ThebeCodeCell extends PassiveCellRenderer implements IThebeCell {
     const cell = new ThebeCodeCell(
       icc.id ?? shortId(),
       ensureString(icc.source),
+      icc.outputs ?? [],
       config,
       icc.metadata,
       rendermime,

@@ -7,20 +7,35 @@ import { makeMathjaxOptions } from './options';
 import { Widget } from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
 
+function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg);
+  }
+}
+
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
+  initialOutputs: nbformat.IOutput[];
+
   protected model: OutputAreaModel;
   protected area: OutputArea;
 
-  constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
+  constructor(
+    id: string,
+    initialOutputs?: nbformat.IOutput[],
+    rendermime?: IRenderMimeRegistry,
+    mathjax?: MathjaxOptions,
+  ) {
     this.id = id;
     this.rendermime = rendermime ?? makeRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
+    assert(this.rendermime, 'no rendermime');
     this.model = new OutputAreaModel({ trusted: true });
     this.area = new OutputArea({
       model: this.model,
       rendermime: this.rendermime,
     });
+    this.initialOutputs = initialOutputs ?? [];
   }
 
   /**
@@ -34,7 +49,10 @@ class PassiveCellRenderer implements IPassiveCell {
     return this.area.isAttached;
   }
 
-  attachToDOM(el?: HTMLElement, strict = false) {
+  attachToDOM(
+    el?: HTMLElement,
+    opts: { strict?: boolean; appendExisting?: boolean } = { strict: false, appendExisting: true },
+  ) {
     if (!this.area || !el) {
       console.error(
         `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this.area}, el: ${el}`,
@@ -44,11 +62,11 @@ class PassiveCellRenderer implements IPassiveCell {
     if (this.area.isAttached) {
       // TODO should we detach and reattach?
       console.debug(`thebe:renderer:attachToDOM - already attached`);
-      if (strict) return;
+      if (opts.strict) return;
     } else {
       // if the target element has contents, preserve it but wrap it in our output area
       console.debug(`thebe:renderer:attachToDOM ${this.id} - appending existing contents`);
-      if (el.innerHTML) {
+      if (opts.appendExisting && el.innerHTML) {
         this.area.model.add({
           output_type: 'display_data',
           data: {
