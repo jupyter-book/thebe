@@ -1,5 +1,13 @@
 # demo-react
 
+## 0.2.8
+
+### Patch Changes
+
+- 30f569e: Added a passive widget manager and integrated into `thebe-react` and `demo-react`
+- Updated dependencies [30f569e]
+  - thebe-react@0.4.8
+
 ## 0.2.7
 
 ### Patch Changes

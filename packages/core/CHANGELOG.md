@@ -1,5 +1,12 @@
 # thebe-core
 
+## 0.4.8
+
+### Patch Changes
+
+- 30f569e: Added a passive widget manager and integrated into `thebe-react` and `demo-react`
+  - thebe-lite@0.4.8
+
 ## 0.4.7
 
 ### Patch Changes
