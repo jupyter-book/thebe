@@ -16,13 +16,14 @@ class ThebeSession {
     server: ThebeServer,
     connection: ISessionConnection,
     rendermime: IRenderMimeRegistry,
+    manager?: ThebeManager,
   ) {
     this.server = server;
     this.connection = connection;
     this.events = new EventEmitter(this.connection.id, server.config, EventSubject.session, this);
 
     if (this.connection.kernel == null) throw Error('ThebeSession - kernel is null');
-    this.manager = new ThebeManager(this.connection.kernel, rendermime);
+    this.manager = manager ?? new ThebeManager(this.connection.kernel, rendermime);
 
     this.connection.statusChanged.connect((_, s) => {
       // 'unknown' | 'starting' | 'idle' | 'busy' | 'terminating' | 'restarting' | 'autorestarting' | 'dead'
