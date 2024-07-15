@@ -26,16 +26,25 @@ export function makeThebePassiveManager(
 export class ThebePassiveManager extends ManagerBase {
   id: string;
   _loader: RequireJsLoader;
+  _onMessageFn?: (msg: any) => void;
   rendermime: IRenderMimeRegistry;
   views: Record<string, base.DOMWidgetView> = {};
   models: base.WidgetModel[];
 
-  constructor(rendermime: IRenderMimeRegistry, widgetState?: IManagerState) {
+  constructor(
+    rendermime: IRenderMimeRegistry,
+    widgetState?: IManagerState,
+    opts?: {
+      onMessage: (msg: any) => void;
+    },
+  ) {
     super();
 
     this.id = shortId();
     this.models = [];
     this._loader = new RequireJsLoader();
+    this._onMessageFn = opts?.onMessage;
+
     if (widgetState) {
       this.load_state(widgetState);
     }
@@ -48,6 +57,10 @@ export class ThebePassiveManager extends ManagerBase {
       },
       1,
     );
+  }
+
+  _onMessage(msg: any) {
+    this._onMessageFn?.(msg);
   }
 
   /**
@@ -63,24 +76,7 @@ export class ThebePassiveManager extends ManagerBase {
    */
   async load_state(state: IManagerState): Promise<any[]> {
     this.models = await this.set_state(state);
-    this.models.forEach((model) => {
-      model.on('change', () => {
-        alert('no comms available');
-      });
-    });
     return this.models;
-  }
-
-  async hydrate(model_id: string, el: any): Promise<void> {
-    console.debug(`thebe:manager:hydrate ${model_id}`);
-    const model = await this.get_model(model_id);
-    console.debug(`thebe:manager:hydrate ${model_id} model`, model);
-    const view = await this.create_view(model);
-    this.views[model_id] = view;
-    console.debug(`thebe:manager:hydrate ${model_id} view`, view);
-    console.debug(`thebe:manager:hydrate ${model_id} el`, el);
-    this.display_view(view, el);
-    console.debug(`thebe:manager:hydrate ${model_id} done`);
   }
 
   _get_comm_info() {
@@ -88,10 +84,11 @@ export class ThebePassiveManager extends ManagerBase {
       on_close: () => {
         return;
       },
-      on_msg: () => {
-        alert('no comms available');
-        return;
-      },
+      on_msg:
+        this._onMessage ??
+        (() => {
+          return;
+        }),
       close: () => {
         return;
       },
@@ -105,13 +102,9 @@ export class ThebePassiveManager extends ManagerBase {
   async display_view(view: any, el?: HTMLElement): Promise<any> {
     if (el) {
       el.appendChild(view.luminoWidget.node);
-      // LuminoWidget.Widget.attach(view.luminoWidget, el);
     }
     if (view.el) {
       view.el.setAttribute('data-thebe-jupyter-widget', '');
-      view.el.addEventListener('jupyterWidgetResize', () => {
-        // MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
-      });
     }
     return view.luminoWidget;
   }
