@@ -32,6 +32,12 @@ export function placeholder(plainText?: string) {
 `;
 }
 
+export function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg);
+  }
+}
+
 export function stripWidgets(
   outputs: nbformat.IOutput[],
   hideWidgets = true,

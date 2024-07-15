@@ -7,12 +7,6 @@ import { makeMathjaxOptions } from './options';
 import { Widget } from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
 
-function assert(condition: any, msg?: string): asserts condition {
-  if (!condition) {
-    throw new Error(msg);
-  }
-}
-
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
@@ -29,8 +23,6 @@ class PassiveCellRenderer implements IPassiveCell {
   ) {
     this.id = id;
     this.rendermime = rendermime ?? makeRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
-    assert(this.rendermime, 'no rendermime');
-    console.log('rendermime', this.rendermime);
     this.model = new OutputAreaModel({ trusted: true });
     this.area = new OutputArea({
       model: this.model,
@@ -133,11 +125,6 @@ class PassiveCellRenderer implements IPassiveCell {
    */
   render(outputs: nbformat.IOutput[]) {
     this.model.fromJSON(outputs);
-    this.hydrate();
-  }
-
-  hydrate() {
-    console.log('maybe hydrate', this);
   }
 }
 
