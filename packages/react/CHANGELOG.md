@@ -1,5 +1,13 @@
 # thebe-react
 
+## 0.4.9
+
+### Patch Changes
+
+- 95eb9b5: Fixes a cross package import from `core` to `react` that caused downstream SSR to fail
+- Updated dependencies [95eb9b5]
+  - thebe-core@0.4.9
+
 ## 0.4.8
 
 ### Patch Changes
