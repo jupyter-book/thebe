@@ -107,6 +107,7 @@ class ThebeServer implements ServerRuntime, ServerRestAPI {
 
   async startNewSession(
     rendermime: IRenderMimeRegistry,
+
     kernelOptions?: KernelOptions,
   ): Promise<ThebeSession | null> {
     await this.ready;

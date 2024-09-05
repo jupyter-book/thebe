@@ -1,22 +1,21 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import type { Widget } from '@lumino/widgets';
-import * as LuminoWidget from '@lumino/widgets';
-import { MessageLoop } from '@lumino/messaging';
-import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
+import type { IManagerState } from '@jupyter-widgets/base-manager';
+import { ManagerBase } from '@jupyter-widgets/base-manager';
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
+import * as output from '@jupyter-widgets/html-manager/lib/output';
+import { WidgetRenderer } from '@jupyter-widgets/html-manager/lib/output_renderers';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
-import type { Kernel } from '@jupyterlab/services';
+import { WIDGET_VIEW_MIMETYPE } from './manager';
 
-export const WIDGET_STATE_MIMETYPE = 'application/vnd.jupyter.widget-state+json';
-export const WIDGET_VIEW_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
-
-/**
- * @deprecated use WIDGET_VIEW_MIMETYPE
- */
-export const WIDGET_MIMETYPE = WIDGET_VIEW_MIMETYPE;
+export function makeThebePassiveManager(
+  rendermime: IRenderMimeRegistry,
+  widgetState?: IManagerState,
+) {
+  return new ThebePassiveManager(rendermime, widgetState);
+}
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -24,18 +23,33 @@ export const WIDGET_MIMETYPE = WIDGET_VIEW_MIMETYPE;
  * https://github.dev/voila-dashboards/voila/blob/main/packages/voila/src/manager.ts
  *
  */
-export class ThebeManager extends KernelWidgetManager {
+export class ThebePassiveManager extends ManagerBase {
   id: string;
   _loader: RequireJsLoader;
+  _onMessageFn?: (msg: any) => void;
+  rendermime: IRenderMimeRegistry;
+  views: Record<string, base.DOMWidgetView> = {};
+  models: base.WidgetModel[];
 
-  constructor(kernel: Kernel.IKernelConnection, rendermime: IRenderMimeRegistry) {
-    super(kernel, rendermime);
+  constructor(
+    rendermime: IRenderMimeRegistry,
+    widgetState?: IManagerState,
+    opts?: {
+      onMessage: (msg: any) => void;
+    },
+  ) {
+    super();
 
     this.id = shortId();
-    /** ensure this registry always gets the widget renderer.
-     * This is essential for cases where widgets are rendered heirarchically
-     */
-    this.rendermime.addFactory(
+    this.models = [];
+    this._loader = new RequireJsLoader();
+    this._onMessageFn = opts?.onMessage;
+
+    if (widgetState) {
+      this.load_state(widgetState);
+    }
+    this.rendermime = rendermime;
+    rendermime.addFactory(
       {
         safe: false,
         mimeTypes: [WIDGET_VIEW_MIMETYPE],
@@ -43,29 +57,54 @@ export class ThebeManager extends KernelWidgetManager {
       },
       1,
     );
+  }
 
-    this._registerWidgets();
-    this._loader = new RequireJsLoader();
+  _onMessage(msg: any) {
+    this._onMessageFn?.(msg);
+  }
+
+  /**
+   * An accessor allowing us to use the @jupyter-widgets/html-manager/lib/output_renderers
+   */
+  get renderMime() {
+    return this.rendermime;
   }
 
   /**
    * TODO implement a reasonable method for thebe-core that can load serialized widget state
    * see: https://github.dev/voila-dashboards/voila/blob/7090eb3e30c0c4aa25c2b7d5d2d45e8de1333b3b/packages/voila/src/manager.ts#L52
-   *
    */
-  async build_widgets(): Promise<void> {
-    throw new Error('ThebeManager:build_widgets not implmented');
+  async load_state(state: IManagerState): Promise<any[]> {
+    this.models = await this.set_state(state);
+    return this.models;
   }
 
-  async display_view(msg: any, view: any, options: any): Promise<Widget> {
-    if (options.el) {
-      LuminoWidget.Widget.attach(view.luminoWidget, options.el);
+  _get_comm_info() {
+    return Promise.resolve({
+      on_close: () => {
+        return;
+      },
+      on_msg:
+        this._onMessage ??
+        (() => {
+          return;
+        }),
+      close: () => {
+        return;
+      },
+    });
+  }
+
+  _create_comm() {
+    return Promise.reject('no comms available');
+  }
+
+  async display_view(view: any, el?: HTMLElement): Promise<any> {
+    if (el) {
+      el.appendChild(view.luminoWidget.node);
     }
     if (view.el) {
       view.el.setAttribute('data-thebe-jupyter-widget', '');
-      view.el.addEventListener('jupyterWidgetResize', () => {
-        MessageLoop.postMessage(view.luminoWidget, LuminoWidget.Widget.ResizeMessage.UnknownSize);
-      });
     }
     return view.luminoWidget;
   }
@@ -87,12 +126,12 @@ export class ThebeManager extends KernelWidgetManager {
     console.debug(`thebe:manager:loadClass ${moduleName}@${moduleVersion}`);
     const rjs = await this._loader.ready;
 
-    if (
-      moduleName === '@jupyter-widgets/base' ||
-      moduleName === '@jupyter-widgets/controls' ||
-      moduleName === '@jupyter-widgets/output'
-    ) {
-      return super.loadClass(className, moduleName, moduleVersion);
+    if (moduleName === '@jupyter-widgets/base') {
+      return (base as Record<string, any>)[className];
+    } else if (moduleName === '@jupyter-widgets/controls') {
+      return (controls as Record<string, any>)[className];
+    } else if (moduleName === '@jupyter-widgets/output') {
+      return (output as Record<string, any>)[className];
     } else {
       let mod;
       try {
@@ -110,23 +149,5 @@ export class ThebeManager extends KernelWidgetManager {
         throw new Error(`Class ${className} not found in module ${moduleName}@${moduleVersion}`);
       }
     }
-  }
-
-  private _registerWidgets() {
-    this.register({
-      name: '@jupyter-widgets/base',
-      version: base.JUPYTER_WIDGETS_VERSION,
-      exports: base as unknown as base.ExportData, // TODO improve typing
-    });
-    this.register({
-      name: '@jupyter-widgets/controls',
-      version: controls.JUPYTER_CONTROLS_VERSION,
-      exports: controls as unknown as base.ExportData, // TODO improve typing
-    });
-    this.register({
-      name: '@jupyter-widgets/output',
-      version: output.OUTPUT_WIDGET_VERSION,
-      exports: output as any,
-    });
   }
 }
