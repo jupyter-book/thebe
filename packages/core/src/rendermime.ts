@@ -7,6 +7,7 @@ import {
   svgRendererFactory,
   imageRendererFactory,
   textRendererFactory,
+  errorRendererFactory,
 } from '@jupyterlab/rendermime';
 import type { MathjaxOptions } from './types';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
@@ -22,6 +23,7 @@ const EXTENDED_FACTORIES = [
   imageRendererFactory,
   javascriptRendererFactory,
   textRendererFactory,
+  errorRendererFactory,
 ];
 
 let RENDERERS: IRenderMime.IRendererFactory[] | null = null;
