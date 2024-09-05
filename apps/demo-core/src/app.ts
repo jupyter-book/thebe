@@ -23,6 +23,7 @@ class App {
   options: Record<string, any>;
   serverType: ServerType;
   exampleType: ExampleType;
+  token: string;
 
   localMessageEl: HTMLDivElement;
   connectEl: HTMLDivElement;
@@ -42,6 +43,7 @@ class App {
   thebeErrorEl: HTMLElement;
 
   outputEl: HTMLElement;
+  tokenEl: HTMLElement;
 
   events: ThebeEvents;
   server: ThebeServer | null;
@@ -67,6 +69,7 @@ class App {
     this.thebeErrorEl = document.getElementById('thebe-error') as HTMLSpanElement;
 
     this.outputEl = document.querySelector('[data-output]') as HTMLDivElement;
+    this.tokenEl = document.getElementById('local-token') as HTMLInputElement;
 
     this.serverType = 'local';
     this.exampleType = 'basic';
@@ -76,6 +79,8 @@ class App {
     this.server = null;
     this.session = null;
     this.notebook = null;
+    this.token = shortId();
+    options.local.serverSettings.token = this.token;
 
     this.setupUI();
   }
@@ -126,6 +131,8 @@ class App {
       this.connectEl.setAttribute('disabled', 'true');
       this.connect();
     };
+
+    this.tokenEl.innerText = this.token;
 
     this.typeLocalEl.onclick = this.handleServerTypeChange.bind(this);
     this.typeLiteEl.onclick = this.handleServerTypeChange.bind(this);

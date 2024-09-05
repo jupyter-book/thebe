@@ -192,7 +192,7 @@ for i in tqdm(range(100)):
   ],
 };
 
-export const options = {
+export const options: any = {
   lite: {
     requestKernel: true,
     kernelOptions: {
@@ -203,11 +203,11 @@ export const options = {
   local: {
     kernelOptions: {
       name: 'python3',
-      serverSettings: {
-        appendToken: true,
-        baseUrl: 'http://localhost:8888',
-        token: 'test-secret',
-      },
+    },
+    serverSettings: {
+      appendToken: true,
+      baseUrl: 'http://localhost:8888',
+      token: undefined,
     },
   },
   binder: {
