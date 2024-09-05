@@ -3,19 +3,24 @@
   <head>
     <title>Jupyter - Thebe Demo</title>
     <!-- Configure and load Thebe !-->
-    <script type="text/x-thebe-config">
-      {
-        requestKernel: true,
-        mountActivateWidget: true,
-        mountStatusWidget: true,
-        useJupyterLite: false,
-        useBinder: false,
-        serverSettings: {
-          baseUrl: 'http://localhost:8888',
-          token: 'test-secret'
-        }
+    <script>
+      if (!window.localStorage) {
+        window.THEBE_TOKEN = Math.floor(Math.random() * 1e12).toString(16);
+      } else if (
+        window.localStorage.getItem('thebeDemoToken') === null ||
+        Date.now() - JSON.parse(window.localStorage.getItem('thebeDemoToken')).stamp >
+          1000 * 60 * 60
+      ) {
+        window.localStorage.setItem(
+          'thebeDemoToken',
+          JSON.stringify({
+            stamp: Date.now(),
+            token: Math.floor(Math.random() * 1e12).toString(16),
+          }),
+        );
       }
     </script>
+    <script id="thebe-config" type="text/x-thebe-config"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -43,7 +48,10 @@
         from <code>localhost</code>. To start a local server, use the following command:
       </p>
       <p>
-        <code>jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</code>
+        <code
+          >jupyter lab --NotebookApp.token=<span id="thebe-token"></span>
+          --NotebookApp.allow_origin='*' --no-browser</code
+        >
       </p>
       <div class="thebe-activate"></div>
       <div class="thebe-status"></div>
@@ -61,5 +69,23 @@ ax.scatter(*np.random.randn(2, 100), c=np.random.randn(100))
 ax.set(title="Wow, an interactive plot!")
       </pre>
     </div>
+    <script>
+      var token = window.THEBE_TOKEN;
+      if (window.localStorage && window.localStorage.getItem('thebeDemoToken')) {
+        token = JSON.parse(window.localStorage.getItem('thebeDemoToken')).token;
+      }
+      document.getElementById('thebe-token').innerText = token;
+      document.getElementById('thebe-config').innerText = JSON.stringify({
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: false,
+        serverSettings: {
+          baseUrl: 'http://localhost:8888',
+          token,
+        },
+      });
+    </script>
   </body>
 </html>
