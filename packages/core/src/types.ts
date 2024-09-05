@@ -5,6 +5,7 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
 import type { Config } from './config';
+import type ThebeNotebook from './notebook';
 export type CellKind = 'code' | 'markdown';
 export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
@@ -97,7 +98,7 @@ export interface IThebeCell extends IPassiveCell {
   source: string;
   session?: ThebeSession;
   metadata: JsonObject;
-  notebookId?: string;
+  notebook?: ThebeNotebook;
   readonly isBusy: boolean;
   readonly isAttached: boolean;
   readonly tags: string[];
