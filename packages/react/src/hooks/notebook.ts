@@ -1,19 +1,10 @@
 import { createRef, useEffect, useState } from 'react';
-import {
-  type ThebeNotebook,
-  type ThebeSession,
-  type IThebeCell,
-  type IThebeCellExecuteReturn,
-  ThebePassiveManager,
-  WIDGET_VIEW_MIMETYPE,
-  WIDGET_STATE_MIMETYPE,
-} from 'thebe-core';
+import type { ThebeNotebook, ThebeSession, IThebeCell, IThebeCellExecuteReturn } from 'thebe-core';
 import { useThebeConfig } from '../ThebeServerProvider';
 import { useThebeLoader } from '../ThebeLoaderProvider';
-import type { IExecuteResult, INotebookContent } from '@jupyterlab/nbformat';
+import type { INotebookContent } from '@jupyterlab/nbformat';
 import { useThebeSession } from '../ThebeSessionProvider';
 import { useRenderMimeRegistry } from '../ThebeRenderMimeRegistryProvider';
-import type { IManagerState } from '@jupyter-widgets/base-manager';
 
 export interface NotebookExecuteOptions {
   stopOnError?: boolean;
@@ -168,20 +159,13 @@ export function useNotebook(
       })
       .then((nb: ThebeNotebook) => {
         const cells = opts?.refsForWidgetsOnly ? nb?.widgets ?? [] : nb?.cells ?? [];
-        const manager = new ThebePassiveManager(rendermime);
-        if (nb.metadata.widgets && (nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE]) {
-          manager.load_state((nb.metadata.widgets as any)[WIDGET_STATE_MIMETYPE] as IManagerState);
-        }
         // set up an array of callback refs to update the DOM elements
         setRefs(
           Array(cells.length)
             .fill(null)
             .map((_, idx) => (node) => {
               console.debug(`new ref[${idx}] - attaching to dom...`, node);
-              if (node != null) {
-                cells[idx].attachToDOM(node, { appendExisting: false });
-                cells[idx].render(cells[idx].initialOutputs);
-              }
+              if (node != null) cells[idx].attachToDOM(node);
             }),
         );
         setNotebook(nb);

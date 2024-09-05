@@ -1,11 +1,10 @@
 import { useNotebook } from 'thebe-react';
 import JupyterOutputDecoration from './JupyterOutputDecoration';
 import { useParams } from 'react-router-dom';
-import classNames from 'classnames';
 
 export function WidgetsPage() {
   const { notebookName } = useParams<{ notebookName: string }>();
-  const { ready, executing, executeAll, cellRefs, cellIds, errors } = useNotebook(
+  const { ready, executing, executeAll, cellRefs, cellIds } = useNotebook(
     notebookName ?? 'widget-test',
     async (n) => {
       const url = `/${n}.ipynb`;
@@ -28,22 +27,12 @@ export function WidgetsPage() {
       <h4 className="text-sm">
         notebook: <code>{notebookName}.ipynb</code>
       </h4>
-      <div
-        className={classNames(
-          'inline-block px-4 py-2 mt-3 text-sm font-bold text-white rounded-full',
-          { 'bg-gray-500': !ready, 'bg-green-500': ready },
-        )}
-      >
+      <div className="inline-block px-4 py-2 mt-3 text-sm font-bold text-white bg-green-500 rounded-full">
         {ready ? 'ready' : 'not ready'}
       </div>
       <div className="mt-4">
         {!executing && (
-          <button
-            className={classNames('button', {
-              'text-gray-400 bg-gray-100 border-gray-300 cursor-not-allowed': !ready || errors,
-            })}
-            onClick={clickExecute}
-          >
+          <button className="button" onClick={clickExecute}>
             run all
           </button>
         )}

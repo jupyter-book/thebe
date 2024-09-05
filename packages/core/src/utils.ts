@@ -1,5 +1,5 @@
 import { customAlphabet } from 'nanoid';
-import { WIDGET_VIEW_MIMETYPE } from './manager';
+import { WIDGET_MIMETYPE } from './manager';
 import type * as nbformat from '@jupyterlab/nbformat';
 
 const nanoid = customAlphabet('1234567890abcdef', 8);
@@ -32,12 +32,6 @@ export function placeholder(plainText?: string) {
 `;
 }
 
-export function assert(condition: any, msg?: string): asserts condition {
-  if (!condition) {
-    throw new Error(msg);
-  }
-}
-
 export function stripWidgets(
   outputs: nbformat.IOutput[],
   hideWidgets = true,
@@ -45,7 +39,7 @@ export function stripWidgets(
 ) {
   return outputs.map((output: nbformat.IOutput) => {
     if (!isMimeBundle(output)) return output;
-    const { [WIDGET_VIEW_MIMETYPE]: widgets, ...others } = output.data as nbformat.IMimeBundle;
+    const { [WIDGET_MIMETYPE]: widgets, ...others } = output.data as nbformat.IMimeBundle;
     if (!widgets) return output;
 
     let data = output.data;
