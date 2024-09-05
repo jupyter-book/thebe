@@ -15,32 +15,19 @@ export interface CodeBlock {
   [x: string]: any;
 }
 
-function coerceToObject(maybe: any): Record<string, any> {
-  if (typeof maybe === 'object') return maybe;
-  if (Array.isArray(maybe)) return Object.fromEntries(maybe.map((v, k) => [k, v]));
-  return {};
-}
-
 class ThebeNotebook {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
   cells: IThebeCell[];
   metadata: INotebookMetadata;
-  widgetState: Record<string, any>;
   session?: ThebeSession;
   protected events: EventEmitter;
 
-  constructor(
-    id: string,
-    config: Config,
-    rendermime: IRenderMimeRegistry,
-    metadata?: INotebookMetadata,
-  ) {
+  constructor(id: string, config: Config, rendermime: IRenderMimeRegistry) {
     this.id = id;
     this.events = new EventEmitter(id, config, EventSubject.notebook, this);
     this.cells = [];
-    this.metadata = metadata ?? {};
-    this.widgetState = coerceToObject(metadata?.widgets);
+    this.metadata = {};
     this.rendermime = rendermime;
     console.debug('thebe:notebook constructor', this);
   }
@@ -50,15 +37,7 @@ class ThebeNotebook {
     const notebook = new ThebeNotebook(id, config, rendermime);
     notebook.cells = blocks.map((c) => {
       const metadata = {};
-      const cell = new ThebeCodeCell(
-        c.id,
-        notebook.id,
-        c.source,
-        c.outputs ?? [],
-        config,
-        metadata,
-        notebook.rendermime,
-      );
+      const cell = new ThebeCodeCell(c.id, id, c.source, config, metadata, notebook.rendermime);
       console.debug(`thebe:notebook:fromCodeBlocks Initializing cell ${c.id}`);
       return cell;
     });
@@ -92,9 +71,6 @@ class ThebeNotebook {
     return p;
   }
 
-  /**
-  @deprecated
-   */
   get widgets() {
     return this.findCells('widget') ?? [];
   }

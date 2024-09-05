@@ -1,22 +1,19 @@
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type { Widget } from '@lumino/widgets';
+
 import * as LuminoWidget from '@lumino/widgets';
 import { MessageLoop } from '@lumino/messaging';
+
 import { KernelWidgetManager, WidgetRenderer, output } from '@jupyter-widgets/jupyterlab-manager';
+
+export const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
+
 import * as base from '@jupyter-widgets/base';
 import * as controls from '@jupyter-widgets/controls';
 import { shortId } from './utils';
 import { RequireJsLoader } from './requireJsLoader';
 import { requireLoader } from './loader';
 import type { Kernel } from '@jupyterlab/services';
-
-export const WIDGET_STATE_MIMETYPE = 'application/vnd.jupyter.widget-state+json';
-export const WIDGET_VIEW_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
-
-/**
- * @deprecated use WIDGET_VIEW_MIMETYPE
- */
-export const WIDGET_MIMETYPE = WIDGET_VIEW_MIMETYPE;
 
 /**
  * A Widget Manager class for Thebe using the context-free KernelWidgetManager from
@@ -35,17 +32,25 @@ export class ThebeManager extends KernelWidgetManager {
     /** ensure this registry always gets the widget renderer.
      * This is essential for cases where widgets are rendered heirarchically
      */
+    this.addWidgetFactories();
+
+    this._registerWidgets();
+    this._loader = new RequireJsLoader();
+  }
+
+  addWidgetFactories() {
     this.rendermime.addFactory(
       {
         safe: false,
-        mimeTypes: [WIDGET_VIEW_MIMETYPE],
+        mimeTypes: [WIDGET_MIMETYPE],
         createRenderer: (options) => new WidgetRenderer(options, this as any),
       },
       1,
     );
+  }
 
-    this._registerWidgets();
-    this._loader = new RequireJsLoader();
+  removeWidgetFactories() {
+    this.rendermime.removeMimeType(WIDGET_MIMETYPE);
   }
 
   /**

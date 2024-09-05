@@ -10,17 +10,10 @@ import { MessageLoop } from '@lumino/messaging';
 class PassiveCellRenderer implements IPassiveCell {
   readonly id: string;
   readonly rendermime: IRenderMimeRegistry;
-  initialOutputs: nbformat.IOutput[];
-
   protected model: OutputAreaModel;
   protected area: OutputArea;
 
-  constructor(
-    id: string,
-    initialOutputs?: nbformat.IOutput[],
-    rendermime?: IRenderMimeRegistry,
-    mathjax?: MathjaxOptions,
-  ) {
+  constructor(id: string, rendermime?: IRenderMimeRegistry, mathjax?: MathjaxOptions) {
     this.id = id;
     this.rendermime = rendermime ?? makeRenderMimeRegistry(mathjax ?? makeMathjaxOptions());
     this.model = new OutputAreaModel({ trusted: true });
@@ -28,7 +21,6 @@ class PassiveCellRenderer implements IPassiveCell {
       model: this.model,
       rendermime: this.rendermime,
     });
-    this.initialOutputs = initialOutputs ?? [];
   }
 
   /**
@@ -42,10 +34,7 @@ class PassiveCellRenderer implements IPassiveCell {
     return this.area.isAttached;
   }
 
-  attachToDOM(
-    el?: HTMLElement,
-    opts: { strict?: boolean; appendExisting?: boolean } = { strict: false, appendExisting: true },
-  ) {
+  attachToDOM(el?: HTMLElement, strict = false) {
     if (!this.area || !el) {
       console.error(
         `thebe:renderer:attachToDOM - could not attach to DOM - area: ${this.area}, el: ${el}`,
@@ -55,11 +44,11 @@ class PassiveCellRenderer implements IPassiveCell {
     if (this.area.isAttached) {
       // TODO should we detach and reattach?
       console.debug(`thebe:renderer:attachToDOM - already attached`);
-      if (opts.strict) return;
+      if (strict) return;
     } else {
       // if the target element has contents, preserve it but wrap it in our output area
       console.debug(`thebe:renderer:attachToDOM ${this.id} - appending existing contents`);
-      if (opts.appendExisting && el.innerHTML) {
+      if (el.innerHTML) {
         this.area.model.add({
           output_type: 'display_data',
           data: {
