@@ -10,19 +10,24 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML"
     ></script>
     <!-- Configure and load Thebe !-->
-    <script type="text/x-thebe-config">
-      {
-        requestKernel: true,
-        mountActivateWidget: true,
-        mountStatusWidget: true,
-        useJupyterLite: false,
-        useBinder: false,
-        serverSettings: {
-          baseUrl: 'http://localhost:8888',
-          token: 'test-secret'
-        }
+    <script>
+      if (!window.localStorage) {
+        window.THEBE_TOKEN = Math.floor(Math.random() * 1e12).toString(16);
+      } else if (
+        window.localStorage.getItem('thebeDemoToken') === null ||
+        Date.now() - JSON.parse(window.localStorage.getItem('thebeDemoToken')).stamp >
+          1000 * 60 * 60
+      ) {
+        window.localStorage.setItem(
+          'thebeDemoToken',
+          JSON.stringify({
+            stamp: Date.now(),
+            token: Math.floor(Math.random() * 1e12).toString(16),
+          }),
+        );
       }
     </script>
+    <script id="thebe-config" type="text/x-thebe-config"></script>
     <link rel="stylesheet" href="thebe.css" />
     <link rel="stylesheet" href="main.css" />
     <script src="index.js"></script>
@@ -54,7 +59,10 @@
         from <code>localhost</code>. To start a local server, use the following command:
       </p>
       <p>
-        <code>jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</code>
+        <code
+          >jupyter lab --NotebookApp.token=<span id="thebe-token"></span>
+          --NotebookApp.allow_origin='*' --no-browser</code
+        >
       </p>
       <div class="thebe-activate"></div>
       <div class="thebe-status"></div>
@@ -76,5 +84,23 @@ Math(rf'\int_{{t=0}}^1 \frac{{1}}{{1+t^2}}\,\text{{d}}t = ')
     </pre
       >
     </div>
+    <script>
+      var token = window.THEBE_TOKEN;
+      if (window.localStorage && window.localStorage.getItem('thebeDemoToken')) {
+        token = JSON.parse(window.localStorage.getItem('thebeDemoToken')).token;
+      }
+      document.getElementById('thebe-token').innerText = token;
+      document.getElementById('thebe-config').innerText = JSON.stringify({
+        requestKernel: true,
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: false,
+        useBinder: false,
+        serverSettings: {
+          baseUrl: 'http://localhost:8888',
+          token,
+        },
+      });
+    </script>
   </body>
 </html>

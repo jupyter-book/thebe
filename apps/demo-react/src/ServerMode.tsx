@@ -14,7 +14,7 @@ export function ServerMode({
     <div className="flex justify-center mb-6">
       <fieldset>
         <legend>Choose connection type:</legend>
-        <div className="my-2 flex space-x-3">
+        <div className="flex my-2 space-x-3">
           <div className="flex flex-row cursor-pointer">
             <input
               className="cursor-pointer"

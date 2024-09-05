@@ -54,8 +54,9 @@
       <div id="local-message">
         <p>You'll need to start your local jupyter server on port 8888 and like this:</p>
         <div style="padding: 0 20px">
-          <code
-            >jupyter notebook --NotebookApp.token=test-secret --NotebookApp.allow_origin="*"</code
+          <code>
+            jupyter lab --NotebookApp.token=<span id="local-token">test-secret</span>
+            --NotebookApp.allow_origin="*"</code
           >
         </div>
       </div>

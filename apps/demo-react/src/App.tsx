@@ -4,6 +4,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 import { Connect } from './Connect';
 import { ServerMode, ServerModeType } from './ServerMode';
+import { shortId } from 'thebe-core';
 
 function App() {
   const [mode, setMode] = useState<ServerModeType>('local');
@@ -21,7 +22,7 @@ function App() {
         repo: 'executablebooks/thebe-binder-base',
       },
       serverSettings: {
-        token: 'test-secret',
+        token: shortId(),
       },
     }),
     [path],
@@ -55,6 +56,17 @@ function App() {
           useJupyterLite={mode === 'lite'}
         >
           <ServerMode mode={mode} setMode={setMode} />
+          {mode === 'local' && (
+            <div className="pb-4 space-y-1">
+              <div>start a local jupyter server using:</div>
+              <div>
+                <code className="p-1 font-mono text-sm bg-gray-200 rounded">
+                  jupyter lab --NotebookApp.token={options.serverSettings.token}{' '}
+                  --NotebookApp.allow_origin='*' --no-browser
+                </code>
+              </div>
+            </div>
+          )}
           <Connect />
           <Outlet />
         </ThebeServerProvider>
