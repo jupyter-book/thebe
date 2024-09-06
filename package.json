@@ -1,8 +1,7 @@
 {
-  "name": "thebe",
+  "name": "thebe-monorepo",
   "version": "0.8.2",
   "description": "Thebe: turn static HTML pages into live documents",
-  "main": "lib/index.js",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -62,11 +61,6 @@
   "dependencies": {
     "@changesets/cli": "^2.26.1",
     "npm-run-all": "^4.1.5"
-  },
-  "overrides": {
-    "@jupyterlab/codemirror": "4.0.8",
-    "@jupyterlab/services": "7.0.8",
-    "@lumino/widgets": "2.3.1"
   },
   "packageManager": "npm@10.8.1"
 }

@@ -61,12 +61,12 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "dependencies": {
-    "@jupyterlab/theme-light-extension": "^4.0.8",
-    "@jupyterlab/codemirror": "4.0.8",
-    "@jupyter-widgets/base": "6.0.6",
-    "@jupyter-widgets/controls": "5.0.7",
-    "@jupyter-widgets/jupyterlab-manager": "5.0.9",
-    "thebe-core": "^0.4.7",
+    "@jupyterlab/theme-light-extension": "^4.2.5",
+    "@jupyterlab/codemirror": "4.0.13",
+    "@jupyter-widgets/base": "6.0.10",
+    "@jupyter-widgets/controls": "5.0.11",
+    "@jupyter-widgets/jupyterlab-manager": "5.0.13",
+    "thebe-core": "^0.4.9",
     "codemirror": "5.61.1",
     "current-script-polyfill": "^1.0.0"
   },
