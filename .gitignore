@@ -24,3 +24,5 @@ junit.xml
 .turbo
 .ipynb_checkpoints
 .yalc/
+
+packages/**/src/version.ts

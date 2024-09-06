@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import version from './version';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 export type ThebeCore = typeof import('thebe-core');
@@ -21,10 +22,10 @@ export function ThebeLoaderProvider({
     // if already loaded do nothing
     if (!startLoad || core) return;
     setLoading(true);
-    console.debug('importing thebe-core...');
+    console.debug(`thebe-react (v${version}) importing thebe-core...`);
     import('thebe-core')
       .then((thebeCore) => {
-        console.debug('thebe-core loaded');
+        console.debug(`thebe-core (v${thebeCore.version}) loaded`);
         setCore(thebeCore);
         setLoading(false);
       })
@@ -63,7 +64,7 @@ export function ThebeBundleLoaderProvider({
     // if already loaded do nothing
     if (!startLoad || core) return;
     setLoading(true);
-    console.debug('importing thebe-core...');
+    console.debug(`thebe-react (v${version}) importing thebe-core...`);
 
     if (typeof document !== 'undefined' && typeof window !== 'undefined') {
       try {
@@ -88,8 +89,9 @@ export function ThebeBundleLoaderProvider({
           if (window.thebeCore && (window.thebeLite || !loadThebeLite)) {
             setLoading(false);
             setCore((window as any).thebeCore?.module);
-            console.debug('thebe-core loaded');
-            if (window.thebeLite) console.debug('thebe-lite loaded');
+            console.debug(`thebe-core (v${(window as any).thebeCore?.version ?? '0'}) loaded`);
+            if (window.thebeLite)
+              console.debug(`thebe-lite (v${window.thebeLite?.version ?? '0'}) loaded`);
             clearInterval(timer);
           }
           if (attempts > (options?.attempts ?? 50)) {

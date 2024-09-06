@@ -8,6 +8,7 @@ import { makeConfiguration } from '../options';
 import { makeRenderMimeRegistry } from '../rendermime';
 import * as coreModule from '../index';
 import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import version from '../version';
 
 export function connectToBinder(config: Config): ThebeServer {
   const server: ThebeServer = new ThebeServer(config);
@@ -55,7 +56,7 @@ export function setupNotebookFromIpynb(
 }
 
 export function setupThebeCore() {
-  console.debug(`thebe:api:setupThebeCore`, { coreModule });
+  console.debug(`thebe-core (v${version})`, { coreModule });
   window.thebeCore = Object.assign(window.thebeCore ?? {}, {
     module: coreModule,
     api: {
@@ -69,5 +70,6 @@ export function setupThebeCore() {
       setupNotebookFromBlocks,
       setupNotebookFromIpynb,
     },
+    version,
   });
 }

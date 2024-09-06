@@ -20,4 +20,5 @@ export type LiteServerConfig = {
 
 export interface ThebeLiteGlobal {
   startJupyterLiteServer: (config?: LiteServerConfig) => Promise<ServiceManager>;
+  version: string;
 }
