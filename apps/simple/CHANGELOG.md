@@ -1,5 +1,15 @@
 # demo-simple
 
+## 1.1.0
+
+### Minor Changes
+
+- 68ba668: Removing `test-secret` as a suggested token and enabling unique (timestamp based) tokens per user "session"
+
+### Patch Changes
+
+- 4b7434e: Upgrading to `@jupyterlite/pyodide-*` 0.4.2, updating all `@jupyter*` deps to latest
+
 ## 1.0.4
 
 ### Patch Changes

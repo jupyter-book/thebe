@@ -1,5 +1,19 @@
 # demo-core
 
+## 2.2.0
+
+### Minor Changes
+
+- 68ba668: Removing `test-secret` as a suggested token and enabling unique (timestamp based) tokens per user "session"
+
+### Patch Changes
+
+- Updated dependencies [8c8a55a]
+- Updated dependencies [3d82f84]
+- Updated dependencies [80dfbb9]
+- Updated dependencies [4b7434e]
+  - thebe-core@0.4.10
+
 ## 2.1.2
 
 ### Patch Changes

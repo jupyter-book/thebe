@@ -1,5 +1,19 @@
 # demo-react
 
+## 0.3.0
+
+### Minor Changes
+
+- 68ba668: Removing `test-secret` as a suggested token and enabling unique (timestamp based) tokens per user "session"
+
+### Patch Changes
+
+- 80dfbb9: Reverts previous erroneous breaking changes in a patch release
+- Updated dependencies [8c8a55a]
+- Updated dependencies [80dfbb9]
+- Updated dependencies [4b7434e]
+  - thebe-react@0.4.10
+
 ## 0.2.8
 
 ### Patch Changes
