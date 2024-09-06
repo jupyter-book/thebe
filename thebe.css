@@ -1470,11 +1470,23 @@ pre {
   flex-grow: 1;
   margin-bottom: var(--jp-widgets-radio-item-height-adjustment);
 }
+.widget-radio-box-vertical,
+.jupyter-widget-radio-box-vertical {
+  flex-direction: column;
+}
+.widget-radio-box-horizontal,
+.jupyter-widget-radio-box-horizontal {
+  flex-direction: row;
+}
 .widget-radio-box label,
 .jupyter-widget-radio-box label {
   height: var(--jp-widgets-radio-item-height);
   line-height: var(--jp-widgets-radio-item-height);
   font-size: var(--jp-widgets-font-size);
+}
+.widget-radio-box-horizontal label,
+.jupyter-widget-radio-box-horizontal label {
+  margin: 0 calc(var(--jp-widgets-input-padding) * 2) 0 0;
 }
 .widget-radio-box input,
 .jupyter-widget-radio-box input {
@@ -1761,7 +1773,6 @@ pre {
 .lm-Widget {
   box-sizing: border-box;
   position: relative;
-  overflow: hidden;
 }
 .lm-Widget.lm-mod-hidden {
   display: none !important;
