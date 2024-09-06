@@ -1,8 +1,7 @@
 {
-  "name": "thebe",
+  "name": "thebe-monorepo",
   "version": "0.8.2",
   "description": "Thebe: turn static HTML pages into live documents",
-  "main": "lib/index.js",
   "workspaces": [
     "apps/*",
     "packages/*"
