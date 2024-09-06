@@ -2,12 +2,12 @@
 
 # Thebe: Integrate Jupyter based computation into web apps and static web pages
 
-![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
-[![launch badge](https://img.shields.io/badge/launch-thebe-orange)](https://executablebooks.github.io/thebe)
+![test](https://github.com/jupyter-book/thebe/workflows/test/badge.svg)
+[![launch badge](https://img.shields.io/badge/launch-thebe-orange)](https://jupyter-book.github.io/thebe)
 
 > **Note**: This readme has been updated for the 0.9.0 release
 >
-> The previous README for 0.8.x is now [located here](README_0.8.x.md), or alternatively see the [0.8.x branch](https://github.com/executablebooks/thebe/tree/0.8.x).
+> The previous README for 0.8.x is now [located here](README_0.8.x.md), or alternatively see the [0.8.x branch](https://github.com/jupyter-book/thebe/tree/0.8.x).
 
 > **Important**
 >
@@ -28,7 +28,7 @@ The latest thebe documentation is build using [mystmd](https://mystmd.org) and i
 
 ## Demos
 
-The demo page from `apps/simple` are hosted [here on github pages](https://executablebooks.github.io/thebe) which let's you check out the interactivity that the top level `thebe` library provides along with `thebe-lite` for JupyterLite based `pyodide` kernel access.
+The demo page from `apps/simple` are hosted [here on github pages](https://jupyter-book.github.io/thebe) which let's you check out the interactivity that the top level `thebe` library provides along with `thebe-lite` for JupyterLite based `pyodide` kernel access.
 
 ## Development Setup
 
@@ -41,5 +41,5 @@ For more information on contributing to `thebe`, see [the `thebe` contributing d
 ## Acknowledgements
 
 `thebe` was developed as a part of [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541).
-It is currently stewarded by [the Executable Books Project](https://executablebooks.org/en/latest/#acknowledgements).
+It is currently stewarded by [the Executable Books Project](https://jupyter-book.org/en/latest/#acknowledgements).
 Additional support was provided by the U.S. Department of Education Open Textbooks Pilot Program funding for the LibreTexts project (P116T180029).
