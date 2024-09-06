@@ -1,5 +1,12 @@
 # thebe-lite
 
+## 0.4.10
+
+### Patch Changes
+
+- 8c8a55a: Version numbers are printed in debug messages to aid in debugging
+- 4b7434e: Upgrading to `@jupyterlite/pyodide-*` 0.4.2, updating all `@jupyter*` deps to latest
+
 ## 0.4.9
 
 ## 0.4.8
