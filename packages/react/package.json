@@ -29,11 +29,12 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
+    "copy:version": "echo \"const version = '\"$npm_package_version\"';\nexport default version;\" > src/version.ts",
     "prepublish": "npm run build",
     "build:cjs": "tsc --project ./tsconfig.json --outDir ./dist",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist",
-    "build": "npm run declarations; npm run build:cjs",
-    "dev": "concurrently 'npm run declarations -- -w' 'npm run build:cjs -- -w'",
+    "build": "npm run copy:version; npm run declarations; npm run build:cjs",
+    "dev": "npm copy:version; concurrently 'npm run declarations -- -w' 'npm run build:cjs -- -w'",
     "test": "vitest run",
     "test:watch": "vitest"
   },

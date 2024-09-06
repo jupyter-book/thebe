@@ -10,12 +10,13 @@
   ],
   "scripts": {
     "clean": "rm -rf ./dist",
+    "copy:version": "echo \"const version = '\"$npm_package_version\"';\nexport default version;\" > src/version.ts",
     "build:bundle": "webpack --config webpack.config.cjs",
     "build:post:shuffle": "./bin/shufflePyolitePaths.sh",
     "build:post:contents": "./bin/stubContentsApi.js",
     "declarations": "tsc  --project ./tsconfig.json --declaration --emitDeclarationOnly --outDir dist/types",
-    "build": "npm-run-all -l clean -p build:bundle declarations",
-    "dev": "npm run build:bundle -- -w"
+    "build": "npm-run-all -l clean copy:version -p build:bundle declarations",
+    "dev": "npm run  copy:version && npm run build:bundle -- -w"
   },
   "repository": {
     "type": "git",

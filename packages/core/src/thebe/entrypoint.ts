@@ -46,6 +46,7 @@ export type ThebeCore = typeof coreModule;
 export interface ThebeCoreGlobal {
   module: ThebeCore;
   api: JsApi;
+  version: string;
 }
 
 declare global {

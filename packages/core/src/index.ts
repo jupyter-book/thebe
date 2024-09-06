@@ -4,6 +4,7 @@ export { default as ThebeNotebook, CodeBlock } from './notebook';
 export { default as ThebeCodeCell } from './cell';
 export { default as ThebeMarkdownCell } from './markdown';
 export { default as PassiveCellRenderer } from './passive';
+export { default as version } from './version';
 
 export * from './options';
 export * from './events';
@@ -14,4 +15,5 @@ export * from './manager';
 export * from './rendermime';
 export * from './types';
 export * from './config';
+
 export { clearAllSavedSessions, clearSavedSession } from './sessions';
