@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Thebe Demos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="icon" href="/thebe_128x128.svg" type="image/svg+xml" />
+    <script src="https://cdn.tailwindcss.com?plugins=typography,aspect-ratio,line-clamp"></script>
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.61.1/theme/darcula.css" />
+    <script type="text/x-thebe-config">
+      {
+        mountActivateWidget: true,
+        mountStatusWidget: true,
+        useJupyterLite: true,
+        useBinder: false,
+        codeMirrorConfig: {
+          theme: 'darcula',
+        }
+      }
+    </script>
+    <script id="jupyter-config-data" type="application/json">
+      {
+        "litePluginSettings": {
+          "@jupyterlite/pyodide-kernel-extension:kernel": {
+            "pipliteUrls": ["https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.2/pypi/all.json"],
+            "pipliteWheelUrl": "https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.2/pypi/piplite-0.4.2-py3-none-any.whl"
+          }
+        },
+        "enableMemoryStorage": true,
+        "settingsStorageDrivers": ["memoryStorageDriver"]
+      }
+    </script>
+    <!-- this following is the thebe entrypoint script -->
+    <script src="thebe-lite.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="thebe.css" />
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .thebe-activate-button {
+        background-color: lightgray;
+        border: 1px solid gray;
+      }
+      .thebe-button {
+        background-color: lightgray;
+        border: 1px solid gray;
+        margin-right: 4px;
+        padding: 0 8px;
+      }
+      .CodeMirror {
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body class="font-sans">
+    <div class="max-w-3xl mx-auto my-4 prose">
+      <div><img class="mx-auto" src="./thebe_wide_logo.png" /></div>
+      <h1>Simple Demos</h1>
+      <div>
+        <p>
+          This is designed to take a simple static html website (like this one) and turn any code it
+          finds into interactive editors. This page is intended to be a demo of that functionality
+          so is more descriptive and uses
+          <a href="https://jupyterlite.readthedocs.io/en/latest/" target="_blank" rel="no-referrer"
+            >jupyterlite</a
+          >.
+        </p>
+        <p>
+          For additional, very static and more specific, html examples, see the table
+          <a href="#other">at the bottom of the page</a>.
+        </p>
+      </div>
+      <div>
+        <h2>Configuration</h2>
+        <p>
+          <code>thebe</code> can be configured by adding a script tag to your web page with an
+          options object, that will be loaded by the `bootstrap` function.
+        </p>
+        <p>
+          By default this demo used the <code>pyodide</code> WASM kernel with
+          <code>jupyterlite</code> but you can also configure it to use
+          <a href="#runlocal">a local jupyter server</a> or the
+          <a href="https://mybinder.org" target="_blank" rel="no-referrer">mybinder.org</a> service.
+        </p>
+        <p>Configuration for <code>jupyterlite</code> is simply:</p>
+        <pre class="text-black bg-gray-200">
+<&zwj;script type="text/x-thebe-config">
+  {
+    useBinder: false,
+    useJupyterLite: true,
+    mountActivateWidget: true,
+    mountStatusWidget: true,
+  }
+<&zwj;/script></pre
+        >
+      </div>
+      <h2>Thebe's Default UI</h2>
+      <p>
+        By adding the following tags to the page, once loaded, <code>thebe</code> will add default
+        UI elements to the page (these are customisable by css).
+      </p>
+      <pre class="text-black bg-gray-200">
+  <&zwj;div class="thebe-activate"><&zwj;/div>
+  <&zwj;div class="thebe-status"><&zwj;/div></pre
+      >
+      <p>These should appear below 👇</p>
+      <div class="not-prose">
+        <div class="thebe-activate"></div>
+        <div class="thebe-status"></div>
+      </div>
+      <p>
+        The following code snippet has been marked as
+        <code><&zwj;pre data-executable="true" data-language="python"><&zwj;/pre></code> meaning
+        thebe will turn it into an editor when activated!
+      </p>
+      <p class="text-sm">
+        Note: this is quite a lot of code, thanks because it's producing the excellent Lorentz
+        Attractor plot - taken from the
+        <a
+          href="https://ipywidgets.readthedocs.io/en/stable/index.html"
+          target="_blank"
+          rel="no-referrer"
+          >ipywidgets documentation</a
+        >.
+      </p>
+      <div class="text-sm not-prose">
+        <pre
+          class="p-4 text-sm text-white bg-black rounded-lg"
+          data-executable="true"
+          data-language="python"
+        >
+%pip install ipywidgets
+
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+from ipywidgets import interact, interactive
+from IPython.display import clear_output, display, HTML
+
+import numpy as np
+from scipy import integrate
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import cnames
+from matplotlib import animation
+
+def solve_lorenz(
+  N=10, angle=0.0, max_time=4.0, 
+  sigma=10.0, beta=8./3, rho=28.0):
+
+    fig = plt.figure()
+    ax = fig.add_axes([0, 0, 1, 1], projection='3d')
+    ax.axis('off')
+
+    # prepare the axes limits
+    ax.set_xlim((-25, 25))
+    ax.set_ylim((-35, 35))
+    ax.set_zlim((5, 55))
+    
+    def lorenz_deriv(x_y_z, t0, sigma=sigma, beta=beta, rho=rho):
+        """Compute the time-derivative of a Lorenz system."""
+        x, y, z = x_y_z
+        return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z]
+
+    # Choose random starting points, uniformly distributed from -15 to 15
+    np.random.seed(1)
+    x0 = -15 + 30 * np.random.random((N, 3))
+
+    # Solve for the trajectories
+    t = np.linspace(0, max_time, int(250*max_time))
+    x_t = np.asarray([integrate.odeint(lorenz_deriv, x0i, t)
+                      for x0i in x0])
+    
+    # choose a different color for each trajectory
+    colors = plt.cm.viridis(np.linspace(0, 1, N))
+
+    for i in range(N):
+        x, y, z = x_t[i,:,:].T
+        lines = ax.plot(x, y, z, '-', c=colors[i])
+        plt.setp(lines, linewidth=2)
+
+    ax.view_init(30, angle)
+    plt.show()
+
+    return t, x_t
+
+w = interactive(solve_lorenz, angle=(0.,360.), max_time=(0.1, 4.0), 
+                N=(0,50), sigma=(0.0,50.0), rho=(0.0,50.0))
+display(w)
+</pre
+        >
+      </div>
+      <div>
+        <h2 id="other">Other static examples</h2>
+        <p>
+          Follow the links in the table to check out minimal examples of <code>thebe</code> in
+          different configurations, in each case "view source" to see how each is configured.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>demo</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3">Running on a <a href="#runlocal">local jupyter server</a></td>
+              <td>
+                <a href="jupyter.html">simple plots</a>
+              </td>
+            </tr>
+            <tr>
+              <td><a href="ipywidgets-local.html">ipywidgets examples</a></td>
+            </tr>
+
+            <tr>
+              <td><a href="maths.html">math rendering</a></td>
+            </tr>
+            <tr>
+              <td rowspan="2">Using JupyterLite with the pyodide kernel</td>
+              <td><a href="lite.html">simple plots</a></td>
+            </tr>
+            <tr>
+              <td><a href="ipywidgets-lite.html">ipywidget examples</a></td>
+            </tr>
+            <tr>
+              <td rowspan="2">Running on mybinder.org</td>
+              <td><a href="binder.html">simple Plots</a></td>
+            </tr>
+            <tr>
+              <td><a href="ipywidgets.html">ipywidgets examples</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="runlocal">
+        <h2>Running a local jupyter server</h2>
+        <p>
+          Some of the demos require you to run a jupyter server on your machine, which is pretty
+          easy if you are a regular jupyter user.
+        </p>
+        <p>
+          If needed, setup a new virtual environment using the
+          <a
+            href="https://raw.githubusercontent.com/executablebooks/thebe-binder-base/main/requirements.txt"
+            target="_blank"
+            >requirements.txt file here</a
+          >.
+        </p>
+        <pre class="text-black bg-gray-200">
+python -m venv thebe-env
+source thebe-env/bin/activate
+python -m pip install -r requirements.txt
+python -m pip install jupyterlab</pre
+        >
+        <p>Then start a jupyter server using the command:</p>
+        <pre class="text-black bg-gray-200">
+jupyter lab --NotebookApp.token=test-secret --NotebookApp.allow_origin='*'</pre
+        >
+      </div>
+    </div>
+  </body>
+</html>
