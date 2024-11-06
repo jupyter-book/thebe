@@ -54,7 +54,7 @@
   },
   "homepage": "https://thebe.readthedocs.io/en/latest",
   "devDependencies": {
-    "happy-dom": "^10.11.2",
+    "happy-dom": "^15.10.1",
     "turbo": "^2.0.3",
     "vitest": "^0.34.2"
   },
