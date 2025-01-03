@@ -89,16 +89,7 @@ export function ThebeServerProvider({
     setConnecting(true);
     if (customConnectFn) customConnectFn(server);
     else if (useBinder) server.connectToServerViaBinder(customRepoProviders);
-    else if (useJupyterLite)
-      server.connectToJupyterLiteServer({
-        litePluginSettings: {
-          '@jupyterlite/pyodide-kernel-extension:kernel': {
-            pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.7/pypi/all.json'],
-            pipliteWheelUrl:
-              'https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.7/pypi/piplite-0.4.7-py3-none-any.whl',
-          },
-        },
-      });
+    else if (useJupyterLite) server.connectToJupyterLiteServer();
     else server.connectToJupyterServer();
 
     server.ready.then(

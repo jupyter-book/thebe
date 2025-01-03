@@ -44,9 +44,29 @@ export async function startJupyterLiteServer(config?: LiteServerConfig): Promise
    * Do not rely on a configuration being on the document body, accept configuration via arguments
    * and set options on the page config directly
    */
-  if (config?.litePluginSettings) {
-    PageConfig.setOption('litePluginSettings', JSON.stringify(config.litePluginSettings));
-  }
+  const defaultLiteConfig = {
+    litePluginSettings: {
+      '@jupyterlite/pyodide-kernel-extension:kernel': {
+        pipliteUrls: ['https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.7/pypi/all.json'],
+        pipliteWheelUrl:
+          'https://unpkg.com/@jupyterlite/pyodide-kernel@0.4.7/pypi/piplite-0.4.7-py3-none-any.whl',
+      },
+    },
+    enableMemoryStorage: true,
+    settingsStorageDrivers: ['memoryStorageDriver'],
+  };
+  PageConfig.setOption(
+    'litePluginSettings',
+    JSON.stringify({ ...defaultLiteConfig.litePluginSettings, ...config?.litePluginSettings }),
+  );
+  PageConfig.setOption(
+    'enableMemoryStorage',
+    JSON.stringify(config?.enableMemoryStorage ?? defaultLiteConfig.enableMemoryStorage),
+  );
+  PageConfig.setOption(
+    'settingsStorageDrivers',
+    JSON.stringify(config?.settingsStorageDrivers ?? defaultLiteConfig.settingsStorageDrivers),
+  );
 
   /**
    * Seems like there are 4 different extensions we may want to handle
