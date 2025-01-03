@@ -1,8 +1,7 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   Config,
   CoreOptions,
-  EventSubject,
   RepoProviderSpec,
   ThebeEventCb,
   ThebeEventData,
@@ -53,21 +52,24 @@ export function ThebeServerProvider({
   const [server, setServer] = useState<ThebeServer | undefined>();
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const configRef = useRef<Config | undefined>();
 
   // create a valid configuration, either using the one supplied
   // or based on the options provided
   // once only - if options/config were to change, we'd need logic to create a new server etc..
   const thebeConfig = useMemo(
     () => config ?? core?.makeConfiguration(options ?? {}, events),
-    [core, options],
+    [core, config, options],
   );
 
   // create an iniital server
   useEffect(() => {
-    if (!core || !thebeConfig || server) return;
+    if (!core || !thebeConfig) return; // not intialized yet
+    else if (thebeConfig === configRef.current && server) return; // config has not changed and server is already created
+
     const svr = new core.ThebeServer(thebeConfig);
 
-    // register an error handler immedately
+    // register an error handler immediately
     const handler = (evt: string, data: ThebeEventData) => {
       const subjects = [
         core.EventSubject.server,
@@ -81,6 +83,7 @@ export function ThebeServerProvider({
     // TODO we need a way to unsubscribe from this that does not cause
     // error events to be missed due to rerenders
     thebeConfig.events.on(core.ThebeEventType.error, handler);
+    configRef.current = thebeConfig;
     setServer(svr);
   }, [core, thebeConfig, server]);
 
@@ -118,7 +121,6 @@ export function ThebeServerProvider({
   // Once the core is loaded, connect to a server
   // TODO: this should be an action not a side effect
   useEffect(() => {
-    if (!core || !thebeConfig) return; // TODO is there a better way to keep typescript happy here?
     if (!server || !doConnect) return;
     // do not reconnect if already connected!
     if (server.isReady && server.userServerUrl) return;
