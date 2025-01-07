@@ -15,7 +15,9 @@ import type { ServiceManager } from '@jupyterlab/services';
  */
 
 export type LiteServerConfig = {
-  litePluginSettings: Record<string, any>;
+  litePluginSettings?: Record<string, any>;
+  enableMemoryStorage?: boolean;
+  settingsStorageDrivers?: string[];
 };
 
 export interface ThebeLiteGlobal {
