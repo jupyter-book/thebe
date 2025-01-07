@@ -1,6 +1,6 @@
 {
   "name": "thebe-lite",
-  "version": "0.4.10",
+  "version": "1.0.0",
   "description": "Thebe extension library for WASM kernels via JupyterLite",
   "main": "dist/lib/thebe-lite.min.js",
   "types": "dist/types/index.d.ts",

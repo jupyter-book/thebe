@@ -1,5 +1,13 @@
 # thebe-core
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [ada3353]
+- Updated dependencies [ada3353]
+  - thebe-lite@1.0.0
+
 ## 0.4.10
 
 ### Patch Changes
