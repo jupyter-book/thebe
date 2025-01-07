@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import type { ThebeSession } from 'thebe-core';
+import type { ThebeSession, ThebeEventData } from 'thebe-core';
 import { useThebeServer } from './ThebeServerProvider';
 import { useRenderMimeRegistry } from './ThebeRenderMimeRegistryProvider';
-import { ThebeEventData } from 'thebe-core';
 import { useThebeLoader } from './ThebeLoaderProvider';
 
 interface ThebeSessionContextData {
