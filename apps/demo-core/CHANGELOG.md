@@ -1,5 +1,11 @@
 # demo-core
 
+## 2.2.1
+
+### Patch Changes
+
+- thebe-core@0.5.0
+
 ## 2.2.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # demo-react
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [ada3353]
+- Updated dependencies [6c86dfc]
+  - thebe-react@0.5.0
+
 ## 0.3.0
 
 ### Minor Changes
