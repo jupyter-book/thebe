@@ -4,7 +4,7 @@ import { useThebeLoader } from './ThebeLoaderProvider';
 import { useThebeConfig } from './ThebeServerProvider';
 
 const RenderMimeRegistryContext = React.createContext<
-  { rendermime: IRenderMimeRegistry } | undefined
+  { rendermime: IRenderMimeRegistry | undefined } | undefined
 >(undefined);
 
 /* future: could allow for renderer configuration here */
@@ -12,7 +12,7 @@ export function ThebeRenderMimeRegistryProvider({ children }: React.PropsWithChi
   const { core } = useThebeLoader();
   const { config } = useThebeConfig();
   const rendermime = React.useMemo(
-    () => core?.makeRenderMimeRegistry(config?.mathjax) as IRenderMimeRegistry,
+    () => core?.makeRenderMimeRegistry(config?.mathjax),
     [core, config],
   );
 
