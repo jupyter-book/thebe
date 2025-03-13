@@ -65,7 +65,7 @@
     "esbuild": "^0.15.6",
     "eslint-config-thebe": "*",
     "eventsource": "^2.0.2",
-    "express": "^4.17.2",
+    "express": "^4.20.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "http-server": "^14.1.1",
