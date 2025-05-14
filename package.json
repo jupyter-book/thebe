@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe.git"
+    "url": "git+https://github.com/jupyter-book/thebe.git"
   },
   "keywords": [
     "jupyter",
@@ -45,7 +45,7 @@
   "author": "Executable Books Project",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe/issues"
+    "url": "https://github.com/jupyter-book/thebe/issues"
   },
   "engines": {
     "npm": ">= 6.0",

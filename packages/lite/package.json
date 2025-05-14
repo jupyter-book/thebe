@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe.git"
+    "url": "git+https://github.com/jupyter-book/thebe.git"
   },
   "keywords": [
     "executablebooks",
@@ -41,9 +41,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe/issues"
+    "url": "https://github.com/jupyter-book/thebe/issues"
   },
-  "homepage": "https://github.com/executablebooks/thebe#readme",
+  "homepage": "https://github.com/jupyter-book/thebe#readme",
   "dependencies": {
     "@jupyterlab/coreutils": "^6.2.5",
     "@jupyterlite/pyodide-kernel": "0.4.7",

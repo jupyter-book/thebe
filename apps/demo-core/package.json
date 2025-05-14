@@ -22,10 +22,10 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe-core.git"
+    "url": "git+https://github.com/jupyter-book/thebe-core.git"
   },
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe-core/issues"
+    "url": "https://github.com/jupyter-book/thebe-core/issues"
   },
   "author": "Steve Purves",
   "license": "MIT",
