@@ -6,7 +6,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe.git"
+    "url": "git+https://github.com/jupyter-book/thebe.git"
   },
   "keywords": [
     "thebe",
@@ -15,9 +15,9 @@
   "author": "Steve Purves <stevejpurves@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe/issues"
+    "url": "https://github.com/jupyter-book/thebe/issues"
   },
-  "homepage": "https://github.com/executablebooks/thebe#readme",
+  "homepage": "https://github.com/jupyter-book/thebe#readme",
   "devDependencies": {
     "jest-junit": "^16.0.0",
     "webpack": "^5.74.0"

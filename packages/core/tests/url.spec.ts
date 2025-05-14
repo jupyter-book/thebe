@@ -113,7 +113,7 @@ describe('building binder urls', () => {
           WELL_KNOWN_REPO_PROVIDERS,
         ),
       ).toEqual({
-        build: 'https://binder.curvenote.dev/build/gist/executablebooks/thebe-binder-base/main',
+        build: 'https://binder.curvenote.dev/build/gist/jupyter-book/thebe-binder-base/main',
         launch: 'https://binder.curvenote.dev/v2/gist/executablebooks/thebe-binder-base/main',
         storageKey:
           'thebe-binder-https://binder.curvenote.dev/build/gist/executablebooks/thebe-binder-base/main',

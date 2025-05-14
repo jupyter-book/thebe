@@ -22,10 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/executablebooks/thebe.git"
+    "url": "git+https://github.com/jupyter-book/thebe.git"
   },
   "bugs": {
-    "url": "https://github.com/executablebooks/thebe/issues"
+    "url": "https://github.com/jupyter-book/thebe/issues"
   },
   "scripts": {
     "clean": "rm -rf dist",

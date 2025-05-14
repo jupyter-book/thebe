@@ -1,6 +1,6 @@
 # Thebe: turn static HTML pages into live documents
 
-![test](https://github.com/executablebooks/thebe/workflows/test/badge.svg)
+![test](https://github.com/jupyter-book/thebe/workflows/test/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/thebe/badge/?version=latest)](https://thebe.readthedocs.io/en/latest/?badge=latest)
 
 Have a static HTML page with code snippets? Your readers can edit and execute them right there. All it takes is:
