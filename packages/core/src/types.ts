@@ -5,9 +5,7 @@ import type { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import type ThebeServer from './server';
 import type { ServerStatusEvent } from './events';
 import type { Config } from './config';
-
 export type CellKind = 'code' | 'markdown';
-
 export type JsonObject = Record<string, any>;
 export type SessionIModel = Session.IModel;
 export type KernelISpecModels = KernelSpecAPI.ISpecModels;
@@ -85,8 +83,9 @@ export interface IPassiveCell {
   readonly rendermime: IRenderMimeRegistry;
   readonly isAttachedToDOM: boolean;
   readonly outputs: IOutput[];
+  readonly initialOutputs: IOutput[];
 
-  attachToDOM(el?: HTMLElement): void;
+  attachToDOM(el?: HTMLElement, opts?: { strict?: boolean; appendExisting?: boolean }): void;
   setOutputText(text: string): void;
   clear(): void;
   clearOnError(error?: any): void;
@@ -98,7 +97,7 @@ export interface IThebeCell extends IPassiveCell {
   source: string;
   session?: ThebeSession;
   metadata: JsonObject;
-  readonly notebookId: string;
+  notebookId?: string;
   readonly isBusy: boolean;
   readonly isAttached: boolean;
   readonly tags: string[];

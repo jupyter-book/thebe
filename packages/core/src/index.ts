@@ -12,6 +12,7 @@ export * from './thebe/api';
 export * from './thebe/entrypoint';
 export * from './utils';
 export * from './manager';
+export * from './passiveManager';
 export * from './rendermime';
 export * from './types';
 export * from './config';
